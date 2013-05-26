@@ -6,14 +6,16 @@
 //  Copyright (c) 2013 Fox Cradle. All rights reserved.
 //
 
-#import "ViewController.h"
+#include "Constants.h"
+
+#import "LoginViewController.h"
 #import "SBJson.h"
 
-@interface ViewController ()
+@interface LoginViewController ()
 
 @end
 
-@implementation ViewController
+@implementation LoginViewController
 
 - (void)viewDidLoad
 {
@@ -55,21 +57,23 @@
                                                                 options:0
                                                                   error:nil];*/
             
-            
+            NSLog(@"email: %@ password:%@",[_txtFieldUsername text],[_txtFieldPassword text]);
             NSString *post =[[NSString alloc] initWithFormat:@"session[email]=%@&session[password]=%@&mobile=1",[_txtFieldUsername text],[_txtFieldPassword text]];
             NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
             
-            NSURL *url=[NSURL URLWithString:@"https://shielded-fortress-7112.herokuapp.com/sessions/"];
+            NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCSessionsResource]];
             
             NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
             
             NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+            request.cachePolicy = NSURLRequestReloadIgnoringLocalAndRemoteCacheData;
             [request setURL:url];
             [request setHTTPMethod:@"POST"];
             [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
             //[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
             [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
             [request setHTTPBody:postData];
+
             
             //[NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:[url host]];
             

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BF3AFF9A17507E2200D46558 /* HttpPostRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BF3AFF9917507E2200D46558 /* HttpPostRequest.m */; };
 		BFCA781C174DFD3F00666CBA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFCA781B174DFD3F00666CBA /* UIKit.framework */; };
 		BFCA781E174DFD3F00666CBA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFCA781D174DFD3F00666CBA /* Foundation.framework */; };
 		BFCA7820174DFD3F00666CBA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFCA781F174DFD3F00666CBA /* CoreGraphics.framework */; };
@@ -16,8 +17,8 @@
 		BFCA782E174DFD3F00666CBA /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = BFCA782D174DFD3F00666CBA /* Default.png */; };
 		BFCA7830174DFD3F00666CBA /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFCA782F174DFD3F00666CBA /* Default@2x.png */; };
 		BFCA7832174DFD3F00666CBA /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFCA7831174DFD3F00666CBA /* Default-568h@2x.png */; };
-		BFCA7835174DFD3F00666CBA /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BFCA7834174DFD3F00666CBA /* ViewController.m */; };
-		BFCA7838174DFD3F00666CBA /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFCA7836174DFD3F00666CBA /* ViewController.xib */; };
+		BFCA7835174DFD3F00666CBA /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BFCA7834174DFD3F00666CBA /* LoginViewController.m */; };
+		BFCA7838174DFD3F00666CBA /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFCA7836174DFD3F00666CBA /* LoginViewController.xib */; };
 		BFCA7840174DFD3F00666CBA /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFCA783F174DFD3F00666CBA /* SenTestingKit.framework */; };
 		BFCA7841174DFD3F00666CBA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFCA781B174DFD3F00666CBA /* UIKit.framework */; };
 		BFCA7842174DFD3F00666CBA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFCA781D174DFD3F00666CBA /* Foundation.framework */; };
@@ -48,6 +49,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BF3AFF971750763400D46558 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
+		BF3AFF9817507E2200D46558 /* HttpPostRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpPostRequest.h; sourceTree = "<group>"; };
+		BF3AFF9917507E2200D46558 /* HttpPostRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpPostRequest.m; sourceTree = "<group>"; };
 		BFCA7818174DFD3F00666CBA /* Rolling Capsule.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rolling Capsule.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFCA781B174DFD3F00666CBA /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		BFCA781D174DFD3F00666CBA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -61,9 +65,9 @@
 		BFCA782D174DFD3F00666CBA /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		BFCA782F174DFD3F00666CBA /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		BFCA7831174DFD3F00666CBA /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		BFCA7833174DFD3F00666CBA /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		BFCA7834174DFD3F00666CBA /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
-		BFCA7837174DFD3F00666CBA /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
+		BFCA7833174DFD3F00666CBA /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		BFCA7834174DFD3F00666CBA /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		BFCA7837174DFD3F00666CBA /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/LoginViewController.xib; sourceTree = "<group>"; };
 		BFCA783E174DFD3F00666CBA /* Rolling CapsuleTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Rolling CapsuleTests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFCA783F174DFD3F00666CBA /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		BFCA7847174DFD3F00666CBA /* Rolling CapsuleTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Rolling CapsuleTests-Info.plist"; sourceTree = "<group>"; };
@@ -157,9 +161,12 @@
 				BFCA7856174E1AD200666CBA /* Json */,
 				BFCA782A174DFD3F00666CBA /* AppDelegate.h */,
 				BFCA782B174DFD3F00666CBA /* AppDelegate.m */,
-				BFCA7833174DFD3F00666CBA /* ViewController.h */,
-				BFCA7834174DFD3F00666CBA /* ViewController.m */,
-				BFCA7836174DFD3F00666CBA /* ViewController.xib */,
+				BFCA7833174DFD3F00666CBA /* LoginViewController.h */,
+				BFCA7834174DFD3F00666CBA /* LoginViewController.m */,
+				BFCA7836174DFD3F00666CBA /* LoginViewController.xib */,
+				BF3AFF971750763400D46558 /* Constants.h */,
+				BF3AFF9817507E2200D46558 /* HttpPostRequest.h */,
+				BF3AFF9917507E2200D46558 /* HttpPostRequest.m */,
 				BFCA7822174DFD3F00666CBA /* Supporting Files */,
 			);
 			path = "Rolling Capsule";
@@ -305,7 +312,7 @@
 				BFCA782E174DFD3F00666CBA /* Default.png in Resources */,
 				BFCA7830174DFD3F00666CBA /* Default@2x.png in Resources */,
 				BFCA7832174DFD3F00666CBA /* Default-568h@2x.png in Resources */,
-				BFCA7838174DFD3F00666CBA /* ViewController.xib in Resources */,
+				BFCA7838174DFD3F00666CBA /* LoginViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -342,7 +349,7 @@
 			files = (
 				BFCA7828174DFD3F00666CBA /* main.m in Sources */,
 				BFCA782C174DFD3F00666CBA /* AppDelegate.m in Sources */,
-				BFCA7835174DFD3F00666CBA /* ViewController.m in Sources */,
+				BFCA7835174DFD3F00666CBA /* LoginViewController.m in Sources */,
 				BFCA7870174E1B1200666CBA /* NSObject+SBJson.m in Sources */,
 				BFCA7871174E1B1200666CBA /* SBJsonParser.m in Sources */,
 				BFCA7872174E1B1200666CBA /* SBJsonStreamParser.m in Sources */,
@@ -355,6 +362,7 @@
 				BFCA7879174E1B1200666CBA /* SBJsonTokeniser.m in Sources */,
 				BFCA787A174E1B1200666CBA /* SBJsonUTF8Stream.m in Sources */,
 				BFCA787B174E1B1200666CBA /* SBJsonWriter.m in Sources */,
+				BF3AFF9A17507E2200D46558 /* HttpPostRequest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -385,12 +393,12 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		BFCA7836174DFD3F00666CBA /* ViewController.xib */ = {
+		BFCA7836174DFD3F00666CBA /* LoginViewController.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				BFCA7837174DFD3F00666CBA /* en */,
 			);
-			name = ViewController.xib;
+			name = LoginViewController.xib;
 			sourceTree = "<group>";
 		};
 		BFCA7848174DFD3F00666CBA /* InfoPlist.strings */ = {
@@ -535,6 +543,7 @@
 				BFCA7852174DFD3F00666CBA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		BFCA7853174DFD3F00666CBA /* Build configuration list for PBXNativeTarget "Rolling CapsuleTests" */ = {
 			isa = XCConfigurationList;
@@ -543,6 +552,7 @@
 				BFCA7855174DFD3F00666CBA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
