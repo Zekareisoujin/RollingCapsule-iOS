@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BF3AFF9A17507E2200D46558 /* HttpPostRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = BF3AFF9917507E2200D46558 /* HttpPostRequest.m */; };
 		BFCA781C174DFD3F00666CBA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFCA781B174DFD3F00666CBA /* UIKit.framework */; };
 		BFCA781E174DFD3F00666CBA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFCA781D174DFD3F00666CBA /* Foundation.framework */; };
 		BFCA7820174DFD3F00666CBA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFCA781F174DFD3F00666CBA /* CoreGraphics.framework */; };
@@ -50,8 +49,6 @@
 
 /* Begin PBXFileReference section */
 		BF3AFF971750763400D46558 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
-		BF3AFF9817507E2200D46558 /* HttpPostRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HttpPostRequest.h; sourceTree = "<group>"; };
-		BF3AFF9917507E2200D46558 /* HttpPostRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HttpPostRequest.m; sourceTree = "<group>"; };
 		BFCA7818174DFD3F00666CBA /* Rolling Capsule.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rolling Capsule.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFCA781B174DFD3F00666CBA /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		BFCA781D174DFD3F00666CBA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -165,8 +162,6 @@
 				BFCA7834174DFD3F00666CBA /* LoginViewController.m */,
 				BFCA7836174DFD3F00666CBA /* LoginViewController.xib */,
 				BF3AFF971750763400D46558 /* Constants.h */,
-				BF3AFF9817507E2200D46558 /* HttpPostRequest.h */,
-				BF3AFF9917507E2200D46558 /* HttpPostRequest.m */,
 				BFCA7822174DFD3F00666CBA /* Supporting Files */,
 			);
 			path = "Rolling Capsule";
@@ -362,7 +357,6 @@
 				BFCA7879174E1B1200666CBA /* SBJsonTokeniser.m in Sources */,
 				BFCA787A174E1B1200666CBA /* SBJsonUTF8Stream.m in Sources */,
 				BFCA787B174E1B1200666CBA /* SBJsonWriter.m in Sources */,
-				BF3AFF9A17507E2200D46558 /* HttpPostRequest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
