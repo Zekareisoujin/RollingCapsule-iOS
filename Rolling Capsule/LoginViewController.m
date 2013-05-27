@@ -10,6 +10,7 @@
 
 #import "LoginViewController.h"
 #import "SBJson.h"
+#import "RegisterViewController.h"
 
 @interface LoginViewController ()
 
@@ -110,11 +111,29 @@
 }
 
 - (IBAction)btnRegisterClick:(id)sender {
+    RegisterViewController *registerViewController = [[RegisterViewController alloc]
+                                                      initWithNibName:@"RegisterViewController"
+                                                      bundle:nil];
+    //[(UINavigationController *)self.presentingViewController pu]
+    [self.navigationController pushViewController:registerViewController animated:NO];
+    //[self.navigationController popViewControllerAnimated:YES];
 }
 
 - (IBAction)btnBackgroundTap:(id)sender {
     [_txtFieldUsername resignFirstResponder];
     [_txtFieldPassword resignFirstResponder];
     
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self.navigationController setNavigationBarHidden:YES animated:animated];
+    [super viewWillAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [self.navigationController setNavigationBarHidden:NO animated:animated];
+    [super viewWillDisappear:animated];
 }
 @end

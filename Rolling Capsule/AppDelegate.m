@@ -14,12 +14,22 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    LoginViewController *loginViewController = [[LoginViewController alloc] init];
+    // Initialize Navigation Controller
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    // Configure Window
+    [self.window setRootViewController:navigationController];
+    [self.window setBackgroundColor:[UIColor whiteColor]];
+    [self.window makeKeyAndVisible];
+    return YES;
+    
+  /*  self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.viewController = [[LoginViewController alloc] initWithNibName:@"ViewController" bundle:nil];
     self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
-    return YES;
+    return YES;*/
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

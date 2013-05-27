@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		64A917081751E554007D629D /* RegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64A917071751E554007D629D /* RegisterViewController.xib */; };
+		64A9170B1751F6C9007D629D /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64A9170A1751F6C9007D629D /* RegisterViewController.m */; };
 		BFCA781C174DFD3F00666CBA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFCA781B174DFD3F00666CBA /* UIKit.framework */; };
 		BFCA781E174DFD3F00666CBA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFCA781D174DFD3F00666CBA /* Foundation.framework */; };
 		BFCA7820174DFD3F00666CBA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFCA781F174DFD3F00666CBA /* CoreGraphics.framework */; };
@@ -48,6 +50,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		64A917071751E554007D629D /* RegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegisterViewController.xib; sourceTree = "<group>"; };
+		64A917091751F6C9007D629D /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
+		64A9170A1751F6C9007D629D /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
 		BF3AFF971750763400D46558 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		BFCA7818174DFD3F00666CBA /* Rolling Capsule.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rolling Capsule.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFCA781B174DFD3F00666CBA /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -161,6 +166,9 @@
 				BFCA7833174DFD3F00666CBA /* LoginViewController.h */,
 				BFCA7834174DFD3F00666CBA /* LoginViewController.m */,
 				BFCA7836174DFD3F00666CBA /* LoginViewController.xib */,
+				64A917091751F6C9007D629D /* RegisterViewController.h */,
+				64A9170A1751F6C9007D629D /* RegisterViewController.m */,
+				64A917071751E554007D629D /* RegisterViewController.xib */,
 				BF3AFF971750763400D46558 /* Constants.h */,
 				BFCA7822174DFD3F00666CBA /* Supporting Files */,
 			);
@@ -308,6 +316,7 @@
 				BFCA7830174DFD3F00666CBA /* Default@2x.png in Resources */,
 				BFCA7832174DFD3F00666CBA /* Default-568h@2x.png in Resources */,
 				BFCA7838174DFD3F00666CBA /* LoginViewController.xib in Resources */,
+				64A917081751E554007D629D /* RegisterViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -357,6 +366,7 @@
 				BFCA7879174E1B1200666CBA /* SBJsonTokeniser.m in Sources */,
 				BFCA787A174E1B1200666CBA /* SBJsonUTF8Stream.m in Sources */,
 				BFCA787B174E1B1200666CBA /* SBJsonWriter.m in Sources */,
+				64A9170B1751F6C9007D629D /* RegisterViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
