@@ -12,6 +12,19 @@
 #import "RegisterViewController.h"
 
 @implementation RegisterViewController
+@synthesize willMoveKeyboardUp=_willMoveKeyboardUp;
+double      _moveUpBy;
+double      _keyboardTopPosition;
+BOOL        _keyboardVisible;
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    _txtFieldPasswordConfirmation.delegate = self;
+    _txtFieldPassword.delegate = self;
+	_willMoveKeyboardUp = FALSE;
+    _keyboardVisible = FALSE;
+}
 
 - (void)asynchRegisterRequest
 {
@@ -95,5 +108,86 @@
 
 - (IBAction)registerTouchUpInside:(id)sender {
     [self asynchRegisterRequest];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    // register for keyboard notifications
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+    [super viewWillAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    // unregister for keyboard notifications while not visible.
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillShowNotification
+                                                  object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillHideNotification
+                                                  object:nil];
+    [super viewWillDisappear:animated];
+}
+
+-(void)keyboardWillShow:(NSNotification*)notification {
+    _keyboardVisible = TRUE;
+    if (_willMoveKeyboardUp) {
+        NSDictionary* userInfo = [notification userInfo];
+        CGRect keyboardFrame = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+        _keyboardTopPosition = self.view.frame.size.height - keyboardFrame.size.height;
+        [self setViewMovedUp:YES offset:(_moveUpBy - _keyboardTopPosition)];
+    }
+}
+
+- (void) keyboardWillHide:(NSNotification*)notification {
+    _keyboardVisible = FALSE;
+    if (_willMoveKeyboardUp) {
+        [self setViewMovedUp:NO offset:(_moveUpBy - _keyboardTopPosition)];
+        _willMoveKeyboardUp = FALSE;
+    }
+    
+}
+
+-(void)textFieldDidBeginEditing:(UITextField *)sender
+{
+    if ([sender isEqual:_txtFieldPasswordConfirmation] || [sender isEqual:_txtFieldPassword])
+    {
+        _willMoveKeyboardUp = TRUE;
+        double oldPosition = _moveUpBy;
+        _moveUpBy = sender.frame.origin.y + sender.frame.size.height;
+        if (_keyboardVisible) {
+            [self setViewMovedUp:YES offset:(_moveUpBy-oldPosition)];
+        }
+    }
+}
+
+//method to move the view up/down whenever the keyboard is shown/dismissed
+- (void) setViewMovedUp:(BOOL)movedUp offset:(double)kOffsetForKeyboard
+{
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.3]; // if you want to slide up the view
+    
+    CGRect rect = self.view.frame;
+    if (movedUp)
+    {
+        rect.origin.y -= kOffsetForKeyboard;
+    }
+    else
+    {
+        // revert back to the normal state.
+        rect.origin.y += kOffsetForKeyboard;
+    }
+    self.view.frame = rect;
+    
+    [UIView commitAnimations];
 }
 @end
