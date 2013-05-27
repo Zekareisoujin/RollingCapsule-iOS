@@ -11,6 +11,8 @@
 @interface LoginViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UITextField *txtFieldUsername;
 @property (weak, nonatomic) IBOutlet UITextField *txtFieldPassword;
+@property (nonatomic,retain) NSMutableData *receivedData;
+@property (retain) id delegate;
 - (IBAction)btnLogInClick:(id)sender;
 - (IBAction)btnRegisterClick:(id)sender;
 - (IBAction)btnBackgroundTap:(id)sender;

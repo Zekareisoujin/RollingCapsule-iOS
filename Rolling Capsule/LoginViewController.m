@@ -11,12 +11,15 @@
 #import "LoginViewController.h"
 #import "SBJson.h"
 #import "RegisterViewController.h"
+#import "Util.h"
 
 @interface LoginViewController ()
 
 @end
 
 @implementation LoginViewController
+
+
 
 - (void)viewDidLoad
 {
@@ -42,63 +45,34 @@
 }
 
 - (IBAction)btnLogInClick:(id)sender {
-    //Synchronous Request
+    [self asynchLoginRequest];
+}
+
+- (void)asynchLoginRequest
+{
+    //Asynchronous Request
     @try {
         
         if([[_txtFieldUsername text] isEqualToString:@""] || [[_txtFieldPassword text] isEqualToString:@""] ) {
             [self alertStatus:@"Please enter both Username and Password" :@"Login Failed!"];
         } else {
-            /*NSMutableDictionary *postDataJson = [[NSMutableDictionary alloc] init];
-            [postDataJson setObject:[_txtFieldUsername text] forKey:@"session[email]"];
-            [postDataJson setObject:[_txtFieldPassword text] forKey:@"session[password]"];
-            [postDataJson setObject:@"1" forKey:@"mobile"];
-            
-                        
-             NSData *postData = [NSJSONSerialization dataWithJSONObject:postDataJson
-                                                                options:0
-                                                                  error:nil];*/
-            
-            NSLog(@"email: %@ password:%@",[_txtFieldUsername text],[_txtFieldPassword text]);
             NSString *post =[[NSString alloc] initWithFormat:@"session[email]=%@&session[password]=%@&mobile=1",[_txtFieldUsername text],[_txtFieldPassword text]];
             NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
             
             NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCSessionsResource]];
             
-            NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+            NSURLRequest *request = CreateHttpPostRequest(url, postData);
             
-            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-            request.cachePolicy = NSURLRequestReloadIgnoringLocalAndRemoteCacheData;
-            [request setURL:url];
-            [request setHTTPMethod:@"POST"];
-            [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
-            //[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-            [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
-            [request setHTTPBody:postData];
-
+            NSURLConnection *connection = [[NSURLConnection alloc]
+                                                   initWithRequest:request
+                                                   delegate:self
+                                                   startImmediately:YES];
+            _receivedData = [[NSMutableData alloc] init];
             
-            //[NSURLRequest setAllowsAnyHTTPSCertificate:YES forHost:[url host]];
-            
-            NSError *error = [[NSError alloc] init];
-            NSHTTPURLResponse *response = nil;
-            NSData *urlData=[NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-            
-            NSLog(@"Response code: %d", [response statusCode]);
-            if ([response statusCode] >=200 && [response statusCode] <300)
-            {
-                NSString *responseData = [[NSString alloc]initWithData:urlData encoding:NSUTF8StringEncoding];
-                NSLog(@"Response ==> %@", responseData);
-                
-                SBJsonParser *jsonParser = [SBJsonParser new];
-                NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
-                NSLog(@"%@",jsonData);
-                
-                NSDictionary *userData = (NSDictionary *) [jsonData objectForKey: @"user"];
-                NSString *name = (NSString *) [userData objectForKey:@"name"];
-                [self alertStatus:[NSString stringWithFormat:@"Welcome, %@!",name] :@"Login Success!"];
-        
+            if(!connection) {
+                NSLog(@"Login Connection Failed.");
             } else {
-                //if (error) NSLog(@"Error: %@", error);
-                [self alertStatus:@"Connection Failed" :@"Login Failed!"];
+                NSLog(@"Login Connection Succeeded.");
             }
             
         }
@@ -107,7 +81,39 @@
         NSLog(@"Exception: %@", e);
         [self alertStatus:@"Login Failed." :@"Login Failed!"];
     }
+}
 
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+ 	//NSLog(@"Received response: %@", response);
+ 	
+    [_receivedData setLength:0];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+ 	//NSLog(@"Received %d bytes of data", [data length]);
+ 	
+    [_receivedData appendData:data];
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+ 	NSLog(@"Error receiving response: %@", error);
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    NSString *responseData = [[NSString alloc]initWithData:_receivedData encoding:NSUTF8StringEncoding];
+    
+    SBJsonParser *jsonParser = [SBJsonParser new];
+    NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
+    NSLog(@"%@",jsonData);
+    
+    //Temporary:
+    if (jsonData != NULL) {
+        NSDictionary *userData = (NSDictionary *) [jsonData objectForKey: @"user"];
+        NSString *name = (NSString *) [userData objectForKey:@"name"];
+        [self alertStatus:[NSString stringWithFormat:@"Welcome, %@!",name] :@"Login Success!"];
+    }else {
+        [self alertStatus:[NSString stringWithFormat:@"Please try again!"] :@"Login Failed!"];
+    }
 }
 
 - (IBAction)btnRegisterClick:(id)sender {
