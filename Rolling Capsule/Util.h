@@ -6,6 +6,9 @@
 //  Copyright (c) 2013 Fox Cradle. All rights reserved.
 //
 
+#ifndef Rolling_Capsule_Util_h
+#define Rolling_Capsule_Util_h
+
 static NSMutableURLRequest* CreateHttpPostRequest (NSURL* url, NSData* postData) {
     NSString *plength = [NSString stringWithFormat:@"%d", [postData length]];
     
@@ -22,3 +25,25 @@ static NSMutableURLRequest* CreateHttpPostRequest (NSURL* url, NSData* postData)
     
     return request;
 }
+
+static void alertStatus(NSString *msg, NSString *title, id delegateObject)
+{
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
+                                                        message:msg
+                                                       delegate:delegateObject
+                                              cancelButtonTitle:@"Ok"
+                                              otherButtonTitles:nil, nil];
+    
+    [alertView show];
+}
+
+static NSMutableString* initQueryString(NSString* key, NSString* value) {
+    NSMutableString *ret = [[NSMutableString alloc]
+                            initWithString:[[NSString alloc] initWithFormat:@"mobile=1&%@=%@",key,value]];
+    return ret;
+}
+
+static void addArgumentToQueryString(NSMutableString *currentQueryString, NSString* key, NSString* value) {
+    [currentQueryString appendString:[[NSString alloc] initWithFormat:@"&%@=%@",key,value]];
+}
+#endif

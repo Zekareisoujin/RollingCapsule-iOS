@@ -12,6 +12,5 @@
 //prefix RC : rolling capsule
 static NSString* const RCServiceURL = @"https://shielded-fortress-7112.herokuapp.com";
 static NSString* const RCSessionsResource = @"/sessions";
-
-
+static NSString* const RCUsersResource = @"/users";
 #endif

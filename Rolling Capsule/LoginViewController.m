@@ -33,17 +33,6 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void) alertStatus:(NSString *)msg :(NSString *)title
-{
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
-                                                        message:msg
-                                                       delegate:self
-                                              cancelButtonTitle:@"Ok"
-                                              otherButtonTitles:nil, nil];
-    
-    [alertView show];
-}
-
 - (IBAction)btnLogInClick:(id)sender {
     [self asynchLoginRequest];
 }
@@ -54,7 +43,7 @@
     @try {
         
         if([[_txtFieldUsername text] isEqualToString:@""] || [[_txtFieldPassword text] isEqualToString:@""] ) {
-            [self alertStatus:@"Please enter both Username and Password" :@"Login Failed!"];
+            alertStatus(@"Please enter both Username and Password",@"Login Failed!",self);
         } else {
             NSString *post =[[NSString alloc] initWithFormat:@"session[email]=%@&session[password]=%@&mobile=1",[_txtFieldUsername text],[_txtFieldPassword text]];
             NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
@@ -79,7 +68,7 @@
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        [self alertStatus:@"Login Failed." :@"Login Failed!"];
+        alertStatus(@"Login Failed.", @"Login Failed!", self);
     }
 }
 
@@ -110,9 +99,9 @@
     if (jsonData != NULL) {
         NSDictionary *userData = (NSDictionary *) [jsonData objectForKey: @"user"];
         NSString *name = (NSString *) [userData objectForKey:@"name"];
-        [self alertStatus:[NSString stringWithFormat:@"Welcome, %@!",name] :@"Login Success!"];
+        alertStatus([NSString stringWithFormat:@"Welcome, %@!",name], @"Login Success!", self);
     }else {
-        [self alertStatus:[NSString stringWithFormat:@"Please try again!"] :@"Login Failed!"];
+        alertStatus([NSString stringWithFormat:@"Please try again!"], @"Login Failed!", self);
     }
 }
 
@@ -120,9 +109,7 @@
     RegisterViewController *registerViewController = [[RegisterViewController alloc]
                                                       initWithNibName:@"RegisterViewController"
                                                       bundle:nil];
-    //[(UINavigationController *)self.presentingViewController pu]
-    [self.navigationController pushViewController:registerViewController animated:NO];
-    //[self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController pushViewController:registerViewController animated:YES];
 }
 
 - (IBAction)btnBackgroundTap:(id)sender {
