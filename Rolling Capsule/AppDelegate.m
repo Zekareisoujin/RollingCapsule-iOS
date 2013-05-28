@@ -8,15 +8,17 @@
 
 #import "AppDelegate.h"
 
-#import "LoginViewController.h"
+#import "RCLoginViewController.h"
+#import "RCFriendListViewController.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    LoginViewController *loginViewController = [[LoginViewController alloc] init];
+    //RCLoginViewController *loginViewController = [[RCLoginViewController alloc] init];
+    RCFriendListViewController *friendListViewController = [[RCFriendListViewController alloc] initWithNibName:@"RCFriendListViewController" bundle:nil];
     // Initialize Navigation Controller
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:friendListViewController];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Configure Window
     [self.window setRootViewController:navigationController];

@@ -8,16 +8,16 @@
 
 #include "Constants.h"
 
-#import "LoginViewController.h"
+#import "RCLoginViewController.h"
 #import "SBJson.h"
-#import "RegisterViewController.h"
+#import "RCRegisterViewController.h"
 #import "Util.h"
 
-@interface LoginViewController ()
+@interface RCLoginViewController ()
 
 @end
 
-@implementation LoginViewController
+@implementation RCLoginViewController
 
 
 
@@ -106,7 +106,7 @@
 }
 
 - (IBAction)btnRegisterClick:(id)sender {
-    RegisterViewController *registerViewController = [[RegisterViewController alloc]
+    RCRegisterViewController *registerViewController = [[RCRegisterViewController alloc]
                                                       initWithNibName:@"RegisterViewController"
                                                       bundle:nil];
     [self.navigationController pushViewController:registerViewController animated:YES];

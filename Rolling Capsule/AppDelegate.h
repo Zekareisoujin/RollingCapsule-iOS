@@ -8,12 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
-@class LoginViewController;
+@class RCLoginViewController;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
-@property (strong, nonatomic) LoginViewController *viewController;
+@property (strong, nonatomic) RCLoginViewController *viewController;
 
 @end

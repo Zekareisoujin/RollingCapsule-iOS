@@ -9,13 +9,14 @@
 
 #import "SBJson.h"
 #import "Util.h"
-#import "RegisterViewController.h"
+#import "RCRegisterViewController.h"
 
-@implementation RegisterViewController
-@synthesize willMoveKeyboardUp=_willMoveKeyboardUp;
+@implementation RCRegisterViewController
+
 double      _moveUpBy;
 double      _keyboardTopPosition;
 BOOL        _keyboardVisible;
+BOOL        _willMoveKeyboardUp;
 
 - (void)viewDidLoad
 {

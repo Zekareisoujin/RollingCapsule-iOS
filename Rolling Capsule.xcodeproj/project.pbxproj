@@ -7,8 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		64A917081751E554007D629D /* RegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64A917071751E554007D629D /* RegisterViewController.xib */; };
-		64A9170B1751F6C9007D629D /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64A9170A1751F6C9007D629D /* RegisterViewController.m */; };
+		6407BBD61753B719000F29C5 /* RCFriendListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6407BBD51753B719000F29C5 /* RCFriendListViewController.xib */; };
+		6407BBD917545579000F29C5 /* RCUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 6407BBD817545579000F29C5 /* RCUser.m */; };
+		6407BBDC17545A87000F29C5 /* RCFriendListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6407BBDB17545A87000F29C5 /* RCFriendListViewController.m */; };
+		64A917081751E554007D629D /* RCRegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64A917071751E554007D629D /* RCRegisterViewController.xib */; };
+		64A9170B1751F6C9007D629D /* RCRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64A9170A1751F6C9007D629D /* RCRegisterViewController.m */; };
 		BFCA781C174DFD3F00666CBA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFCA781B174DFD3F00666CBA /* UIKit.framework */; };
 		BFCA781E174DFD3F00666CBA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFCA781D174DFD3F00666CBA /* Foundation.framework */; };
 		BFCA7820174DFD3F00666CBA /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFCA781F174DFD3F00666CBA /* CoreGraphics.framework */; };
@@ -18,8 +21,8 @@
 		BFCA782E174DFD3F00666CBA /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = BFCA782D174DFD3F00666CBA /* Default.png */; };
 		BFCA7830174DFD3F00666CBA /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFCA782F174DFD3F00666CBA /* Default@2x.png */; };
 		BFCA7832174DFD3F00666CBA /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFCA7831174DFD3F00666CBA /* Default-568h@2x.png */; };
-		BFCA7835174DFD3F00666CBA /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BFCA7834174DFD3F00666CBA /* LoginViewController.m */; };
-		BFCA7838174DFD3F00666CBA /* LoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFCA7836174DFD3F00666CBA /* LoginViewController.xib */; };
+		BFCA7835174DFD3F00666CBA /* RCLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BFCA7834174DFD3F00666CBA /* RCLoginViewController.m */; };
+		BFCA7838174DFD3F00666CBA /* RCLoginViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFCA7836174DFD3F00666CBA /* RCLoginViewController.xib */; };
 		BFCA7840174DFD3F00666CBA /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFCA783F174DFD3F00666CBA /* SenTestingKit.framework */; };
 		BFCA7841174DFD3F00666CBA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFCA781B174DFD3F00666CBA /* UIKit.framework */; };
 		BFCA7842174DFD3F00666CBA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFCA781D174DFD3F00666CBA /* Foundation.framework */; };
@@ -50,9 +53,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		64A917071751E554007D629D /* RegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegisterViewController.xib; sourceTree = "<group>"; };
-		64A917091751F6C9007D629D /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
-		64A9170A1751F6C9007D629D /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
+		6407BBD51753B719000F29C5 /* RCFriendListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RCFriendListViewController.xib; path = ../RCFriendListViewController.xib; sourceTree = "<group>"; };
+		6407BBD717545579000F29C5 /* RCUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCUser.h; sourceTree = "<group>"; };
+		6407BBD817545579000F29C5 /* RCUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCUser.m; sourceTree = "<group>"; };
+		6407BBDA17545A87000F29C5 /* RCFriendListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCFriendListViewController.h; sourceTree = "<group>"; };
+		6407BBDB17545A87000F29C5 /* RCFriendListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCFriendListViewController.m; sourceTree = "<group>"; };
+		64A917071751E554007D629D /* RCRegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCRegisterViewController.xib; sourceTree = "<group>"; };
+		64A917091751F6C9007D629D /* RCRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCRegisterViewController.h; sourceTree = "<group>"; };
+		64A9170A1751F6C9007D629D /* RCRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCRegisterViewController.m; sourceTree = "<group>"; };
 		BF2CD6201751C53900EF2E85 /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
 		BF3AFF971750763400D46558 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		BFCA7818174DFD3F00666CBA /* Rolling Capsule.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rolling Capsule.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -68,9 +76,9 @@
 		BFCA782D174DFD3F00666CBA /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		BFCA782F174DFD3F00666CBA /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		BFCA7831174DFD3F00666CBA /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		BFCA7833174DFD3F00666CBA /* LoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
-		BFCA7834174DFD3F00666CBA /* LoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
-		BFCA7837174DFD3F00666CBA /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/LoginViewController.xib; sourceTree = "<group>"; };
+		BFCA7833174DFD3F00666CBA /* RCLoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCLoginViewController.h; sourceTree = "<group>"; };
+		BFCA7834174DFD3F00666CBA /* RCLoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCLoginViewController.m; sourceTree = "<group>"; };
+		BFCA7837174DFD3F00666CBA /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/RCLoginViewController.xib; sourceTree = "<group>"; };
 		BFCA783E174DFD3F00666CBA /* Rolling CapsuleTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Rolling CapsuleTests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFCA783F174DFD3F00666CBA /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
 		BFCA7847174DFD3F00666CBA /* Rolling CapsuleTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Rolling CapsuleTests-Info.plist"; sourceTree = "<group>"; };
@@ -164,12 +172,17 @@
 				BFCA7856174E1AD200666CBA /* Json */,
 				BFCA782A174DFD3F00666CBA /* AppDelegate.h */,
 				BFCA782B174DFD3F00666CBA /* AppDelegate.m */,
-				BFCA7833174DFD3F00666CBA /* LoginViewController.h */,
-				BFCA7834174DFD3F00666CBA /* LoginViewController.m */,
-				BFCA7836174DFD3F00666CBA /* LoginViewController.xib */,
-				64A917091751F6C9007D629D /* RegisterViewController.h */,
-				64A9170A1751F6C9007D629D /* RegisterViewController.m */,
-				64A917071751E554007D629D /* RegisterViewController.xib */,
+				BFCA7833174DFD3F00666CBA /* RCLoginViewController.h */,
+				BFCA7834174DFD3F00666CBA /* RCLoginViewController.m */,
+				BFCA7836174DFD3F00666CBA /* RCLoginViewController.xib */,
+				64A917091751F6C9007D629D /* RCRegisterViewController.h */,
+				64A9170A1751F6C9007D629D /* RCRegisterViewController.m */,
+				64A917071751E554007D629D /* RCRegisterViewController.xib */,
+				6407BBDA17545A87000F29C5 /* RCFriendListViewController.h */,
+				6407BBDB17545A87000F29C5 /* RCFriendListViewController.m */,
+				6407BBD51753B719000F29C5 /* RCFriendListViewController.xib */,
+				6407BBD717545579000F29C5 /* RCUser.h */,
+				6407BBD817545579000F29C5 /* RCUser.m */,
 				BF2CD6201751C53900EF2E85 /* Util.h */,
 				BF3AFF971750763400D46558 /* Constants.h */,
 				BFCA7822174DFD3F00666CBA /* Supporting Files */,
@@ -317,8 +330,9 @@
 				BFCA782E174DFD3F00666CBA /* Default.png in Resources */,
 				BFCA7830174DFD3F00666CBA /* Default@2x.png in Resources */,
 				BFCA7832174DFD3F00666CBA /* Default-568h@2x.png in Resources */,
-				BFCA7838174DFD3F00666CBA /* LoginViewController.xib in Resources */,
-				64A917081751E554007D629D /* RegisterViewController.xib in Resources */,
+				BFCA7838174DFD3F00666CBA /* RCLoginViewController.xib in Resources */,
+				64A917081751E554007D629D /* RCRegisterViewController.xib in Resources */,
+				6407BBD61753B719000F29C5 /* RCFriendListViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -355,7 +369,7 @@
 			files = (
 				BFCA7828174DFD3F00666CBA /* main.m in Sources */,
 				BFCA782C174DFD3F00666CBA /* AppDelegate.m in Sources */,
-				BFCA7835174DFD3F00666CBA /* LoginViewController.m in Sources */,
+				BFCA7835174DFD3F00666CBA /* RCLoginViewController.m in Sources */,
 				BFCA7870174E1B1200666CBA /* NSObject+SBJson.m in Sources */,
 				BFCA7871174E1B1200666CBA /* SBJsonParser.m in Sources */,
 				BFCA7872174E1B1200666CBA /* SBJsonStreamParser.m in Sources */,
@@ -368,7 +382,9 @@
 				BFCA7879174E1B1200666CBA /* SBJsonTokeniser.m in Sources */,
 				BFCA787A174E1B1200666CBA /* SBJsonUTF8Stream.m in Sources */,
 				BFCA787B174E1B1200666CBA /* SBJsonWriter.m in Sources */,
-				64A9170B1751F6C9007D629D /* RegisterViewController.m in Sources */,
+				64A9170B1751F6C9007D629D /* RCRegisterViewController.m in Sources */,
+				6407BBD917545579000F29C5 /* RCUser.m in Sources */,
+				6407BBDC17545A87000F29C5 /* RCFriendListViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -399,12 +415,12 @@
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		BFCA7836174DFD3F00666CBA /* LoginViewController.xib */ = {
+		BFCA7836174DFD3F00666CBA /* RCLoginViewController.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
 				BFCA7837174DFD3F00666CBA /* en */,
 			);
-			name = LoginViewController.xib;
+			name = RCLoginViewController.xib;
 			sourceTree = "<group>";
 		};
 		BFCA7848174DFD3F00666CBA /* InfoPlist.strings */ = {

@@ -26,6 +26,16 @@ static NSMutableURLRequest* CreateHttpPostRequest (NSURL* url, NSData* postData)
     return request;
 }
 
+static NSMutableURLRequest* CreateHttpGetRequest (NSURL* url) {
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]
+                                    initWithURL:url
+                                    cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData
+                                    timeoutInterval:15];
+    
+    [request setHTTPMethod:@"GET"];
+    return request;
+}
+
 static void alertStatus(NSString *msg, NSString *title, id delegateObject)
 {
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title

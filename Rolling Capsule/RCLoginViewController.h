@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LoginViewController : UIViewController
+@interface RCLoginViewController : UIViewController
 @property (weak, nonatomic) IBOutlet UITextField *txtFieldUsername;
 @property (weak, nonatomic) IBOutlet UITextField *txtFieldPassword;
 @property (nonatomic,retain) NSMutableData *receivedData;
