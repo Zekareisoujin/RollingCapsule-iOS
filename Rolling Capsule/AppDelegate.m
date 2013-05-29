@@ -15,10 +15,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    RCLoginViewController *loginViewController = [[RCLoginViewController alloc] init];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
-    //RCFriendListViewController *friendListViewController = [[RCFriendListViewController alloc] initWithUserID:1];
-    //UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:friendListViewController];
+    //RCLoginViewController *loginViewController = [[RCLoginViewController alloc] init];
+    //UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+    RCFriendListViewController *friendListViewController = [[RCFriendListViewController alloc] initWithUserID:1];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:friendListViewController];
     
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

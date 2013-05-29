@@ -12,6 +12,7 @@
 #import "RCFriendListViewController.h"
 #import "RCFriendListTableCell.h"
 #import "RCFindFriendsViewController.h"
+#import "RCUserProfileViewController.h"
 #import "RCUser.h"
 
 @interface RCFriendListViewController ()
@@ -83,7 +84,7 @@
     cell.lblEmail.text = user.email;
     cell.lblName.text = user.name;
     
-    dispatch_queue_t queue = dispatch_queue_create("com.yourdomain.yourappname", NULL);
+    dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
         NSURL *imageUrl = [NSURL URLWithString:user.avatarImg];
         UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:imageUrl]];
@@ -103,15 +104,9 @@
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Navigation logic may go here. Create and push another view controller.
-    // If you want to push another view upon tapping one of the cells on your table.
-    
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
+    RCUser *user = [_items objectAtIndex:indexPath.row];
+    RCUserProfileViewController *detailViewController = [[RCUserProfileViewController alloc] initWithUser:user loggedinUserID:_userID];
+    [self.navigationController pushViewController:detailViewController animated:YES];
 }
 
 #pragma mark - web request
@@ -164,10 +159,8 @@
     NSArray *usersJson = (NSArray *) [jsonParser objectWithString:responseData error:nil];
     NSLog(@"%@",usersJson);
     
-    //Temporary:
     if (usersJson != NULL) {
         for (NSDictionary *userData in usersJson) {
-            //NSLog(@"%@",userData);
             RCUser *user = [[RCUser alloc] initWithNSDictionary:userData];
             [_items addObject:user];
         }
