@@ -15,23 +15,26 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    RCLoginViewController *loginViewController = [[RCLoginViewController alloc] init];
-    //RCFriendListViewController *friendListViewController = [[RCFriendListViewController alloc] initWithNibName:@"RCFriendListViewController" bundle:nil];
+    //RCLoginViewController *loginViewController = [[RCLoginViewController alloc] init];
+    RCFriendListViewController *friendListViewController = [[RCFriendListViewController alloc] initWithNibName:@"RCFriendListViewController" bundle:nil];
     // Initialize Navigation Controller
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:friendListViewController];
+    
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Configure Window
     [self.window setRootViewController:navigationController];
     [self.window setBackgroundColor:[UIColor whiteColor]];
     [self.window makeKeyAndVisible];
-    return YES;
     
-  /*  self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    // Override point for customization after application launch.
-    self.viewController = [[LoginViewController alloc] initWithNibName:@"ViewController" bundle:nil];
-    self.window.rootViewController = self.viewController;
-    [self.window makeKeyAndVisible];
-    return YES;*/
+    [[UINavigationBar appearance] setTitleTextAttributes: [NSDictionary dictionaryWithObjectsAndKeys:
+                                                           [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0], UITextAttributeTextColor,
+                                                           [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.8],UITextAttributeTextShadowColor,
+                                                           [NSValue valueWithUIOffset:UIOffsetMake(0, 1)],
+                                                           UITextAttributeTextShadowOffset,
+                                                           [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:21.0], UITextAttributeFont, nil]];
+    
+    return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

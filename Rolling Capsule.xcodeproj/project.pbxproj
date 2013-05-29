@@ -10,6 +10,10 @@
 		6407BBD61753B719000F29C5 /* RCFriendListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6407BBD51753B719000F29C5 /* RCFriendListViewController.xib */; };
 		6407BBD917545579000F29C5 /* RCUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 6407BBD817545579000F29C5 /* RCUser.m */; };
 		6407BBDC17545A87000F29C5 /* RCFriendListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6407BBDB17545A87000F29C5 /* RCFriendListViewController.m */; };
+		6407BBDE1754D5EB000F29C5 /* RCFriendListTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6407BBDD1754D5EB000F29C5 /* RCFriendListTableCell.xib */; };
+		6407BBE11754D81C000F29C5 /* RCFriendListTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6407BBE01754D81C000F29C5 /* RCFriendListTableCell.m */; };
+		6491DCED1755CF8D006FBCD8 /* RCFindFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6491DCEB1755CF8D006FBCD8 /* RCFindFriendsViewController.m */; };
+		6491DCEE1755CF8D006FBCD8 /* RCFindFriendsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6491DCEC1755CF8D006FBCD8 /* RCFindFriendsViewController.xib */; };
 		64A917081751E554007D629D /* RCRegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64A917071751E554007D629D /* RCRegisterViewController.xib */; };
 		64A9170B1751F6C9007D629D /* RCRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64A9170A1751F6C9007D629D /* RCRegisterViewController.m */; };
 		BFCA781C174DFD3F00666CBA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFCA781B174DFD3F00666CBA /* UIKit.framework */; };
@@ -58,6 +62,12 @@
 		6407BBD817545579000F29C5 /* RCUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCUser.m; sourceTree = "<group>"; };
 		6407BBDA17545A87000F29C5 /* RCFriendListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCFriendListViewController.h; sourceTree = "<group>"; };
 		6407BBDB17545A87000F29C5 /* RCFriendListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCFriendListViewController.m; sourceTree = "<group>"; };
+		6407BBDD1754D5EB000F29C5 /* RCFriendListTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCFriendListTableCell.xib; sourceTree = "<group>"; };
+		6407BBDF1754D81C000F29C5 /* RCFriendListTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCFriendListTableCell.h; sourceTree = "<group>"; };
+		6407BBE01754D81C000F29C5 /* RCFriendListTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCFriendListTableCell.m; sourceTree = "<group>"; };
+		6491DCEA1755CF8D006FBCD8 /* RCFindFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCFindFriendsViewController.h; sourceTree = "<group>"; };
+		6491DCEB1755CF8D006FBCD8 /* RCFindFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCFindFriendsViewController.m; sourceTree = "<group>"; };
+		6491DCEC1755CF8D006FBCD8 /* RCFindFriendsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCFindFriendsViewController.xib; sourceTree = "<group>"; };
 		64A917071751E554007D629D /* RCRegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCRegisterViewController.xib; sourceTree = "<group>"; };
 		64A917091751F6C9007D629D /* RCRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCRegisterViewController.h; sourceTree = "<group>"; };
 		64A9170A1751F6C9007D629D /* RCRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCRegisterViewController.m; sourceTree = "<group>"; };
@@ -181,6 +191,12 @@
 				6407BBDA17545A87000F29C5 /* RCFriendListViewController.h */,
 				6407BBDB17545A87000F29C5 /* RCFriendListViewController.m */,
 				6407BBD51753B719000F29C5 /* RCFriendListViewController.xib */,
+				6407BBDF1754D81C000F29C5 /* RCFriendListTableCell.h */,
+				6407BBE01754D81C000F29C5 /* RCFriendListTableCell.m */,
+				6407BBDD1754D5EB000F29C5 /* RCFriendListTableCell.xib */,
+				6491DCEA1755CF8D006FBCD8 /* RCFindFriendsViewController.h */,
+				6491DCEB1755CF8D006FBCD8 /* RCFindFriendsViewController.m */,
+				6491DCEC1755CF8D006FBCD8 /* RCFindFriendsViewController.xib */,
 				6407BBD717545579000F29C5 /* RCUser.h */,
 				6407BBD817545579000F29C5 /* RCUser.m */,
 				BF2CD6201751C53900EF2E85 /* Util.h */,
@@ -333,6 +349,8 @@
 				BFCA7838174DFD3F00666CBA /* RCLoginViewController.xib in Resources */,
 				64A917081751E554007D629D /* RCRegisterViewController.xib in Resources */,
 				6407BBD61753B719000F29C5 /* RCFriendListViewController.xib in Resources */,
+				6407BBDE1754D5EB000F29C5 /* RCFriendListTableCell.xib in Resources */,
+				6491DCEE1755CF8D006FBCD8 /* RCFindFriendsViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -385,6 +403,8 @@
 				64A9170B1751F6C9007D629D /* RCRegisterViewController.m in Sources */,
 				6407BBD917545579000F29C5 /* RCUser.m in Sources */,
 				6407BBDC17545A87000F29C5 /* RCFriendListViewController.m in Sources */,
+				6407BBE11754D81C000F29C5 /* RCFriendListTableCell.m in Sources */,
+				6491DCED1755CF8D006FBCD8 /* RCFindFriendsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

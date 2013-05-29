@@ -10,6 +10,8 @@
 #import "Util.h"
 #import "SBJSon.h"
 #import "RCFriendListViewController.h"
+#import "RCFriendListTableCell.h"
+#import "RCFindFriendsViewController.h"
 #import "RCUser.h"
 
 @interface RCFriendListViewController ()
@@ -34,6 +36,13 @@
 {
     [super viewDidLoad];
     _userID = 1;
+    _tblViewFriendList.tableFooterView = [[UIView alloc] init];
+    self.navigationItem.title = @"Friends";
+    UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Find friends"
+                                                                      style:UIBarButtonItemStylePlain
+                                                                     target:self
+                                                                     action:@selector(openFindFriendsView)];
+    self.navigationItem.rightBarButtonItem = anotherButton;
 	[self asynchGetFriendsRequest];
 }
 
@@ -58,16 +67,35 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     //Where we configure the cell in each row
     
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell;
+    static NSString *CellIdentifier = @"RCFriendListTableCell";
+    RCFriendListTableCell *cell;
     
     cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"RCFriendListTableCell" owner:self options:nil];
+        cell = [nib objectAtIndex:0];
     }
     // Configure the cell... setting the text of our cell's label
-    cell.textLabel.text = ((RCUser *)[_items objectAtIndex:indexPath.row]).email;
+    RCUser *user = [_items objectAtIndex:indexPath.row];
+    cell.lblEmail.text = user.email;
+    cell.lblName.text = user.name;
+    
+    dispatch_queue_t queue = dispatch_queue_create("com.yourdomain.yourappname", NULL);
+    dispatch_async(queue, ^{
+        NSURL *imageUrl = [NSURL URLWithString:user.avatarImg];
+        UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:imageUrl]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            cell.imgViewAvatar.image = image;
+        });
+    });
+    
+    
     return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 78;
 }
 
 /*
@@ -183,6 +211,12 @@
     }else {
         alertStatus([NSString stringWithFormat:@"Failed to obtain friend list, please try again! %@", responseData], @"Connection Failed!", self);
     }
+}
+
+- (void) openFindFriendsView {
+    RCFindFriendsViewController *findFriendsViewController = [[RCFindFriendsViewController alloc] init];
+    [self.navigationController pushViewController:findFriendsViewController animated:YES];
+    NSLog(@"find friend view open");
 }
 
 @end

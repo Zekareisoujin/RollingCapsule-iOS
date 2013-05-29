@@ -17,6 +17,7 @@
 @synthesize name = _name;
 @synthesize email = _email;
 @synthesize userID = _userID;
+@synthesize avatarImg = _avatarImg;
 
 - (id) initWithNSDictionary:(NSDictionary *)userData {
     self = [super init];
@@ -25,6 +26,8 @@
         _email = (NSString *)[userData objectForKey:@"email"];
         NSNumber *num = [userData objectForKey:@"id"];
         _userID = [num intValue];
+        _avatarImg = [userData objectForKey:@"avatar_img"];
+        
     }
     return self;
 }
