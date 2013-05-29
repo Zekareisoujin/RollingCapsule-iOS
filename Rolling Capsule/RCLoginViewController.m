@@ -107,8 +107,7 @@
 
 - (IBAction)btnRegisterClick:(id)sender {
     RCRegisterViewController *registerViewController = [[RCRegisterViewController alloc]
-                                                      initWithNibName:@"RCRegisterViewController"
-                                                      bundle:nil];
+                                                      init];
     [self.navigationController pushViewController:registerViewController animated:YES];
 }
 
