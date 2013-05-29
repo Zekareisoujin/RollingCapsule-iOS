@@ -23,19 +23,26 @@
 @synthesize items = _items;
 @synthesize userID = _userID;
 
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        _items = [[NSMutableArray alloc] init];
+        //default value for userID, this is for experimental purpose only
+        _userID = 1;
     }
     return self;
 }
 
-- (void)viewDidLoad
-{
+- (id)initWithUserID:(int) userID {
+    self = [super init];
+    if (self) {
+        _userID = userID;
+    }
+    return self;
+}
+
+- (void)viewDidLoad {
     [super viewDidLoad];
-    _userID = 1;
+    _items = [[NSMutableArray alloc] init];
     _tblViewFriendList.tableFooterView = [[UIView alloc] init];
     self.navigationItem.title = @"Friends";
     UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Find friends"
@@ -46,25 +53,21 @@
 	[self asynchGetFriendsRequest];
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    // Return the number of rows in the section.
-    // Usually the number of items in your array (the one that holds your list)
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [_items count];
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     //Where we configure the cell in each row
     
     static NSString *CellIdentifier = @"RCFriendListTableCell";
@@ -75,7 +78,7 @@
         NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"RCFriendListTableCell" owner:self options:nil];
         cell = [nib objectAtIndex:0];
     }
-    // Configure the cell... setting the text of our cell's label
+    
     RCUser *user = [_items objectAtIndex:indexPath.row];
     cell.lblEmail.text = user.email;
     cell.lblName.text = user.name;
@@ -93,47 +96,9 @@
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 78;
 }
-
-/*
- // Override to support conditional editing of the table view.
- - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath{
- // Return NO if you do not want the specified item to be editable.
- return YES;
- }
- */
-
-/*
- // Override to support editing the table view.
- - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath{
- if (editingStyle == UITableViewCellEditingStyleDelete) {
- // Delete the row from the data source
- [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
- }
- else if (editingStyle == UITableViewCellEditingStyleInsert) {
- // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
- }
- }
- */
-
-/*
- // Override to support rearranging the table view.
- - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
- {
- }
- */
-
-/*
- // Override to support conditional rearranging of the table view.
- - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
- {
- // Return NO if you do not want the item to be re-orderable.
- return YES;
- }
- */
 
 #pragma mark - Table view delegate
 
@@ -150,8 +115,7 @@
 }
 
 #pragma mark - web request
-- (void)asynchGetFriendsRequest
-{
+- (void)asynchGetFriendsRequest {
     //Asynchronous Request
     @try {
             
@@ -213,10 +177,11 @@
     }
 }
 
+#pragma mark - open new view
+
 - (void) openFindFriendsView {
     RCFindFriendsViewController *findFriendsViewController = [[RCFindFriendsViewController alloc] init];
     [self.navigationController pushViewController:findFriendsViewController animated:YES];
-    NSLog(@"find friend view open");
 }
 
 @end

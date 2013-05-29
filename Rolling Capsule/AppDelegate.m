@@ -17,7 +17,7 @@
 {
     RCLoginViewController *loginViewController = [[RCLoginViewController alloc] init];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
-    //RCFriendListViewController *friendListViewController = [[RCFriendListViewController alloc] initWithNibName:@"RCFriendListViewController" bundle:nil];
+    //RCFriendListViewController *friendListViewController = [[RCFriendListViewController alloc] initWithUserID:1];
     //UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:friendListViewController];
     
     
