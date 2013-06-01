@@ -10,7 +10,7 @@
 
 FOUNDATION_EXPORT NSString *const RCSlideOutOptionsSlideValue;
 
-@interface RCSlideoutViewController : UIViewController
+@interface RCSlideoutViewController : UIViewController <UIGestureRecognizerDelegate>
 
 @property (strong, nonatomic)	UINavigationController*	contentController;
 @property (strong, nonatomic)   UIViewController* menuViewController;
