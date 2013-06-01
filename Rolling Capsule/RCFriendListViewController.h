@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RCUser.h"
 
 @interface RCFriendListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
-- (id)initWithUserID:(int) userID;
+- (id)initWithUser:(RCUser *) user;
 @property (weak, nonatomic) IBOutlet UITableView *tblViewFriendList;
 @property (nonatomic, strong) NSMutableArray *items;
 @property (nonatomic,retain) NSMutableData *receivedData;
-@property (nonatomic,assign) int userID;
+@property (nonatomic,strong) RCUser *user;
 @end

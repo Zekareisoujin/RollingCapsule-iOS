@@ -21,6 +21,7 @@
 @synthesize loggedinUserID = _loggedinUserID;
 
 NSString *_friendStatus;
+int       _friendshipID;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -63,13 +64,92 @@ NSString *_friendStatus;
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - web request
+#pragma mark - web requests
+
 - (void)asynchGetUserRelationRequest{
     //Asynchronous Request
     @try {
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/get_relation?mobile=1&other_user=%d", RCServiceURL, RCUsersResource, self.loggedinUserID, _user.userID]];
         
         NSURLRequest *request = CreateHttpGetRequest(url);
+        
+        NSURLConnection *connection = [[NSURLConnection alloc]
+                                       initWithRequest:request
+                                       delegate:self
+                                       startImmediately:YES];
+        _receivedData = [[NSMutableData alloc] init];
+        
+        if(!connection) {
+            NSLog(@"Connection Failed.");
+        } else {
+            NSLog(@"Connection Succeeded.");
+        }
+    }
+    @catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+        alertStatus(@"Failure getting friends from web service",@"Connection Failed!",self);
+    }
+}
+
+- (void)asynchCreateFriendshipRequest{
+    //Asynchronous Request
+    @try {
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCFriendshipsResource]];
+        NSMutableString* dataSt = initQueryString(@"friendship[friend_id]",
+                                                  [[NSString alloc] initWithFormat:@"%d",_user.userID]);
+        NSData *postData = [dataSt dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+        NSURLRequest *request = CreateHttpPostRequest(url, postData);
+        
+        NSURLConnection *connection = [[NSURLConnection alloc]
+                                       initWithRequest:request
+                                       delegate:self
+                                       startImmediately:YES];
+        _receivedData = [[NSMutableData alloc] init];
+        
+        if(!connection) {
+            NSLog(@"Connection Failed.");
+        } else {
+            NSLog(@"Connection Succeeded.");
+        }
+    }
+    @catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+        alertStatus(@"Failure getting friends from web service",@"Connection Failed!",self);
+    }
+}
+
+- (void)asynchEditFriendshipRequest{
+    //Asynchronous Request
+    @try {
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d", RCServiceURL, RCFriendshipsResource, _friendshipID]];
+        NSMutableString* dataSt = initEmptyQueryString();
+        NSData *putData = [dataSt dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+        
+        NSURLRequest *request = CreateHttpPutRequest(url, putData);
+        
+        NSURLConnection *connection = [[NSURLConnection alloc]
+                                       initWithRequest:request
+                                       delegate:self
+                                       startImmediately:YES];
+        _receivedData = [[NSMutableData alloc] init];
+        
+        if(!connection) {
+            NSLog(@"Connection Failed.");
+        } else {
+            NSLog(@"Connection Succeeded.");
+        }
+    }
+    @catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+        alertStatus(@"Failure getting friends from web service",@"Connection Failed!",self);
+    }
+}
+
+- (void)asynchDeleteFriendshipRequest{
+    //Asynchronous Request
+    @try {
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/?mobile=1", RCServiceURL, RCFriendshipsResource, _friendshipID]];
+        NSURLRequest *request = CreateHttpDeleteRequest(url);
         
         NSURLConnection *connection = [[NSURLConnection alloc]
                                        initWithRequest:request
@@ -115,17 +195,22 @@ NSString *_friendStatus;
     if (friendshipJson != NULL) {
         _friendStatus = [friendshipJson objectForKey:@"status"];
         if ((NSNull *)_friendStatus == [NSNull null]) {
+            _friendStatus = RCFriendStatusNull;
             [_btnFriendAction setTitle:@"Add friend" forState:UIControlStateNormal];
             _btnFriendAction.enabled = YES;
-        } else if ([_friendStatus isEqualToString:RCFriendStatusAccepted]) {
-            [_btnFriendAction setTitle:@"Unfriend" forState:UIControlStateNormal];
-            _btnFriendAction.enabled = YES;
-        } else if ([_friendStatus isEqualToString:RCFriendStatusPending]) {
-            [_btnFriendAction setTitle:@"Request sent" forState:UIControlStateNormal];
-            _btnFriendAction.enabled = NO;
-        } else if ([_friendStatus isEqualToString:RCFriendStatusRequested]) {
-            [_btnFriendAction setTitle:@"Accept requeset" forState:UIControlStateNormal];
-            _btnFriendAction.enabled = YES;
+        } else {
+            NSNumber *num = [friendshipJson objectForKey:@"id"];
+            _friendshipID = [num intValue];
+            if ([_friendStatus isEqualToString:RCFriendStatusAccepted]) {
+                [_btnFriendAction setTitle:@"Unfriend" forState:UIControlStateNormal];
+                _btnFriendAction.enabled = YES;
+            } else if ([_friendStatus isEqualToString:RCFriendStatusPending]) {
+                [_btnFriendAction setTitle:@"Request sent" forState:UIControlStateNormal];
+                _btnFriendAction.enabled = NO;
+            } else if ([_friendStatus isEqualToString:RCFriendStatusRequested]) {
+                [_btnFriendAction setTitle:@"Accept requeset" forState:UIControlStateNormal];
+                _btnFriendAction.enabled = YES;
+            }
         }
             
     }else {
@@ -135,7 +220,13 @@ NSString *_friendStatus;
 
 #pragma mark - UI events
 - (IBAction)btnFriendActionClicked:(id)sender {
-    
+    if ([_friendStatus isEqualToString:RCFriendStatusNull]) {
+        [self asynchCreateFriendshipRequest];
+    } else if ([_friendStatus isEqualToString:RCFriendStatusAccepted]) {
+        [self asynchDeleteFriendshipRequest];
+    } else if ([_friendStatus isEqualToString:RCFriendStatusPending] || [_friendStatus isEqualToString:RCFriendStatusRequested] ) {
+        [self asynchEditFriendshipRequest];
+    }
 }
 
 @end

@@ -12,7 +12,6 @@
 #import "RCFindFriendsViewController.h"
 #import "RCUserProfileViewController.h"
 #import "RCFriendListTableCell.h"
-#import "RCUser.h"
 
 @interface RCFindFriendsViewController ()
 
@@ -20,7 +19,7 @@
 
 @implementation RCFindFriendsViewController
 
-@synthesize userID = _userID;
+@synthesize user = _user;
 @synthesize items = _items;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -31,10 +30,10 @@
     return self;
 }
 
-- (id)initWithUserID:(int)userID {
+- (id)initWithUser:(RCUser *)user {
     self = [super init];
     if (self) {
-        _userID = userID;
+        _user = user;
     }
     return self;
 }
@@ -63,7 +62,7 @@
                                                  CFSTR("!*'();:@&=+$,/?%#[]"),
                                                  kCFStringEncodingUTF8));
         
-        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/find_users?mobile=1&search_string=%@", RCServiceURL, RCUsersResource, self.userID, escapedSearchString]];
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/find_users?mobile=1&search_string=%@", RCServiceURL, RCUsersResource, _user.userID, escapedSearchString]];
         
         NSURLRequest *request = CreateHttpGetRequest(url);
         
@@ -175,7 +174,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     RCUser *user = [_items objectAtIndex:indexPath.row];
-    RCUserProfileViewController *detailViewController = [[RCUserProfileViewController alloc] initWithUser:user loggedinUserID:_userID];
+    RCUserProfileViewController *detailViewController = [[RCUserProfileViewController alloc] initWithUser:user loggedinUserID:_user.userID];
     [self.navigationController pushViewController:detailViewController animated:YES];     
 }
 
