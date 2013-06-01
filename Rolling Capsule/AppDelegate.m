@@ -10,6 +10,7 @@
 
 #import "RCLoginViewController.h"
 #import "RCFriendListViewController.h"
+#import "RCMainFeedViewController.h"
 
 @implementation AppDelegate
 
@@ -17,9 +18,10 @@
 {
     //RCLoginViewController *loginViewController = [[RCLoginViewController alloc] init];
     //UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
-    RCFriendListViewController *friendListViewController = [[RCFriendListViewController alloc] initWithUserID:1];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:friendListViewController];
-    
+    //RCFriendListViewController *friendListViewController = [[RCFriendListViewController alloc] initWithUserID:1];
+    //UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:friendListViewController];
+    RCMainFeedViewController *mainFeedViewController = [[RCMainFeedViewController alloc] init];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:mainFeedViewController];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Configure Window
