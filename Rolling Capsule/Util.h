@@ -19,7 +19,22 @@ static NSMutableURLRequest* CreateHttpPostRequest (NSURL* url, NSData* postData)
     
     [request setHTTPMethod:@"POST"];
     [request setValue:plength forHTTPHeaderField:@"Content-Length"];
-    //[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
+    [request setHTTPBody:postData];
+    
+    return request;
+}
+
+static NSMutableURLRequest* CreateHttpPutRequest (NSURL* url, NSData* postData) {
+    NSString *plength = [NSString stringWithFormat:@"%d", [postData length]];
+    
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]
+                                    initWithURL:url
+                                    cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData
+                                    timeoutInterval:15];
+    
+    [request setHTTPMethod:@"PUT"];
+    [request setValue:plength forHTTPHeaderField:@"Content-Length"];
     [request setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"Content-Type"];
     [request setHTTPBody:postData];
     
@@ -33,6 +48,16 @@ static NSMutableURLRequest* CreateHttpGetRequest (NSURL* url) {
                                     timeoutInterval:15];
     
     [request setHTTPMethod:@"GET"];
+    return request;
+}
+
+static NSMutableURLRequest* CreateHttpDeleteRequest (NSURL* url) {
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc]
+                                    initWithURL:url
+                                    cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData
+                                    timeoutInterval:15];
+    
+    [request setHTTPMethod:@"DELETE"];
     return request;
 }
 
@@ -50,6 +75,12 @@ static void alertStatus(NSString *msg, NSString *title, id delegateObject)
 static NSMutableString* initQueryString(NSString* key, NSString* value) {
     NSMutableString *ret = [[NSMutableString alloc]
                             initWithString:[[NSString alloc] initWithFormat:@"mobile=1&%@=%@",key,value]];
+    return ret;
+}
+
+static NSMutableString* initEmptyQueryString() {
+    NSMutableString *ret = [[NSMutableString alloc]
+                        initWithString:[[NSString alloc] initWithFormat:@"mobile=1"]];
     return ret;
 }
 

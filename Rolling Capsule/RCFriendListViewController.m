@@ -13,8 +13,7 @@
 #import "RCFriendListTableCell.h"
 #import "RCFindFriendsViewController.h"
 #import "RCUserProfileViewController.h"
-#import "RCUser.h"
-
+#import "AppDelegate.h"
 @interface RCFriendListViewController ()
 
 @end
@@ -22,21 +21,21 @@
 @implementation RCFriendListViewController
 
 @synthesize items = _items;
-@synthesize userID = _userID;
+@synthesize user = _user;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         //default value for userID, this is for experimental purpose only
-        _userID = 1;
+        _user.userID = 1;
     }
     return self;
 }
 
-- (id)initWithUserID:(int) userID {
+- (id)initWithUser:(RCUser *) user {
     self = [super init];
     if (self) {
-        _userID = userID;
+        _user = user;
     }
     return self;
 }
@@ -45,7 +44,7 @@
     [super viewDidLoad];
     _items = [[NSMutableArray alloc] init];
     _tblViewFriendList.tableFooterView = [[UIView alloc] init];
-    self.navigationItem.title = @"Friends";
+    self.navigationItem.title = [[NSString alloc] initWithFormat:@"%@'s friends", _user.name];
     UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Find friends"
                                                                       style:UIBarButtonItemStylePlain
                                                                      target:self
@@ -105,7 +104,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     RCUser *user = [_items objectAtIndex:indexPath.row];
-    RCUserProfileViewController *detailViewController = [[RCUserProfileViewController alloc] initWithUser:user loggedinUserID:_userID];
+    RCUserProfileViewController *detailViewController = [[RCUserProfileViewController alloc] initWithUser:user loggedinUserID:_user.userID];
     [self.navigationController pushViewController:detailViewController animated:YES];
 }
 
@@ -114,7 +113,7 @@
     //Asynchronous Request
     @try {
             
-            NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/friends?mobile=1", RCServiceURL, RCUsersResource, self.userID]];
+            NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/friends?mobile=1", RCServiceURL, RCUsersResource, _user.userID]];
             
             NSURLRequest *request = CreateHttpGetRequest(url);
             
@@ -173,8 +172,10 @@
 #pragma mark - open new view
 
 - (void) openFindFriendsView {
-    RCFindFriendsViewController *findFriendsViewController = [[RCFindFriendsViewController alloc] init];
-    [self.navigationController pushViewController:findFriendsViewController animated:YES];
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate showSideMenu];
+    //RCFindFriendsViewController *findFriendsViewController = [[RCFindFriendsViewController /alloc] initWithUser:_user];
+    //[self.navigationController pushViewController:findFriendsViewController animated:YES];
 }
 
 @end

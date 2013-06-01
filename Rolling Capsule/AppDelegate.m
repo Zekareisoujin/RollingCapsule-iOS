@@ -7,25 +7,34 @@
 //
 
 #import "AppDelegate.h"
+#import <QuartzCore/QuartzCore.h>
 
 #import "RCLoginViewController.h"
 #import "RCFriendListViewController.h"
 #import "RCMainFeedViewController.h"
+#import "RCMainMenuViewController.h"
+#import "RCSlideoutViewController.h"
 
 @implementation AppDelegate
 
+@synthesize navigationController = _navigationController;
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    //RCLoginViewController *loginViewController = [[RCLoginViewController alloc] init];
-    //UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
-    //RCFriendListViewController *friendListViewController = [[RCFriendListViewController alloc] initWithUserID:1];
-    //UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:friendListViewController];
-    RCMainFeedViewController *mainFeedViewController = [[RCMainFeedViewController alloc] init];
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:mainFeedViewController];
-    
+    RCUser *user = [[RCUser alloc] init];
+    user.name = @"lolo";
+    user.email = @"lolotp@hotmail.com";
+    user.userID = 1;
+    RCFriendListViewController *friendListViewController = [[RCFriendListViewController alloc] initWithUser:user];
+    _navigationController = [[UINavigationController alloc] initWithRootViewController:friendListViewController]; //initial view here
+    _mainViewController = [[RCSlideoutViewController alloc] init];
+    _menuViewController = [[RCMainMenuViewController alloc] init];
+    _mainViewController.contentController = _navigationController;
+    _mainViewController.menuViewController = _menuViewController;
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Configure Window
-    [self.window setRootViewController:navigationController];
+    
+    [self.window setRootViewController:_mainViewController];
     [self.window setBackgroundColor:[UIColor whiteColor]];
     [self.window makeKeyAndVisible];
     
@@ -64,6 +73,16 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+-(void)showSideMenu
+{
+    [_mainViewController showSideMenu];
+}
+
+-(void)hideSideMenu
+{
+    [_mainViewController hideSideMenu];
 }
 
 @end

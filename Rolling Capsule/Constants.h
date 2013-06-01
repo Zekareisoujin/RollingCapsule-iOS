@@ -13,9 +13,10 @@
 static NSString* const RCServiceURL = @"https://shielded-fortress-7112.herokuapp.com";
 static NSString* const RCSessionsResource = @"/sessions";
 static NSString* const RCUsersResource = @"/users";
+static NSString* const RCFriendshipsResource = @"/friendships";
 static NSString* const RCFriendStatusAccepted = @"accepted";
 static NSString* const RCFriendStatusPending = @"pending";
 static NSString* const RCFriendStatusRequested = @"requested";
-static NSString* const RCFriendStatusNull = @"accepted";
+static NSString* const RCFriendStatusNull = @"null";
 static const char* RCCStringAppDomain = "com.foxtwo.rollingcapsules";
 #endif

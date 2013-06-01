@@ -8,10 +8,12 @@
 
 #import <UIKit/UIKit.h>
 #import "RCUser.h"
-@interface RCFindFriendsViewController : UIViewController <UISearchBarDelegate, UISearchDisplayDelegate,UITableViewDataSource, UITableViewDelegate>
+@interface RCFindFriendsViewController : UIViewController <UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBarFriends;
 @property (weak, nonatomic) IBOutlet UITableView *tblViewFoundUsers;
 @property (nonatomic,retain) NSMutableData *receivedData;
 @property (nonatomic, strong) NSMutableArray *items;
-@property (nonatomic, assign) int userID;
+@property (nonatomic, strong) RCUser* user;
+
+- (id)initWithUser:(RCUser *)user;
 @end

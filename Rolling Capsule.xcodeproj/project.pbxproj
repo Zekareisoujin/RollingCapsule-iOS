@@ -12,6 +12,11 @@
 		6407BBDC17545A87000F29C5 /* RCFriendListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6407BBDB17545A87000F29C5 /* RCFriendListViewController.m */; };
 		6407BBDE1754D5EB000F29C5 /* RCFriendListTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6407BBDD1754D5EB000F29C5 /* RCFriendListTableCell.xib */; };
 		6407BBE11754D81C000F29C5 /* RCFriendListTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6407BBE01754D81C000F29C5 /* RCFriendListTableCell.m */; };
+		6490A9071757BF9300E5048F /* RCMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6490A9051757BF9300E5048F /* RCMainViewController.m */; };
+		6490A9081757BF9300E5048F /* RCMainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6490A9061757BF9300E5048F /* RCMainViewController.xib */; };
+		6490A90C1757C07100E5048F /* RCMainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6490A90A1757C07100E5048F /* RCMainMenuViewController.m */; };
+		6490A90D1757C07100E5048F /* RCMainMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6490A90B1757C07100E5048F /* RCMainMenuViewController.xib */; };
+		6490A9101758E2D000E5048F /* RCSlideoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6490A90F1758E2D000E5048F /* RCSlideoutViewController.m */; };
 		6491DCED1755CF8D006FBCD8 /* RCFindFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6491DCEB1755CF8D006FBCD8 /* RCFindFriendsViewController.m */; };
 		6491DCEE1755CF8D006FBCD8 /* RCFindFriendsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6491DCEC1755CF8D006FBCD8 /* RCFindFriendsViewController.xib */; };
 		6491DCF21755E096006FBCD8 /* RCUserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6491DCF01755E096006FBCD8 /* RCUserProfileViewController.m */; };
@@ -72,6 +77,14 @@
 		6407BBDD1754D5EB000F29C5 /* RCFriendListTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCFriendListTableCell.xib; sourceTree = "<group>"; };
 		6407BBDF1754D81C000F29C5 /* RCFriendListTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCFriendListTableCell.h; sourceTree = "<group>"; };
 		6407BBE01754D81C000F29C5 /* RCFriendListTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCFriendListTableCell.m; sourceTree = "<group>"; };
+		6490A9041757BF9300E5048F /* RCMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMainViewController.h; sourceTree = "<group>"; };
+		6490A9051757BF9300E5048F /* RCMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMainViewController.m; sourceTree = "<group>"; };
+		6490A9061757BF9300E5048F /* RCMainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCMainViewController.xib; sourceTree = "<group>"; };
+		6490A9091757C07000E5048F /* RCMainMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMainMenuViewController.h; sourceTree = "<group>"; };
+		6490A90A1757C07100E5048F /* RCMainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMainMenuViewController.m; sourceTree = "<group>"; };
+		6490A90B1757C07100E5048F /* RCMainMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCMainMenuViewController.xib; sourceTree = "<group>"; };
+		6490A90E1758E2D000E5048F /* RCSlideoutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSlideoutViewController.h; sourceTree = "<group>"; };
+		6490A90F1758E2D000E5048F /* RCSlideoutViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSlideoutViewController.m; sourceTree = "<group>"; };
 		6491DCEA1755CF8D006FBCD8 /* RCFindFriendsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCFindFriendsViewController.h; sourceTree = "<group>"; };
 		6491DCEB1755CF8D006FBCD8 /* RCFindFriendsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCFindFriendsViewController.m; sourceTree = "<group>"; };
 		6491DCEC1755CF8D006FBCD8 /* RCFindFriendsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCFindFriendsViewController.xib; sourceTree = "<group>"; };
@@ -224,6 +237,12 @@
 				6407BBDF1754D81C000F29C5 /* RCFriendListTableCell.h */,
 				6407BBE01754D81C000F29C5 /* RCFriendListTableCell.m */,
 				6407BBDD1754D5EB000F29C5 /* RCFriendListTableCell.xib */,
+				6490A9041757BF9300E5048F /* RCMainViewController.h */,
+				6490A9051757BF9300E5048F /* RCMainViewController.m */,
+				6490A9061757BF9300E5048F /* RCMainViewController.xib */,
+				6490A9091757C07000E5048F /* RCMainMenuViewController.h */,
+				6490A90A1757C07100E5048F /* RCMainMenuViewController.m */,
+				6490A90B1757C07100E5048F /* RCMainMenuViewController.xib */,
 				6407BBD717545579000F29C5 /* RCUser.h */,
 				6407BBD817545579000F29C5 /* RCUser.m */,
 				BFC8414517586BFB00E52FE2 /* RCPost.h */,
@@ -231,6 +250,8 @@
 				BF2CD6201751C53900EF2E85 /* Util.h */,
 				BF3AFF971750763400D46558 /* Constants.h */,
 				BFCA7822174DFD3F00666CBA /* Supporting Files */,
+				6490A90E1758E2D000E5048F /* RCSlideoutViewController.h */,
+				6490A90F1758E2D000E5048F /* RCSlideoutViewController.m */,
 			);
 			path = "Rolling Capsule";
 			sourceTree = "<group>";
@@ -383,6 +404,8 @@
 				6407BBDE1754D5EB000F29C5 /* RCFriendListTableCell.xib in Resources */,
 				6491DCEE1755CF8D006FBCD8 /* RCFindFriendsViewController.xib in Resources */,
 				6491DCF31755E096006FBCD8 /* RCUserProfileViewController.xib in Resources */,
+				6490A9081757BF9300E5048F /* RCMainViewController.xib in Resources */,
+				6490A90D1757C07100E5048F /* RCMainMenuViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -441,6 +464,9 @@
 				6491DCED1755CF8D006FBCD8 /* RCFindFriendsViewController.m in Sources */,
 				6491DCF21755E096006FBCD8 /* RCUserProfileViewController.m in Sources */,
 				BFC8414717586BFB00E52FE2 /* RCPost.m in Sources */,
+				6490A9071757BF9300E5048F /* RCMainViewController.m in Sources */,
+				6490A90C1757C07100E5048F /* RCMainMenuViewController.m in Sources */,
+				6490A9101758E2D000E5048F /* RCSlideoutViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

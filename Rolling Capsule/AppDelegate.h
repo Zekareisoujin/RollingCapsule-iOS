@@ -8,12 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
-@class RCLoginViewController;
+@class RCMainMenuViewController;
+@class RCSlideoutViewController;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
-@property (strong, nonatomic) RCLoginViewController *viewController;
-
+@property (strong, nonatomic) UINavigationController *navigationController;
+@property (strong, nonatomic) RCMainMenuViewController *menuViewController;
+@property (strong, nonatomic) RCSlideoutViewController *mainViewController;
+-(void)showSideMenu;
+-(void)hideSideMenu;
 @end
