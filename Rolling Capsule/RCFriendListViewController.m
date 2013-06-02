@@ -48,12 +48,18 @@ BOOL        _firstRefresh;
     [super viewDidLoad];
     _items = [[NSMutableArray alloc] init];
     _tblViewFriendList.tableFooterView = [[UIView alloc] init];
-    self.navigationItem.title = [[NSString alloc] initWithFormat:@"%@'s friends", _user.name];
+    
+    self.navigationItem.title = @" ";
     UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Find friends"
                                                                       style:UIBarButtonItemStylePlain
                                                                      target:self
                                                                      action:@selector(openFindFriendsView)];
     self.navigationItem.rightBarButtonItem = anotherButton;
+    /*self.navigationItem.backBarButtonItem =
+    [[UIBarButtonItem alloc] initWithTitle:@" "
+                                     style:UIBarButtonItemStyleBordered
+                                    target:nil
+                                    action:nil];*/
     
     UITableViewController *tableViewController = setUpRefreshControlWithTableViewController(self, _tblViewFriendList);
     _refreshControl = tableViewController.refreshControl;

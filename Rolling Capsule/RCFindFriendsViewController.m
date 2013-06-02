@@ -41,7 +41,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"Find friends";
+    self.navigationItem.title = @" ";
     _items = [[NSMutableArray alloc] init];
     _tblViewFoundUsers.tableFooterView = [[UIView alloc] init];
     UITableViewController *tblViewController = setUpRefreshControlWithTableViewController(self, _tblViewFoundUsers);

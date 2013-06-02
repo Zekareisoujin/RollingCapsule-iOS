@@ -45,7 +45,7 @@ int       _friendshipID;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.title = @"Profile";
+    self.navigationItem.title = @" ";
     _lblEmail.text = _user.email;
     _lblName.text = _user.name;
     _btnFriendAction.enabled = NO;
