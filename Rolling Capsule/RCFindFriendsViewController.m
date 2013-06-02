@@ -14,13 +14,14 @@
 #import "RCFriendListTableCell.h"
 
 @interface RCFindFriendsViewController ()
-
+@property (nonatomic,strong) UIRefreshControl *refreshControl;
 @end
 
 @implementation RCFindFriendsViewController
 
 @synthesize user = _user;
 @synthesize items = _items;
+@synthesize refreshControl = _refreshControl;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -43,6 +44,19 @@
     self.navigationItem.title = @"Find friends";
     _items = [[NSMutableArray alloc] init];
     _tblViewFoundUsers.tableFooterView = [[UIView alloc] init];
+    UITableViewController *tblViewController = setUpRefreshControlWithTableViewController(self, _tblViewFoundUsers);
+    _refreshControl = tblViewController.refreshControl;
+    [_refreshControl addTarget:self
+                        action:@selector(handleRefresh:)
+              forControlEvents:UIControlEventValueChanged];
+}
+
+- (void) handleRefresh:(UIRefreshControl *) refreshControl {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"d-MMM, h:mm:ss-a"];
+    NSString *lastUpdated = [NSString stringWithFormat:@"Last updated on %@", [formatter  stringFromDate:[NSDate date] ] ];
+    refreshControl.attributedTitle= [[NSAttributedString alloc] initWithString:lastUpdated];
+    [self asynchFindUsersRequest:[_searchBarFriends text]];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -114,6 +128,7 @@
             [_items addObject:user];
         }
         [_tblViewFoundUsers reloadData];
+        [_refreshControl endRefreshing];
     }else {
         alertStatus([NSString stringWithFormat:@"Failed to obtain user list, please try again! %@", responseData], @"Connection Failed!", self);
     }
@@ -123,7 +138,7 @@
 #pragma mark - UISearchBar delegate
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
-    [self asynchFindUsersRequest:[searchBar text]];
+    [self handleRefresh:_refreshControl];
     [searchBar resignFirstResponder];
     NSLog(@"Clicked search");
 }

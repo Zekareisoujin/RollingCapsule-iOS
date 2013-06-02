@@ -87,4 +87,14 @@ static NSMutableString* initEmptyQueryString() {
 static void addArgumentToQueryString(NSMutableString *currentQueryString, NSString* key, NSString* value) {
     [currentQueryString appendString:[[NSString alloc] initWithFormat:@"&%@=%@",key,value]];
 }
+
+static UITableViewController* setUpRefreshControlWithTableViewController(
+                                                            UIViewController* superViewController,
+                                                            UITableView *tableView) {
+    UITableViewController* tableViewController = [[UITableViewController alloc] initWithStyle:tableView.style];
+    tableViewController.tableView = tableView;
+    [superViewController addChildViewController:tableViewController];
+    tableViewController.refreshControl = [[UIRefreshControl alloc] init];
+    return tableViewController;
+}
 #endif

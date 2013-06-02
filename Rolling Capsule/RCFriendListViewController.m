@@ -14,14 +14,18 @@
 #import "RCFindFriendsViewController.h"
 #import "RCUserProfileViewController.h"
 #import "AppDelegate.h"
+
 @interface RCFriendListViewController ()
+
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
 
 @end
 
 @implementation RCFriendListViewController
-
+BOOL        _firstRefresh;
 @synthesize items = _items;
 @synthesize user = _user;
+@synthesize refreshControl = _refreshControl;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -50,7 +54,22 @@
                                                                      target:self
                                                                      action:@selector(openFindFriendsView)];
     self.navigationItem.rightBarButtonItem = anotherButton;
-	[self asynchGetFriendsRequest];
+    
+    UITableViewController *tableViewController = setUpRefreshControlWithTableViewController(self, _tblViewFriendList);
+    _refreshControl = tableViewController.refreshControl;
+    [_refreshControl addTarget:self
+                        action:@selector(handleRefresh:)
+              forControlEvents:UIControlEventValueChanged  ];
+    _firstRefresh = YES;
+    [self handleRefresh:_refreshControl];
+}
+
+- (void) handleRefresh:(UIRefreshControl *) refreshControl {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"dd-MMM, hh:mm:ssa"];
+    NSString *lastUpdated = [NSString stringWithFormat:@"Last updated on %@", [formatter  stringFromDate:[NSDate date] ] ];
+    [_refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:lastUpdated]];
+    [self asynchGetFriendsRequest];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -84,15 +103,6 @@
     cell.lblName.text = user.name;
     
     [cell getAvatarImageFromInternet:user];
-    /*dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
-    dispatch_async(queue, ^{
-        NSURL *imageUrl = [NSURL URLWithString:user.avatarImg];
-        UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:imageUrl]];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            cell.imgViewAvatar.image = image;
-        });
-    });*/
-    
     
     return cell;
 }
@@ -112,6 +122,7 @@
 #pragma mark - web request
 - (void)asynchGetFriendsRequest {
     //Asynchronous Request
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     @try {
             
             NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/friends?mobile=1", RCServiceURL, RCUsersResource, _user.userID]];
@@ -153,6 +164,7 @@
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     NSString *responseData = [[NSString alloc]initWithData:_receivedData encoding:NSUTF8StringEncoding];
     
     SBJsonParser *jsonParser = [SBJsonParser new];
@@ -160,11 +172,18 @@
     NSLog(@"%@",usersJson);
     
     if (usersJson != NULL) {
+        [_items removeAllObjects];
         for (NSDictionary *userData in usersJson) {
             RCUser *user = [[RCUser alloc] initWithNSDictionary:userData];
             [_items addObject:user];
         }
+        [_refreshControl endRefreshing];
+        
         [_tblViewFriendList reloadData];
+        if (_firstRefresh) {
+            [_tblViewFriendList setContentOffset:CGPointMake(0, 0) animated:YES];
+            _firstRefresh = NO;
+        }
     }else {
         alertStatus([NSString stringWithFormat:@"Failed to obtain friend list, please try again! %@", responseData], @"Connection Failed!", self);
     }
