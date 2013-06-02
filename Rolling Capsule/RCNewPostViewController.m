@@ -1,18 +1,18 @@
 //
-//  RCMainViewController.m
+//  RCNewPostViewController.m
 //  Rolling Capsule
 //
-//  Created by Trinh Tuan Phuong on 31/5/13.
+//  Created by Trinh Tuan Phuong on 3/6/13.
 //  Copyright (c) 2013 Fox Cradle. All rights reserved.
 //
 
-#import "RCMainViewController.h"
+#import "RCNewPostViewController.h"
 
-@interface RCMainViewController ()
+@interface RCNewPostViewController ()
 
 @end
 
-@implementation RCMainViewController
+@implementation RCNewPostViewController
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {

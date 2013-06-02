@@ -16,8 +16,8 @@
 		64176B00175A260900443B59 /* AWSS3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64176AFE175A260900443B59 /* AWSS3.framework */; };
 		643EACE6175BA0B6002761D9 /* default_avatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 643EACE5175BA0B6002761D9 /* default_avatar.jpg */; };
 		643EACE8175BACC0002761D9 /* back_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 643EACE7175BACC0002761D9 /* back_button.png */; };
-		6490A9071757BF9300E5048F /* RCMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6490A9051757BF9300E5048F /* RCMainViewController.m */; };
-		6490A9081757BF9300E5048F /* RCMainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6490A9061757BF9300E5048F /* RCMainViewController.xib */; };
+		643EACED175BBE51002761D9 /* RCNewPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 643EACEB175BBE51002761D9 /* RCNewPostViewController.m */; };
+		643EACEE175BBE51002761D9 /* RCNewPostViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 643EACEC175BBE51002761D9 /* RCNewPostViewController.xib */; };
 		6490A90C1757C07100E5048F /* RCMainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6490A90A1757C07100E5048F /* RCMainMenuViewController.m */; };
 		6490A90D1757C07100E5048F /* RCMainMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6490A90B1757C07100E5048F /* RCMainMenuViewController.xib */; };
 		6490A9101758E2D000E5048F /* RCSlideoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6490A90F1758E2D000E5048F /* RCSlideoutViewController.m */; };
@@ -86,9 +86,9 @@
 		64176AFE175A260900443B59 /* AWSS3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSS3.framework; path = "../../Downloads/aws-ios-sdk-1.6.0/AWSS3.framework"; sourceTree = "<group>"; };
 		643EACE5175BA0B6002761D9 /* default_avatar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = default_avatar.jpg; sourceTree = "<group>"; };
 		643EACE7175BACC0002761D9 /* back_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back_button.png; sourceTree = "<group>"; };
-		6490A9041757BF9300E5048F /* RCMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMainViewController.h; sourceTree = "<group>"; };
-		6490A9051757BF9300E5048F /* RCMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMainViewController.m; sourceTree = "<group>"; };
-		6490A9061757BF9300E5048F /* RCMainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCMainViewController.xib; sourceTree = "<group>"; };
+		643EACEA175BBE51002761D9 /* RCNewPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCNewPostViewController.h; sourceTree = "<group>"; };
+		643EACEB175BBE51002761D9 /* RCNewPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNewPostViewController.m; sourceTree = "<group>"; };
+		643EACEC175BBE51002761D9 /* RCNewPostViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCNewPostViewController.xib; sourceTree = "<group>"; };
 		6490A9091757C07000E5048F /* RCMainMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMainMenuViewController.h; sourceTree = "<group>"; };
 		6490A90A1757C07100E5048F /* RCMainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMainMenuViewController.m; sourceTree = "<group>"; };
 		6490A90B1757C07100E5048F /* RCMainMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCMainMenuViewController.xib; sourceTree = "<group>"; };
@@ -190,6 +190,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		643EACE9175BBE0D002761D9 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				643EACE7175BACC0002761D9 /* back_button.png */,
+				643EACE5175BA0B6002761D9 /* default_avatar.jpg */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
@@ -225,8 +234,7 @@
 		BFCA7821174DFD3F00666CBA /* Rolling Capsule */ = {
 			isa = PBXGroup;
 			children = (
-				643EACE7175BACC0002761D9 /* back_button.png */,
-				643EACE5175BA0B6002761D9 /* default_avatar.jpg */,
+				643EACE9175BBE0D002761D9 /* Images */,
 				BFCA7856174E1AD200666CBA /* Json */,
 				BFCA782A174DFD3F00666CBA /* AppDelegate.h */,
 				BFCA782B174DFD3F00666CBA /* AppDelegate.m */,
@@ -254,12 +262,12 @@
 				6407BBDF1754D81C000F29C5 /* RCFriendListTableCell.h */,
 				6407BBE01754D81C000F29C5 /* RCFriendListTableCell.m */,
 				6407BBDD1754D5EB000F29C5 /* RCFriendListTableCell.xib */,
-				6490A9041757BF9300E5048F /* RCMainViewController.h */,
-				6490A9051757BF9300E5048F /* RCMainViewController.m */,
-				6490A9061757BF9300E5048F /* RCMainViewController.xib */,
 				6490A9091757C07000E5048F /* RCMainMenuViewController.h */,
 				6490A90A1757C07100E5048F /* RCMainMenuViewController.m */,
 				6490A90B1757C07100E5048F /* RCMainMenuViewController.xib */,
+				643EACEA175BBE51002761D9 /* RCNewPostViewController.h */,
+				643EACEB175BBE51002761D9 /* RCNewPostViewController.m */,
+				643EACEC175BBE51002761D9 /* RCNewPostViewController.xib */,
 				6407BBD717545579000F29C5 /* RCUser.h */,
 				6407BBD817545579000F29C5 /* RCUser.m */,
 				BFC8414517586BFB00E52FE2 /* RCPost.h */,
@@ -423,10 +431,10 @@
 				6407BBDE1754D5EB000F29C5 /* RCFriendListTableCell.xib in Resources */,
 				6491DCEE1755CF8D006FBCD8 /* RCFindFriendsViewController.xib in Resources */,
 				6491DCF31755E096006FBCD8 /* RCUserProfileViewController.xib in Resources */,
-				6490A9081757BF9300E5048F /* RCMainViewController.xib in Resources */,
 				6490A90D1757C07100E5048F /* RCMainMenuViewController.xib in Resources */,
 				643EACE6175BA0B6002761D9 /* default_avatar.jpg in Resources */,
 				643EACE8175BACC0002761D9 /* back_button.png in Resources */,
+				643EACEE175BBE51002761D9 /* RCNewPostViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -485,10 +493,10 @@
 				6491DCED1755CF8D006FBCD8 /* RCFindFriendsViewController.m in Sources */,
 				6491DCF21755E096006FBCD8 /* RCUserProfileViewController.m in Sources */,
 				BFC8414717586BFB00E52FE2 /* RCPost.m in Sources */,
-				6490A9071757BF9300E5048F /* RCMainViewController.m in Sources */,
 				6490A90C1757C07100E5048F /* RCMainMenuViewController.m in Sources */,
 				6490A9101758E2D000E5048F /* RCSlideoutViewController.m in Sources */,
 				649A869D175B0CC30016674F /* RCAmazonS3Helper.m in Sources */,
+				643EACED175BBE51002761D9 /* RCNewPostViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
