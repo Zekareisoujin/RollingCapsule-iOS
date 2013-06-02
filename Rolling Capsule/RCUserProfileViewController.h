@@ -7,17 +7,21 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <AWSS3/AWSS3.h>
 #import "RCUser.h"
 
-@interface RCUserProfileViewController : UIViewController
-@property (weak, nonatomic) IBOutlet UIImageView *imgViewAvatar;
+@interface RCUserProfileViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, AmazonServiceRequestDelegate>
+
+@property (weak, nonatomic) IBOutlet UIButton *btnAvatarImg;
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
 @property (weak, nonatomic) IBOutlet UILabel *lblEmail;
 @property (weak, nonatomic) IBOutlet UIButton *btnFriendAction;
 
-@property (nonatomic, retain) RCUser *user;
+@property (nonatomic, strong) RCUser *user;
 @property (nonatomic, assign) int loggedinUserID;
-@property (nonatomic,retain)  NSMutableData *receivedData;
+@property (nonatomic,strong)  NSMutableData *receivedData;
+@property (nonatomic, strong) AmazonS3Client *s3;
 - (IBAction)btnFriendActionClicked:(id)sender;
+- (IBAction)btnAvatarClicked:(id)sender;
 - (id) initWithUser:(RCUser *) user  loggedinUserID:(int)_loggedinUserID;
 @end

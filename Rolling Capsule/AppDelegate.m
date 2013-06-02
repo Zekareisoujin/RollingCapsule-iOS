@@ -28,8 +28,10 @@
     user.userID = 1;
     RCFriendListViewController *friendListViewController = [[RCFriendListViewController alloc] initWithUser:user];
     _navigationController = [[UINavigationController alloc] initWithRootViewController:friendListViewController];
-    _mainViewController = [[RCSlideoutViewController alloc] init];
+    
     _menuViewController = [[RCMainMenuViewController alloc] init];
+    
+    _mainViewController = [[RCSlideoutViewController alloc] init];
     _mainViewController.contentController = _navigationController;
     _mainViewController.menuViewController = _menuViewController;
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];

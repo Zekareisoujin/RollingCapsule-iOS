@@ -9,8 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface RCMainMenuViewController : UIViewController
-//@property (weak, nonatomic) IBOutlet UIImageView *screenShotImageView;
-@property (strong, nonatomic) IBOutlet UIImageView *screenShotImageView;
 - (IBAction)btnTestTouchUpInside:(id)sender;
-@property (strong, nonatomic) UIImage* screenShotImage;
 @end

@@ -83,14 +83,15 @@
     cell.lblEmail.text = user.email;
     cell.lblName.text = user.name;
     
-    dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
+    [cell getAvatarImageFromInternet:user];
+    /*dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
         NSURL *imageUrl = [NSURL URLWithString:user.avatarImg];
         UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:imageUrl]];
         dispatch_async(dispatch_get_main_queue(), ^{
             cell.imgViewAvatar.image = image;
         });
-    });
+    });*/
     
     
     return cell;
@@ -172,10 +173,8 @@
 #pragma mark - open new view
 
 - (void) openFindFriendsView {
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate showSideMenu];
-    //RCFindFriendsViewController *findFriendsViewController = [[RCFindFriendsViewController /alloc] initWithUser:_user];
-    //[self.navigationController pushViewController:findFriendsViewController animated:YES];
+    RCFindFriendsViewController *findFriendsViewController = [[RCFindFriendsViewController alloc] initWithUser:_user];
+    [self.navigationController pushViewController:findFriendsViewController animated:YES];
 }
 
 @end

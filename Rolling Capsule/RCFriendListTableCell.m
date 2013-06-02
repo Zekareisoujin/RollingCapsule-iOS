@@ -7,12 +7,10 @@
 //
 
 #import "RCFriendListTableCell.h"
+#import "Constants.h"
+#import "RCAmazonS3Helper.h"
 
 @implementation RCFriendListTableCell
-
-@synthesize lblEmail = _lblEmail;
-@synthesize lblName = _lblName;
-@synthesize imgViewAvatar = _imgViewAvatar;
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -28,6 +26,20 @@
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+}
+
+-(void) getAvatarImageFromInternet:(RCUser *) user {
+    dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
+    dispatch_async(queue, ^{
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+        UIImage *image = [RCAmazonS3Helper getAvatarImage:user];
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        if (image != nil) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_imgViewAvatar setImage:image];
+            });
+        }
+    });
 }
 
 @end

@@ -7,11 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RCUser.h"
 
 @interface RCFriendListTableCell : UITableViewCell
 
 @property (nonatomic, weak) IBOutlet UILabel *lblName;
 @property (nonatomic, weak) IBOutlet UILabel *lblEmail;
 @property (nonatomic, weak) IBOutlet UIImageView *imgViewAvatar;
-
+-(void) getAvatarImageFromInternet:(RCUser *) user;
 @end

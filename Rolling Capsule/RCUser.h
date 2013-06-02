@@ -12,7 +12,6 @@
 
 @property (nonatomic,retain) NSString *name;
 @property (nonatomic,retain) NSString *email;
-@property (nonatomic,retain) NSString *avatarImg;
 @property  int      userID;
 
 - (id) initWithNSDictionary:(NSDictionary *)userData;

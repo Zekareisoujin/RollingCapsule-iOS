@@ -10,6 +10,8 @@
 #import "Constants.h"
 #import "SBJson.h"
 #import "RCUserProfileViewController.h"
+#import "RCAmazonS3Helper.h"
+#import <AWSRuntime/AWSRuntime.h>
 
 @interface RCUserProfileViewController ()
 
@@ -19,6 +21,7 @@
 
 @synthesize user = _user;
 @synthesize loggedinUserID = _loggedinUserID;
+@synthesize s3 = _s3;
 
 NSString *_friendStatus;
 int       _friendshipID;
@@ -47,14 +50,11 @@ int       _friendshipID;
     _lblName.text = _user.name;
     _btnFriendAction.enabled = NO;
     [_btnFriendAction setTitle:@"Loading relation" forState:UIControlStateNormal];
-    dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
-    dispatch_async(queue, ^{
-        NSURL *imageUrl = [NSURL URLWithString:_user.avatarImg];
-        UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:imageUrl]];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            _imgViewAvatar.image = image;
-        });
-    });
+    if (self.s3 == nil)
+    {
+        self.s3 = [RCAmazonS3Helper s3];
+    }
+    [self getAvatarImageFromInternet];
     [self asynchGetUserRelationRequest];
     
 }
@@ -227,6 +227,116 @@ int       _friendshipID;
     } else if ([_friendStatus isEqualToString:RCFriendStatusPending] || [_friendStatus isEqualToString:RCFriendStatusRequested] ) {
         [self asynchEditFriendshipRequest];
     }
+}
+
+- (IBAction)btnAvatarClicked:(id)sender {
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+    imagePicker.delegate = self;
+    [self presentViewController:imagePicker animated:YES completion:nil];
+}
+
+#pragma mark - upload in background thread
+- (void)processBackgroundThreadUpload:(UIImage *)avatarImage
+{
+    [self performSelectorInBackground:@selector(processBackgroundThreadUploadInBackground:)
+                           withObject:avatarImage];
+}
+
+- (void)processBackgroundThreadUploadInBackground:(UIImage *)avatarImage
+{
+    // Convert the image to JPEG data.
+    NSData *imageData = UIImageJPEGRepresentation(avatarImage, 1.0);
+    
+    // Upload image data.  Remember to set the content type.
+    S3PutObjectRequest *por = [[S3PutObjectRequest alloc] initWithKey:self.user.email
+                                                          inBucket:RCAmazonS3AvatarPictureBucket];
+    por.contentType = @"image/jpeg";
+    por.data        = imageData;
+    
+    // Put the image data into the specified s3 bucket and object.
+    S3PutObjectResponse *putObjectResponse = [self.s3 putObject:por];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self showCheckErrorMessage:putObjectResponse.error image:avatarImage];
+    });
+    //[self performSelectorOnMainThread:@selector(showCheckErrorMessage:)
+                       //    withObject:putObjectResponse.error
+                        //waitUntilDone:NO];
+}
+
+- (void)showCheckErrorMessage:(NSError *)error image:(UIImage *)_image
+{
+    if(error != nil)
+    {
+        NSLog(@"Error: %@", error);
+        [self showAlertMessage:[error.userInfo objectForKey:@"message"] withTitle:@"Upload Error"];
+    }
+    else
+    {
+        [self showAlertMessage:@"The image was successfully uploaded." withTitle:@"Upload Completed"];
+        [_btnAvatarImg setBackgroundImage:_image forState:UIControlStateNormal];
+    }
+    
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+}
+
+
+
+#pragma mark - UIImagePickerControllerDelegate methods
+
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    
+    // Get the selected image.
+    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    UIImage *resizedImage = [self imageWithImage:image scaledToSize:CGSizeMake(80,80)];
+    
+    [self processBackgroundThreadUpload:resizedImage];
+    
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(void) imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - Helper Methods
+- (void)showAlertMessage:(NSString *)message withTitle:(NSString *)title
+{
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
+                                                         message:message
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
+    [alertView show];
+}
+
+- (UIImage*)imageWithImage:(UIImage*)image
+              scaledToSize:(CGSize)newSize;
+{
+    UIGraphicsBeginImageContext( newSize );
+    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return newImage;
+}
+
+-(void) getAvatarImageFromInternet {
+    dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
+    dispatch_async(queue, ^{
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+        UIImage *image = [RCAmazonS3Helper getAvatarImage:_user];
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        if (image != nil) {    
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_btnAvatarImg setTitle:@"" forState:UIControlStateNormal];
+                [_btnAvatarImg setBackgroundImage:image forState:UIControlStateNormal]; 
+            });
+        }
+    });
 }
 
 @end

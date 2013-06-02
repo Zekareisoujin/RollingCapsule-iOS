@@ -88,12 +88,6 @@ NSString *const RCSlideOutOptionsSlideValue = @"RCSlideOutOptionsSlideValue";
                      completion:^(BOOL finished) {
                          self.menuVisible = YES;
                          [self.contentController.view addSubview:self.overlayView];
-						 /*// Add the overlay that will receive the gestures
-						 [self.contentController.view addSubview:self.overlayView];
-						 self.menuVisible = YES;
-						 if ([self.options[AMOptionsSetButtonDone] boolValue]) {
-							 [self.barButton setStyle:UIBarButtonItemStyleDone];
-						 }*/
 					 }];
 
 }
@@ -114,11 +108,6 @@ NSString *const RCSlideOutOptionsSlideValue = @"RCSlideOutOptionsSlideValue";
                      completion:^(BOOL finished) {
                          self.menuVisible = NO;
                          [self.overlayView removeFromSuperview];
-                          
-                          /*self.menuVisible = YES;
-                          if ([self.options[AMOptionsSetButtonDone] boolValue]) {
-                          [self.barButton setStyle:UIBarButtonItemStyleDone];
-                          }*/
 					 }];
 }
 
@@ -168,12 +157,7 @@ NSString *const RCSlideOutOptionsSlideValue = @"RCSlideOutOptionsSlideValue";
     else if ([gesture state] == UIGestureRecognizerStateEnded) {
 		// Hide the slide menu only if the view is released under a certain threshold, the threshold is lower when the menu is hidden
 		float threshold;
-		if (self.menuVisible) {
-			threshold = rightBorder / 2;
-		} else {
-			threshold = rightBorder / 4;
-		}
-        
+        threshold = rightBorder / 2;
 		if (self.contentController.view.frame.origin.x < threshold) {
 			[self hideSideMenu];
 		} else {

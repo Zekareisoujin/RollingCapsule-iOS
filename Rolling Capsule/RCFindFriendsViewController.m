@@ -152,16 +152,7 @@
     RCUser *user = [_items objectAtIndex:indexPath.row];
     cell.lblEmail.text = user.email;
     cell.lblName.text = user.name;
-    
-    dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
-    dispatch_async(queue, ^{
-        NSURL *imageUrl = [NSURL URLWithString:user.avatarImg];
-        UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:imageUrl]];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            cell.imgViewAvatar.image = image;
-        });
-    });
-    
+    [cell getAvatarImageFromInternet:user];
     
     return cell;
 }

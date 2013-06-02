@@ -18,5 +18,8 @@ static NSString* const RCFriendStatusAccepted = @"accepted";
 static NSString* const RCFriendStatusPending = @"pending";
 static NSString* const RCFriendStatusRequested = @"requested";
 static NSString* const RCFriendStatusNull = @"null";
+static NSString* const RCAmazonS3AccessKey = @"AKIAJVYGWBMHL24XPXYA";
+static NSString* const RCAmazonS3SecretKey = @"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";
+static NSString* const RCAmazonS3AvatarPictureBucket = @"rcavatarimages";
 static const char* RCCStringAppDomain = "com.foxtwo.rollingcapsules";
 #endif

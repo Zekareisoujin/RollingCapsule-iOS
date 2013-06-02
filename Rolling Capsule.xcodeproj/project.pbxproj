@@ -12,6 +12,8 @@
 		6407BBDC17545A87000F29C5 /* RCFriendListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6407BBDB17545A87000F29C5 /* RCFriendListViewController.m */; };
 		6407BBDE1754D5EB000F29C5 /* RCFriendListTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6407BBDD1754D5EB000F29C5 /* RCFriendListTableCell.xib */; };
 		6407BBE11754D81C000F29C5 /* RCFriendListTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6407BBE01754D81C000F29C5 /* RCFriendListTableCell.m */; };
+		64176AFF175A260900443B59 /* AWSRuntime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64176AFD175A260900443B59 /* AWSRuntime.framework */; };
+		64176B00175A260900443B59 /* AWSS3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64176AFE175A260900443B59 /* AWSS3.framework */; };
 		6490A9071757BF9300E5048F /* RCMainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6490A9051757BF9300E5048F /* RCMainViewController.m */; };
 		6490A9081757BF9300E5048F /* RCMainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6490A9061757BF9300E5048F /* RCMainViewController.xib */; };
 		6490A90C1757C07100E5048F /* RCMainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6490A90A1757C07100E5048F /* RCMainMenuViewController.m */; };
@@ -21,6 +23,8 @@
 		6491DCEE1755CF8D006FBCD8 /* RCFindFriendsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6491DCEC1755CF8D006FBCD8 /* RCFindFriendsViewController.xib */; };
 		6491DCF21755E096006FBCD8 /* RCUserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6491DCF01755E096006FBCD8 /* RCUserProfileViewController.m */; };
 		6491DCF31755E096006FBCD8 /* RCUserProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6491DCF11755E096006FBCD8 /* RCUserProfileViewController.xib */; };
+		649A869A175B07B60016674F /* default_avatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 649A8699175B07B60016674F /* default_avatar.jpg */; };
+		649A869D175B0CC30016674F /* RCAmazonS3Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 649A869C175B0CC30016674F /* RCAmazonS3Helper.m */; };
 		64A917081751E554007D629D /* RCRegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64A917071751E554007D629D /* RCRegisterViewController.xib */; };
 		64A9170B1751F6C9007D629D /* RCRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64A9170A1751F6C9007D629D /* RCRegisterViewController.m */; };
 		BF2CD6241754E12D00EF2E85 /* RCFeedPostPreview.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF2CD6231754E12D00EF2E85 /* RCFeedPostPreview.xib */; };
@@ -76,6 +80,8 @@
 		6407BBDD1754D5EB000F29C5 /* RCFriendListTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCFriendListTableCell.xib; sourceTree = "<group>"; };
 		6407BBDF1754D81C000F29C5 /* RCFriendListTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCFriendListTableCell.h; sourceTree = "<group>"; };
 		6407BBE01754D81C000F29C5 /* RCFriendListTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCFriendListTableCell.m; sourceTree = "<group>"; };
+		64176AFD175A260900443B59 /* AWSRuntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSRuntime.framework; path = "../../Downloads/aws-ios-sdk-1.6.0/AWSRuntime.framework"; sourceTree = "<group>"; };
+		64176AFE175A260900443B59 /* AWSS3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSS3.framework; path = "../../Downloads/aws-ios-sdk-1.6.0/AWSS3.framework"; sourceTree = "<group>"; };
 		6490A9041757BF9300E5048F /* RCMainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMainViewController.h; sourceTree = "<group>"; };
 		6490A9051757BF9300E5048F /* RCMainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMainViewController.m; sourceTree = "<group>"; };
 		6490A9061757BF9300E5048F /* RCMainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCMainViewController.xib; sourceTree = "<group>"; };
@@ -90,6 +96,9 @@
 		6491DCEF1755E092006FBCD8 /* RCUserProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCUserProfileViewController.h; sourceTree = "<group>"; };
 		6491DCF01755E096006FBCD8 /* RCUserProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCUserProfileViewController.m; sourceTree = "<group>"; };
 		6491DCF11755E096006FBCD8 /* RCUserProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCUserProfileViewController.xib; sourceTree = "<group>"; };
+		649A8699175B07B60016674F /* default_avatar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = default_avatar.jpg; path = ../../../Downloads/default_avatar.jpg; sourceTree = "<group>"; };
+		649A869B175B0CC30016674F /* RCAmazonS3Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAmazonS3Helper.h; sourceTree = "<group>"; };
+		649A869C175B0CC30016674F /* RCAmazonS3Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAmazonS3Helper.m; sourceTree = "<group>"; };
 		64A917071751E554007D629D /* RCRegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCRegisterViewController.xib; sourceTree = "<group>"; };
 		64A917091751F6C9007D629D /* RCRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCRegisterViewController.h; sourceTree = "<group>"; };
 		64A9170A1751F6C9007D629D /* RCRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCRegisterViewController.m; sourceTree = "<group>"; };
@@ -158,6 +167,8 @@
 				BFCA781C174DFD3F00666CBA /* UIKit.framework in Frameworks */,
 				BFCA781E174DFD3F00666CBA /* Foundation.framework in Frameworks */,
 				BFCA7820174DFD3F00666CBA /* CoreGraphics.framework in Frameworks */,
+				64176AFF175A260900443B59 /* AWSRuntime.framework in Frameworks */,
+				64176B00175A260900443B59 /* AWSS3.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -196,6 +207,8 @@
 		BFCA781A174DFD3F00666CBA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				64176AFD175A260900443B59 /* AWSRuntime.framework */,
+				64176AFE175A260900443B59 /* AWSS3.framework */,
 				BFCA781B174DFD3F00666CBA /* UIKit.framework */,
 				BFCA781D174DFD3F00666CBA /* Foundation.framework */,
 				BFCA781F174DFD3F00666CBA /* CoreGraphics.framework */,
@@ -207,6 +220,7 @@
 		BFCA7821174DFD3F00666CBA /* Rolling Capsule */ = {
 			isa = PBXGroup;
 			children = (
+				649A8699175B07B60016674F /* default_avatar.jpg */,
 				BFCA7856174E1AD200666CBA /* Json */,
 				BFCA782A174DFD3F00666CBA /* AppDelegate.h */,
 				BFCA782B174DFD3F00666CBA /* AppDelegate.m */,
@@ -216,15 +230,15 @@
 				64A917091751F6C9007D629D /* RCRegisterViewController.h */,
 				64A9170A1751F6C9007D629D /* RCRegisterViewController.m */,
 				64A917071751E554007D629D /* RCRegisterViewController.xib */,
-				6407BBDA17545A87000F29C5 /* RCFriendListViewController.h */,
-				6407BBDB17545A87000F29C5 /* RCFriendListViewController.m */,
-				6407BBD51753B719000F29C5 /* RCFriendListViewController.xib */,
 				BF2CD6231754E12D00EF2E85 /* RCFeedPostPreview.xib */,
 				BF2CD6251754E60C00EF2E85 /* RCFeedPostPreview.h */,
 				BF2CD6261754E60C00EF2E85 /* RCFeedPostPreview.m */,
 				BF68E7021756090200E5C1F4 /* RCMainFeedViewController.xib */,
 				BF68E7001756090200E5C1F4 /* RCMainFeedViewController.h */,
 				BF68E7011756090200E5C1F4 /* RCMainFeedViewController.m */,
+				6407BBDA17545A87000F29C5 /* RCFriendListViewController.h */,
+				6407BBDB17545A87000F29C5 /* RCFriendListViewController.m */,
+				6407BBD51753B719000F29C5 /* RCFriendListViewController.xib */,
 				6491DCEA1755CF8D006FBCD8 /* RCFindFriendsViewController.h */,
 				6491DCEB1755CF8D006FBCD8 /* RCFindFriendsViewController.m */,
 				6491DCEC1755CF8D006FBCD8 /* RCFindFriendsViewController.xib */,
@@ -247,6 +261,8 @@
 				BFCA7822174DFD3F00666CBA /* Supporting Files */,
 				6490A90E1758E2D000E5048F /* RCSlideoutViewController.h */,
 				6490A90F1758E2D000E5048F /* RCSlideoutViewController.m */,
+				649A869B175B0CC30016674F /* RCAmazonS3Helper.h */,
+				649A869C175B0CC30016674F /* RCAmazonS3Helper.m */,
 			);
 			path = "Rolling Capsule";
 			sourceTree = "<group>";
@@ -401,6 +417,7 @@
 				6491DCF31755E096006FBCD8 /* RCUserProfileViewController.xib in Resources */,
 				6490A9081757BF9300E5048F /* RCMainViewController.xib in Resources */,
 				6490A90D1757C07100E5048F /* RCMainMenuViewController.xib in Resources */,
+				649A869A175B07B60016674F /* default_avatar.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -461,6 +478,7 @@
 				6490A9071757BF9300E5048F /* RCMainViewController.m in Sources */,
 				6490A90C1757C07100E5048F /* RCMainMenuViewController.m in Sources */,
 				6490A9101758E2D000E5048F /* RCSlideoutViewController.m in Sources */,
+				649A869D175B0CC30016674F /* RCAmazonS3Helper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -569,6 +587,10 @@
 		BFCA7851174DFD3F00666CBA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../Downloads/aws-ios-sdk-1.6.0\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Rolling Capsule/Rolling Capsule-Prefix.pch";
 				INFOPLIST_FILE = "Rolling Capsule/Rolling Capsule-Info.plist";
@@ -580,6 +602,10 @@
 		BFCA7852174DFD3F00666CBA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/../../Downloads/aws-ios-sdk-1.6.0\"",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Rolling Capsule/Rolling Capsule-Prefix.pch";
 				INFOPLIST_FILE = "Rolling Capsule/Rolling Capsule-Info.plist";
