@@ -9,9 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @interface RCFeedPostPreview : UITableViewCell
+@property (weak, nonatomic) IBOutlet UILabel *lblPostContent;
+@property (weak, nonatomic) IBOutlet UILabel *lblUserProfileName;
+@property (weak, nonatomic) IBOutlet UIImageView *imgUserAvatar;
 
-@property (weak, nonatomic) IBOutlet UIImageView *userProfileImage;
-@property (weak, nonatomic) IBOutlet UILabel *userProfileName;
-@property (weak, nonatomic) IBOutlet UILabel *userPostContent;
 
 @end

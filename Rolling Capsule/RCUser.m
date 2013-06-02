@@ -23,8 +23,7 @@
     if (self) {
         _name = (NSString *)[userData objectForKey:@"name"];
         _email = (NSString *)[userData objectForKey:@"email"];
-        NSNumber *num = [userData objectForKey:@"id"];
-        _userID = [num intValue];
+        _userID = [[userData objectForKey:@"id"] intValue];
         
     }
     return self;

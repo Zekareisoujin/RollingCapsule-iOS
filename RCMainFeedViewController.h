@@ -10,4 +10,11 @@
 
 @interface RCMainFeedViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
+@property (nonatomic,assign) int userID;
+@property (weak, nonatomic) IBOutlet UITableView *tblFeedList;
+@property (nonatomic, strong) NSMutableArray *items;
+@property (nonatomic,retain) NSMutableData *receivedData;
+
+- (id)initWithUserID:(int) userID;
+
 @end

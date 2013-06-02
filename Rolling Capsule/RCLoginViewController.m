@@ -11,6 +11,7 @@
 #import "RCLoginViewController.h"
 #import "SBJson.h"
 #import "RCRegisterViewController.h"
+#import "RCMainFeedViewController.h"
 #import "Util.h"
 
 @interface RCLoginViewController ()
@@ -99,7 +100,9 @@
     if (jsonData != NULL) {
         NSDictionary *userData = (NSDictionary *) [jsonData objectForKey: @"user"];
         NSString *name = (NSString *) [userData objectForKey:@"name"];
+        int userID = (int) [userData objectForKey:@"id"];
         alertStatus([NSString stringWithFormat:@"Welcome, %@!",name], @"Login Success!", self);
+        [self switchToFeedView:userID];
     }else {
         alertStatus([NSString stringWithFormat:@"Please try again!"], @"Login Failed!", self);
     }
@@ -127,5 +130,12 @@
 {
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     [super viewWillDisappear:animated];
+}
+
+- (void)switchToFeedView:(int)userID {
+    RCMainFeedViewController *mainFeedViewController = [[RCMainFeedViewController alloc] initWithUserID:userID];
+    //NSLog(@"here");
+    NSArray *mainViewStack = [[NSArray alloc]initWithObjects:mainFeedViewController, nil];
+    [self.navigationController setViewControllers:mainViewStack animated:YES];
 }
 @end

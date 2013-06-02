@@ -11,6 +11,7 @@
 
 #import "RCLoginViewController.h"
 #import "RCFriendListViewController.h"
+#import "RCMainFeedViewController.h"
 #import "RCMainMenuViewController.h"
 #import "RCSlideoutViewController.h"
 
@@ -20,15 +21,13 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    //RCLoginViewController *loginViewController = [[RCLoginViewController alloc] init];
-    //UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
     RCUser *user = [[RCUser alloc] init];
     user.name = @"lolo";
     user.email = @"lolotp@hotmail.com";
     user.userID = 1;
     RCFriendListViewController *friendListViewController = [[RCFriendListViewController alloc] initWithUser:user];
-    _navigationController = [[UINavigationController alloc] initWithRootViewController:friendListViewController];
-    
+    _navigationController = [[UINavigationController alloc] initWithRootViewController:friendListViewController]; //initial view here
+    _mainViewController = [[RCSlideoutViewController alloc] init];
     _menuViewController = [[RCMainMenuViewController alloc] init];
     
     _mainViewController = [[RCSlideoutViewController alloc] init];
