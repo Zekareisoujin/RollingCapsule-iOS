@@ -7,17 +7,20 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CoreLocation/CoreLocation.h>
 
 @class RCMainMenuViewController;
 @class RCSlideoutViewController;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, CLLocationManagerDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
 @property (strong, nonatomic) UINavigationController *navigationController;
 @property (strong, nonatomic) RCMainMenuViewController *menuViewController;
 @property (strong, nonatomic) RCSlideoutViewController *mainViewController;
+@property (strong, nonatomic) CLLocationManager *locationManager;
+@property (strong, nonatomic) CLLocation        *currentLocation;
 -(void)showSideMenu;
 -(void)hideSideMenu;
 @end

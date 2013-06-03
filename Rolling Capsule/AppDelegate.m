@@ -14,10 +14,15 @@
 #import "RCMainFeedViewController.h"
 #import "RCMainMenuViewController.h"
 #import "RCSlideoutViewController.h"
+#import "RCNewPostViewController.h"
 
 @implementation AppDelegate
 
 @synthesize navigationController = _navigationController;
+@synthesize mainViewController = _mainViewController;
+@synthesize menuViewController = _menuViewController;
+@synthesize locationManager = _locationManager;
+@synthesize currentLocation = _currentLocation;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -25,8 +30,9 @@
     user.name = @"lolo";
     user.email = @"lolotp@hotmail.com";
     user.userID = 1;
-    RCFriendListViewController *friendListViewController = [[RCFriendListViewController alloc] initWithUser:user];
-    _navigationController = [[UINavigationController alloc] initWithRootViewController:friendListViewController]; //initial view here
+    /*RCFriendListViewController *firstListViewController = [[RCFriendListViewController alloc] initWithUser:user];*/
+    RCNewPostViewController *firstViewController = [[RCNewPostViewController alloc] initWithUser:user];
+    _navigationController = [[UINavigationController alloc] initWithRootViewController:firstViewController];
     _mainViewController = [[RCSlideoutViewController alloc] init];
     _menuViewController = [[RCMainMenuViewController alloc] init];
     
@@ -47,11 +53,13 @@
                                                            UITextAttributeTextShadowOffset,
                                                            [UIFont fontWithName:@"HelveticaNeue-CondensedBlack" size:21.0], UITextAttributeFont, nil]];
     UIImage *backButtonImage = [[UIImage imageNamed:@"back_button.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(4,4,4,0)];
-    //UIEdgeInsetsMake(<#CGFloat top#>, <#CGFloat left#>, <#CGFloat bottom#>, <#CGFloat right#>)
-    //UIEdgeInsetsMake
     [[UIBarButtonItem appearance] setBackButtonBackgroundImage:backButtonImage  forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, backButtonImage.size.height*2) forBarMetrics:UIBarMetricsDefault];
     
+    _locationManager = [[CLLocationManager alloc] init];
+    _locationManager.delegate = self;
+    _locationManager.distanceFilter = kCLDistanceFilterNone;
+    _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    [_locationManager startUpdatingLocation];
     return YES;
 }
 
@@ -90,6 +98,11 @@
 -(void)hideSideMenu
 {
     [_mainViewController hideSideMenu];
+}
+
+#pragma mark - CLLocationManager delegate
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+    _currentLocation = [locations lastObject];
 }
 
 @end

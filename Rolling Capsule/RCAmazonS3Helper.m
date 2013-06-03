@@ -14,9 +14,10 @@
 
 @end
 
+static AmazonS3Client* s3Client = nil;
+
 @implementation RCAmazonS3Helper
 + (AmazonS3Client *) s3 {
-    static AmazonS3Client* s3Client = nil;
     if (s3Client == nil) {
         s3Client = [[AmazonS3Client alloc] initWithAccessKey:RCAmazonS3AccessKey withSecretKey:RCAmazonS3SecretKey];
         s3Client.endpoint = [AmazonEndpoints s3Endpoint:US_WEST_2];

@@ -27,6 +27,8 @@ BOOL        _willMoveKeyboardUp;
     _keyboardVisible = FALSE;
 }
 
+#pragma mark - web request
+
 - (void)asynchRegisterRequest
 {
     //Asynchronous Request
@@ -99,6 +101,8 @@ BOOL        _willMoveKeyboardUp;
     }
 }
 
+#pragma mark - UI events
+
 - (IBAction)btnBackgroundTap:(id)sender {
     [_txtFieldName resignFirstResponder];
     [_txtFieldPassword resignFirstResponder];
@@ -110,6 +114,8 @@ BOOL        _willMoveKeyboardUp;
 - (IBAction)registerTouchUpInside:(id)sender {
     [self asynchRegisterRequest];
 }
+
+#pragma mark - code to move views up/down appropriately when keyboard is going to cover text field
 
 - (void)viewWillAppear:(BOOL)animated
 {

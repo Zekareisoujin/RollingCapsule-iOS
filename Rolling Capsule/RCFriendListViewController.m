@@ -50,11 +50,11 @@ BOOL        _firstRefresh;
     _tblViewFriendList.tableFooterView = [[UIView alloc] init];
     
     self.navigationItem.title = @" ";
-    UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Find friends"
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Find friends"
                                                                       style:UIBarButtonItemStylePlain
                                                                      target:self
                                                                      action:@selector(openFindFriendsView)];
-    self.navigationItem.rightBarButtonItem = anotherButton;
+    self.navigationItem.rightBarButtonItem = rightButton;
     /*self.navigationItem.backBarButtonItem =
     [[UIBarButtonItem alloc] initWithTitle:@" "
                                      style:UIBarButtonItemStyleBordered
