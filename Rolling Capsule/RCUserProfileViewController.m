@@ -196,6 +196,7 @@ int       _friendshipID;
 #pragma mark - upload in background thread
 - (void)processBackgroundThreadUpload:(UIImage *)avatarImage
 {
+    _btnAvatarImg.enabled = NO;
     [self performSelectorInBackground:@selector(processBackgroundThreadUploadInBackground:)
                            withObject:avatarImage];
 }
@@ -216,9 +217,6 @@ int       _friendshipID;
     dispatch_async(dispatch_get_main_queue(), ^{
         [self showCheckErrorMessage:putObjectResponse.error image:avatarImage];
     });
-    //[self performSelectorOnMainThread:@selector(showCheckErrorMessage:)
-                       //    withObject:putObjectResponse.error
-                        //waitUntilDone:NO];
 }
 
 - (void)showCheckErrorMessage:(NSError *)error image:(UIImage *)_image
@@ -232,6 +230,7 @@ int       _friendshipID;
     {
         [self showAlertMessage:@"The image was successfully uploaded." withTitle:@"Upload Completed"];
         [_btnAvatarImg setBackgroundImage:_image forState:UIControlStateNormal];
+        _btnAvatarImg.enabled = YES;
     }
     
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];

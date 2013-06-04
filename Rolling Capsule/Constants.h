@@ -22,5 +22,7 @@ static NSString* const RCFriendStatusNull = @"null";
 static NSString* const RCAmazonS3AccessKey = @"AKIAJVYGWBMHL24XPXYA";
 static NSString* const RCAmazonS3SecretKey = @"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";
 static NSString* const RCAmazonS3AvatarPictureBucket = @"rcavatarimages";
+static NSString* const RCAmazonS3UsersMediaBucket = @"rcusersmedia";
+static int       const RCHttpOkStatusCode = 200;
 static const char* RCCStringAppDomain = "com.foxtwo.rollingcapsules";
 #endif
