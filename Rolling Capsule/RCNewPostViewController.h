@@ -10,7 +10,7 @@
 #import <AWSS3/AWSS3.h>
 #import "RCUser.h"
 
-@interface RCNewPostViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, AmazonServiceRequestDelegate>
+@interface RCNewPostViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, AmazonServiceRequestDelegate, UIActionSheetDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *btnPostImage;
 @property (weak, nonatomic) IBOutlet UITextView *txtViewPostContent;
 

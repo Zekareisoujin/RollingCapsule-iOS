@@ -97,7 +97,7 @@ BOOL _successfulPost = NO;
     S3PutObjectResponse *putObjectResponse = [s3 putObject:por];
     if (putObjectResponse.error == nil)
     {
-        [self asynchPostNewResuest];
+        [self performSelectorOnMainThread:@selector(asynchPostNewResuest) withObject:nil waitUntilDone:YES];
     } else {
         NSLog(@"Error: %@", putObjectResponse.error);
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
@@ -173,15 +173,44 @@ BOOL _successfulPost = NO;
     }
 }
 
+#pragma mark - UIActionSheetDelegate
+
+- (void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+    imagePicker.delegate = self;
+    NSString* buttonLabel = [actionSheet buttonTitleAtIndex:buttonIndex];
+    if ([buttonLabel isEqualToString:RCImageSourcePhotoLibrary])
+        [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+    else if ([buttonLabel isEqualToString:RCImageSourcePhotoAlbum])
+        [imagePicker setSourceType:UIImagePickerControllerSourceTypeSavedPhotosAlbum];
+    else if ([buttonLabel isEqualToString:RCImageSourceCamera])
+        [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+    [self presentViewController:imagePicker animated:YES completion:nil];
+}
+
 #pragma mark - UI events
 
 - (IBAction)btnPostImageTouchUpInside:(id)sender {
     if ([_txtViewPostContent isFirstResponder]) {
         [_txtViewPostContent endEditing:YES];
     }
-    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-    imagePicker.delegate = self;
-    [self presentViewController:imagePicker animated:YES completion:nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Select where image is from"
+                                                             delegate:self
+                                                    cancelButtonTitle:nil
+                                               destructiveButtonTitle:nil
+                                                    otherButtonTitles:nil];
+    
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
+    [actionSheet addButtonWithTitle:RCImageSourcePhotoLibrary];
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+        [actionSheet addButtonWithTitle:RCImageSourceCamera];
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum])
+        [actionSheet addButtonWithTitle:RCImageSourcePhotoAlbum];
+    
+    actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:@"Cancel"];
+    [actionSheet showInView:self.view];
+    
 }
 
 - (IBAction)backgroundTouchUpInside:(id)sender {

@@ -30,8 +30,8 @@
     user.name = @"lolo";
     user.email = @"lolotp@hotmail.com";
     user.userID = 1;
-    RCFriendListViewController *firstViewController = [[RCFriendListViewController alloc] initWithUser:user];
-    //RCNewPostViewController *firstViewController = [[RCNewPostViewController alloc] initWithUser:user];
+    //RCFriendListViewController *firstViewController = [[RCFriendListViewController alloc] initWithUser:user];
+    RCNewPostViewController *firstViewController = [[RCNewPostViewController alloc] initWithUser:user];
     //RCLoginViewController *firstViewController = [[RCLoginViewController alloc] init];
     _navigationController = [[UINavigationController alloc] initWithRootViewController:firstViewController];
     _mainViewController = [[RCSlideoutViewController alloc] init];
