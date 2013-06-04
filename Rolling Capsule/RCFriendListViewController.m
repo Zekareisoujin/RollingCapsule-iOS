@@ -50,17 +50,6 @@ BOOL        _firstRefresh;
     _tblViewFriendList.tableFooterView = [[UIView alloc] init];
     
     self.navigationItem.title = @" ";
-    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Find friends"
-                                                                      style:UIBarButtonItemStylePlain
-                                                                     target:self
-                                                                     action:@selector(openFindFriendsView)];
-    self.navigationItem.rightBarButtonItem = rightButton;
-    /*self.navigationItem.backBarButtonItem =
-    [[UIBarButtonItem alloc] initWithTitle:@" "
-                                     style:UIBarButtonItemStyleBordered
-                                    target:nil
-                                    action:nil];*/
-    
     UITableViewController *tableViewController = setUpRefreshControlWithTableViewController(self, _tblViewFriendList);
     _refreshControl = tableViewController.refreshControl;
     [_refreshControl addTarget:self
@@ -108,7 +97,7 @@ BOOL        _firstRefresh;
     cell.lblEmail.text = user.email;
     cell.lblName.text = user.name;
     
-    [cell getAvatarImageFromInternet:user];
+    [cell getAvatarImageFromInternet:user withLoggedInUserID:_user.userID];
     
     return cell;
 }

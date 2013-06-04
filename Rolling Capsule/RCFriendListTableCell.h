@@ -14,5 +14,5 @@
 @property (nonatomic, weak) IBOutlet UILabel *lblName;
 @property (nonatomic, weak) IBOutlet UILabel *lblEmail;
 @property (nonatomic, weak) IBOutlet UIImageView *imgViewAvatar;
--(void) getAvatarImageFromInternet:(RCUser *) user;
+-(void) getAvatarImageFromInternet:(RCUser *) user withLoggedInUserID:(int)loggedInUserID;
 @end
