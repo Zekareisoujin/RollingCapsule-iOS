@@ -70,20 +70,13 @@ int       _friendshipID;
     //Asynchronous Request
     @try {
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/get_relation?mobile=1&other_user=%d", RCServiceURL, RCUsersResource, self.loggedinUserID, _user.userID]];
-        
         NSURLRequest *request = CreateHttpGetRequest(url);
         
-        NSURLConnection *connection = [[NSURLConnection alloc]
-                                       initWithRequest:request
-                                       delegate:self
-                                       startImmediately:YES];
-        _receivedData = [[NSMutableData alloc] init];
-        
-        if(!connection) {
-            NSLog(@"Connection Failed.");
-        } else {
-            NSLog(@"Connection Succeeded.");
-        }
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+         {
+             [self connectionDidFinishLoading:data];
+         }];
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
@@ -100,17 +93,11 @@ int       _friendshipID;
         NSData *postData = [dataSt dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         NSURLRequest *request = CreateHttpPostRequest(url, postData);
         
-        NSURLConnection *connection = [[NSURLConnection alloc]
-                                       initWithRequest:request
-                                       delegate:self
-                                       startImmediately:YES];
-        _receivedData = [[NSMutableData alloc] init];
-        
-        if(!connection) {
-            NSLog(@"Connection Failed.");
-        } else {
-            NSLog(@"Connection Succeeded.");
-        }
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+         {
+             [self connectionDidFinishLoading:data];
+         }];
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
@@ -124,20 +111,13 @@ int       _friendshipID;
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d", RCServiceURL, RCFriendshipsResource, _friendshipID]];
         NSMutableString* dataSt = initEmptyQueryString();
         NSData *putData = [dataSt dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-        
         NSURLRequest *request = CreateHttpPutRequest(url, putData);
         
-        NSURLConnection *connection = [[NSURLConnection alloc]
-                                       initWithRequest:request
-                                       delegate:self
-                                       startImmediately:YES];
-        _receivedData = [[NSMutableData alloc] init];
-        
-        if(!connection) {
-            NSLog(@"Connection Failed.");
-        } else {
-            NSLog(@"Connection Succeeded.");
-        }
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+         {
+             [self connectionDidFinishLoading:data];
+         }];
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
@@ -150,18 +130,12 @@ int       _friendshipID;
     @try {
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/?mobile=1", RCServiceURL, RCFriendshipsResource, _friendshipID]];
         NSURLRequest *request = CreateHttpDeleteRequest(url);
-        
-        NSURLConnection *connection = [[NSURLConnection alloc]
-                                       initWithRequest:request
-                                       delegate:self
-                                       startImmediately:YES];
-        _receivedData = [[NSMutableData alloc] init];
-        
-        if(!connection) {
-            NSLog(@"Connection Failed.");
-        } else {
-            NSLog(@"Connection Succeeded.");
-        }
+
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+        {
+            [self connectionDidFinishLoading:data];
+        }];
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
@@ -169,24 +143,8 @@ int       _friendshipID;
     }
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
- 	//NSLog(@"Received response: %@", response);
- 	
-    [_receivedData setLength:0];
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
- 	//NSLog(@"Received %d bytes of data", [data length]);
- 	
-    [_receivedData appendData:data];
-}
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
- 	NSLog(@"Error receiving response: %@", error);
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    NSString *responseData = [[NSString alloc]initWithData:_receivedData encoding:NSUTF8StringEncoding];
+- (void)connectionDidFinishLoading:(NSData *)data {
+    NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
     
     SBJsonParser *jsonParser = [SBJsonParser new];
     NSDictionary *friendshipJson = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];

@@ -11,7 +11,6 @@
 @interface RCFindFriendsViewController : UIViewController <UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBarFriends;
 @property (weak, nonatomic) IBOutlet UITableView *tblViewFoundUsers;
-@property (nonatomic,retain) NSMutableData *receivedData;
 @property (nonatomic, strong) NSMutableArray *items;
 @property (nonatomic, strong) RCUser* user;
 

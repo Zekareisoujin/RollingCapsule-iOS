@@ -80,57 +80,31 @@
         
         NSURLRequest *request = CreateHttpGetRequest(url);
         
-        NSURLConnection *connection = [[NSURLConnection alloc]
-                                       initWithRequest:request
-                                       delegate:self
-                                       startImmediately:YES];
-        _receivedData = [[NSMutableData alloc] init];
-        
-        if(!connection) {
-            NSLog(@"Connection Failed.");
-        } else {
-            NSLog(@"Connection Succeeded.");
-        }
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+        {
+            NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+            
+            SBJsonParser *jsonParser = [SBJsonParser new];
+            NSArray *usersJson = (NSArray *) [jsonParser objectWithString:responseData error:nil];
+            NSLog(@"%@",usersJson);
+            
+            if (usersJson != NULL) {
+                [_items removeAllObjects];
+                for (NSDictionary *userData in usersJson) {
+                    RCUser *user = [[RCUser alloc] initWithNSDictionary:userData];
+                    [_items addObject:user];
+                }
+                [_tblViewFoundUsers reloadData];
+                [_refreshControl endRefreshing];
+            }else {
+                alertStatus([NSString stringWithFormat:@"Failed to obtain user list, please try again! %@", responseData], @"Connection Failed!", self);
+            }
+        }];
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
         alertStatus(@"Failure getting friends from web service",@"Connection Failed!",self);
-    }
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
- 	//NSLog(@"Received response: %@", response);
- 	
-    [_receivedData setLength:0];
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
- 	//NSLog(@"Received %d bytes of data", [data length]);
- 	
-    [_receivedData appendData:data];
-}
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
- 	NSLog(@"Error receiving response: %@", error);
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    NSString *responseData = [[NSString alloc]initWithData:_receivedData encoding:NSUTF8StringEncoding];
-    
-    SBJsonParser *jsonParser = [SBJsonParser new];
-    NSArray *usersJson = (NSArray *) [jsonParser objectWithString:responseData error:nil];
-    NSLog(@"%@",usersJson);
-    
-    if (usersJson != NULL) {
-        [_items removeAllObjects];
-        for (NSDictionary *userData in usersJson) {
-            RCUser *user = [[RCUser alloc] initWithNSDictionary:userData];
-            [_items addObject:user];
-        }
-        [_tblViewFoundUsers reloadData];
-        [_refreshControl endRefreshing];
-    }else {
-        alertStatus([NSString stringWithFormat:@"Failed to obtain user list, please try again! %@", responseData], @"Connection Failed!", self);
     }
 }
 

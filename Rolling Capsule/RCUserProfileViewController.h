@@ -19,7 +19,6 @@
 
 @property (nonatomic, strong) RCUser *user;
 @property (nonatomic, assign) int loggedinUserID;
-@property (nonatomic,strong)  NSMutableData *receivedData;
 @property (nonatomic, strong) AmazonS3Client *s3;
 - (IBAction)btnFriendActionClicked:(id)sender;
 - (IBAction)btnAvatarClicked:(id)sender;

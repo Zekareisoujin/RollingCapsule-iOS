@@ -25,7 +25,6 @@
 @synthesize postImage = _postImage;
 @synthesize postContent = _postContent;
 @synthesize user = _user;
-@synthesize receivedData = _receivedData;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -87,18 +86,24 @@
             NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCPostsResource]];
             
             NSURLRequest *request = CreateHttpPostRequest(url, postData);
-            
-            NSURLConnection *connection = [[NSURLConnection alloc]
-                                           initWithRequest:request
-                                           delegate:self
-                                           startImmediately:YES];
-            _receivedData = [[NSMutableData alloc] init];
-            
-            if(!connection) {
-                NSLog(@"Registration Connection Failed.");
-            } else {
-                NSLog(@"Registration Connection Succeeded.");
-            }
+            [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                                   completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+            {
+                NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+                
+                SBJsonParser *jsonParser = [SBJsonParser new];
+                NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
+                NSLog(@"%@",jsonData);
+                
+                //Temporary:
+                if (jsonData != NULL) {
+                    NSDictionary *userData = (NSDictionary *) [jsonData objectForKey: @"user"];
+                    NSString *name = (NSString *) [userData objectForKey:@"name"];
+                    alertStatus([NSString stringWithFormat:@"Welcome, %@!",name], @"Registration Success!", self);
+                }else {
+                    alertStatus([NSString stringWithFormat:@"Please try again! %@", responseData], @"Registration Failed!", self);
+                }
+            }];
             
         }
     }
@@ -107,40 +112,6 @@
         alertStatus(@"Registration Failed.",@"Registration Failed!",self);
     }
 }
-
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
- 	//NSLog(@"Received response: %@", response);
- 	
-    [_receivedData setLength:0];
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
- 	//NSLog(@"Received %d bytes of data", [data length]);
- 	
-    [_receivedData appendData:data];
-}
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
- 	NSLog(@"Error receiving response: %@", error);
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    NSString *responseData = [[NSString alloc]initWithData:_receivedData encoding:NSUTF8StringEncoding];
-    
-    SBJsonParser *jsonParser = [SBJsonParser new];
-    NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
-    NSLog(@"%@",jsonData);
-    
-    //Temporary:
-    if (jsonData != NULL) {
-        NSDictionary *userData = (NSDictionary *) [jsonData objectForKey: @"user"];
-        NSString *name = (NSString *) [userData objectForKey:@"name"];
-        alertStatus([NSString stringWithFormat:@"Welcome, %@!",name], @"Registration Success!", self);
-    }else {
-        alertStatus([NSString stringWithFormat:@"Please try again! %@", responseData], @"Registration Failed!", self);
-    }
-}
-
 
 #pragma mark - UI events
 

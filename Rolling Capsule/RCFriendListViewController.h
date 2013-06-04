@@ -13,6 +13,5 @@
 - (id)initWithUser:(RCUser *) user;
 @property (weak, nonatomic) IBOutlet UITableView *tblViewFriendList;
 @property (nonatomic, strong) NSMutableArray *items;
-@property (nonatomic,retain) NSMutableData *receivedData;
 @property (nonatomic,strong) RCUser *user;
 @end
