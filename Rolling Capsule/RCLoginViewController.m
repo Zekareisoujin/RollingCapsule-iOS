@@ -46,6 +46,7 @@
         if([[_txtFieldUsername text] isEqualToString:@""] || [[_txtFieldPassword text] isEqualToString:@""] ) {
             alertStatus(@"Please enter both Username and Password",@"Login Failed!",self);
         } else {
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
             NSString *post =[[NSString alloc] initWithFormat:@"session[email]=%@&session[password]=%@&mobile=1",[_txtFieldUsername text],[_txtFieldPassword text]];
             NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
             NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCSessionsResource]];
@@ -54,6 +55,7 @@
             [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                 completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
             {
+                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
                 NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
                 
                 SBJsonParser *jsonParser = [SBJsonParser new];
@@ -70,11 +72,7 @@
                 }else {
                     alertStatus([NSString stringWithFormat:@"Please try again!"], @"Login Failed!", self);
                 }
-            }];
-            [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
-                                   completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
-            {
-            }];
+            }];            
         }
     }
     @catch (NSException * e) {
@@ -109,8 +107,10 @@
 
 - (void)switchToFeedView:(int)userID {
     RCMainFeedViewController *mainFeedViewController = [[RCMainFeedViewController alloc] initWithUserID:userID];
-    //NSLog(@"here");
-    NSArray *mainViewStack = [[NSArray alloc]initWithObjects:mainFeedViewController, nil];
-    [self.navigationController setViewControllers:mainViewStack animated:YES];
+    //NSLog(@"here");]
+    /*NSArray *mainViewStack = [[NSArray alloc]initWithObjects:mainFeedViewController, nil];
+    [self.navigationController setViewControllers:mainViewStack animated:YES];*/
+    
+    [self.navigationController pushViewController:mainFeedViewController animated:YES];
 }
 @end

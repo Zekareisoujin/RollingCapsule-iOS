@@ -13,6 +13,7 @@
 @property (nonatomic,assign) int userID;
 @property (weak, nonatomic) IBOutlet UITableView *tblFeedList;
 @property (nonatomic, strong) NSMutableArray *items;
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
 
 - (id)initWithUserID:(int) userID;
 

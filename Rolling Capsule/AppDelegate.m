@@ -31,8 +31,8 @@
     user.email = @"lolotp@hotmail.com";
     user.userID = 1;
 
-    RCNewPostViewController *firstViewController = [[RCNewPostViewController alloc] initWithUser:user];
-    //RCLoginViewController *firstViewController = [[RCLoginViewController alloc] init];
+    //RCNewPostViewController *firstViewController = [[RCNewPostViewController alloc] initWithUser:user];
+    RCLoginViewController *firstViewController = [[RCLoginViewController alloc] init];
     _navigationController = [[UINavigationController alloc] initWithRootViewController:firstViewController];
     _mainViewController = [[RCSlideoutViewController alloc] init];
     _menuViewController = [[RCMainMenuViewController alloc] init];

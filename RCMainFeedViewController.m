@@ -20,6 +20,9 @@
 
 @implementation RCMainFeedViewController
 
+BOOL        _firstRefresh;
+@synthesize refreshControl = _refreshControl;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -40,15 +43,27 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.navigationItem.hidesBackButton = YES;
     // Do any additional setup after loading the view from its nib.
     _items = [[NSMutableArray alloc] init];
     _tblFeedList.tableFooterView = [[UIView alloc] init];
     self.navigationItem.title = @"News Feed";
-    UIBarButtonItem *anotherButton = [[UIBarButtonItem alloc] initWithTitle:@"Get news"
-                                                                      style:UIBarButtonItemStylePlain
-                                                                     target:self
-                                                                     action:@selector(openFindFriendsView)];
-    self.navigationItem.rightBarButtonItem = anotherButton;
+
+    UITableViewController *tableViewController = setUpRefreshControlWithTableViewController(self, _tblFeedList);
+    _refreshControl = tableViewController.refreshControl;
+    [_refreshControl addTarget:self
+                        action:@selector(handleRefresh:)
+              forControlEvents:UIControlEventValueChanged  ];
+    _firstRefresh = YES;
+    [self handleRefresh:_refreshControl];
+    //[self asynchFetchFeeds];
+}
+
+- (void) handleRefresh:(UIRefreshControl*) refreshControl {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"dd-MMM, hh:mm:ssa"];
+    NSString *lastUpdated = [NSString stringWithFormat:@"Last updated on %@", [formatter  stringFromDate:[NSDate date] ] ];
+    [_refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:lastUpdated]];
 	[self asynchFetchFeeds];
 }
 
@@ -103,13 +118,16 @@
 - (void) asynchFetchFeeds {
     //Asynchronous Request
     @try {
-        
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@?mobile=1", RCServiceURL]];
         NSURLRequest *request = CreateHttpGetRequest(url);
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
         {
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [_refreshControl endRefreshing];
+            
             NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
             
             SBJsonParser *jsonParser = [SBJsonParser new];
@@ -124,6 +142,10 @@
                     [_items addObject:post];
                 }
                 [_tblFeedList reloadData];
+                if (_firstRefresh){
+                    [_tblFeedList setContentOffset:CGPointMake(0, 0) animated:YES];
+                    _firstRefresh = NO;
+                }
             }else {
                 alertStatus([NSString stringWithFormat:@"Failed to obtain news feed, please try again! %@", responseData], @"Connection Failed!", self);
             }
