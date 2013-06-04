@@ -69,7 +69,15 @@ NSString *const RCSlideOutOptionsSlideValue = @"RCSlideOutOptionsSlideValue";
 	self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
 	[self.panGesture setMaximumNumberOfTouches:2];
 	[self.panGesture setDelegate:self];
-	[self.contentController.view addGestureRecognizer:self.panGesture];
+	[self enablePanning];
+}
+
+- (void) disablePanning {
+    [self.view removeGestureRecognizer:self.panGesture];
+}
+
+- (void) enablePanning {
+    [self.view addGestureRecognizer:self.panGesture];
 }
 
 - (void) showSideMenu {
@@ -107,6 +115,7 @@ NSString *const RCSlideOutOptionsSlideValue = @"RCSlideOutOptionsSlideValue";
 					 }
                      completion:^(BOOL finished) {
                          self.menuVisible = NO;
+                         //[self.menuViewController.view removeGestureRecognizer:self.panGesture];
                          [self.overlayView removeFromSuperview];
 					 }];
 }
