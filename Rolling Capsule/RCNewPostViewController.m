@@ -28,7 +28,6 @@
 @synthesize postContent = _postContent;
 @synthesize imageFileName = _imageFileName;
 @synthesize user = _user;
-@synthesize receivedData = _receivedData;
 
 BOOL _successfulPost = NO;
 
@@ -138,69 +137,39 @@ BOOL _successfulPost = NO;
         addArgumentToQueryString(dataSt, @"post[rating]", @"5");
         addArgumentToQueryString(dataSt, @"post[latitude]", latSt);
         addArgumentToQueryString(dataSt, @"post[longitude]", longSt);
-        addArgumentToQueryString(dataSt, @"post[file_url]", _imageFileName);
         NSData *postData = [dataSt dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCPostsResource]];
         
         NSURLRequest *request = CreateHttpPostRequest(url, postData);
-        
-        NSURLConnection *connection = [[NSURLConnection alloc]
-                                       initWithRequest:request
-                                       delegate:self
-                                       startImmediately:YES];
-        _receivedData = [[NSMutableData alloc] init];
-        
-        if(!connection) {
-            NSLog(@"Connection Failed.");
-        } else {
-            NSLog(@"Connection Succeeded.");
-        }
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+        {
+            NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+            int responseStatusCode = [httpResponse statusCode];
+            if (responseStatusCode != RCHttpOkStatusCode) {
+                _successfulPost = NO;
+            } else _successfulPost = YES;
+            
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            self.navigationItem.rightBarButtonItem.enabled = YES;
+            NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+            NSLog(@"%@",responseData);
+            
+            //Temporary:
+            if (_successfulPost) {
+                //TODO open main news feed page
+                [self showAlertMessage:@"Image posted successfully!" withTitle:@"Success!"];
+            }else {
+                alertStatus([NSString stringWithFormat:@"Please try again! %@", responseData], @"Post Failed!", self);
+            }
+        }];
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
         alertStatus(@"Post Failed.",@"Post Failed!",self);
     }
 }
-
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
- 	NSLog(@"Received response: %@", response);
-    NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
-    int responseStatusCode = [httpResponse statusCode];
-    if (responseStatusCode != RCHttpOkStatusCode) {
-        _successfulPost = NO;
-    } else _successfulPost = YES;
-    [_receivedData setLength:0];
-}
-
-- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
- 	//NSLog(@"Received %d bytes of data", [data length]);
- 	
-    [_receivedData appendData:data];
-}
-
-- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-    self.navigationItem.rightBarButtonItem.enabled = YES;
-    NSLog(@"Error: %@", error);
-    [self showAlertMessage:error.description withTitle:@"Upload Error"];
-}
-
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-    self.navigationItem.rightBarButtonItem.enabled = YES;
-    NSString *responseData = [[NSString alloc]initWithData:_receivedData encoding:NSUTF8StringEncoding];
-    NSLog(@"%@",responseData);
-    
-    //Temporary:
-    if (_successfulPost) {
-        //TODO open main news feed page
-        [self showAlertMessage:@"Image posted successfully!" withTitle:@"Success!"];
-    }else {
-        alertStatus([NSString stringWithFormat:@"Please try again! %@", responseData], @"Post Failed!", self);
-    }
-}
-
 
 #pragma mark - UI events
 

@@ -15,7 +15,6 @@
 @property (weak, nonatomic) IBOutlet UITextView *txtViewPostContent;
 
 @property (nonatomic, strong) RCUser *user;
-@property (nonatomic, strong) NSMutableData *receivedData;
 
 - (IBAction)backgroundTouchUpInside:(id)sender;
 - (IBAction)btnPostImageTouchUpInside:(id)sender;
