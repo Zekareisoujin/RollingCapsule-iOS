@@ -9,6 +9,7 @@
 #import "Util.h"
 #import "Constants.h"
 #import "AppDelegate.h"
+#import "RCAmazonS3Helper.h"
 #import "RCNewPostViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SBJson.h"
@@ -17,6 +18,7 @@
 
 @property (nonatomic,strong) UIImage* postImage;
 @property (nonatomic,strong) NSString* postContent;
+@property (nonatomic,strong) NSString* imageFileName;
 
 @end
 
@@ -24,8 +26,11 @@
 
 @synthesize postImage = _postImage;
 @synthesize postContent = _postContent;
+@synthesize imageFileName = _imageFileName;
 @synthesize user = _user;
 @synthesize receivedData = _receivedData;
+
+BOOL _successfulPost = NO;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -53,7 +58,7 @@
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Post"
                                                                     style:UIBarButtonItemStyleDone
                                                                    target:self
-                                                                   action:@selector(asynchPostNewResuest)];
+                                                                   action:@selector(postNew)];
     self.navigationItem.rightBarButtonItem = rightButton;
 }
 
@@ -63,54 +68,108 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void) postNew {
+    if (_postImage == nil) {
+        [self showAlertMessage:@"Please choose an image!" withTitle:@"Incomplete post!"];
+        return;
+    }
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+    NSData *imageData = UIImageJPEGRepresentation(_postImage, 1.0);
+    [self processDelegateUpload:imageData];
+}
+
+#pragma mark - AmazonServiceRequestDelegate
+
+- (void)processDelegateUpload:(NSData *)imageData
+{
+    AmazonS3Client *s3 = [RCAmazonS3Helper s3];
+    CFUUIDRef theUUID = CFUUIDCreate(NULL);
+    CFStringRef string = CFUUIDCreateString(NULL, theUUID);
+    CFRelease(theUUID);
+    _imageFileName = [(__bridge NSString*)string stringByReplacingOccurrencesOfString:@"-"withString:@""];
+    // Upload image data.  Remember to set the content type.
+    S3PutObjectRequest *por = [[S3PutObjectRequest alloc] initWithKey:_imageFileName
+                                                             inBucket:RCAmazonS3UsersMediaBucket];
+    por.contentType = @"image/jpeg";
+    por.data = imageData;
+    por.delegate = self;
+    
+    // Put the image data into the specified s3 bucket and object.
+    [s3 putObject:por];
+}
+
+-(void)request:(AmazonServiceRequest *)request didCompleteWithResponse:(AmazonServiceResponse *)response
+{
+    [self asynchPostNewResuest];
+}
+
+-(void)request:(AmazonServiceRequest *)request didFailWithError:(NSError *)error
+{
+    NSLog(@"Error: %@", error);
+    [self showAlertMessage:error.description withTitle:@"Upload Error"];
+    
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+}
+
+- (void)showAlertMessage:(NSString *)message withTitle:(NSString *)title
+{
+    UIAlertView *alertView = [[UIAlertView alloc]  initWithTitle:title
+                                                         message:message
+                                                        delegate:nil
+                                               cancelButtonTitle:@"OK"
+                                               otherButtonTitles:nil];
+    [alertView show];
+}
+
 #pragma mark - post web request
+
 - (void) asynchPostNewResuest {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     _postContent = [_txtViewPostContent text];
     //Asynchronous Request
-    @try {
+    @try {    
+        CLLocationDegrees latitude = appDelegate.currentLocation.coordinate.latitude;
+        CLLocationDegrees longitude = appDelegate.currentLocation.coordinate.longitude;
+        NSString* latSt = [[NSString alloc] initWithFormat:@"%f",latitude];
+        NSString* longSt = [[NSString alloc] initWithFormat:@"%f",longitude];
+        NSMutableString *dataSt = initQueryString(@"post[user_id]", [[NSString alloc] initWithFormat:@"%d",_user.userID]);
+        addArgumentToQueryString(dataSt, @"post[content]", _postContent);
+        addArgumentToQueryString(dataSt, @"post[rating]", @"5");
+        addArgumentToQueryString(dataSt, @"post[latitude]", latSt);
+        addArgumentToQueryString(dataSt, @"post[longitude]", longSt);
+        addArgumentToQueryString(dataSt, @"post[file_url]", _imageFileName);
+        NSData *postData = [dataSt dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         
-        if(_postImage == nil) {
-            alertStatus(@"Please choose an image", @"No image chosen!",self);
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCPostsResource]];
+        
+        NSURLRequest *request = CreateHttpPostRequest(url, postData);
+        
+        NSURLConnection *connection = [[NSURLConnection alloc]
+                                       initWithRequest:request
+                                       delegate:self
+                                       startImmediately:YES];
+        _receivedData = [[NSMutableData alloc] init];
+        
+        if(!connection) {
+            NSLog(@"Connection Failed.");
         } else {
-            CLLocationDegrees latitude = appDelegate.currentLocation.coordinate.latitude;
-            CLLocationDegrees longitude = appDelegate.currentLocation.coordinate.longitude;
-            NSString* latSt = [[NSString alloc] initWithFormat:@"%f",latitude];
-            NSString* longSt = [[NSString alloc] initWithFormat:@"%f",longitude];
-            NSMutableString *dataSt = initQueryString(@"post[user_id]", [[NSString alloc] initWithFormat:@"%d",_user.userID]);
-            addArgumentToQueryString(dataSt, @"post[content]", _postContent);
-            addArgumentToQueryString(dataSt, @"post[rating]", @"5");
-            addArgumentToQueryString(dataSt, @"post[latitude]", latSt);
-            addArgumentToQueryString(dataSt, @"post[longitude]", longSt);
-            NSData *postData = [dataSt dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
-            
-            NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCPostsResource]];
-            
-            NSURLRequest *request = CreateHttpPostRequest(url, postData);
-            
-            NSURLConnection *connection = [[NSURLConnection alloc]
-                                           initWithRequest:request
-                                           delegate:self
-                                           startImmediately:YES];
-            _receivedData = [[NSMutableData alloc] init];
-            
-            if(!connection) {
-                NSLog(@"Registration Connection Failed.");
-            } else {
-                NSLog(@"Registration Connection Succeeded.");
-            }
-            
+            NSLog(@"Connection Succeeded.");
         }
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        alertStatus(@"Registration Failed.",@"Registration Failed!",self);
+        alertStatus(@"Post Failed.",@"Post Failed!",self);
     }
 }
 
 - (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
- 	//NSLog(@"Received response: %@", response);
- 	
+ 	NSLog(@"Received response: %@", response);
+    NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+    int responseStatusCode = [httpResponse statusCode];
+    if (responseStatusCode != RCHttpOkStatusCode) {
+        _successfulPost = NO;
+    } else _successfulPost = YES;
     [_receivedData setLength:0];
 }
 
@@ -121,23 +180,24 @@
 }
 
 - (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
- 	NSLog(@"Error receiving response: %@", error);
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    self.navigationItem.rightBarButtonItem.enabled = YES;
+    NSLog(@"Error: %@", error);
+    [self showAlertMessage:error.description withTitle:@"Upload Error"];
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    self.navigationItem.rightBarButtonItem.enabled = YES;
     NSString *responseData = [[NSString alloc]initWithData:_receivedData encoding:NSUTF8StringEncoding];
-    
-    SBJsonParser *jsonParser = [SBJsonParser new];
-    NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
-    NSLog(@"%@",jsonData);
+    NSLog(@"%@",responseData);
     
     //Temporary:
-    if (jsonData != NULL) {
-        NSDictionary *userData = (NSDictionary *) [jsonData objectForKey: @"user"];
-        NSString *name = (NSString *) [userData objectForKey:@"name"];
-        alertStatus([NSString stringWithFormat:@"Welcome, %@!",name], @"Registration Success!", self);
+    if (_successfulPost) {
+        //TODO open main news feed page
+        [self showAlertMessage:@"Image posted successfully!" withTitle:@"Success!"];
     }else {
-        alertStatus([NSString stringWithFormat:@"Please try again! %@", responseData], @"Registration Failed!", self);
+        alertStatus([NSString stringWithFormat:@"Please try again! %@", responseData], @"Post Failed!", self);
     }
 }
 
@@ -145,6 +205,9 @@
 #pragma mark - UI events
 
 - (IBAction)btnPostImageTouchUpInside:(id)sender {
+    if ([_txtViewPostContent isFirstResponder]) {
+        [_txtViewPostContent endEditing:YES];
+    }
     UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
     imagePicker.delegate = self;
     [self presentViewController:imagePicker animated:YES completion:nil];

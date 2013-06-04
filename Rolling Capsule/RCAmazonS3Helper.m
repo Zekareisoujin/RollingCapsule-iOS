@@ -35,6 +35,16 @@ static AmazonS3Client* s3Client = nil;
     }
 }
 
++ (void) createUserMediaBucket {
+    S3CreateBucketRequest *createBucketRequest = [[S3CreateBucketRequest alloc] initWithName:RCAmazonS3UsersMediaBucket andRegion:[S3Region USWest2]];
+    [AmazonErrorHandler shouldNotThrowExceptions];
+    S3CreateBucketResponse *createBucketResponse = [[RCAmazonS3Helper s3] createBucket:createBucketRequest];
+    if(createBucketResponse.error != nil)
+    {
+        NSLog(@"Error: %@", createBucketResponse.error);
+    }
+}
+
 + (UIImage *) getAvatarImage:(RCUser *)user {
     S3ResponseHeaderOverrides *override = [[S3ResponseHeaderOverrides alloc] init];
     override.contentType = @"image/jpeg";
@@ -44,7 +54,6 @@ static AmazonS3Client* s3Client = nil;
     gpsur.expires = [NSDate dateWithTimeIntervalSinceNow:(NSTimeInterval) 3600];  // Added an hour's worth of seconds to the current time.
     gpsur.responseHeaderOverrides = override;
     NSURL *imageUrl = [[RCAmazonS3Helper s3] getPreSignedURL:gpsur];
-    //NSURL *imageUrl = [NSURL URLWithString:_user.avatarImg];
     NSLog(@"%@",imageUrl);
     UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:imageUrl]];
     return image;
