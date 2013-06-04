@@ -281,7 +281,7 @@ int       _friendshipID;
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-        UIImage *image = [RCAmazonS3Helper getAvatarImage:_user withLoggedinUserID:_user.userID];
+        UIImage *image = [RCAmazonS3Helper getAvatarImage:_user withLoggedinUserID:_loggedinUserID];
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         if (image != nil) {    
             dispatch_async(dispatch_get_main_queue(), ^{
