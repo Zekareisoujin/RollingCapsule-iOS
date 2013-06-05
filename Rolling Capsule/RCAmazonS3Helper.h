@@ -11,7 +11,7 @@
 #import "RCUser.h"
 
 @interface RCAmazonS3Helper : NSObject 
-+ (AmazonS3Client *) s3;
-+ (void) createAvatarImagesBucket;
-+ (UIImage *) getAvatarImage:(RCUser*) user;
++ (AmazonS3Client *) s3:(int) userID  forResource:(NSString *)resource;
++ (UIImage *) getAvatarImage:(RCUser*) user withLoggedinUserID:(int)loggedInUserID;
++ (UIImage *) getUserMediaImage:(RCUser *)user withLoggedinUserID:(int)loggedinUserID withImageUrl:(NSString*)url;
 @end

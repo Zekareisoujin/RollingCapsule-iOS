@@ -141,7 +141,7 @@
     RCUser *user = [_items objectAtIndex:indexPath.row];
     cell.lblEmail.text = user.email;
     cell.lblName.text = user.name;
-    [cell getAvatarImageFromInternet:user];
+    [cell getAvatarImageFromInternet:user withLoggedInUserID:_user.userID];
     
     return cell;
 }

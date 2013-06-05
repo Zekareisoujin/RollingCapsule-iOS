@@ -21,7 +21,6 @@
 
 @synthesize user = _user;
 @synthesize loggedinUserID = _loggedinUserID;
-@synthesize s3 = _s3;
 
 NSString *_friendStatus;
 int       _friendshipID;
@@ -50,10 +49,6 @@ int       _friendshipID;
     _lblName.text = _user.name;
     _btnFriendAction.enabled = NO;
     [_btnFriendAction setTitle:@"Loading relation" forState:UIControlStateNormal];
-    if (self.s3 == nil)
-    {
-        self.s3 = [RCAmazonS3Helper s3];
-    }
     [self getAvatarImageFromInternet];
     [self asynchGetUserRelationRequest];
     
@@ -213,7 +208,8 @@ int       _friendshipID;
     por.data        = imageData;
     
     // Put the image data into the specified s3 bucket and object.
-    S3PutObjectResponse *putObjectResponse = [self.s3 putObject:por];
+     AmazonS3Client *s3 = [RCAmazonS3Helper s3:_loggedinUserID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3AvatarPictureBucket]];
+    S3PutObjectResponse *putObjectResponse = [s3 putObject:por];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self showCheckErrorMessage:putObjectResponse.error image:avatarImage];
     });
@@ -285,11 +281,10 @@ int       _friendshipID;
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-        UIImage *image = [RCAmazonS3Helper getAvatarImage:_user];
+        UIImage *image = [RCAmazonS3Helper getAvatarImage:_user withLoggedinUserID:_loggedinUserID];
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         if (image != nil) {    
             dispatch_async(dispatch_get_main_queue(), ^{
-                [_btnAvatarImg setTitle:@"" forState:UIControlStateNormal];
                 [_btnAvatarImg setBackgroundImage:image forState:UIControlStateNormal]; 
             });
         }

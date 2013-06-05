@@ -75,14 +75,14 @@ BOOL _successfulPost = NO;
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     self.navigationItem.rightBarButtonItem.enabled = NO;
     NSData *imageData = UIImageJPEGRepresentation(_postImage, 1.0);
-    [self processDelegateUpload:imageData];
+    [self performSelectorInBackground:@selector(uploadImageToS3:) withObject:imageData];
 }
 
-#pragma mark - AmazonServiceRequestDelegate
+#pragma mark - upload method
 
-- (void)processDelegateUpload:(NSData *)imageData
+- (void)uploadImageToS3:(NSData *)imageData
 {
-    AmazonS3Client *s3 = [RCAmazonS3Helper s3];
+    AmazonS3Client *s3 = [RCAmazonS3Helper s3:_user.userID forResource:[NSString stringWithFormat:@"%@/*", RCAmazonS3UsersMediaBucket]];
     CFUUIDRef theUUID = CFUUIDCreate(NULL);
     CFStringRef string = CFUUIDCreateString(NULL, theUUID);
     CFRelease(theUUID);
@@ -92,24 +92,22 @@ BOOL _successfulPost = NO;
                                                              inBucket:RCAmazonS3UsersMediaBucket];
     por.contentType = @"image/jpeg";
     por.data = imageData;
-    por.delegate = self;
+    //por.delegate = self;
     
-    // Put the image data into the specified s3 bucket and object.
-    [s3 putObject:por];
+    S3PutObjectResponse *putObjectResponse = [s3 putObject:por];
+    if (putObjectResponse.error == nil)
+    {
+        [self performSelectorOnMainThread:@selector(asynchPostNewResuest) withObject:nil waitUntilDone:YES];
+    } else {
+        NSLog(@"Error: %@", putObjectResponse.error);
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        self.navigationItem.rightBarButtonItem.enabled = YES;
+        [self showAlertMessage:putObjectResponse.error.description withTitle:@"Upload Error"];
+        
+    }
 }
 
--(void)request:(AmazonServiceRequest *)request didCompleteWithResponse:(AmazonServiceResponse *)response
-{
-    [self asynchPostNewResuest];
-}
-
--(void)request:(AmazonServiceRequest *)request didFailWithError:(NSError *)error
-{
-    NSLog(@"Error: %@", error);
-    [self showAlertMessage:error.description withTitle:@"Upload Error"];
-    
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-}
+#pragma mark - helper methods
 
 - (void)showAlertMessage:(NSString *)message withTitle:(NSString *)title
 {
@@ -126,6 +124,7 @@ BOOL _successfulPost = NO;
 - (void) asynchPostNewResuest {
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     _postContent = [_txtViewPostContent text];
+    
     //Asynchronous Request
     @try {    
         CLLocationDegrees latitude = appDelegate.currentLocation.coordinate.latitude;
@@ -137,6 +136,7 @@ BOOL _successfulPost = NO;
         addArgumentToQueryString(dataSt, @"post[rating]", @"5");
         addArgumentToQueryString(dataSt, @"post[latitude]", latSt);
         addArgumentToQueryString(dataSt, @"post[longitude]", longSt);
+        addArgumentToQueryString(dataSt, @"post[file_url]", _imageFileName);
         NSData *postData = [dataSt dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCPostsResource]];
@@ -153,6 +153,7 @@ BOOL _successfulPost = NO;
             
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             self.navigationItem.rightBarButtonItem.enabled = YES;
+            
             NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
             NSLog(@"%@",responseData);
             
@@ -167,8 +168,26 @@ BOOL _successfulPost = NO;
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        self.navigationItem.rightBarButtonItem.enabled = YES;
         alertStatus(@"Post Failed.",@"Post Failed!",self);
     }
+}
+
+#pragma mark - UIActionSheetDelegate
+
+- (void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+    imagePicker.delegate = self;
+    NSString* buttonLabel = [actionSheet buttonTitleAtIndex:buttonIndex];
+    if ([buttonLabel isEqualToString:RCImageSourcePhotoLibrary])
+        [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+    else if ([buttonLabel isEqualToString:RCImageSourcePhotoAlbum])
+        [imagePicker setSourceType:UIImagePickerControllerSourceTypeSavedPhotosAlbum];
+    else if ([buttonLabel isEqualToString:RCImageSourceCamera])
+        [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+    [self presentViewController:imagePicker animated:YES completion:nil];
 }
 
 #pragma mark - UI events
@@ -177,9 +196,22 @@ BOOL _successfulPost = NO;
     if ([_txtViewPostContent isFirstResponder]) {
         [_txtViewPostContent endEditing:YES];
     }
-    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-    imagePicker.delegate = self;
-    [self presentViewController:imagePicker animated:YES completion:nil];
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Select where image is from"
+                                                             delegate:self
+                                                    cancelButtonTitle:nil
+                                               destructiveButtonTitle:nil
+                                                    otherButtonTitles:nil];
+    
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
+    [actionSheet addButtonWithTitle:RCImageSourcePhotoLibrary];
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+        [actionSheet addButtonWithTitle:RCImageSourceCamera];
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum])
+        [actionSheet addButtonWithTitle:RCImageSourcePhotoAlbum];
+    
+    actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:@"Cancel"];
+    [actionSheet showInView:self.view];
+    
 }
 
 - (IBAction)backgroundTouchUpInside:(id)sender {

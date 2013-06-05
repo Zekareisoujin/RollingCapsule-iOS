@@ -28,11 +28,11 @@
     // Configure the view for the selected state
 }
 
--(void) getAvatarImageFromInternet:(RCUser *) user {
+-(void) getAvatarImageFromInternet:(RCUser *) user withLoggedInUserID:(int)loggedInUserID {
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-        UIImage *image = [RCAmazonS3Helper getAvatarImage:user];
+        UIImage *image = [RCAmazonS3Helper getAvatarImage:user withLoggedinUserID:loggedInUserID];
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         if (image != nil) {
             dispatch_async(dispatch_get_main_queue(), ^{
