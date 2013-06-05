@@ -21,7 +21,9 @@
 @implementation RCMainFeedViewController
 
 BOOL        _firstRefresh;
+BOOL        _hideBackButton;
 @synthesize refreshControl = _refreshControl;
+@synthesize user = _user;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -32,10 +34,11 @@ BOOL        _firstRefresh;
     return self;
 }
 
-- (id)initWithUserID:(int) userID {
+- (id)initWithUser:(RCUser *) user hideBackButton:(BOOL)hideBack {
     self = [super init];
     if (self) {
-        _userID = userID;
+        _user = user;
+        _hideBackButton = hideBack;
     }
     return self;
 }
@@ -43,7 +46,7 @@ BOOL        _firstRefresh;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.navigationItem.hidesBackButton = YES;
+    self.navigationItem.hidesBackButton = _hideBackButton;
     // Do any additional setup after loading the view from its nib.
     _items = [[NSMutableArray alloc] init];
     _tblFeedList.tableFooterView = [[UIView alloc] init];

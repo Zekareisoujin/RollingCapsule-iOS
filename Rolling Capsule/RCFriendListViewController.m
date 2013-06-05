@@ -23,6 +23,7 @@
 
 @implementation RCFriendListViewController
 BOOL        _firstRefresh;
+BOOL        _hideBackButton;
 @synthesize items = _items;
 @synthesize user = _user;
 @synthesize refreshControl = _refreshControl;
@@ -36,16 +37,18 @@ BOOL        _firstRefresh;
     return self;
 }
 
-- (id)initWithUser:(RCUser *) user {
+- (id)initWithUser:(RCUser *) user hideBackButton:(BOOL)hideBack {
     self = [super init];
     if (self) {
         _user = user;
+        _hideBackButton = hideBack;
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.navigationItem.hidesBackButton = _hideBackButton;
     _items = [[NSMutableArray alloc] init];
     _tblViewFriendList.tableFooterView = [[UIView alloc] init];
     

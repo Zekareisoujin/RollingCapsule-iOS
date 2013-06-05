@@ -35,12 +35,15 @@
     RCLoginViewController *firstViewController = [[RCLoginViewController alloc] init];
     _navigationController = [[UINavigationController alloc] initWithRootViewController:firstViewController];
     _mainViewController = [[RCSlideoutViewController alloc] init];
-    _menuViewController = [[RCMainMenuViewController alloc] init];
+    _menuViewController = [[RCMainMenuViewController alloc] initWithContentView:_navigationController];
     
     _mainViewController = [[RCSlideoutViewController alloc] init];
     _mainViewController.contentController = _navigationController;
     _mainViewController.menuViewController = _menuViewController;
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    firstViewController.delegate = _menuViewController;
+    
     // Configure Window
     
     [self.window setRootViewController:_mainViewController];
