@@ -12,6 +12,7 @@
 #import "SBJson.h"
 #import "RCRegisterViewController.h"
 #import "RCMainFeedViewController.h"
+#import "RCUser.h"
 #import "Util.h"
 
 @interface RCLoginViewController ()
@@ -20,7 +21,7 @@
 
 @implementation RCLoginViewController
 
-
+@synthesize delegate;
 
 - (void)viewDidLoad
 {
@@ -34,18 +35,21 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)btnLogInClick:(id)sender {
-    [self asynchLoginRequest];
+- (IBAction)btnActionLogIn:(id)sender {
+    [self setUIBusy:YES];
+    [self asynchLogInRequest];
 }
 
-- (void)asynchLoginRequest
+- (void)asynchLogInRequest
 {
     //Asynchronous Request
     @try {
         
         if([[_txtFieldUsername text] isEqualToString:@""] || [[_txtFieldPassword text] isEqualToString:@""] ) {
             alertStatus(@"Please enter both Username and Password",@"Login Failed!",self);
+            [self setUIBusy:NO];
         } else {
+            //[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
             NSString *post =[[NSString alloc] initWithFormat:@"session[email]=%@&session[password]=%@&mobile=1",[_txtFieldUsername text],[_txtFieldPassword text]];
             NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
             NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCSessionsResource]];
@@ -54,6 +58,7 @@
             [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                 completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
             {
+                //[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
                 NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
                 
                 SBJsonParser *jsonParser = [SBJsonParser new];
@@ -62,18 +67,20 @@
                 
                 //Temporary:
                 if (jsonData != NULL) {
-                    NSDictionary *userData = (NSDictionary *) [jsonData objectForKey: @"user"];
+                    /*NSDictionary *userData = (NSDictionary *) [jsonData objectForKey: @"user"];
                     NSString *name = (NSString *) [userData objectForKey:@"name"];
-                    int userID = (int) [userData objectForKey:@"id"];
+                    int userID = (int) [userData objectForKey:@"id"];*/
+                    
+                    RCUser *user = [[RCUser alloc] initWithNSDictionary:(NSDictionary*)[jsonData objectForKey:@"user"]];
+                    NSString *name = [user name];
+                    [delegate initializeUserFromLogIn:user];
+                    
                     alertStatus([NSString stringWithFormat:@"Welcome, %@!",name], @"Login Success!", self);
-                    [self switchToFeedView:userID];
+                    [self switchToFeedView:user];
                 }else {
                     alertStatus([NSString stringWithFormat:@"Please try again!"], @"Login Failed!", self);
                 }
-            }];
-            [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
-                                   completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
-            {
+                [self setUIBusy:NO];
             }];
         }
     }
@@ -83,7 +90,7 @@
     }
 }
 
-- (IBAction)btnRegisterClick:(id)sender {
+- (IBAction)btnActionRegister:(id)sender {
     RCRegisterViewController *registerViewController = [[RCRegisterViewController alloc]
                                                       init];
     [self.navigationController pushViewController:registerViewController animated:YES];
@@ -107,10 +114,17 @@
     [super viewWillDisappear:animated];
 }
 
-- (void)switchToFeedView:(int)userID {
-    RCMainFeedViewController *mainFeedViewController = [[RCMainFeedViewController alloc] initWithUserID:userID];
-    //NSLog(@"here");
-    NSArray *mainViewStack = [[NSArray alloc]initWithObjects:mainFeedViewController, nil];
-    [self.navigationController setViewControllers:mainViewStack animated:YES];
+- (void)switchToFeedView:(RCUser*)user {
+    RCMainFeedViewController *mainFeedViewController = [[RCMainFeedViewController alloc] initWithUser:user hideBackButton:YES];
+    [self.navigationController pushViewController:mainFeedViewController animated:YES];
 }
+
+- (void)setUIBusy:(BOOL)busy {
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:busy];
+    [_txtFieldUsername setUserInteractionEnabled:!busy];
+    [_txtFieldPassword setUserInteractionEnabled:!busy];
+    [_btnLogIn setEnabled:!busy];
+    [_btnRegister setUserInteractionEnabled:!busy];
+}
+
 @end

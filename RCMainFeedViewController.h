@@ -7,13 +7,15 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RCUser.h"
 
 @interface RCMainFeedViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
-@property (nonatomic,assign) int userID;
 @property (weak, nonatomic) IBOutlet UITableView *tblFeedList;
 @property (nonatomic, strong) NSMutableArray *items;
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
+@property (nonatomic, strong) RCUser *user;
 
-- (id)initWithUserID:(int) userID;
+- (id)initWithUser:(RCUser *)user hideBackButton:(BOOL)hideBackbtn;
 
 @end

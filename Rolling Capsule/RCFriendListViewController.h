@@ -10,7 +10,7 @@
 #import "RCUser.h"
 
 @interface RCFriendListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
-- (id)initWithUser:(RCUser *) user;
+- (id)initWithUser:(RCUser *) user hideBackButton:(BOOL)hideBackbtn;
 @property (weak, nonatomic) IBOutlet UITableView *tblViewFriendList;
 @property (nonatomic, strong) NSMutableArray *items;
 @property (nonatomic,strong) RCUser *user;
