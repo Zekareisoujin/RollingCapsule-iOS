@@ -139,8 +139,6 @@ BOOL        _firstRefresh;
                         RCUser *user = [[RCUser alloc] initWithNSDictionary:userData];
                         [_items addObject:user];
                     }
-                    [_refreshControl endRefreshing];
-                    
                     [_tblViewFriendList reloadData];
                     if (_firstRefresh) {
                         [_tblViewFriendList setContentOffset:CGPointMake(0, 0) animated:YES];
@@ -148,7 +146,9 @@ BOOL        _firstRefresh;
                     }
                 }else {
                     alertStatus([NSString stringWithFormat:@"Failed to obtain friend list, please try again! %@", responseData], @"Connection Failed!", self);
+                    
                 }
+                [_refreshControl endRefreshing];
             }];
     }
     @catch (NSException * e) {

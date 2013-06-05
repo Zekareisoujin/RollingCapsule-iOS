@@ -9,6 +9,7 @@
 #import "Constants.h"
 #import "RCPostDetailsViewController.h"
 #import "RCAmazonS3Helper.h"
+#import "Util.h"
 
 @interface RCPostDetailsViewController ()
 
@@ -64,8 +65,14 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [_imgViewPostImage setImage:image];
             });
+        } else {
+            alertStatus(@"Couldn't connect to the server. Please try again later", @"Network error", self);
         }
     });
 }
+
+#pragma mark - UITableViewDataSource
+
+#pragma mark - UITableViewDelegate
 
 @end

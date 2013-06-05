@@ -209,26 +209,32 @@ int       _friendshipID;
     
     // Put the image data into the specified s3 bucket and object.
      AmazonS3Client *s3 = [RCAmazonS3Helper s3:_loggedinUserID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3AvatarPictureBucket]];
-    S3PutObjectResponse *putObjectResponse = [s3 putObject:por];
+    NSString *error = @"Couldn't connect to server, please try again later";
+    if (s3 != nil) {
+        S3PutObjectResponse *putObjectResponse = [s3 putObject:por];
+        error = putObjectResponse.error.description;
+        if(putObjectResponse.error != nil) {
+            NSLog(@"Error: %@", putObjectResponse.error);
+        }
+    }
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self showCheckErrorMessage:putObjectResponse.error image:avatarImage];
+        [self showCheckErrorMessage:error image:avatarImage];
     });
 }
 
-- (void)showCheckErrorMessage:(NSError *)error image:(UIImage *)_image
+- (void)showCheckErrorMessage:(NSString *)error image:(UIImage *)_image
 {
     if(error != nil)
     {
         NSLog(@"Error: %@", error);
-        [self showAlertMessage:[error.userInfo objectForKey:@"message"] withTitle:@"Upload Error"];
+        [self showAlertMessage:error withTitle:@"Upload Error"];
     }
     else
     {
         [self showAlertMessage:@"The image was successfully uploaded." withTitle:@"Upload Completed"];
         [_btnAvatarImg setBackgroundImage:_image forState:UIControlStateNormal];
-        _btnAvatarImg.enabled = YES;
     }
-    
+    _btnAvatarImg.enabled = YES;
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 }
 

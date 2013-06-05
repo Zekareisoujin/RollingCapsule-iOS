@@ -66,6 +66,7 @@
 
 #pragma mark - web request
 - (void)asynchFindUsersRequest:(NSString *)searchString {
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     //Asynchronous Request
     @try {
         
@@ -83,6 +84,7 @@
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
         {
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
             
             SBJsonParser *jsonParser = [SBJsonParser new];
@@ -96,15 +98,17 @@
                     [_items addObject:user];
                 }
                 [_tblViewFoundUsers reloadData];
-                [_refreshControl endRefreshing];
             }else {
                 alertStatus([NSString stringWithFormat:@"Failed to obtain user list, please try again! %@", responseData], @"Connection Failed!", self);
             }
+            [_refreshControl endRefreshing];
         }];
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
         alertStatus(@"Failure getting friends from web service",@"Connection Failed!",self);
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        [_refreshControl endRefreshing];
     }
 }
 

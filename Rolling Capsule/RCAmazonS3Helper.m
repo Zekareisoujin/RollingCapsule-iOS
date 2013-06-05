@@ -31,6 +31,8 @@
         NSString* accessKey = [credsJson objectForKey:@"access_key_id"];
         NSString* secretKey = [credsJson objectForKey:@"secret_access_key"];
         NSString* sessionToken = [credsJson objectForKey:@"session_token"];
+        if (accessKey == nil || secretKey == nil || sessionToken == nil)
+            return s3Client;
         NSLog(@"%@",credsJson);
         AmazonCredentials *creds = [[AmazonCredentials alloc] initWithAccessKey:accessKey withSecretKey:secretKey withSecurityToken:sessionToken];
         s3Client = [[AmazonS3Client alloc] initWithCredentials:creds];
@@ -75,11 +77,14 @@
     gpsur.expires = [NSDate dateWithTimeIntervalSinceNow:(NSTimeInterval) 3600];  // Added an hour's worth of seconds to the current time.
     gpsur.responseHeaderOverrides = override;
     AmazonS3Client *s3 = [RCAmazonS3Helper s3:loggedinUserID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3AvatarPictureBucket]];
-    NSURL *imageUrl = [s3 getPreSignedURL:gpsur];
-    NSLog(@"%@",imageUrl);
-    UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:imageUrl]];
-    return image;
-
+    if (s3 != nil) {
+        NSURL *imageUrl = [s3 getPreSignedURL:gpsur];
+        NSLog(@"%@",imageUrl);
+        UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:imageUrl]];
+        return image;
+    } else {
+        return nil;
+    }
 }
 
 + (UIImage *) getUserMediaImage:(RCUser *)user withLoggedinUserID:(int)loggedinUserID withImageUrl:(NSString*)url {
@@ -91,10 +96,14 @@
     gpsur.expires = [NSDate dateWithTimeIntervalSinceNow:(NSTimeInterval) 3600];  // Added an hour's worth of seconds to the current time.
     gpsur.responseHeaderOverrides = override;
     AmazonS3Client *s3 = [RCAmazonS3Helper s3:loggedinUserID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3UsersMediaBucket]];
-    NSURL *imageUrl = [s3 getPreSignedURL:gpsur];
-    NSLog(@"%@",imageUrl);
-    UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:imageUrl]];
-    return image;
+    if (s3 != nil) {
+        NSURL *imageUrl = [s3 getPreSignedURL:gpsur];
+        NSLog(@"%@",imageUrl);
+        UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:imageUrl]];
+        return image;
+    } else {
+        return nil;
+    }
 }
 
 

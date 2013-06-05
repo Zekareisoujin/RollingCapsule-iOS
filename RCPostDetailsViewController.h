@@ -10,7 +10,7 @@
 #import "RCPost.h"
 #import "RCUSer.h"
 
-@interface RCPostDetailsViewController : UIViewController
+@interface RCPostDetailsViewController : UIViewController <UITableViewDataSource, UITableViewDataSource>
 @property (weak, nonatomic) IBOutlet UITableView *tblViewPostDiscussion;
 @property (weak, nonatomic) IBOutlet UIImageView *imgViewPostImage;
 @property (nonatomic, strong) RCPost *post;
