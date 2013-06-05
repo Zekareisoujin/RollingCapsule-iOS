@@ -208,7 +208,7 @@ int       _friendshipID;
     por.data        = imageData;
     
     // Put the image data into the specified s3 bucket and object.
-     AmazonS3Client *s3 = [RCAmazonS3Helper s3:_user.userID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3AvatarPictureBucket]];
+     AmazonS3Client *s3 = [RCAmazonS3Helper s3:_loggedinUserID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3AvatarPictureBucket]];
     S3PutObjectResponse *putObjectResponse = [s3 putObject:por];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self showCheckErrorMessage:putObjectResponse.error image:avatarImage];
@@ -285,7 +285,6 @@ int       _friendshipID;
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         if (image != nil) {    
             dispatch_async(dispatch_get_main_queue(), ^{
-                [_btnAvatarImg setTitle:@"" forState:UIControlStateNormal];
                 [_btnAvatarImg setBackgroundImage:image forState:UIControlStateNormal]; 
             });
         }

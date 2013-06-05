@@ -19,6 +19,8 @@
 		643EACED175BBE51002761D9 /* RCNewPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 643EACEB175BBE51002761D9 /* RCNewPostViewController.m */; };
 		643EACEE175BBE51002761D9 /* RCNewPostViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 643EACEC175BBE51002761D9 /* RCNewPostViewController.xib */; };
 		643EACF0175C1B5C002761D9 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 643EACEF175C1B5C002761D9 /* CoreLocation.framework */; };
+		64549D88175F264600BA8164 /* RCPostDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64549D86175F264600BA8164 /* RCPostDetailsViewController.m */; };
+		64549D89175F264600BA8164 /* RCPostDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64549D87175F264600BA8164 /* RCPostDetailsViewController.xib */; };
 		6490A90C1757C07100E5048F /* RCMainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6490A90A1757C07100E5048F /* RCMainMenuViewController.m */; };
 		6490A90D1757C07100E5048F /* RCMainMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6490A90B1757C07100E5048F /* RCMainMenuViewController.xib */; };
 		6490A9101758E2D000E5048F /* RCSlideoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6490A90F1758E2D000E5048F /* RCSlideoutViewController.m */; };
@@ -93,6 +95,9 @@
 		643EACEB175BBE51002761D9 /* RCNewPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNewPostViewController.m; sourceTree = "<group>"; };
 		643EACEC175BBE51002761D9 /* RCNewPostViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCNewPostViewController.xib; sourceTree = "<group>"; };
 		643EACEF175C1B5C002761D9 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		64549D85175F264600BA8164 /* RCPostDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCPostDetailsViewController.h; sourceTree = "<group>"; };
+		64549D86175F264600BA8164 /* RCPostDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCPostDetailsViewController.m; sourceTree = "<group>"; };
+		64549D87175F264600BA8164 /* RCPostDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCPostDetailsViewController.xib; sourceTree = "<group>"; };
 		6490A9091757C07000E5048F /* RCMainMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMainMenuViewController.h; sourceTree = "<group>"; };
 		6490A90A1757C07100E5048F /* RCMainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMainMenuViewController.m; sourceTree = "<group>"; };
 		6490A90B1757C07100E5048F /* RCMainMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCMainMenuViewController.xib; sourceTree = "<group>"; };
@@ -211,6 +216,9 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
+				64549D85175F264600BA8164 /* RCPostDetailsViewController.h */,
+				64549D86175F264600BA8164 /* RCPostDetailsViewController.m */,
+				64549D87175F264600BA8164 /* RCPostDetailsViewController.xib */,
 				BF4DCC44175C82280081B5AC /* AWSRuntime.framework */,
 				BF4DCC45175C82280081B5AC /* AWSS3.framework */,
 				643EACEF175C1B5C002761D9 /* CoreLocation.framework */,
@@ -448,6 +456,7 @@
 				643EACE6175BA0B6002761D9 /* default_avatar.jpg in Resources */,
 				643EACE8175BACC0002761D9 /* back_button.png in Resources */,
 				643EACEE175BBE51002761D9 /* RCNewPostViewController.xib in Resources */,
+				64549D89175F264600BA8164 /* RCPostDetailsViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -510,6 +519,7 @@
 				6490A9101758E2D000E5048F /* RCSlideoutViewController.m in Sources */,
 				649A869D175B0CC30016674F /* RCAmazonS3Helper.m in Sources */,
 				643EACED175BBE51002761D9 /* RCNewPostViewController.m in Sources */,
+				64549D88175F264600BA8164 /* RCPostDetailsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

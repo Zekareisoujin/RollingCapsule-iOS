@@ -31,6 +31,7 @@
         NSString* accessKey = [credsJson objectForKey:@"access_key_id"];
         NSString* secretKey = [credsJson objectForKey:@"secret_access_key"];
         NSString* sessionToken = [credsJson objectForKey:@"session_token"];
+        NSLog(@"%@",credsJson);
         AmazonCredentials *creds = [[AmazonCredentials alloc] initWithAccessKey:accessKey withSecretKey:secretKey withSecurityToken:sessionToken];
         s3Client = [[AmazonS3Client alloc] initWithCredentials:creds];
         s3Client.endpoint = [AmazonEndpoints s3Endpoint:US_WEST_2];
@@ -65,7 +66,7 @@
     }
 }
 
-+ (UIImage *) getAvatarImage:(RCUser *)user withLoggedinUserID:(int)loggedinUserID {
++ (UIImage *) getAvatarImage:(RCUser*) user withLoggedinUserID:(int)loggedinUserID {
     S3ResponseHeaderOverrides *override = [[S3ResponseHeaderOverrides alloc] init];
     override.contentType = @"image/jpeg";
     S3GetPreSignedURLRequest *gpsur = [[S3GetPreSignedURLRequest alloc] init];
@@ -78,5 +79,23 @@
     NSLog(@"%@",imageUrl);
     UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:imageUrl]];
     return image;
+
 }
+
++ (UIImage *) getUserMediaImage:(RCUser *)user withLoggedinUserID:(int)loggedinUserID withImageUrl:(NSString*)url {
+    S3ResponseHeaderOverrides *override = [[S3ResponseHeaderOverrides alloc] init];
+    override.contentType = @"image/jpeg";
+    S3GetPreSignedURLRequest *gpsur = [[S3GetPreSignedURLRequest alloc] init];
+    gpsur.key     = url;
+    gpsur.bucket  = RCAmazonS3UsersMediaBucket;
+    gpsur.expires = [NSDate dateWithTimeIntervalSinceNow:(NSTimeInterval) 3600];  // Added an hour's worth of seconds to the current time.
+    gpsur.responseHeaderOverrides = override;
+    AmazonS3Client *s3 = [RCAmazonS3Helper s3:loggedinUserID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3UsersMediaBucket]];
+    NSURL *imageUrl = [s3 getPreSignedURL:gpsur];
+    NSLog(@"%@",imageUrl);
+    UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:imageUrl]];
+    return image;
+}
+
+
 @end

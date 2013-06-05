@@ -92,7 +92,7 @@ BOOL _successfulPost = NO;
                                                              inBucket:RCAmazonS3UsersMediaBucket];
     por.contentType = @"image/jpeg";
     por.data = imageData;
-    por.delegate = self;
+    //por.delegate = self;
     
     S3PutObjectResponse *putObjectResponse = [s3 putObject:por];
     if (putObjectResponse.error == nil)
@@ -136,6 +136,7 @@ BOOL _successfulPost = NO;
         addArgumentToQueryString(dataSt, @"post[rating]", @"5");
         addArgumentToQueryString(dataSt, @"post[latitude]", latSt);
         addArgumentToQueryString(dataSt, @"post[longitude]", longSt);
+        addArgumentToQueryString(dataSt, @"post[file_url]", _imageFileName);
         NSData *postData = [dataSt dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCPostsResource]];
