@@ -161,6 +161,7 @@ BOOL _successfulPost = NO;
             if (_successfulPost) {
                 //TODO open main news feed page
                 [self showAlertMessage:@"Image posted successfully!" withTitle:@"Success!"];
+                [self.navigationController popViewControllerAnimated:YES];
             }else {
                 alertStatus([NSString stringWithFormat:@"Please try again! %@", responseData], @"Post Failed!", self);
             }
