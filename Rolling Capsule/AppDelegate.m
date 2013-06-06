@@ -28,9 +28,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     RCUser *user = [[RCUser alloc] init];
-    user.name = @"lolo";
-    user.email = @"lolotp@hotmail.com";
-    user.userID = 1;
+    user.name = @"rollcap";
+    user.email = @"a@b.c";
+    user.userID = 4;
     RCPost *post = [[RCPost alloc] init];
     post.postID = 14;
     post.content = @"hh";
@@ -47,8 +47,8 @@
     
     //RCFriendListViewController *firstViewController = [[RCFriendListViewController alloc] initWithUser:user hideBackButton:NO];
     //RCNewPostViewController *firstViewController = [[RCNewPostViewController alloc] initWithUser:user];
-    RCLoginViewController *firstViewController = [[RCLoginViewController alloc] init];
-    //RCPostDetailsViewController *firstViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:user];
+    RCMainFeedViewController *firstViewController = [[RCMainFeedViewController alloc] initWithUser:user];
+    //RCLoginViewController *firstViewController = [[RCLoginViewController alloc] init];
     _navigationController = [[UINavigationController alloc] initWithRootViewController:firstViewController];
     _mainViewController = [[RCSlideoutViewController alloc] init];
     _menuViewController = [[RCMainMenuViewController alloc] initWithContentView:_navigationController];
@@ -58,7 +58,7 @@
     _mainViewController.menuViewController = _menuViewController;
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    firstViewController.delegate = _menuViewController;
+    //firstViewController.delegate = _menuViewController;
     
     // Configure Window
     

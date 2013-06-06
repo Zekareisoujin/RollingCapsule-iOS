@@ -33,7 +33,7 @@
         NSString* sessionToken = [credsJson objectForKey:@"session_token"];
         if (accessKey == nil || secretKey == nil || sessionToken == nil)
             return s3Client;
-        NSLog(@"%@",credsJson);
+        //NSLog(@"%@",credsJson);
         AmazonCredentials *creds = [[AmazonCredentials alloc] initWithAccessKey:accessKey withSecretKey:secretKey withSecurityToken:sessionToken];
         s3Client = [[AmazonS3Client alloc] initWithCredentials:creds];
         s3Client.endpoint = [AmazonEndpoints s3Endpoint:US_WEST_2];
@@ -79,7 +79,7 @@
     AmazonS3Client *s3 = [RCAmazonS3Helper s3:loggedinUserID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3AvatarPictureBucket]];
     if (s3 != nil) {
         NSURL *imageUrl = [s3 getPreSignedURL:gpsur];
-        NSLog(@"%@",imageUrl);
+        //NSLog(@"%@",imageUrl);
         UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:imageUrl]];
         return image;
     } else {
@@ -98,7 +98,7 @@
     AmazonS3Client *s3 = [RCAmazonS3Helper s3:loggedinUserID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3UsersMediaBucket]];
     if (s3 != nil) {
         NSURL *imageUrl = [s3 getPreSignedURL:gpsur];
-        NSLog(@"%@",imageUrl);
+        //NSLog(@"%@",imageUrl);
         UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:imageUrl]];
         return image;
     } else {

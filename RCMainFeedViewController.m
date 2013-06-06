@@ -99,7 +99,6 @@ BOOL        _firstRefresh;
     cell.lblUserProfileName.text = post.authorName;
     cell.lblPostContent.text = post.content;
     
-    
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
         NSURL *imageUrl = [NSURL URLWithString:post.authorAvatar];
@@ -109,7 +108,7 @@ BOOL        _firstRefresh;
         });
     });
     dispatch_async(queue, ^{
-        if (post.fileUrl != nil) {
+        if ((NSNull *)post.fileUrl != [NSNull null]) {
             UIImage *image = [RCAmazonS3Helper getUserMediaImage:[[RCUser alloc] init] withLoggedinUserID:_user.userID withImageUrl:post.fileUrl];
             //UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:imageUrl]];
             dispatch_async(dispatch_get_main_queue(), ^{

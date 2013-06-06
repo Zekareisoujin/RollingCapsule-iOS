@@ -67,16 +67,11 @@
                 
                 //Temporary:
                 if (jsonData != NULL) {
-                    /*NSDictionary *userData = (NSDictionary *) [jsonData objectForKey: @"user"];
-                    NSString *name = (NSString *) [userData objectForKey:@"name"];
-                    int userID = (int) [userData objectForKey:@"id"];*/
-                    
                     RCUser *user = [[RCUser alloc] initWithNSDictionary:(NSDictionary*)[jsonData objectForKey:@"user"]];
                     NSString *name = [user name];
                     [delegate initializeUserFromLogIn:user];
                     
                     alertStatus([NSString stringWithFormat:@"Welcome, %@!",name], @"Login Success!", self);
-                    //[self switchToFeedView:user];
                 }else {
                     alertStatus([NSString stringWithFormat:@"Please try again!"], @"Login Failed!", self);
                 }
