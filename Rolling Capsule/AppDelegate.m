@@ -28,9 +28,9 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     RCUser *user = [[RCUser alloc] init];
-    user.name = @"rollcap";
-    user.email = @"a@b.c";
-    user.userID = 4;
+    user.name = @"lolo";
+    user.email = @"lolotp@hotmail.com";
+    user.userID = 1;
     RCPost *post = [[RCPost alloc] init];
     post.postID = 14;
     post.content = @"hh";
@@ -45,7 +45,8 @@
     owner.email = @"lolotp@hotmail.com";
     owner.userID = 1;
     
-    RCLoginViewController *firstViewController = [[RCLoginViewController alloc] init];
+    //RCLoginViewController *firstViewController = [[RCLoginViewController alloc] init];
+    RCPostDetailsViewController *firstViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:user];
     _navigationController = [[UINavigationController alloc] initWithRootViewController:firstViewController];
     _mainViewController = [[RCSlideoutViewController alloc] init];
     _menuViewController = [[RCMainMenuViewController alloc] initWithContentView:_navigationController];
@@ -55,11 +56,11 @@
     _mainViewController.menuViewController = _menuViewController;
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    firstViewController.delegate = _menuViewController;
+    //firstViewController.delegate = _menuViewController;
 
     // Test code
-    _menuViewController.user = user;
-    [_menuViewController btnActionMainFeedNav:_mainViewController];
+    //_menuViewController.user = user;
+    //[_menuViewController btnActionMainFeedNav:_mainViewController];
     
     // Configure Window
     

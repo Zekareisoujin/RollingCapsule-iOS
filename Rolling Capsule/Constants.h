@@ -14,6 +14,7 @@ static NSString* const RCServiceURL = @"https://shielded-fortress-7112.herokuapp
 static NSString* const RCSessionsResource = @"/sessions";
 static NSString* const RCUsersResource = @"/users";
 static NSString* const RCPostsResource = @"/posts";
+static NSString* const RCCommentsResource = @"/comments";
 static NSString* const RCFriendshipsResource = @"/friendships";
 static NSString* const RCFriendStatusAccepted = @"accepted";
 static NSString* const RCFriendStatusPending = @"pending";
