@@ -71,40 +71,35 @@
 + (UIImage *) getAvatarImage:(RCUser*) user withLoggedinUserID:(int)loggedinUserID {
     S3ResponseHeaderOverrides *override = [[S3ResponseHeaderOverrides alloc] init];
     override.contentType = @"image/jpeg";
-    S3GetPreSignedURLRequest *gpsur = [[S3GetPreSignedURLRequest alloc] init];
-    gpsur.key     = user.email;
-    gpsur.bucket  = RCAmazonS3AvatarPictureBucket;
-    gpsur.expires = [NSDate dateWithTimeIntervalSinceNow:(NSTimeInterval) 3600];  // Added an hour's worth of seconds to the current time.
-    gpsur.responseHeaderOverrides = override;
     AmazonS3Client *s3 = [RCAmazonS3Helper s3:loggedinUserID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3AvatarPictureBucket]];
     if (s3 != nil) {
-        NSURL *imageUrl = [s3 getPreSignedURL:gpsur];
-        NSLog(@"%@",imageUrl);
-        UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:imageUrl]];
-        return image;
-    } else {
-        return nil;
-    }
+        @try {
+            S3GetObjectRequest *getObjectRequest = [[S3GetObjectRequest alloc] initWithKey:user.email withBucket:RCAmazonS3AvatarPictureBucket];
+            S3GetObjectResponse *response = [s3 getObject:getObjectRequest];
+            UIImage *image = [UIImage imageWithData:response.body];
+            return image;
+        } @catch (AmazonServiceException * e) {
+            NSLog(@"%@",e);
+            return nil;
+        }
+    } else return nil;
 }
 
 + (UIImage *) getUserMediaImage:(RCUser *)user withLoggedinUserID:(int)loggedinUserID withImageUrl:(NSString*)url {
     S3ResponseHeaderOverrides *override = [[S3ResponseHeaderOverrides alloc] init];
     override.contentType = @"image/jpeg";
-    S3GetPreSignedURLRequest *gpsur = [[S3GetPreSignedURLRequest alloc] init];
-    gpsur.key     = url;
-    gpsur.bucket  = RCAmazonS3UsersMediaBucket;
-    gpsur.expires = [NSDate dateWithTimeIntervalSinceNow:(NSTimeInterval) 3600];  // Added an hour's worth of seconds to the current time.
-    gpsur.responseHeaderOverrides = override;
     AmazonS3Client *s3 = [RCAmazonS3Helper s3:loggedinUserID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3UsersMediaBucket]];
     if (s3 != nil) {
-        NSURL *imageUrl = [s3 getPreSignedURL:gpsur];
-        NSLog(@"%@",imageUrl);
-        UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:imageUrl]];
-        return image;
-    } else {
-        return nil;
-    }
-}
+        @try {
+            S3GetObjectRequest *getObjectRequest = [[S3GetObjectRequest alloc] initWithKey:url withBucket:RCAmazonS3UsersMediaBucket];
+            S3GetObjectResponse *response = [s3 getObject:getObjectRequest];
+            UIImage *image = [UIImage imageWithData:response.body];
+            return image;
+        } @catch (AmazonServiceException * e) {
+            NSLog(@"%@",e);
+            return nil;
+        }
+    } else return nil;}
 
 
 @end
