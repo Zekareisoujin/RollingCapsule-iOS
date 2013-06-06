@@ -23,7 +23,6 @@
 
 @implementation RCFriendListViewController
 BOOL        _firstRefresh;
-BOOL        _hideBackButton;
 @synthesize items = _items;
 @synthesize user = _user;
 @synthesize refreshControl = _refreshControl;
@@ -37,20 +36,25 @@ BOOL        _hideBackButton;
     return self;
 }
 
-- (id)initWithUser:(RCUser *) user hideBackButton:(BOOL)hideBack {
+- (id)initWithUser:(RCUser *) user {
     self = [super init];
     if (self) {
         _user = user;
-        _hideBackButton = hideBack;
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.navigationItem.hidesBackButton = _hideBackButton;
     _items = [[NSMutableArray alloc] init];
     _tblViewFriendList.tableFooterView = [[UIView alloc] init];
+    
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc]
+                                    initWithTitle:@"Find Friends"
+                                    style:UIBarButtonItemStylePlain
+                                    target:self
+                                    action:@selector(openFindFriendsView)];
+    self.navigationItem.rightBarButtonItem = rightButton;
     
     self.navigationItem.title = @" ";
     UITableViewController *tableViewController = setUpRefreshControlWithTableViewController(self, _tblViewFriendList);

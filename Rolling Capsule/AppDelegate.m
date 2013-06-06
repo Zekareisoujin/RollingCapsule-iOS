@@ -44,9 +44,9 @@
     owner.name = @"lolo";
     owner.email = @"lolotp@hotmail.com";
     owner.userID = 1;
-    RCFriendListViewController *firstViewController = [[RCFriendListViewController alloc] initWithUser:user hideBackButton:NO];
+    //RCFriendListViewController *firstViewController = [[RCFriendListViewController alloc] initWithUser:user hideBackButton:NO];
     //RCNewPostViewController *firstViewController = [[RCNewPostViewController alloc] initWithUser:user];
-    //RCLoginViewController *firstViewController = [[RCLoginViewController alloc] init];
+    RCLoginViewController *firstViewController = [[RCLoginViewController alloc] init];
     //RCPostDetailsViewController *firstViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:user];
     _navigationController = [[UINavigationController alloc] initWithRootViewController:firstViewController];
     _mainViewController = [[RCSlideoutViewController alloc] init];
@@ -57,7 +57,7 @@
     _mainViewController.menuViewController = _menuViewController;
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    //firstViewController.delegate = _menuViewController;
+    firstViewController.delegate = _menuViewController;
     
     // Configure Window
     

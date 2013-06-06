@@ -12,6 +12,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblPostContent;
 @property (weak, nonatomic) IBOutlet UILabel *lblUserProfileName;
 @property (weak, nonatomic) IBOutlet UIImageView *imgUserAvatar;
+@property (weak, nonatomic) IBOutlet UIImageView *imgPostContent;
 
 
 @end

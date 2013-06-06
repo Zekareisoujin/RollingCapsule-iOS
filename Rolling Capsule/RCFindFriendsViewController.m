@@ -49,6 +49,7 @@
     [_refreshControl addTarget:self
                         action:@selector(handleRefresh:)
               forControlEvents:UIControlEventValueChanged];
+
 }
 
 - (void) handleRefresh:(UIRefreshControl *) refreshControl {

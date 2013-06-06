@@ -13,6 +13,8 @@
 #import "Constants.h"
 #import "Util.h"
 #import "SBJson.h"
+#import "RCNewPostViewController.h"
+#import "RCAmazonS3Helper.h"
 
 @interface RCMainFeedViewController ()
 
@@ -21,7 +23,6 @@
 @implementation RCMainFeedViewController
 
 BOOL        _firstRefresh;
-BOOL        _hideBackButton;
 @synthesize refreshControl = _refreshControl;
 @synthesize user = _user;
 
@@ -34,11 +35,10 @@ BOOL        _hideBackButton;
     return self;
 }
 
-- (id)initWithUser:(RCUser *) user hideBackButton:(BOOL)hideBack {
+- (id)initWithUser:(RCUser *) user {
     self = [super init];
     if (self) {
         _user = user;
-        _hideBackButton = hideBack;
     }
     return self;
 }
@@ -46,12 +46,14 @@ BOOL        _hideBackButton;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.navigationItem.hidesBackButton = _hideBackButton;
     // Do any additional setup after loading the view from its nib.
     _items = [[NSMutableArray alloc] init];
     _tblFeedList.tableFooterView = [[UIView alloc] init];
     self.navigationItem.title = @"News Feed";
 
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"New Post" style:UIBarButtonItemStylePlain target:self action:@selector(switchToNewPostScreen)];
+    self.navigationItem.rightBarButtonItem = rightButton;
+    
     UITableViewController *tableViewController = setUpRefreshControlWithTableViewController(self, _tblFeedList);
     _refreshControl = tableViewController.refreshControl;
     [_refreshControl addTarget:self
@@ -106,12 +108,21 @@ BOOL        _hideBackButton;
             cell.imgUserAvatar.image = image;
         });
     });
+    dispatch_async(queue, ^{
+        if (post.fileUrl != nil) {
+            UIImage *image = [RCAmazonS3Helper getUserMediaImage:[[RCUser alloc] init] withLoggedinUserID:_user.userID withImageUrl:post.fileUrl];
+            //UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:imageUrl]];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                cell.imgPostContent.image = image;
+            });
+        }
+    });
 
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 120;
+    return 270;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -158,6 +169,11 @@ BOOL        _hideBackButton;
         NSLog(@"Exception: %@", e);
         alertStatus(@"Failure getting friends from web service",@"Connection Failed!",self);
     }
+}
+
+- (void) switchToNewPostScreen {
+    RCNewPostViewController *newPostController = [[RCNewPostViewController alloc] initWithUser:_user];
+    [self.navigationController pushViewController:newPostController animated:YES];
 }
 
 @end

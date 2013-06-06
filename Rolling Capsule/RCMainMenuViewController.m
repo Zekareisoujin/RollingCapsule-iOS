@@ -56,14 +56,16 @@
 }
 
 - (IBAction)btnActionMainFeedNav:(id)sender {
-    RCMainFeedViewController *mainFeedViewController = [[RCMainFeedViewController alloc] initWithUser:_user hideBackButton:YES];
+    RCMainFeedViewController *mainFeedViewController = [[RCMainFeedViewController alloc] initWithUser:_user];
+    mainFeedViewController.navigationItem.hidesBackButton = YES;
     [_navigationController popToRootViewControllerAnimated:NO];
     [_navigationController pushViewController:mainFeedViewController animated:NO];
     [self slideThenHide];
 }
 
 - (IBAction)btnActionFriendViewNav:(id)sender {
-    RCFriendListViewController *friendListViewController = [[RCFriendListViewController alloc] initWithUser:_user hideBackButton:YES];
+    RCFriendListViewController *friendListViewController = [[RCFriendListViewController alloc] initWithUser:_user];
+    friendListViewController.navigationItem.hidesBackButton = YES;
     [_navigationController popToRootViewControllerAnimated:NO];
     [_navigationController pushViewController:friendListViewController animated:NO];
     [self slideThenHide];
@@ -83,6 +85,7 @@
 
 - (void)initializeUserFromLogIn:(RCUser *)user {
     _user = user;
+    [self btnActionMainFeedNav:self];
 }
 
 - (void)asynchLogOutRequest

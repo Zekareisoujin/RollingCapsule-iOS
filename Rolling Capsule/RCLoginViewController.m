@@ -76,7 +76,7 @@
                     [delegate initializeUserFromLogIn:user];
                     
                     alertStatus([NSString stringWithFormat:@"Welcome, %@!",name], @"Login Success!", self);
-                    [self switchToFeedView:user];
+                    //[self switchToFeedView:user];
                 }else {
                     alertStatus([NSString stringWithFormat:@"Please try again!"], @"Login Failed!", self);
                 }
@@ -115,7 +115,7 @@
 }
 
 - (void)switchToFeedView:(RCUser*)user {
-    RCMainFeedViewController *mainFeedViewController = [[RCMainFeedViewController alloc] initWithUser:user hideBackButton:YES];
+    RCMainFeedViewController *mainFeedViewController = [[RCMainFeedViewController alloc] initWithUser:user];
     [self.navigationController pushViewController:mainFeedViewController animated:YES];
 }
 
