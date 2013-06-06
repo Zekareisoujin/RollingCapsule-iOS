@@ -60,7 +60,7 @@
     mainFeedViewController.navigationItem.hidesBackButton = YES;
     [_navigationController popToRootViewControllerAnimated:NO];
     [_navigationController pushViewController:mainFeedViewController animated:NO];
-    [self slideThenHide];
+    [self endOpeningNewViewController:mainFeedViewController];
 }
 
 - (IBAction)btnActionFriendViewNav:(id)sender {
@@ -68,7 +68,7 @@
     friendListViewController.navigationItem.hidesBackButton = YES;
     [_navigationController popToRootViewControllerAnimated:NO];
     [_navigationController pushViewController:friendListViewController animated:NO];
-    [self slideThenHide];
+    [self endOpeningNewViewController:friendListViewController];
 }
 
 - (IBAction)btnActionLogOut:(id)sender {
@@ -81,6 +81,16 @@
 {
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate hideSideMenu];
+}
+
+- (void) endOpeningNewViewController:(UIViewController*) viewController {
+    [self setNavigationBarMenuBttonForViewController:viewController];
+    [self slideThenHide];
+}
+
+- (void) showSelfAsSideMenu {
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate showSideMenu];
 }
 
 - (void)initializeUserFromLogIn:(RCUser *)user {
@@ -112,6 +122,15 @@
         NSLog(@"Exception: %@", e);
         alertStatus(@"Log Out Failed.", @"Log Out Failed!", self);
     }
+}
+
+-(void) setNavigationBarMenuBttonForViewController:(UIViewController *) viewController {
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Menu"
+                                                                   style:UIBarButtonItemStyleBordered
+                                                                  target:self
+                                                                  action:@selector(showSelfAsSideMenu)];
+    UINavigationItem *navigationItem = viewController.navigationItem;
+    navigationItem.leftBarButtonItem = backButton;
 }
 
 @end
