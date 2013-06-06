@@ -64,7 +64,7 @@ int       _friendshipID;
 - (void)asynchGetUserRelationRequest{
     //Asynchronous Request
     @try {
-        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/get_relation?mobile=1&other_user=%d", RCServiceURL, RCUsersResource, self.loggedinUserID, _user.userID]];
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/relation?mobile=1&other_user=%d", RCServiceURL, RCUsersResource, self.loggedinUserID, _user.userID]];
         NSURLRequest *request = CreateHttpGetRequest(url);
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
@@ -291,7 +291,12 @@ int       _friendshipID;
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         if (image != nil) {    
             dispatch_async(dispatch_get_main_queue(), ^{
-                [_btnAvatarImg setBackgroundImage:image forState:UIControlStateNormal]; 
+                UIControlState controlState = UIControlStateNormal;
+                if (_user.userID != _loggedinUserID) {
+                    controlState = UIControlStateDisabled;
+                    _btnAvatarImg.enabled = NO;
+                }
+                [_btnAvatarImg setBackgroundImage:image forState:controlState];
             });
         }
     });
