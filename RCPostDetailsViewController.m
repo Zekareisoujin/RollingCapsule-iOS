@@ -66,7 +66,9 @@
                 [_imgViewPostImage setImage:image];
             });
         } else {
-            alertStatus(@"Couldn't connect to the server. Please try again later", @"Network error", self);
+            dispatch_async(dispatch_get_main_queue(), ^{
+                alertStatus(@"Couldn't connect to the server. Please try again later", @"Network error", self);
+            });
         }
     });
 }
