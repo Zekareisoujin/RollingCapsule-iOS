@@ -17,9 +17,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblEmail;
 @property (weak, nonatomic) IBOutlet UIButton *btnFriendAction;
 
-@property (nonatomic, strong) RCUser *user;
-@property (nonatomic, assign) int loggedinUserID;
+@property (nonatomic, strong) RCUser *profileUser;
+@property (nonatomic, strong) RCUser *viewingUser;
+@property (nonatomic, assign) int viewingUserID;
 - (IBAction)btnFriendActionClicked:(id)sender;
 - (IBAction)btnAvatarClicked:(id)sender;
-- (id) initWithUser:(RCUser *) user  loggedinUserID:(int)_loggedinUserID;
+- (id) initWithUser:(RCUser *) profileUser  viewingUser:(RCUser *) viewingUser;
 @end

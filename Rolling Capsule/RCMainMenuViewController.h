@@ -16,6 +16,7 @@
 @property (nonatomic, strong) RCUser* user;
 
 @property (weak, nonatomic) IBOutlet UIButton *btnMainFeedNav;
+@property (weak, nonatomic) IBOutlet UIButton *btnUserProfileNav;
 @property (weak, nonatomic) IBOutlet UIButton *btnFriendViewNav;
 @property (weak, nonatomic) IBOutlet UIButton *btnLogOut;
 
@@ -24,6 +25,7 @@
 
 - (IBAction)btnTestTouchUpInside:(id)sender;
 - (IBAction)btnActionMainFeedNav:(id)sender;
+- (IBAction)btnActionUserProfileNav:(id)sender;
 - (IBAction)btnActionFriendViewNav:(id)sender;
 - (IBAction)btnActionLogOut:(id)sender;
 

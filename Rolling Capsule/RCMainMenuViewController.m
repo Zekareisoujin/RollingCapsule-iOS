@@ -9,6 +9,7 @@
 #import "RCMainMenuViewController.h"
 #import "AppDelegate.h"
 #import "RCMainFeedViewController.h"
+#import "RCUserProfileViewController.h"
 #import "RCFriendListViewController.h"
 #import "Util.h"
 #import "Constants.h"
@@ -57,18 +58,17 @@
 
 - (IBAction)btnActionMainFeedNav:(id)sender {
     RCMainFeedViewController *mainFeedViewController = [[RCMainFeedViewController alloc] initWithUser:_user];
-    mainFeedViewController.navigationItem.hidesBackButton = YES;
-    [_navigationController popToRootViewControllerAnimated:NO];
-    [_navigationController pushViewController:mainFeedViewController animated:NO];
-    [self endOpeningNewViewController:mainFeedViewController];
+    [self navigateToViewControllerFromMenu:mainFeedViewController];
+}
+
+- (IBAction)btnActionUserProfileNav:(id)sender {
+    RCUserProfileViewController *userProfileViewController = [[RCUserProfileViewController alloc] initWithUser:_user viewingUser:_user];
+    [self navigateToViewControllerFromMenu:userProfileViewController];
 }
 
 - (IBAction)btnActionFriendViewNav:(id)sender {
     RCFriendListViewController *friendListViewController = [[RCFriendListViewController alloc] initWithUser:_user];
-    friendListViewController.navigationItem.hidesBackButton = YES;
-    [_navigationController popToRootViewControllerAnimated:NO];
-    [_navigationController pushViewController:friendListViewController animated:NO];
-    [self endOpeningNewViewController:friendListViewController];
+    [self navigateToViewControllerFromMenu:friendListViewController];
 }
 
 - (IBAction)btnActionLogOut:(id)sender {
@@ -83,7 +83,10 @@
     [appDelegate hideSideMenu];
 }
 
-- (void) endOpeningNewViewController:(UIViewController*) viewController {
+- (void) navigateToViewControllerFromMenu:(UIViewController*) viewController {
+    viewController.navigationItem.hidesBackButton = YES;
+    [_navigationController popToRootViewControllerAnimated:NO];
+    [_navigationController pushViewController:viewController animated:YES];
     [self setNavigationBarMenuBttonForViewController:viewController];
     [self slideThenHide];
 }

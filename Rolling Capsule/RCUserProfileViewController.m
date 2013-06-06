@@ -19,8 +19,9 @@
 
 @implementation RCUserProfileViewController
 
-@synthesize user = _user;
-@synthesize loggedinUserID = _loggedinUserID;
+@synthesize profileUser = _profileUser;
+@synthesize viewingUser = _viewingUser;
+@synthesize viewingUserID = _viewingUserID;
 
 NSString *_friendStatus;
 int       _friendshipID;
@@ -33,11 +34,12 @@ int       _friendshipID;
     return self;
 }
 
-- (id)initWithUser:(RCUser *) user loggedinUserID:(int)_id{
+- (id)initWithUser:(RCUser *) profileUser viewingUser:(RCUser *)viewingUser{
     self = [super init];
     if (self) {
-        _user = user;
-        _loggedinUserID = _id;
+        _profileUser = profileUser;
+        _viewingUser = viewingUser;
+        _viewingUserID = _viewingUser.userID;
     }
     return self;
 }
@@ -45,8 +47,8 @@ int       _friendshipID;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.navigationItem.title = @" ";
-    _lblEmail.text = _user.email;
-    _lblName.text = _user.name;
+    _lblEmail.text = _profileUser.email;
+    _lblName.text = _profileUser.name;
     _btnFriendAction.enabled = NO;
     _btnAvatarImg.enabled = NO;
     [_btnFriendAction setTitle:@"Loading relation" forState:UIControlStateNormal];
@@ -65,7 +67,7 @@ int       _friendshipID;
 - (void)asynchGetUserRelationRequest{
     //Asynchronous Request
     @try {
-        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/relation?mobile=1&other_user=%d", RCServiceURL, RCUsersResource, self.loggedinUserID, _user.userID]];
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/relation?mobile=1&other_user=%d", RCServiceURL, RCUsersResource, self.viewingUserID, _profileUser.userID]];
         NSURLRequest *request = CreateHttpGetRequest(url);
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
@@ -85,7 +87,7 @@ int       _friendshipID;
     @try {
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCFriendshipsResource]];
         NSMutableString* dataSt = initQueryString(@"friendship[friend_id]",
-                                                  [[NSString alloc] initWithFormat:@"%d",_user.userID]);
+                                                  [[NSString alloc] initWithFormat:@"%d",_profileUser.userID]);
         NSData *postData = [dataSt dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         NSURLRequest *request = CreateHttpPostRequest(url, postData);
         
@@ -203,13 +205,13 @@ int       _friendshipID;
     NSData *imageData = UIImageJPEGRepresentation(avatarImage, 1.0);
     
     // Upload image data.  Remember to set the content type.
-    S3PutObjectRequest *por = [[S3PutObjectRequest alloc] initWithKey:self.user.email
+    S3PutObjectRequest *por = [[S3PutObjectRequest alloc] initWithKey:self.profileUser.email
                                                           inBucket:RCAmazonS3AvatarPictureBucket];
     por.contentType = @"image/jpeg";
     por.data        = imageData;
     
     // Put the image data into the specified s3 bucket and object.
-     AmazonS3Client *s3 = [RCAmazonS3Helper s3:_loggedinUserID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3AvatarPictureBucket]];
+     AmazonS3Client *s3 = [RCAmazonS3Helper s3:_viewingUserID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3AvatarPictureBucket]];
     NSString *error = @"Couldn't connect to server, please try again later";
     if (s3 != nil) {
         S3PutObjectResponse *putObjectResponse = [s3 putObject:por];
@@ -288,12 +290,12 @@ int       _friendshipID;
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-        UIImage *image = [RCAmazonS3Helper getAvatarImage:_user withLoggedinUserID:_loggedinUserID];
+        UIImage *image = [RCAmazonS3Helper getAvatarImage:_profileUser withLoggedinUserID:_viewingUserID];
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         if (image != nil) {    
             dispatch_async(dispatch_get_main_queue(), ^{
                 UIControlState controlState = UIControlStateNormal;
-                if (_user.userID != _loggedinUserID)
+                if (_profileUser.userID != _viewingUserID)
                     controlState = UIControlStateDisabled;
                  else
                      _btnAvatarImg.enabled = YES;
