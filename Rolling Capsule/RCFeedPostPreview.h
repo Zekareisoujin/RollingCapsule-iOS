@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RCUser.h"
+#import "RCPost.h"
 
 @interface RCFeedPostPreview : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *lblPostContent;
@@ -14,5 +16,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imgUserAvatar;
 @property (weak, nonatomic) IBOutlet UIImageView *imgPostContent;
 
+- (void)getAvatarImageFromInternet:(RCUser *) user withLoggedInUserID:(int)loggedInUserID;
+- (void)getPostContentImageFromInternet:(RCUser *) user withPostContent:(RCPost *) post;
 
 @end

@@ -99,7 +99,7 @@ BOOL        _firstRefresh;
     cell.lblUserProfileName.text = post.authorName;
     cell.lblPostContent.text = post.content;
     
-    dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
+    /*dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
         NSURL *imageUrl = [NSURL URLWithString:post.authorAvatar];
         UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:imageUrl]];
@@ -115,7 +115,10 @@ BOOL        _firstRefresh;
                 cell.imgPostContent.image = image;
             });
         }
-    });
+    });*/
+    
+    [cell getAvatarImageFromInternet:_user withLoggedInUserID:post.userID];
+    [cell getPostContentImageFromInternet:_user withPostContent:post];
 
     return cell;
 }
