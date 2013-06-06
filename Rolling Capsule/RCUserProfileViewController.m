@@ -48,6 +48,7 @@ int       _friendshipID;
     _lblEmail.text = _user.email;
     _lblName.text = _user.name;
     _btnFriendAction.enabled = NO;
+    _btnAvatarImg.enabled = NO;
     [_btnFriendAction setTitle:@"Loading relation" forState:UIControlStateNormal];
     [self getAvatarImageFromInternet];
     [self asynchGetUserRelationRequest];
@@ -292,10 +293,10 @@ int       _friendshipID;
         if (image != nil) {    
             dispatch_async(dispatch_get_main_queue(), ^{
                 UIControlState controlState = UIControlStateNormal;
-                if (_user.userID != _loggedinUserID) {
+                if (_user.userID != _loggedinUserID)
                     controlState = UIControlStateDisabled;
-                    _btnAvatarImg.enabled = NO;
-                }
+                 else
+                     _btnAvatarImg.enabled = YES;
                 [_btnAvatarImg setBackgroundImage:image forState:controlState];
             });
         }
