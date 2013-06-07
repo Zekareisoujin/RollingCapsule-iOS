@@ -6,14 +6,14 @@
 //  Copyright (c) 2013 Fox Cradle. All rights reserved.
 //
 
-#include "Constants.h"
+#include "RCConstants.h"
 
 #import "RCLoginViewController.h"
 #import "SBJson.h"
 #import "RCRegisterViewController.h"
 #import "RCMainFeedViewController.h"
 #import "RCUser.h"
-#import "Util.h"
+#import "RCUtilities.h"
 
 @interface RCLoginViewController ()
 

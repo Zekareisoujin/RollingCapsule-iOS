@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Fox Cradle. All rights reserved.
 //
 
-#import "Util.h"
-#import "Constants.h"
+#import "RCUtilities.h"
+#import "RCConstants.h"
 #import "AppDelegate.h"
 #import "RCAmazonS3Helper.h"
 #import "RCNewPostViewController.h"

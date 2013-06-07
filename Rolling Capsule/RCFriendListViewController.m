@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Fox Cradle. All rights reserved.
 //
 
-#import "Constants.h"
-#import "Util.h"
+#import "RCConstants.h"
+#import "RCUtilities.h"
 #import "SBJSon.h"
 #import "RCFriendListViewController.h"
 #import "RCFriendListTableCell.h"

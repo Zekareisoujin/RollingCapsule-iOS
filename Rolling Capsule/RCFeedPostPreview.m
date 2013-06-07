@@ -7,8 +7,8 @@
 //
 
 #import "RCFeedPostPreview.h"
-#import "Constants.h"
-#import "Util.h"
+#import "RCConstants.h"
+#import "RCUtilities.h"
 #import "RCAmazonS3Helper.h"
 #import "RCPost.h"
 
@@ -36,6 +36,7 @@
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         UIImage *image = [RCAmazonS3Helper getAvatarImage:user withLoggedinUserID:loggedInUserID];
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        NSLog(@"avatar image obtained %@",image);
         if (image != nil) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [_imgUserAvatar setImage:image];

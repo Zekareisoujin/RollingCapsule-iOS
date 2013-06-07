@@ -23,7 +23,7 @@
 @property   int     userID;
 
 @property (nonatomic,retain) NSString *authorName;
-@property (nonatomic,retain) NSString *authorAvatar;
+@property (nonatomic,retain) NSString *authorEmail;
 
 - (id) initWithNSDictionary:(NSDictionary *)userData;
 @end

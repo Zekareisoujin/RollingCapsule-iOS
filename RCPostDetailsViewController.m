@@ -6,11 +6,11 @@
 //  Copyright (c) 2013 Fox Cradle. All rights reserved.
 //
 
-#import "Constants.h"
+#import "RCConstants.h"
 #import "RCPostDetailsViewController.h"
 #import "RCAmazonS3Helper.h"
 #import "SBJson.h"
-#import "Util.h"
+#import "RCUtilities.h"
 
 @interface RCPostDetailsViewController ()
 @property (nonatomic,strong) NSMutableArray* comments;
@@ -18,7 +18,7 @@
 @end
 
 @implementation RCPostDetailsViewController
-
+int         _openConnections;
 @synthesize post = _post;
 @synthesize postOwner = _postOwner;
 @synthesize loggedInUser = _loggedInUser;
@@ -49,12 +49,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    _openConnections = 0;
     _tblViewPostDiscussion.tableFooterView = [[UIView alloc] init];
     _comments = [[NSMutableArray alloc] init];
     CGRect frame = CGRectMake(0, 0, 240, 30);
     _textField = [[UITextField alloc] initWithFrame:frame];
     _textField.placeholder = @"Write a comment...";
+    _textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     _textField.backgroundColor = [UIColor whiteColor];
     _textField.borderStyle = UITextBorderStyleRoundedRect;
     _textField.textColor = [UIColor blackColor];
@@ -81,11 +82,11 @@
 
 #pragma mark - web request
 -(void) getPostImageFromInternet {
+    [self startConnection];
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         UIImage *image = [RCAmazonS3Helper getUserMediaImage:_postOwner withLoggedinUserID:_loggedInUser.userID   withImageUrl:_post.fileUrl];
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        [self endConnection];
         if (image != nil) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [_imgViewPostImage setImage:image];
@@ -130,6 +131,7 @@
 
 #pragma mark - web request
 - (void) asynchPostComment {
+    [_textField resignFirstResponder];
     //Asynchronous Request
     @try {
         NSString* commentContent = [_textField text];
@@ -140,14 +142,14 @@
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCCommentsResource]];
         
         NSURLRequest *request = CreateHttpPostRequest(url, postData);
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+        [self startConnection];
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
          {
              bool _successfulPost;
              NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
              int responseStatusCode = [httpResponse statusCode];
-             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+             [self endConnection];
              if (responseStatusCode != RCHttpOkStatusCode) {
                  _successfulPost = NO;
              } else _successfulPost = YES;
@@ -162,6 +164,8 @@
              if (_successfulPost) {
                  [_comments addObject:commentContent];
                  [_tblViewPostDiscussion reloadData];
+                 _textField.text = @"";
+                 
              }else {
                  alertStatus([NSString stringWithFormat:@"Please try again! %@", responseData], @"Comment Failed!", self);
              }
@@ -180,11 +184,11 @@
     @try {
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/comments?mobile=1", RCServiceURL, RCPostsResource, _post.postID]];
         NSURLRequest *request = CreateHttpGetRequest(url);
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+        [self startConnection];
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
          {
-             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+             [self endConnection];
              [_comments removeAllObjects];
              NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
              SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
@@ -200,6 +204,17 @@
         NSLog(@"Exception: %@", e);
         alertStatus(@"Failure getting friends from web service",@"Connection Failed!",self);
     }
+}
+
+-(void)startConnection {
+    _openConnections++;
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+}
+
+-(void) endConnection {
+    _openConnections--;
+    if (_openConnections == 0)
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 }
 
 #pragma mark - code to move views up/down appropriately when keyboard is going to cover text field

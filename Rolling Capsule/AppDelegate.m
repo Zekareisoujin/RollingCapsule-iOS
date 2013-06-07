@@ -45,18 +45,20 @@
     owner.email = @"lolotp@hotmail.com";
     owner.userID = 1;
     
-    //RCLoginViewController *firstViewController = [[RCLoginViewController alloc] init];
-    RCPostDetailsViewController *firstViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:user];
+    //RCPostDetailsViewController *firstViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:user];
+    RCLoginViewController *firstViewController = [[RCLoginViewController alloc] init];
+    
+    
     _navigationController = [[UINavigationController alloc] initWithRootViewController:firstViewController];
-    _mainViewController = [[RCSlideoutViewController alloc] init];
     _menuViewController = [[RCMainMenuViewController alloc] initWithContentView:_navigationController];
     
+    firstViewController.delegate = _menuViewController;
     _mainViewController = [[RCSlideoutViewController alloc] init];
     _mainViewController.contentController = _navigationController;
     _mainViewController.menuViewController = _menuViewController;
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    //firstViewController.delegate = _menuViewController;
+    
 
     // Test code
     //_menuViewController.user = user;

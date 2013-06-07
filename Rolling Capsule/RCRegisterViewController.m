@@ -5,10 +5,10 @@
 //  Created by Trinh Tuan Phuong on 26/5/13.
 //  Copyright (c) 2013 Fox Cradle. All rights reserved.
 //
-#include "Constants.h"
+#include "RCConstants.h"
 
 #import "SBJson.h"
-#import "Util.h"
+#import "RCUtilities.h"
 #import "RCRegisterViewController.h"
 
 @implementation RCRegisterViewController

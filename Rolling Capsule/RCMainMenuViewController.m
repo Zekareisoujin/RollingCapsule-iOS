@@ -11,8 +11,8 @@
 #import "RCMainFeedViewController.h"
 #import "RCUserProfileViewController.h"
 #import "RCFriendListViewController.h"
-#import "Util.h"
-#import "Constants.h"
+#import "RCUtilities.h"
+#import "RCConstants.h"
 
 @interface RCMainMenuViewController ()
 
