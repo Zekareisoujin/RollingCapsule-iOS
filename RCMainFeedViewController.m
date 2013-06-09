@@ -108,7 +108,7 @@ BOOL        _firstRefresh;
     RCUser *rowUser = [[RCUser alloc] init];
     rowUser.userID = post.userID;
     rowUser.email = post.authorEmail;
-    [cell getAvatarImageFromInternet:_user withLoggedInUserID:post.userID usingCollection:_userCache];
+    [cell getAvatarImageFromInternet:rowUser withLoggedInUserID:_user.userID usingCollection:_userCache];
     [cell getPostContentImageFromInternet:_user withPostContent:post usingCollection:_postCache];
     return cell;
 }

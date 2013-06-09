@@ -31,7 +31,7 @@
 }
 
 - (void)getAvatarImageFromInternet:(RCUser *) user withLoggedInUserID:(int)loggedInUserID usingCollection:(NSMutableDictionary*)userCache {
-    UIImage *cachedImg = [userCache objectForKey:[NSNumber numberWithInt:loggedInUserID]];
+    UIImage *cachedImg = [userCache objectForKey:[NSNumber numberWithInt:user.userID]];
     if (cachedImg != nil) {
         [_imgUserAvatar setImage: cachedImg];
     }else {
@@ -44,7 +44,7 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [_imgUserAvatar setImage:image];
                     if (image != nil)
-                        [userCache setObject:image forKey:[NSNumber numberWithInt:loggedInUserID]];
+                        [userCache setObject:image forKey:[NSNumber numberWithInt:user.userID]];
                 });
             }
         });
