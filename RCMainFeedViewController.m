@@ -25,6 +25,8 @@
 BOOL        _firstRefresh;
 @synthesize refreshControl = _refreshControl;
 @synthesize user = _user;
+@synthesize userCache = _userCache;
+@synthesize postCache = _postCache;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -46,6 +48,9 @@ BOOL        _firstRefresh;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    _userCache = [[NSMutableDictionary alloc] init];
+    _postCache = [[NSMutableDictionary alloc] init];
+    
     // Do any additional setup after loading the view from its nib.
     _items = [[NSMutableArray alloc] init];
     _tblFeedList.tableFooterView = [[UIView alloc] init];
@@ -99,26 +104,8 @@ BOOL        _firstRefresh;
     cell.lblUserProfileName.text = post.authorName;
     cell.lblPostContent.text = post.content;
     
-    /*dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
-    dispatch_async(queue, ^{
-        NSURL *imageUrl = [NSURL URLWithString:post.authorAvatar];
-        UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:imageUrl]];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            cell.imgUserAvatar.image = image;
-        });
-    });
-    dispatch_async(queue, ^{
-        if ((NSNull *)post.fileUrl != [NSNull null]) {
-            UIImage *image = [RCAmazonS3Helper getUserMediaImage:[[RCUser alloc] init] withLoggedinUserID:_user.userID withImageUrl:post.fileUrl];
-            //UIImage *image = [UIImage imageWithData: [NSData dataWithContentsOfURL:imageUrl]];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                cell.imgPostContent.image = image;
-            });
-        }
-    });*/
-    
-    [cell getAvatarImageFromInternet:_user withLoggedInUserID:post.userID];
-    [cell getPostContentImageFromInternet:_user withPostContent:post];
+    [cell getAvatarImageFromInternet:_user withLoggedInUserID:post.userID usingCollection:_userCache];
+    [cell getPostContentImageFromInternet:_user withPostContent:post usingCollection:_postCache];
 
     return cell;
 }
