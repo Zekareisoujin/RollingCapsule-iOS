@@ -11,6 +11,8 @@
 #import "RCAmazonS3Helper.h"
 #import "SBJson.h"
 #import "RCUtilities.h"
+#import "RCConnectionManager.h"
+#import "RCKeyboardPushUpHandler.h"
 
 @interface RCPostDetailsViewController ()
 @property (nonatomic,strong) NSMutableArray* comments;
@@ -18,13 +20,16 @@
 @end
 
 @implementation RCPostDetailsViewController
-int         _openConnections;
+
 @synthesize post = _post;
 @synthesize postOwner = _postOwner;
 @synthesize loggedInUser = _loggedInUser;
 @synthesize comments = _comments;
 @synthesize barItemTextField = _barItemTextField;
 @synthesize textField = _textField;
+
+RCConnectionManager *_connectionManager;
+RCKeyboardPushUpHandler *_keyboardPushHandler;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -41,6 +46,8 @@ int         _openConnections;
         _post = post;
         _postOwner = owner;
         _loggedInUser = loggedInUser;
+        _connectionManager = [[RCConnectionManager alloc] init];
+        _keyboardPushHandler = [[RCKeyboardPushUpHandler alloc] init];
     }
     
     return self;
@@ -49,7 +56,11 @@ int         _openConnections;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    _openConnections = 0;
+    [_connectionManager reset];
+    
+    [_keyboardPushHandler reset];
+    _keyboardPushHandler.view = self.view;
+    
     _tblViewPostDiscussion.tableFooterView = [[UIView alloc] init];
     _comments = [[NSMutableArray alloc] init];
     CGRect frame = CGRectMake(0, 0, 240, 30);
@@ -82,11 +93,11 @@ int         _openConnections;
 
 #pragma mark - web request
 -(void) getPostImageFromInternet {
-    [self startConnection];
+    [_connectionManager startConnection];
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
         UIImage *image = [RCAmazonS3Helper getUserMediaImage:_postOwner withLoggedinUserID:_loggedInUser.userID   withImageUrl:_post.fileUrl];
-        [self endConnection];
+        [_connectionManager endConnection];
         if (image != nil) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 [_imgViewPostImage setImage:image];
@@ -142,14 +153,14 @@ int         _openConnections;
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCCommentsResource]];
         
         NSURLRequest *request = CreateHttpPostRequest(url, postData);
-        [self startConnection];
+        [_connectionManager startConnection];
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
          {
              bool _successfulPost;
              NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
              int responseStatusCode = [httpResponse statusCode];
-             [self endConnection];
+             [_connectionManager endConnection];
              if (responseStatusCode != RCHttpOkStatusCode) {
                  _successfulPost = NO;
              } else _successfulPost = YES;
@@ -184,11 +195,11 @@ int         _openConnections;
     @try {
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/comments?mobile=1", RCServiceURL, RCPostsResource, _post.postID]];
         NSURLRequest *request = CreateHttpGetRequest(url);
-        [self startConnection];
+        [_connectionManager startConnection];
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
          {
-             [self endConnection];
+             [_connectionManager endConnection];
              [_comments removeAllObjects];
              NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
              SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
@@ -206,28 +217,17 @@ int         _openConnections;
     }
 }
 
--(void)startConnection {
-    _openConnections++;
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-}
-
--(void) endConnection {
-    _openConnections--;
-    if (_openConnections == 0)
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-}
-
 #pragma mark - code to move views up/down appropriately when keyboard is going to cover text field
 
 - (void)viewWillAppear:(BOOL)animated
 {
     // register for keyboard notifications
-    [[NSNotificationCenter defaultCenter] addObserver:self
+    [[NSNotificationCenter defaultCenter] addObserver:_keyboardPushHandler
                                              selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardWillShowNotification
                                                object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
+    [[NSNotificationCenter defaultCenter] addObserver:_keyboardPushHandler
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
@@ -237,49 +237,14 @@ int         _openConnections;
 - (void)viewWillDisappear:(BOOL)animated
 {
     // unregister for keyboard notifications while not visible.
-    [[NSNotificationCenter defaultCenter] removeObserver:self
+    [[NSNotificationCenter defaultCenter] removeObserver:_keyboardPushHandler
                                                     name:UIKeyboardWillShowNotification
                                                   object:nil];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self
+    [[NSNotificationCenter defaultCenter] removeObserver:_keyboardPushHandler
                                                     name:UIKeyboardWillHideNotification
                                                   object:nil];
     [super viewWillDisappear:animated];
-}
-
--(void)keyboardWillShow:(NSNotification*)notification {
-    NSDictionary* userInfo = [notification userInfo];
-    CGRect keyboardFrame = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    [self setViewMovedUp:YES offset:(keyboardFrame.size.height)];
-    
-}
-
-- (void) keyboardWillHide:(NSNotification*)notification {
-    NSDictionary* userInfo = [notification userInfo];
-    CGRect keyboardFrame = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    [self setViewMovedUp:NO offset:(keyboardFrame.size.height)];
-    
-}
-
-//method to move the view up/down whenever the keyboard is shown/dismissed
-- (void) setViewMovedUp:(BOOL)movedUp offset:(double)kOffsetForKeyboard
-{
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.3]; // if you want to slide up the view
-    
-    CGRect rect = self.view.frame;
-    if (movedUp)
-    {
-        rect.origin.y -= kOffsetForKeyboard;
-    }
-    else
-    {
-        // revert back to the normal state.
-        rect.origin.y += kOffsetForKeyboard;
-    }
-    self.view.frame = rect;
-    
-    [UIView commitAnimations];
 }
 
 #pragma mark - ui events

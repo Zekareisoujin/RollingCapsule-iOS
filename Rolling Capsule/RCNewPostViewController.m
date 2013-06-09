@@ -11,6 +11,7 @@
 #import "AppDelegate.h"
 #import "RCAmazonS3Helper.h"
 #import "RCNewPostViewController.h"
+#import "RCKeyboardPushUpHandler.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SBJson.h"
 
@@ -30,6 +31,7 @@
 @synthesize user = _user;
 
 BOOL _successfulPost = NO;
+RCKeyboardPushUpHandler *_keyboardPushHandler;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -44,6 +46,7 @@ BOOL _successfulPost = NO;
     self = [super init];
     if (self) {
         _user = user;
+        _keyboardPushHandler = [[RCKeyboardPushUpHandler alloc] init];
     }
     return self;
 }
@@ -51,6 +54,9 @@ BOOL _successfulPost = NO;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [_keyboardPushHandler reset];
+    _keyboardPushHandler.view = self.view;
+    
     [[_txtViewPostContent layer] setBorderColor:[[UIColor grayColor] CGColor]];
     [[_txtViewPostContent layer] setBorderWidth:2.3];
     [[_txtViewPostContent layer] setCornerRadius:15];
@@ -179,6 +185,8 @@ BOOL _successfulPost = NO;
 
 - (void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    if ([actionSheet cancelButtonIndex] == buttonIndex)
+        return;
     UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
     imagePicker.delegate = self;
     NSString* buttonLabel = [actionSheet buttonTitleAtIndex:buttonIndex];
@@ -239,12 +247,12 @@ BOOL _successfulPost = NO;
 - (void)viewWillAppear:(BOOL)animated
 {
     // register for keyboard notifications
-    [[NSNotificationCenter defaultCenter] addObserver:self
+    [[NSNotificationCenter defaultCenter] addObserver:_keyboardPushHandler
                                              selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardWillShowNotification
                                                object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
+    [[NSNotificationCenter defaultCenter] addObserver:_keyboardPushHandler
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
@@ -262,40 +270,5 @@ BOOL _successfulPost = NO;
                                                     name:UIKeyboardWillHideNotification
                                                   object:nil];
     [super viewWillDisappear:animated];
-}
-
--(void)keyboardWillShow:(NSNotification*)notification {
-    NSDictionary* userInfo = [notification userInfo];
-    CGRect keyboardFrame = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    [self setViewMovedUp:YES offset:(keyboardFrame.size.height)];
-    
-}
-
-- (void) keyboardWillHide:(NSNotification*)notification {
-    NSDictionary* userInfo = [notification userInfo];
-    CGRect keyboardFrame = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    [self setViewMovedUp:NO offset:(keyboardFrame.size.height)];
-    
-}
-
-//method to move the view up/down whenever the keyboard is shown/dismissed
-- (void) setViewMovedUp:(BOOL)movedUp offset:(double)kOffsetForKeyboard
-{
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.3]; // if you want to slide up the view
-    
-    CGRect rect = self.view.frame;
-    if (movedUp)
-    {
-        rect.origin.y -= kOffsetForKeyboard;
-    }
-    else
-    {
-        // revert back to the normal state.
-        rect.origin.y += kOffsetForKeyboard;
-    }
-    self.view.frame = rect;
-    
-    [UIView commitAnimations];
 }
 @end

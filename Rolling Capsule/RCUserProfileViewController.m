@@ -29,7 +29,6 @@ int       _friendshipID;
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
     }
     return self;
 }
@@ -78,7 +77,7 @@ int       _friendshipID;
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        alertStatus(@"Failure getting friends from web service",@"Connection Failed!",self);
+        alertStatus(RCErrorMessageFailedToGetUsersRelation, RCAlertMessageConnectionFailed,self);
     }
 }
 
@@ -99,7 +98,7 @@ int       _friendshipID;
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        alertStatus(@"Failure getting friends from web service",@"Connection Failed!",self);
+        alertStatus(RCErrorMessageFailedToEditFriendStatus,RCAlertMessageConnectionFailed,self);
     }
 }
 
@@ -119,7 +118,7 @@ int       _friendshipID;
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        alertStatus(@"Failure getting friends from web service",@"Connection Failed!",self);
+        alertStatus(RCErrorMessageFailedToEditFriendStatus,RCAlertMessageConnectionFailed,self);
     }
 }
 
@@ -137,7 +136,7 @@ int       _friendshipID;
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        alertStatus(@"Failure getting friends from web service",@"Connection Failed!",self);
+        alertStatus(RCErrorMessageFailedToEditFriendStatus,RCAlertMessageConnectionFailed,self);
     }
 }
 
@@ -230,11 +229,11 @@ int       _friendshipID;
     if(error != nil)
     {
         NSLog(@"Error: %@", error);
-        [self showAlertMessage:error withTitle:@"Upload Error"];
+        alertStatus(error,RCAlertMessageUploadError,self);
     }
     else
     {
-        [self showAlertMessage:@"The image was successfully uploaded." withTitle:@"Upload Completed"];
+        alertStatus(RCInfoStringPostSuccess, RCAlertMessageUploadSuccess,self);
         [_btnAvatarImg setBackgroundImage:_image forState:UIControlStateNormal];
     }
     _btnAvatarImg.enabled = YES;
@@ -265,15 +264,6 @@ int       _friendshipID;
 }
 
 #pragma mark - Helper Methods
-- (void)showAlertMessage:(NSString *)message withTitle:(NSString *)title
-{
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
-                                                         message:message
-                                                        delegate:nil
-                                               cancelButtonTitle:@"OK"
-                                               otherButtonTitles:nil];
-    [alertView show];
-}
 
 - (UIImage*)imageWithImage:(UIImage*)image
               scaledToSize:(CGSize)newSize;

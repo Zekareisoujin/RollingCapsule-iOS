@@ -67,8 +67,8 @@ BOOL        _firstRefresh;
 
 - (void) handleRefresh:(UIRefreshControl*) refreshControl {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"dd-MMM, hh:mm:ssa"];
-    NSString *lastUpdated = [NSString stringWithFormat:@"Last updated on %@", [formatter  stringFromDate:[NSDate date] ] ];
+    [formatter setDateFormat:RCInfoStringDateFormat];
+    NSString *lastUpdated = [NSString stringWithFormat:RCInfoStringLastUpdatedOnFormat, [formatter  stringFromDate:[NSDate date] ] ];
     [_refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:lastUpdated]];
 	[self asynchFetchFeeds];
 }
@@ -155,13 +155,13 @@ BOOL        _firstRefresh;
                     _firstRefresh = NO;
                 }
             }else {
-                alertStatus([NSString stringWithFormat:@"Failed to obtain news feed, please try again! %@", responseData], @"Connection Failed!", self);
+                alertStatus([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetFeed, responseData], RCAlertMessageConnectionFailed, self);
             }
         }];
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        alertStatus(@"Failure getting friends from web service",@"Connection Failed!",self);
+        alertStatus(RCErrorMessageFailedToGetFeed,RCAlertMessageConnectionFailed,self);
     }
 }
 
