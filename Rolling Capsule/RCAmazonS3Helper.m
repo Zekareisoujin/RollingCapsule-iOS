@@ -8,8 +8,8 @@
 
 #import "RCAmazonS3Helper.h"
 #import <AWSRuntime/AWSRuntime.h>
-#import "Constants.h"
-#import "Util.h"
+#import "RCConstants.h"
+#import "RCUtilities.h"
 #import "SBJson.h"
 
 @interface RCAmazonS3Helper ()

@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Fox Cradle. All rights reserved.
 //
 
-#import "Util.h"
-#import "Constants.h"
+#import "RCUtilities.h"
+#import "RCConstants.h"
 #import "SBJson.h"
 #import "RCFindFriendsViewController.h"
 #import "RCUserProfileViewController.h"
@@ -100,14 +100,14 @@
                 }
                 [_tblViewFoundUsers reloadData];
             }else {
-                alertStatus([NSString stringWithFormat:@"Failed to obtain user list, please try again! %@", responseData], @"Connection Failed!", self);
+                alertStatus([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetUsers, responseData], RCAlertMessageConnectionFailed, self);
             }
             [_refreshControl endRefreshing];
         }];
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        alertStatus(@"Failure getting friends from web service",@"Connection Failed!",self);
+        alertStatus(RCErrorMessageFailedToGetUsers,RCAlertMessageConnectionFailed,self);
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         [_refreshControl endRefreshing];
     }
@@ -119,7 +119,6 @@
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar {
     [self handleRefresh:_refreshControl];
     [searchBar resignFirstResponder];
-    NSLog(@"Clicked search");
 }
 
 #pragma mark - Table view data source

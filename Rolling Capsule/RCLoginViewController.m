@@ -6,14 +6,14 @@
 //  Copyright (c) 2013 Fox Cradle. All rights reserved.
 //
 
-#include "Constants.h"
+#include "RCConstants.h"
 
 #import "RCLoginViewController.h"
 #import "SBJson.h"
 #import "RCRegisterViewController.h"
 #import "RCMainFeedViewController.h"
 #import "RCUser.h"
-#import "Util.h"
+#import "RCUtilities.h"
 
 @interface RCLoginViewController ()
 
@@ -46,7 +46,7 @@
     @try {
         
         if([[_txtFieldUsername text] isEqualToString:@""] || [[_txtFieldPassword text] isEqualToString:@""] ) {
-            alertStatus(@"Please enter both Username and Password",@"Login Failed!",self);
+            alertStatus(RCErrorMessageUsernameAndPasswordMissing,RCAlertMessageLoginFailed,self);
             [self setUIBusy:NO];
         } else {
             //[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
@@ -68,12 +68,9 @@
                 //Temporary:
                 if (jsonData != NULL) {
                     RCUser *user = [[RCUser alloc] initWithNSDictionary:(NSDictionary*)[jsonData objectForKey:@"user"]];
-                    NSString *name = [user name];
                     [delegate initializeUserFromLogIn:user];
-                    
-                    alertStatus([NSString stringWithFormat:@"Welcome, %@!",name], @"Login Success!", self);
                 }else {
-                    alertStatus([NSString stringWithFormat:@"Please try again!"], @"Login Failed!", self);
+                    alertStatus([NSString stringWithFormat:RCErrorMessagePleaseTryAgain], RCAlertMessageLoginFailed, self);
                 }
                 [self setUIBusy:NO];
             }];
@@ -81,7 +78,7 @@
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        alertStatus(@"Login Failed.", @"Login Failed!", self);
+        alertStatus(RCAlertMessageLoginFailed,RCAlertMessageLoginFailed, self);
     }
 }
 
@@ -109,7 +106,7 @@
     [super viewWillDisappear:animated];
 }
 
-- (void)switchToFeedView:(RCUser*)user {
+- (void)switchToFeedView:(RCUser *)user {
     RCMainFeedViewController *mainFeedViewController = [[RCMainFeedViewController alloc] initWithUser:user];
     [self.navigationController pushViewController:mainFeedViewController animated:YES];
 }

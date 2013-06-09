@@ -22,7 +22,7 @@
 @synthesize postID = _postID;
 @synthesize userID = _userID;
 @synthesize authorName = _authorName;
-@synthesize authorAvatar = _authorAvatar;
+@synthesize authorEmail = _authorEmail;
 
 - (id) initWithNSDictionary:(NSDictionary *)postData {
     self = [super init];
@@ -39,7 +39,8 @@
         _postID = [[postData objectForKey:@"id"] intValue];
         _userID = [[postData objectForKey:@"user_id"] intValue];
         _authorName = [postData objectForKey:@"author_name"];
-        _authorAvatar = [postData objectForKey:@"author_avatar"];
+        _authorEmail = [postData objectForKey:@"author_email"];
+        
     }
     return self;
 }

@@ -10,10 +10,11 @@
 #import "RCFeedPostPreview.h"
 #import "RCUser.h"
 #import "RCPost.h"
-#import "Constants.h"
-#import "Util.h"
+#import "RCConstants.h"
+#import "RCUtilities.h"
 #import "SBJson.h"
 #import "RCNewPostViewController.h"
+#import "RCPostDetailsViewController.h"
 #import "RCAmazonS3Helper.h"
 
 @interface RCMainFeedViewController ()
@@ -71,8 +72,8 @@ BOOL        _firstRefresh;
 
 - (void) handleRefresh:(UIRefreshControl*) refreshControl {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"dd-MMM, hh:mm:ssa"];
-    NSString *lastUpdated = [NSString stringWithFormat:@"Last updated on %@", [formatter  stringFromDate:[NSDate date] ] ];
+    [formatter setDateFormat:RCInfoStringDateFormat];
+    NSString *lastUpdated = [NSString stringWithFormat:RCInfoStringLastUpdatedOnFormat, [formatter  stringFromDate:[NSDate date] ] ];
     [_refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:lastUpdated]];
 	[self asynchFetchFeeds];
 }
@@ -104,9 +105,11 @@ BOOL        _firstRefresh;
     cell.lblUserProfileName.text = post.authorName;
     cell.lblPostContent.text = post.content;
     
+    RCUser *rowUser = [[RCUser alloc] init];
+    rowUser.userID = post.userID;
+    rowUser.email = post.authorEmail;
     [cell getAvatarImageFromInternet:_user withLoggedInUserID:post.userID usingCollection:_userCache];
     [cell getPostContentImageFromInternet:_user withPostContent:post usingCollection:_postCache];
-
     return cell;
 }
 
@@ -115,7 +118,13 @@ BOOL        _firstRefresh;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    //nothing yet
+    int idx = [indexPath row];
+    RCPost *post = [_items objectAtIndex:idx];
+    RCUser *owner = [[RCUser alloc] init];
+    owner.userID = post.userID;
+    //owner.name = self.
+    RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user];
+    [self.navigationController pushViewController:postDetailsViewController animated:YES];
 }
 
 - (void) asynchFetchFeeds {
@@ -150,13 +159,13 @@ BOOL        _firstRefresh;
                     _firstRefresh = NO;
                 }
             }else {
-                alertStatus([NSString stringWithFormat:@"Failed to obtain news feed, please try again! %@", responseData], @"Connection Failed!", self);
+                alertStatus([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetFeed, responseData], RCAlertMessageConnectionFailed, self);
             }
         }];
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        alertStatus(@"Failure getting friends from web service",@"Connection Failed!",self);
+        alertStatus(RCErrorMessageFailedToGetFeed,RCAlertMessageConnectionFailed,self);
     }
 }
 

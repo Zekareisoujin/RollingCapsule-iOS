@@ -6,8 +6,8 @@
 //  Copyright (c) 2013 Fox Cradle. All rights reserved.
 //
 
-#import "Constants.h"
-#import "Util.h"
+#import "RCConstants.h"
+#import "RCUtilities.h"
 #import "SBJSon.h"
 #import "RCFriendListViewController.h"
 #import "RCFriendListTableCell.h"
@@ -68,8 +68,8 @@ BOOL        _firstRefresh;
 
 - (void) handleRefresh:(UIRefreshControl *) refreshControl {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"dd-MMM, hh:mm:ssa"];
-    NSString *lastUpdated = [NSString stringWithFormat:@"Last updated on %@", [formatter  stringFromDate:[NSDate date] ] ];
+    [formatter setDateFormat:RCInfoStringDateFormat];
+    NSString *lastUpdated = [NSString stringWithFormat:RCInfoStringLastUpdatedOnFormat, [formatter  stringFromDate:[NSDate date] ] ];
     [_refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:lastUpdated]];
     [self asynchGetFriendsRequest];
 }
@@ -152,7 +152,7 @@ BOOL        _firstRefresh;
                         _firstRefresh = NO;
                     }
                 }else {
-                    alertStatus([NSString stringWithFormat:@"Failed to obtain friend list, please try again! %@", responseData], @"Connection Failed!", self);
+                    alertStatus([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetFriends, responseData], RCAlertMessageConnectionFailed, self);
                     
                 }
                 [_refreshControl endRefreshing];
@@ -160,7 +160,7 @@ BOOL        _firstRefresh;
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        alertStatus(@"Failure getting friends from web service",@"Connection Failed!",self);
+        alertStatus(RCErrorMessageFailedToGetFriends,RCAlertMessageConnectionFailed,self);
     }
 }
 

@@ -16,10 +16,11 @@ NSString *const RCSlideOutOptionsSlideValue = @"RCSlideOutOptionsSlideValue";
 @property (strong, nonatomic)   UIView*                 overlayView;
 @property (strong, nonatomic)	UITapGestureRecognizer*	tapGesture;
 @property (strong, nonatomic)	UIPanGestureRecognizer*	panGesture;
-@property BOOL menuVisible;
 @end
 
 @implementation RCSlideoutViewController
+
+BOOL _menuVisible;
 
 - (void)setSlideoutOptions:(NSDictionary *)options
 {
@@ -94,7 +95,7 @@ NSString *const RCSlideOutOptionsSlideValue = @"RCSlideOutOptionsSlideValue";
                          self.menuViewController.view.frame = frame2;
 					 }
                      completion:^(BOOL finished) {
-                         self.menuVisible = YES;
+                         _menuVisible = YES;
                          [self.contentController.view addSubview:self.overlayView];
 					 }];
 
@@ -114,8 +115,7 @@ NSString *const RCSlideOutOptionsSlideValue = @"RCSlideOutOptionsSlideValue";
                          self.menuViewController.view.frame = frame2;
 					 }
                      completion:^(BOOL finished) {
-                         self.menuVisible = NO;
-                         //[self.menuViewController.view removeGestureRecognizer:self.panGesture];
+                         _menuVisible = NO;
                          [self.overlayView removeFromSuperview];
 					 }];
 }

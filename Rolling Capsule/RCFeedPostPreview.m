@@ -7,8 +7,8 @@
 //
 
 #import "RCFeedPostPreview.h"
-#import "Constants.h"
-#import "Util.h"
+#import "RCConstants.h"
+#import "RCUtilities.h"
 #import "RCAmazonS3Helper.h"
 #import "RCPost.h"
 

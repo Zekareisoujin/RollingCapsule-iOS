@@ -5,10 +5,10 @@
 //  Created by Trinh Tuan Phuong on 26/5/13.
 //  Copyright (c) 2013 Fox Cradle. All rights reserved.
 //
-#include "Constants.h"
+#include "RCConstants.h"
 
 #import "SBJson.h"
-#import "Util.h"
+#import "RCUtilities.h"
 #import "RCRegisterViewController.h"
 
 @implementation RCRegisterViewController
@@ -36,7 +36,7 @@ BOOL        _willMoveKeyboardUp;
         
         if([[_txtFieldName text] isEqualToString:@""] || [[_txtFieldPassword text] isEqualToString:@""] 
            || [[_txtFieldEmail text] isEqualToString:@""] || [[_txtFieldPasswordConfirmation text] isEqualToString:@""] ) {
-            alertStatus(@"Please enter all needed information", @"Login Failed!",self);
+            alertStatus(RCErrorMessageInformationMissing, RCAlertMessageLoginFailed,self);
         } else {
             NSMutableString *dataSt = initQueryString(@"user[email]", [_txtFieldEmail text]);
             addArgumentToQueryString(dataSt, @"user[password]", [_txtFieldPassword text]);
@@ -59,9 +59,9 @@ BOOL        _willMoveKeyboardUp;
                 if (jsonData != NULL) {
                     NSDictionary *userData = (NSDictionary *) [jsonData objectForKey: @"user"];
                     NSString *name = (NSString *) [userData objectForKey:@"name"];
-                    alertStatus([NSString stringWithFormat:@"Welcome, %@!",name], @"Registration Success!", self);
+                    alertStatus([NSString stringWithFormat:@"Welcome, %@!",name], RCAlertMessageRegistrationSuccess, self);
                 }else {
-                    alertStatus([NSString stringWithFormat:@"Please try again! %@", responseData], @"Registration Failed!", self);
+                    alertStatus([NSString stringWithFormat:@"%@ %@",RCErrorMessagePleaseTryAgain, responseData], RCAlertMessageRegistrationFailed, self);
                 }
 
             }];
@@ -70,7 +70,7 @@ BOOL        _willMoveKeyboardUp;
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        alertStatus(@"Registration Failed.",@"Registration Failed!",self);
+        alertStatus(RCAlertMessageRegistrationFailed,RCAlertMessageRegistrationFailed,self);
     }
 }
 

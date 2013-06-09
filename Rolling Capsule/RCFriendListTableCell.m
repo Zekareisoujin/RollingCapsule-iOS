@@ -7,7 +7,7 @@
 //
 
 #import "RCFriendListTableCell.h"
-#import "Constants.h"
+#import "RCConstants.h"
 #import "RCAmazonS3Helper.h"
 
 @implementation RCFriendListTableCell
