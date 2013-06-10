@@ -16,7 +16,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imgUserAvatar;
 @property (weak, nonatomic) IBOutlet UIImageView *imgPostContent;
 
-- (void)getAvatarImageFromInternet:(RCUser *) user withLoggedInUserID:(int)loggedInUserID;
-- (void)getPostContentImageFromInternet:(RCUser *) user withPostContent:(RCPost *) post;
+- (void)getAvatarImageFromInternet:(RCUser *) user withLoggedInUserID:(int)loggedInUserID usingCollection:(NSMutableDictionary*)userCache;
+- (void)getPostContentImageFromInternet:(RCUser *) user withPostContent:(RCPost *) post usingCollection:(NSMutableDictionary*)postCache;
 
 @end

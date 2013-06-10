@@ -26,6 +26,8 @@
 BOOL        _firstRefresh;
 @synthesize refreshControl = _refreshControl;
 @synthesize user = _user;
+@synthesize userCache = _userCache;
+@synthesize postCache = _postCache;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -47,6 +49,9 @@ BOOL        _firstRefresh;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    _userCache = [[NSMutableDictionary alloc] init];
+    _postCache = [[NSMutableDictionary alloc] init];
+    
     // Do any additional setup after loading the view from its nib.
     _items = [[NSMutableArray alloc] init];
     _tblFeedList.tableFooterView = [[UIView alloc] init];
@@ -103,9 +108,8 @@ BOOL        _firstRefresh;
     RCUser *rowUser = [[RCUser alloc] init];
     rowUser.userID = post.userID;
     rowUser.email = post.authorEmail;
-    [cell getAvatarImageFromInternet:rowUser withLoggedInUserID:_user.userID];
-    [cell getPostContentImageFromInternet:_user withPostContent:post];
-
+    [cell getAvatarImageFromInternet:rowUser withLoggedInUserID:_user.userID usingCollection:_userCache];
+    [cell getPostContentImageFromInternet:_user withPostContent:post usingCollection:_postCache];
     return cell;
 }
 

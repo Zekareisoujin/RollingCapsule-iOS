@@ -17,5 +17,7 @@
 @property (nonatomic, strong) NSMutableArray *items;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) RCUser *user;
+@property (nonatomic, strong) NSMutableDictionary *userCache;
+@property (nonatomic, strong) NSMutableDictionary *postCache;
 
 @end

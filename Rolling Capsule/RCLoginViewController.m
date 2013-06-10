@@ -63,7 +63,7 @@
                 
                 SBJsonParser *jsonParser = [SBJsonParser new];
                 NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
-                NSLog(@"%@",jsonData);
+                //NSLog(@"%@",jsonData);
                 
                 //Temporary:
                 if (jsonData != NULL) {
