@@ -9,6 +9,7 @@
 #import "RCFriendListTableCell.h"
 #import "RCConstants.h"
 #import "RCAmazonS3Helper.h"
+#import "RCResourceCache.h"
 
 @implementation RCFriendListTableCell
 
@@ -29,16 +30,21 @@
 }
 
 -(void) getAvatarImageFromInternet:(RCUser *) user withLoggedInUserID:(int)loggedInUserID {
+    
+    RCResourceCache *cache = [RCResourceCache centralCache];
+    NSString *key = [NSString stringWithFormat:@"%@/%d", RCUsersResource, user.userID];
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-        UIImage *image = [RCAmazonS3Helper getAvatarImage:user withLoggedinUserID:loggedInUserID];
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        if (image != nil) {
+        UIImage* cachedImg = (UIImage*)[cache getResourceForKey:key usingQuery:^{
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+            UIImage *image = [RCAmazonS3Helper getAvatarImage:user withLoggedinUserID:loggedInUserID];
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            return image;
+        }];
+        if (cachedImg != nil)
             dispatch_async(dispatch_get_main_queue(), ^{
-                [_imgViewAvatar setImage:image];
+                [_imgViewAvatar setImage:cachedImg];
             });
-        }
     });
 }
 

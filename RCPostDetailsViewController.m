@@ -13,6 +13,7 @@
 #import "RCUtilities.h"
 #import "RCConnectionManager.h"
 #import "RCKeyboardPushUpHandler.h"
+#import "RCResourceCache.h"
 
 @interface RCPostDetailsViewController ()
 @property (nonatomic,strong) NSMutableArray* comments;
@@ -93,7 +94,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 
 #pragma mark - web request
 -(void) getPostImageFromInternet {
-    [_connectionManager startConnection];
+    /*[_connectionManager startConnection];
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
         UIImage *image = [RCAmazonS3Helper getUserMediaImage:_postOwner withLoggedinUserID:_loggedInUser.userID   withImageUrl:_post.fileUrl];
@@ -107,7 +108,24 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
                 alertStatus(@"Couldn't connect to the server. Please try again later", @"Network error", self);
             });
         }
+    });*/
+    
+    RCResourceCache *cache = [RCResourceCache centralCache];
+    NSString *key = [NSString stringWithFormat:@"%@/%d", RCPostsResource, _post.postID];
+    dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
+    dispatch_async(queue, ^{
+        UIImage* cachedImg = (UIImage*)[cache getResourceForKey:key usingQuery:^{
+            [_connectionManager startConnection];
+            UIImage *image = [RCAmazonS3Helper getUserMediaImage:_postOwner withLoggedinUserID:_loggedInUser.userID   withImageUrl:_post.fileUrl];
+            [_connectionManager endConnection];
+            return image;
+        }];
+        if (cachedImg != nil)
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_imgViewPostImage setImage:cachedImg];
+            });
     });
+
 }
 
 #pragma mark - Table view data source
