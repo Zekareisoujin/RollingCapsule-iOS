@@ -52,7 +52,11 @@ int       _friendshipID;
     _btnAvatarImg.enabled = NO;
     [_btnFriendAction setTitle:@"Loading relation" forState:UIControlStateNormal];
     [self getAvatarImageFromInternet];
-    [self asynchGetUserRelationRequest];
+    if (_profileUser.userID != _viewingUser.userID)
+        [self asynchGetUserRelationRequest];
+    else {
+        [_btnFriendAction removeFromSuperview];
+    }
     
 }
 

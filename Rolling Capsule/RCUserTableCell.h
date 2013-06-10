@@ -8,11 +8,15 @@
 
 #import <UIKit/UIKit.h>
 #import "RCUser.h"
+#import "RCConnectionManager.h"
 
-@interface RCFriendListTableCell : UITableViewCell
+@interface RCUserTableCell : UITableViewCell
 
 @property (nonatomic, weak) IBOutlet UILabel *lblName;
 @property (nonatomic, weak) IBOutlet UILabel *lblEmail;
 @property (nonatomic, weak) IBOutlet UIImageView *imgViewAvatar;
--(void) getAvatarImageFromInternet:(RCUser *) user withLoggedInUserID:(int)loggedInUserID;
+
+- (void) populateCellData:(RCUser *) user withLoggedInUserID:(int)loggedInUserID completion:(void (^)(void))callback;
++ (RCUserTableCell *) getFriendListTableCell:(UITableView *)tableView;
++ (CGFloat) cellHeight;
 @end

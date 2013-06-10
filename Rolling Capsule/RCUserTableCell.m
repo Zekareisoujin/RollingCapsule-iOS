@@ -6,12 +6,12 @@
 //  Copyright (c) 2013 Fox Cradle. All rights reserved.
 //
 
-#import "RCFriendListTableCell.h"
+#import "RCUserTableCell.h"
 #import "RCConstants.h"
 #import "RCAmazonS3Helper.h"
 #import "RCResourceCache.h"
 
-@implementation RCFriendListTableCell
+@implementation RCUserTableCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
@@ -29,7 +29,9 @@
     // Configure the view for the selected state
 }
 
--(void) getAvatarImageFromInternet:(RCUser *) user withLoggedInUserID:(int)loggedInUserID {
+-(void) populateCellData:(RCUser *) user withLoggedInUserID:(int)loggedInUserID completion:(void (^)(void))callback {
+    _lblEmail.text = user.email;
+    _lblName.text = user.name;
     
     RCResourceCache *cache = [RCResourceCache centralCache];
     NSString *key = [NSString stringWithFormat:@"%@/%d", RCUsersResource, user.userID];
@@ -46,6 +48,22 @@
                 [_imgViewAvatar setImage:cachedImg];
             });
     });
+}
+
++ (RCUserTableCell *) getFriendListTableCell:(UITableView *)tableView {
+    static NSString *CellIdentifier = @"RCUserTableCell";
+    RCUserTableCell *cell;
+    
+    cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:CellIdentifier owner:self options:nil];
+        cell = [nib objectAtIndex:0];
+    }
+    return cell;
+}
+
++ (CGFloat) cellHeight {
+    return 78;
 }
 
 @end

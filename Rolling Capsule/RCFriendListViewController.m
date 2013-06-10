@@ -10,8 +10,9 @@
 #import "RCUtilities.h"
 #import "SBJSon.h"
 #import "RCFriendListViewController.h"
-#import "RCFriendListTableCell.h"
+#import "RCUserTableCell.h"
 #import "RCFindFriendsViewController.h"
+#import "RCConnectionManager.h"
 #import "RCUserProfileViewController.h"
 #import "AppDelegate.h"
 
@@ -27,6 +28,8 @@ BOOL        _firstRefresh;
 @synthesize user = _user;
 @synthesize refreshControl = _refreshControl;
 
+RCConnectionManager *_connectionManager;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
@@ -40,12 +43,16 @@ BOOL        _firstRefresh;
     self = [super init];
     if (self) {
         _user = user;
+        _connectionManager = [[RCConnectionManager alloc] init];
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [_connectionManager reset];
+    
     _items = [[NSMutableArray alloc] init];
     _tblViewFriendList.tableFooterView = [[UIView alloc] init];
     
@@ -91,26 +98,19 @@ BOOL        _firstRefresh;
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     //Where we configure the cell in each row
     
-    static NSString *CellIdentifier = @"RCFriendListTableCell";
-    RCFriendListTableCell *cell;
-    
-    cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"RCFriendListTableCell" owner:self options:nil];
-        cell = [nib objectAtIndex:0];
-    }
+    RCUserTableCell *cell = [RCUserTableCell getFriendListTableCell:tableView];
     
     RCUser *user = [_items objectAtIndex:indexPath.row];
-    cell.lblEmail.text = user.email;
-    cell.lblName.text = user.name;
-    
-    [cell getAvatarImageFromInternet:user withLoggedInUserID:_user.userID];
+    [_connectionManager startConnection];
+    [cell populateCellData:user
+                  withLoggedInUserID:_user.userID
+                          completion:^ { [_connectionManager endConnection]; }];
     
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 78;
+    return [RCUserTableCell cellHeight];
 }
 
 #pragma mark - Table view delegate
@@ -124,7 +124,7 @@ BOOL        _firstRefresh;
 #pragma mark - web request
 - (void)asynchGetFriendsRequest {
     //Asynchronous Request
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [_connectionManager startConnection];
     @try {
             
             NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/friends?mobile=1", RCServiceURL, RCUsersResource, _user.userID]];
@@ -133,7 +133,7 @@ BOOL        _firstRefresh;
             [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                                    completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
             {
-                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                [_connectionManager endConnection];
                 NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
                 
                 SBJsonParser *jsonParser = [SBJsonParser new];

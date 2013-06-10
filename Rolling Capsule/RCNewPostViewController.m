@@ -12,6 +12,7 @@
 #import "RCAmazonS3Helper.h"
 #import "RCNewPostViewController.h"
 #import "RCKeyboardPushUpHandler.h"
+#import "RCConnectionManager.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SBJson.h"
 
@@ -32,6 +33,7 @@
 
 BOOL _successfulPost = NO;
 RCKeyboardPushUpHandler *_keyboardPushHandler;
+RCConnectionManager *_connectionManager;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -47,6 +49,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     if (self) {
         _user = user;
         _keyboardPushHandler = [[RCKeyboardPushUpHandler alloc] init];
+        _connectionManager = [[RCConnectionManager alloc] init];
     }
     return self;
 }
@@ -54,6 +57,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [_connectionManager reset];
     [_keyboardPushHandler reset];
     _keyboardPushHandler.view = self.view;
     
@@ -78,7 +82,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
         [self showAlertMessage:@"Please choose an image!" withTitle:@"Incomplete post!"];
         return;
     }
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [_connectionManager startConnection];
     self.navigationItem.rightBarButtonItem.enabled = NO;
     NSData *imageData = UIImageJPEGRepresentation(_postImage, 1.0);
     [self performSelectorInBackground:@selector(uploadImageToS3:) withObject:imageData];
@@ -106,7 +110,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
         [self performSelectorOnMainThread:@selector(asynchPostNewResuest) withObject:nil waitUntilDone:YES];
     } else {
         NSLog(@"Error: %@", putObjectResponse.error);
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        [_connectionManager endConnection];
         self.navigationItem.rightBarButtonItem.enabled = YES;
         [self showAlertMessage:putObjectResponse.error.description withTitle:@"Upload Error"];
         
@@ -157,7 +161,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
                 _successfulPost = NO;
             } else _successfulPost = YES;
             
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [_connectionManager endConnection];
             self.navigationItem.rightBarButtonItem.enabled = YES;
             
             NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];

@@ -11,7 +11,8 @@
 #import "SBJson.h"
 #import "RCFindFriendsViewController.h"
 #import "RCUserProfileViewController.h"
-#import "RCFriendListTableCell.h"
+#import "RCUserTableCell.h"
+#import "RCConnectionManager.h"
 
 @interface RCFindFriendsViewController ()
 @property (nonatomic,strong) UIRefreshControl *refreshControl;
@@ -22,6 +23,8 @@
 @synthesize user = _user;
 @synthesize items = _items;
 @synthesize refreshControl = _refreshControl;
+
+RCConnectionManager *_connectionManager;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -35,12 +38,16 @@
     self = [super init];
     if (self) {
         _user = user;
+        _connectionManager = [[RCConnectionManager alloc] init];
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [_connectionManager reset];
+    
     self.navigationItem.title = @" ";
     _items = [[NSMutableArray alloc] init];
     _tblViewFoundUsers.tableFooterView = [[UIView alloc] init];
@@ -67,7 +74,7 @@
 
 #pragma mark - web request
 - (void)asynchFindUsersRequest:(NSString *)searchString {
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [_connectionManager startConnection];
     //Asynchronous Request
     @try {
         
@@ -85,7 +92,7 @@
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
         {
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [_connectionManager endConnection];
             NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
             
             SBJsonParser *jsonParser = [SBJsonParser new];
@@ -133,25 +140,20 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     //Where we configure the cell in each row
     
-    static NSString *CellIdentifier = @"RCFriendListTableCell";
-    RCFriendListTableCell *cell;
-    
-    cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
-        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"RCFriendListTableCell" owner:self options:nil];
-        cell = [nib objectAtIndex:0];
-    }
+    RCUserTableCell *cell = [RCUserTableCell getFriendListTableCell:tableView];
     
     RCUser *user = [_items objectAtIndex:indexPath.row];
-    cell.lblEmail.text = user.email;
-    cell.lblName.text = user.name;
-    [cell getAvatarImageFromInternet:user withLoggedInUserID:_user.userID];
+    
+    [_connectionManager startConnection];
+    [cell populateCellData:user
+                  withLoggedInUserID:_user.userID
+                          completion:^{[_connectionManager endConnection];}];
     
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 78;
+    return [RCUserTableCell cellHeight];
 }
 
 #pragma mark - Table view delegate
