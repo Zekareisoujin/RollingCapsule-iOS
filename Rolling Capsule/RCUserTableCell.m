@@ -9,6 +9,7 @@
 #import "RCUserTableCell.h"
 #import "RCConstants.h"
 #import "RCAmazonS3Helper.h"
+#import "RCResourceCache.h"
 
 @implementation RCUserTableCell
 
@@ -31,15 +32,21 @@
 -(void) populateCellData:(RCUser *) user withLoggedInUserID:(int)loggedInUserID completion:(void (^)(void))callback {
     _lblEmail.text = user.email;
     _lblName.text = user.name;
+    
+    RCResourceCache *cache = [RCResourceCache centralCache];
+    NSString *key = [NSString stringWithFormat:@"%@/%d", RCUsersResource, user.userID];
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
-        UIImage *image = [RCAmazonS3Helper getAvatarImage:user withLoggedinUserID:loggedInUserID];
-        callback();
-        if (image != nil) {
+        UIImage* cachedImg = (UIImage*)[cache getResourceForKey:key usingQuery:^{
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+            UIImage *image = [RCAmazonS3Helper getAvatarImage:user withLoggedinUserID:loggedInUserID];
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            return image;
+        }];
+        if (cachedImg != nil)
             dispatch_async(dispatch_get_main_queue(), ^{
-                [_imgViewAvatar setImage:image];
+                [_imgViewAvatar setImage:cachedImg];
             });
-        }
     });
 }
 

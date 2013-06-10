@@ -34,6 +34,7 @@
 		64A917081751E554007D629D /* RCRegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64A917071751E554007D629D /* RCRegisterViewController.xib */; };
 		64A9170B1751F6C9007D629D /* RCRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64A9170A1751F6C9007D629D /* RCRegisterViewController.m */; };
 		64FFD2CD17662D1B004337F8 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FFD2CC17662D1B004337F8 /* MapKit.framework */; };
+		BF1AF31B1766231B000824CC /* RCResourceCache.m in Sources */ = {isa = PBXBuildFile; fileRef = BF1AF31A1766231B000824CC /* RCResourceCache.m */; };
 		BF2CD6241754E12D00EF2E85 /* RCFeedPostPreview.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF2CD6231754E12D00EF2E85 /* RCFeedPostPreview.xib */; };
 		BF2CD6271754E60C00EF2E85 /* RCFeedPostPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = BF2CD6261754E60C00EF2E85 /* RCFeedPostPreview.m */; };
 		BF4DCC46175C82280081B5AC /* AWSRuntime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF4DCC44175C82280081B5AC /* AWSRuntime.framework */; };
@@ -122,6 +123,8 @@
 		64A917091751F6C9007D629D /* RCRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCRegisterViewController.h; sourceTree = "<group>"; };
 		64A9170A1751F6C9007D629D /* RCRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCRegisterViewController.m; sourceTree = "<group>"; };
 		64FFD2CC17662D1B004337F8 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		BF1AF3191766231B000824CC /* RCResourceCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCResourceCache.h; sourceTree = "<group>"; };
+		BF1AF31A1766231B000824CC /* RCResourceCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCResourceCache.m; sourceTree = "<group>"; };
 		BF2CD6201751C53900EF2E85 /* RCUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCUtilities.h; sourceTree = "<group>"; };
 		BF2CD6231754E12D00EF2E85 /* RCFeedPostPreview.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCFeedPostPreview.xib; sourceTree = "<group>"; };
 		BF2CD6251754E60C00EF2E85 /* RCFeedPostPreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCFeedPostPreview.h; sourceTree = "<group>"; };
@@ -305,6 +308,8 @@
 				BFC8414617586BFB00E52FE2 /* RCPost.m */,
 				BF2CD6201751C53900EF2E85 /* RCUtilities.h */,
 				BF3AFF971750763400D46558 /* RCConstants.h */,
+				BF1AF3191766231B000824CC /* RCResourceCache.h */,
+				BF1AF31A1766231B000824CC /* RCResourceCache.m */,
 				BFCA7822174DFD3F00666CBA /* Supporting Files */,
 				6490A90E1758E2D000E5048F /* RCSlideoutViewController.h */,
 				6490A90F1758E2D000E5048F /* RCSlideoutViewController.m */,
@@ -536,6 +541,7 @@
 				64549D88175F264600BA8164 /* RCPostDetailsViewController.m in Sources */,
 				642E71FE17639D9400B3464E /* RCConnectionManager.m in Sources */,
 				642E72011763A7F600B3464E /* RCKeyboardPushUpHandler.m in Sources */,
+				BF1AF31B1766231B000824CC /* RCResourceCache.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
