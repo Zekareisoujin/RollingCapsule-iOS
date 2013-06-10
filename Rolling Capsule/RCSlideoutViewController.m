@@ -50,9 +50,10 @@ BOOL _menuVisible;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.view addSubview:self.contentController.view];
+    
     UIView *menuView = self.menuViewController.view;
     [self.view addSubview:menuView];
+    [self.view addSubview:self.contentController.view];
     self.contentController.view.frame = self.view.bounds;
     CGRect frame = self.view.bounds;
     frame.origin.x = -frame.size.width;

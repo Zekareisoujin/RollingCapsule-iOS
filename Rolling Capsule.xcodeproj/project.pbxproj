@@ -10,8 +10,8 @@
 		6407BBD61753B719000F29C5 /* RCFriendListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6407BBD51753B719000F29C5 /* RCFriendListViewController.xib */; };
 		6407BBD917545579000F29C5 /* RCUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 6407BBD817545579000F29C5 /* RCUser.m */; };
 		6407BBDC17545A87000F29C5 /* RCFriendListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6407BBDB17545A87000F29C5 /* RCFriendListViewController.m */; };
-		6407BBDE1754D5EB000F29C5 /* RCFriendListTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6407BBDD1754D5EB000F29C5 /* RCFriendListTableCell.xib */; };
-		6407BBE11754D81C000F29C5 /* RCFriendListTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6407BBE01754D81C000F29C5 /* RCFriendListTableCell.m */; };
+		6407BBDE1754D5EB000F29C5 /* RCUserTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6407BBDD1754D5EB000F29C5 /* RCUserTableCell.xib */; };
+		6407BBE11754D81C000F29C5 /* RCUserTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6407BBE01754D81C000F29C5 /* RCUserTableCell.m */; };
 		64176AFF175A260900443B59 /* AWSRuntime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64176AFD175A260900443B59 /* AWSRuntime.framework */; };
 		64176B00175A260900443B59 /* AWSS3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64176AFE175A260900443B59 /* AWSS3.framework */; };
 		642E71FE17639D9400B3464E /* RCConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 642E71FD17639D9400B3464E /* RCConnectionManager.m */; };
@@ -86,9 +86,9 @@
 		6407BBD817545579000F29C5 /* RCUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCUser.m; sourceTree = "<group>"; };
 		6407BBDA17545A87000F29C5 /* RCFriendListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCFriendListViewController.h; sourceTree = "<group>"; };
 		6407BBDB17545A87000F29C5 /* RCFriendListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCFriendListViewController.m; sourceTree = "<group>"; };
-		6407BBDD1754D5EB000F29C5 /* RCFriendListTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCFriendListTableCell.xib; sourceTree = "<group>"; };
-		6407BBDF1754D81C000F29C5 /* RCFriendListTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCFriendListTableCell.h; sourceTree = "<group>"; };
-		6407BBE01754D81C000F29C5 /* RCFriendListTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCFriendListTableCell.m; sourceTree = "<group>"; };
+		6407BBDD1754D5EB000F29C5 /* RCUserTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCUserTableCell.xib; sourceTree = "<group>"; };
+		6407BBDF1754D81C000F29C5 /* RCUserTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCUserTableCell.h; sourceTree = "<group>"; };
+		6407BBE01754D81C000F29C5 /* RCUserTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCUserTableCell.m; sourceTree = "<group>"; };
 		64176AFD175A260900443B59 /* AWSRuntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSRuntime.framework; path = "../../Downloads/aws-ios-sdk-1.6.0/AWSRuntime.framework"; sourceTree = "<group>"; };
 		64176AFE175A260900443B59 /* AWSS3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSS3.framework; path = "../../Downloads/aws-ios-sdk-1.6.0/AWSS3.framework"; sourceTree = "<group>"; };
 		642E71FC17639D9400B3464E /* RCConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCConnectionManager.h; sourceTree = "<group>"; };
@@ -286,9 +286,9 @@
 				6491DCEF1755E092006FBCD8 /* RCUserProfileViewController.h */,
 				6491DCF01755E096006FBCD8 /* RCUserProfileViewController.m */,
 				6491DCF11755E096006FBCD8 /* RCUserProfileViewController.xib */,
-				6407BBDF1754D81C000F29C5 /* RCFriendListTableCell.h */,
-				6407BBE01754D81C000F29C5 /* RCFriendListTableCell.m */,
-				6407BBDD1754D5EB000F29C5 /* RCFriendListTableCell.xib */,
+				6407BBDF1754D81C000F29C5 /* RCUserTableCell.h */,
+				6407BBE01754D81C000F29C5 /* RCUserTableCell.m */,
+				6407BBDD1754D5EB000F29C5 /* RCUserTableCell.xib */,
 				6490A9091757C07000E5048F /* RCMainMenuViewController.h */,
 				6490A90A1757C07100E5048F /* RCMainMenuViewController.m */,
 				6490A90B1757C07100E5048F /* RCMainMenuViewController.xib */,
@@ -459,7 +459,7 @@
 				6407BBD61753B719000F29C5 /* RCFriendListViewController.xib in Resources */,
 				BF2CD6241754E12D00EF2E85 /* RCFeedPostPreview.xib in Resources */,
 				BF68E7041756090200E5C1F4 /* RCMainFeedViewController.xib in Resources */,
-				6407BBDE1754D5EB000F29C5 /* RCFriendListTableCell.xib in Resources */,
+				6407BBDE1754D5EB000F29C5 /* RCUserTableCell.xib in Resources */,
 				6491DCEE1755CF8D006FBCD8 /* RCFindFriendsViewController.xib in Resources */,
 				6491DCF31755E096006FBCD8 /* RCUserProfileViewController.xib in Resources */,
 				6490A90D1757C07100E5048F /* RCMainMenuViewController.xib in Resources */,
@@ -521,7 +521,7 @@
 				6407BBDC17545A87000F29C5 /* RCFriendListViewController.m in Sources */,
 				BF2CD6271754E60C00EF2E85 /* RCFeedPostPreview.m in Sources */,
 				BF68E7031756090200E5C1F4 /* RCMainFeedViewController.m in Sources */,
-				6407BBE11754D81C000F29C5 /* RCFriendListTableCell.m in Sources */,
+				6407BBE11754D81C000F29C5 /* RCUserTableCell.m in Sources */,
 				6491DCED1755CF8D006FBCD8 /* RCFindFriendsViewController.m in Sources */,
 				6491DCF21755E096006FBCD8 /* RCUserProfileViewController.m in Sources */,
 				BFC8414717586BFB00E52FE2 /* RCPost.m in Sources */,
