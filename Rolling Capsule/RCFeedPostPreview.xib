@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12D78</string>
+		<string key="IBDocument.SystemVersion">12E55</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.37</string>
+		<string key="IBDocument.AppKitVersion">1187.39</string>
 		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -34,7 +34,7 @@
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 			</object>
 			<object class="IBUITableViewCell" id="441331902">
-				<nil key="NSNextResponder"/>
+				<reference key="NSNextResponder"/>
 				<int key="NSvFlags">292</int>
 				<array class="NSMutableArray" key="NSSubviews">
 					<object class="IBUIView" id="337210500">
@@ -46,16 +46,22 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{20, 9}, {32, 32}}</string>
 								<reference key="NSSuperview" ref="337210500"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="438807579"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+								<object class="NSCustomResource" key="IBUIImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">default_avatar.jpg</string>
+								</object>
 							</object>
 							<object class="IBUILabel" id="438807579">
 								<reference key="NSNextResponder" ref="337210500"/>
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{60, 14}, {79, 21}}</string>
 								<reference key="NSSuperview" ref="337210500"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="119982898"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -90,6 +96,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{15, 220}, {280, 58}}</string>
 								<reference key="NSSuperview" ref="337210500"/>
+								<reference key="NSWindow"/>
 								<reference key="NSNextKeyView" ref="247942895"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIOpaque">NO</bool>
@@ -119,6 +126,7 @@
 								<int key="NSvFlags">292</int>
 								<string key="NSFrame">{{40, 50}, {240, 180}}</string>
 								<reference key="NSSuperview" ref="337210500"/>
+								<reference key="NSWindow"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -126,6 +134,7 @@
 						</array>
 						<string key="NSFrameSize">{320, 269}</string>
 						<reference key="NSSuperview" ref="441331902"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="471184810"/>
 						<string key="NSReuseIdentifierKey">_NS:11</string>
 						<object class="NSColor" key="IBUIBackgroundColor">
@@ -140,6 +149,8 @@
 					</object>
 				</array>
 				<string key="NSFrameSize">{320, 270}</string>
+				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="337210500"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -606,14 +617,14 @@
 					<string key="className">RCFeedPostPreview</string>
 					<string key="superclassName">UITableViewCell</string>
 					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="imgPostCeontent">UIImageView</string>
+						<string key="imgPostContent">UIImageView</string>
 						<string key="imgUserAvatar">UIImageView</string>
 						<string key="lblPostContent">UILabel</string>
 						<string key="lblUserProfileName">UILabel</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="imgPostCeontent">
-							<string key="name">imgPostCeontent</string>
+						<object class="IBToOneOutletInfo" key="imgPostContent">
+							<string key="name">imgPostContent</string>
 							<string key="candidateClassName">UIImageView</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="imgUserAvatar">
@@ -640,6 +651,10 @@
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
+		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
+			<string key="NS.key.0">default_avatar.jpg</string>
+			<string key="NS.object.0">{50, 50}</string>
+		</object>
 		<bool key="IBDocument.UseAutolayout">YES</bool>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>

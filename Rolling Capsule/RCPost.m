@@ -24,6 +24,8 @@
 @synthesize authorName = _authorName;
 @synthesize authorEmail = _authorEmail;
 
+CLLocationCoordinate2D _theCoordinate;
+
 - (id) initWithNSDictionary:(NSDictionary *)postData {
     self = [super init];
     if (self) {
@@ -40,9 +42,14 @@
         _userID = [[postData objectForKey:@"user_id"] intValue];
         _authorName = [postData objectForKey:@"author_name"];
         _authorEmail = [postData objectForKey:@"author_email"];
-        
+        _theCoordinate.latitude = _latitude;
+        _theCoordinate.longitude = _longitude;
     }
     return self;
+}
+
+- (CLLocationCoordinate2D)coordinate {
+    return _theCoordinate;
 }
 
 @end

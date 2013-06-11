@@ -9,6 +9,8 @@
 #ifndef Rolling_Capsule_Constants_h
 #define Rolling_Capsule_Constants_h
 
+#define METERS_PER_MILE 1609.344
+
 //prefix RC : rolling capsule
 static NSString* const RCServiceURL = @"https://shielded-fortress-7112.herokuapp.com";
 static NSString* const RCSessionsResource = @"/sessions";
