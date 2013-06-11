@@ -25,6 +25,7 @@
 
 @property (nonatomic,retain) NSString *authorName;
 @property (nonatomic,retain) NSString *authorEmail;
-@property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
+
+- (MKMapItem*)mapItem;
 - (id) initWithNSDictionary:(NSDictionary *)userData;
 @end

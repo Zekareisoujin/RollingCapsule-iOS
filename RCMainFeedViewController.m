@@ -149,6 +149,7 @@ BOOL        _firstRefresh;
             
             if (jsonData != NULL) {
                 [_items removeAllObjects];
+                NSLog(@"current annotations:%@",_mapView.annotations);
                 [_mapView removeAnnotations:_mapView.annotations];
                 NSArray *postList = (NSArray *) [jsonData objectForKey:@"post_list"];
                 for (NSDictionary *postData in postList) {

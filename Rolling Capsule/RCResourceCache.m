@@ -12,7 +12,7 @@
 
 @synthesize cache = _cache;
 
-static RCResourceCache *instance;
+static RCResourceCache *instance = 0;
 
 - (id) init {
     self = [super init];
