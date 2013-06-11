@@ -40,6 +40,11 @@
 		BF4DCC47175C82280081B5AC /* AWSS3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF4DCC45175C82280081B5AC /* AWSS3.framework */; };
 		BF68E7031756090200E5C1F4 /* RCMainFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BF68E7011756090200E5C1F4 /* RCMainFeedViewController.m */; };
 		BF68E7041756090200E5C1F4 /* RCMainFeedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF68E7021756090200E5C1F4 /* RCMainFeedViewController.xib */; };
+		BF728EEB176767CD0050699C /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF728EEA176767CD0050699C /* Default@2x.png */; };
+		BF728EED176768000050699C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF728EEC176768000050699C /* Default-568h@2x.png */; };
+		BF728EEF1767680F0050699C /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = BF728EEE1767680F0050699C /* Default.png */; };
+		BF8925EC1767697000F1978F /* icon114.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8925EB1767697000F1978F /* icon114.png */; };
+		BF8925EE1767698600F1978F /* icon57.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8925ED1767698600F1978F /* icon57.png */; };
 		BFC8414717586BFB00E52FE2 /* RCPost.m in Sources */ = {isa = PBXBuildFile; fileRef = BFC8414617586BFB00E52FE2 /* RCPost.m */; };
 		BFCA781C174DFD3F00666CBA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFCA781B174DFD3F00666CBA /* UIKit.framework */; };
 		BFCA781E174DFD3F00666CBA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFCA781D174DFD3F00666CBA /* Foundation.framework */; };
@@ -133,6 +138,11 @@
 		BF68E7001756090200E5C1F4 /* RCMainFeedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCMainFeedViewController.h; path = ../RCMainFeedViewController.h; sourceTree = "<group>"; };
 		BF68E7011756090200E5C1F4 /* RCMainFeedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCMainFeedViewController.m; path = ../RCMainFeedViewController.m; sourceTree = "<group>"; };
 		BF68E7021756090200E5C1F4 /* RCMainFeedViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RCMainFeedViewController.xib; path = ../RCMainFeedViewController.xib; sourceTree = "<group>"; };
+		BF728EEA176767CD0050699C /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		BF728EEC176768000050699C /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		BF728EEE1767680F0050699C /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		BF8925EB1767697000F1978F /* icon114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon114.png; sourceTree = "<group>"; };
+		BF8925ED1767698600F1978F /* icon57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon57.png; sourceTree = "<group>"; };
 		BFC8414517586BFB00E52FE2 /* RCPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCPost.h; sourceTree = "<group>"; };
 		BFC8414617586BFB00E52FE2 /* RCPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCPost.m; sourceTree = "<group>"; };
 		BFCA7818174DFD3F00666CBA /* Rolling Capsule.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rolling Capsule.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -225,6 +235,11 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
+				BF8925ED1767698600F1978F /* icon57.png */,
+				BF8925EB1767697000F1978F /* icon114.png */,
+				BF728EEE1767680F0050699C /* Default.png */,
+				BF728EEC176768000050699C /* Default-568h@2x.png */,
+				BF728EEA176767CD0050699C /* Default@2x.png */,
 				BF4DCC44175C82280081B5AC /* AWSRuntime.framework */,
 				BF4DCC45175C82280081B5AC /* AWSS3.framework */,
 				643EACEF175C1B5C002761D9 /* CoreLocation.framework */,
@@ -472,6 +487,11 @@
 				643EACE8175BACC0002761D9 /* back_button.png in Resources */,
 				643EACEE175BBE51002761D9 /* RCNewPostViewController.xib in Resources */,
 				64549D89175F264600BA8164 /* RCPostDetailsViewController.xib in Resources */,
+				BF728EEB176767CD0050699C /* Default@2x.png in Resources */,
+				BF728EED176768000050699C /* Default-568h@2x.png in Resources */,
+				BF728EEF1767680F0050699C /* Default.png in Resources */,
+				BF8925EC1767697000F1978F /* icon114.png in Resources */,
+				BF8925EE1767698600F1978F /* icon57.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
