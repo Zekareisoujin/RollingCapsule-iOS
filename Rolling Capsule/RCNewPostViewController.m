@@ -132,11 +132,10 @@ RCConnectionManager *_connectionManager;
 #pragma mark - post web request
 
 - (void) asynchPostNewResuest {
-    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    _postContent = [_txtViewPostContent text];
-    
     //Asynchronous Request
-    @try {    
+    @try {
+        _postContent = [_txtViewPostContent text];
+        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
         CLLocationDegrees latitude = appDelegate.currentLocation.coordinate.latitude;
         CLLocationDegrees longitude = appDelegate.currentLocation.coordinate.longitude;
         NSString* latSt = [[NSString alloc] initWithFormat:@"%f",latitude];

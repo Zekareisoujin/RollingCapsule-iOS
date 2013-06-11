@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MapKit/MapKit.h>
 #import "RCUser.h"
 
 @interface RCMainFeedViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
@@ -17,6 +18,7 @@
 @property (nonatomic, strong) NSMutableArray *items;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) RCUser *user;
+@property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (nonatomic, strong) NSMutableDictionary *userCache;
 @property (nonatomic, strong) NSMutableDictionary *postCache;
 

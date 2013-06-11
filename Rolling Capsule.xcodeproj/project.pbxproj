@@ -33,6 +33,7 @@
 		649A869D175B0CC30016674F /* RCAmazonS3Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 649A869C175B0CC30016674F /* RCAmazonS3Helper.m */; };
 		64A917081751E554007D629D /* RCRegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64A917071751E554007D629D /* RCRegisterViewController.xib */; };
 		64A9170B1751F6C9007D629D /* RCRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64A9170A1751F6C9007D629D /* RCRegisterViewController.m */; };
+		64FFD2CD17662D1B004337F8 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FFD2CC17662D1B004337F8 /* MapKit.framework */; };
 		BF1AF31B1766231B000824CC /* RCResourceCache.m in Sources */ = {isa = PBXBuildFile; fileRef = BF1AF31A1766231B000824CC /* RCResourceCache.m */; };
 		BF2CD6241754E12D00EF2E85 /* RCFeedPostPreview.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF2CD6231754E12D00EF2E85 /* RCFeedPostPreview.xib */; };
 		BF2CD6271754E60C00EF2E85 /* RCFeedPostPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = BF2CD6261754E60C00EF2E85 /* RCFeedPostPreview.m */; };
@@ -126,6 +127,7 @@
 		64A917071751E554007D629D /* RCRegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCRegisterViewController.xib; sourceTree = "<group>"; };
 		64A917091751F6C9007D629D /* RCRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCRegisterViewController.h; sourceTree = "<group>"; };
 		64A9170A1751F6C9007D629D /* RCRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCRegisterViewController.m; sourceTree = "<group>"; };
+		64FFD2CC17662D1B004337F8 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		BF1AF3191766231B000824CC /* RCResourceCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCResourceCache.h; sourceTree = "<group>"; };
 		BF1AF31A1766231B000824CC /* RCResourceCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCResourceCache.m; sourceTree = "<group>"; };
 		BF2CD6201751C53900EF2E85 /* RCUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCUtilities.h; sourceTree = "<group>"; };
@@ -199,6 +201,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				64FFD2CD17662D1B004337F8 /* MapKit.framework in Frameworks */,
 				643EACF0175C1B5C002761D9 /* CoreLocation.framework in Frameworks */,
 				BFCA781C174DFD3F00666CBA /* UIKit.framework in Frameworks */,
 				BFCA781E174DFD3F00666CBA /* Foundation.framework in Frameworks */,
@@ -240,6 +243,7 @@
 				BF728EEE1767680F0050699C /* Default.png */,
 				BF728EEC176768000050699C /* Default-568h@2x.png */,
 				BF728EEA176767CD0050699C /* Default@2x.png */,
+				64FFD2CC17662D1B004337F8 /* MapKit.framework */,
 				BF4DCC44175C82280081B5AC /* AWSRuntime.framework */,
 				BF4DCC45175C82280081B5AC /* AWSS3.framework */,
 				643EACEF175C1B5C002761D9 /* CoreLocation.framework */,

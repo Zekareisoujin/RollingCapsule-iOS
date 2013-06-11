@@ -16,6 +16,7 @@
 #import "RCNewPostViewController.h"
 #import "RCPostDetailsViewController.h"
 #import "RCAmazonS3Helper.h"
+#import "AppDelegate.h"
 
 @interface RCMainFeedViewController ()
 
@@ -148,10 +149,16 @@ BOOL        _firstRefresh;
             
             if (jsonData != NULL) {
                 [_items removeAllObjects];
+                NSLog(@"current annotations:%@",_mapView.annotations);
+                [_mapView removeAnnotations:_mapView.annotations];
                 NSArray *postList = (NSArray *) [jsonData objectForKey:@"post_list"];
                 for (NSDictionary *postData in postList) {
                     RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
                     [_items addObject:post];
+                    if (abs(post.coordinate.longitude) > 1) {
+                        [_mapView addAnnotation:post];
+                        NSLog(@"post coordinates %f %f", post.coordinate.latitude, post.coordinate.longitude);
+                    }
                 }
                 [_tblFeedList reloadData];
                 if (_firstRefresh){
@@ -172,6 +179,18 @@ BOOL        _firstRefresh;
 - (void) switchToNewPostScreen {
     RCNewPostViewController *newPostController = [[RCNewPostViewController alloc] initWithUser:_user];
     [self.navigationController pushViewController:newPostController animated:YES];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    // 1
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    CLLocationCoordinate2D zoomLocation = appDelegate.currentLocation.coordinate;
+    NSLog(@"current location %f %f", zoomLocation.longitude, zoomLocation.latitude);
+    // 2
+    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(zoomLocation, 0.5*METERS_PER_MILE, 0.5*METERS_PER_MILE);
+    
+    // 3
+    [_mapView setRegion:viewRegion animated:YES];
 }
 
 @end

@@ -24,6 +24,8 @@
 @synthesize authorName = _authorName;
 @synthesize authorEmail = _authorEmail;
 
+
+
 - (id) initWithNSDictionary:(NSDictionary *)postData {
     self = [super init];
     if (self) {
@@ -40,9 +42,36 @@
         _userID = [[postData objectForKey:@"user_id"] intValue];
         _authorName = [postData objectForKey:@"author_name"];
         _authorEmail = [postData objectForKey:@"author_email"];
-        
     }
     return self;
+}
+
+- (NSString *)title {
+    return @"";
+}
+
+- (NSString *)subtitle {
+    return @"";
+}
+
+- (CLLocationCoordinate2D)coordinate {
+    CLLocationCoordinate2D _theCoordinate;
+    _theCoordinate.latitude = _latitude;
+    _theCoordinate.longitude = _longitude;
+    return _theCoordinate;
+}
+
+- (MKMapItem*)mapItem {
+    NSDictionary *addressDict = @{@"address" : @"address"};
+    
+    MKPlacemark *placemark = [[MKPlacemark alloc]
+                              initWithCoordinate:self.coordinate
+                              addressDictionary:addressDict];
+    
+    MKMapItem *mapItem = [[MKMapItem alloc] initWithPlacemark:placemark];
+    mapItem.name = @"yo";
+    
+    return mapItem;
 }
 
 @end

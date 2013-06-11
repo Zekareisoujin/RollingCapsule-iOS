@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <MapKit/MapKit.h>
 
-@interface RCPost : NSObject
+@interface RCPost : NSObject <MKAnnotation>
 
 @property (nonatomic,retain) NSString *content;
 @property (nonatomic,retain) NSString *createdTime;
@@ -25,5 +26,6 @@
 @property (nonatomic,retain) NSString *authorName;
 @property (nonatomic,retain) NSString *authorEmail;
 
+- (MKMapItem*)mapItem;
 - (id) initWithNSDictionary:(NSDictionary *)userData;
 @end
