@@ -16,6 +16,7 @@
 #import "RCSlideoutViewController.h"
 #import "RCNewPostViewController.h"
 #import "RCPostDetailsViewController.h"
+#import "RCConstants.h"
 
 @implementation AppDelegate
 
@@ -58,11 +59,10 @@
     _mainViewController.menuViewController = _menuViewController;
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    
-
-    // Test code
-    //_menuViewController.user = user;
-    //[_menuViewController btnActionMainFeedNav:_mainViewController];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:RCLogStatusDefault]) {
+        _menuViewController.user = user;
+        [_menuViewController btnActionMainFeedNav:_mainViewController];
+    }
     
     // Configure Window
     

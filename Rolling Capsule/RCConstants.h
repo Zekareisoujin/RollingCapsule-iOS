@@ -53,5 +53,8 @@ static NSString* const RCErrorMessageFailedToGetFriends = @"Failed getting frien
 static NSString* const RCErrorMessageFailedToGetUsers = @"Failed to obtain user list, please try again!";
 static NSString* const RCErrorMessageFailedToGetUsersRelation = @"Failed getting user's relation from web service";
 static NSString* const RCErrorMessageFailedToEditFriendStatus = @"Failure editing friend status from web service, please try again!";
+
+//NSUserDefault key
+static NSString* const RCLogStatusDefault = @"logStatus";
 #endif
 
