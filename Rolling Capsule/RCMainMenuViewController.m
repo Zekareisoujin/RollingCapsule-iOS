@@ -74,6 +74,7 @@
 - (IBAction)btnActionLogOut:(id)sender {
     [self asynchLogOutRequest];
     [self slideThenHide];
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:RCLogStatusDefault];
     [_navigationController popToRootViewControllerAnimated:YES];
 }
 
@@ -98,6 +99,7 @@
 
 - (void)initializeUserFromLogIn:(RCUser *)user {
     _user = user;
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:RCLogStatusDefault];
     [self btnActionMainFeedNav:self];
 }
 
