@@ -41,9 +41,6 @@
 		BF4DCC47175C82280081B5AC /* AWSS3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF4DCC45175C82280081B5AC /* AWSS3.framework */; };
 		BF68E7031756090200E5C1F4 /* RCMainFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BF68E7011756090200E5C1F4 /* RCMainFeedViewController.m */; };
 		BF68E7041756090200E5C1F4 /* RCMainFeedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF68E7021756090200E5C1F4 /* RCMainFeedViewController.xib */; };
-		BF728EEB176767CD0050699C /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF728EEA176767CD0050699C /* Default@2x.png */; };
-		BF728EED176768000050699C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BF728EEC176768000050699C /* Default-568h@2x.png */; };
-		BF728EEF1767680F0050699C /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = BF728EEE1767680F0050699C /* Default.png */; };
 		BF8925EC1767697000F1978F /* icon114.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8925EB1767697000F1978F /* icon114.png */; };
 		BF8925EE1767698600F1978F /* icon57.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8925ED1767698600F1978F /* icon57.png */; };
 		BFC8414717586BFB00E52FE2 /* RCPost.m in Sources */ = {isa = PBXBuildFile; fileRef = BFC8414617586BFB00E52FE2 /* RCPost.m */; };
@@ -147,14 +144,14 @@
 		BF8925ED1767698600F1978F /* icon57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon57.png; sourceTree = "<group>"; };
 		BFC8414517586BFB00E52FE2 /* RCPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCPost.h; sourceTree = "<group>"; };
 		BFC8414617586BFB00E52FE2 /* RCPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCPost.m; sourceTree = "<group>"; };
-		BFCA7818174DFD3F00666CBA /* Rolling Capsule.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Rolling Capsule.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BFCA7818174DFD3F00666CBA /* memcap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = memcap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFCA781B174DFD3F00666CBA /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		BFCA781D174DFD3F00666CBA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		BFCA781F174DFD3F00666CBA /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		BFCA7823174DFD3F00666CBA /* Rolling Capsule-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Rolling Capsule-Info.plist"; sourceTree = "<group>"; };
+		BFCA7823174DFD3F00666CBA /* memcap-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "memcap-Info.plist"; sourceTree = "<group>"; };
 		BFCA7825174DFD3F00666CBA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BFCA7827174DFD3F00666CBA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		BFCA7829174DFD3F00666CBA /* Rolling Capsule-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Rolling Capsule-Prefix.pch"; sourceTree = "<group>"; };
+		BFCA7829174DFD3F00666CBA /* memcap-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "memcap-Prefix.pch"; sourceTree = "<group>"; };
 		BFCA782A174DFD3F00666CBA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		BFCA782B174DFD3F00666CBA /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		BFCA782D174DFD3F00666CBA /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
@@ -163,9 +160,9 @@
 		BFCA7833174DFD3F00666CBA /* RCLoginViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCLoginViewController.h; sourceTree = "<group>"; };
 		BFCA7834174DFD3F00666CBA /* RCLoginViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RCLoginViewController.m; sourceTree = "<group>"; };
 		BFCA7837174DFD3F00666CBA /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/RCLoginViewController.xib; sourceTree = "<group>"; };
-		BFCA783E174DFD3F00666CBA /* Rolling CapsuleTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Rolling CapsuleTests.octest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BFCA783E174DFD3F00666CBA /* memcapTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = memcapTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BFCA783F174DFD3F00666CBA /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		BFCA7847174DFD3F00666CBA /* Rolling CapsuleTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Rolling CapsuleTests-Info.plist"; sourceTree = "<group>"; };
+		BFCA7847174DFD3F00666CBA /* memcapTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "memcapTests-Info.plist"; sourceTree = "<group>"; };
 		BFCA7849174DFD3F00666CBA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BFCA784B174DFD3F00666CBA /* Rolling_CapsuleTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Rolling_CapsuleTests.h; sourceTree = "<group>"; };
 		BFCA784C174DFD3F00666CBA /* Rolling_CapsuleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Rolling_CapsuleTests.m; sourceTree = "<group>"; };
@@ -257,8 +254,8 @@
 		BFCA7819174DFD3F00666CBA /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				BFCA7818174DFD3F00666CBA /* Rolling Capsule.app */,
-				BFCA783E174DFD3F00666CBA /* Rolling CapsuleTests.octest */,
+				BFCA7818174DFD3F00666CBA /* memcap.app */,
+				BFCA783E174DFD3F00666CBA /* memcapTests.octest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -341,10 +338,10 @@
 		BFCA7822174DFD3F00666CBA /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				BFCA7823174DFD3F00666CBA /* Rolling Capsule-Info.plist */,
+				BFCA7823174DFD3F00666CBA /* memcap-Info.plist */,
 				BFCA7824174DFD3F00666CBA /* InfoPlist.strings */,
 				BFCA7827174DFD3F00666CBA /* main.m */,
-				BFCA7829174DFD3F00666CBA /* Rolling Capsule-Prefix.pch */,
+				BFCA7829174DFD3F00666CBA /* memcap-Prefix.pch */,
 				BFCA782D174DFD3F00666CBA /* Default.png */,
 				BFCA782F174DFD3F00666CBA /* Default@2x.png */,
 				BFCA7831174DFD3F00666CBA /* Default-568h@2x.png */,
@@ -365,7 +362,7 @@
 		BFCA7846174DFD3F00666CBA /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				BFCA7847174DFD3F00666CBA /* Rolling CapsuleTests-Info.plist */,
+				BFCA7847174DFD3F00666CBA /* memcapTests-Info.plist */,
 				BFCA7848174DFD3F00666CBA /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
@@ -406,9 +403,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		BFCA7817174DFD3F00666CBA /* Rolling Capsule */ = {
+		BFCA7817174DFD3F00666CBA /* memcap */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = BFCA7850174DFD3F00666CBA /* Build configuration list for PBXNativeTarget "Rolling Capsule" */;
+			buildConfigurationList = BFCA7850174DFD3F00666CBA /* Build configuration list for PBXNativeTarget "memcap" */;
 			buildPhases = (
 				BFCA7814174DFD3F00666CBA /* Sources */,
 				BFCA7815174DFD3F00666CBA /* Frameworks */,
@@ -418,14 +415,14 @@
 			);
 			dependencies = (
 			);
-			name = "Rolling Capsule";
+			name = memcap;
 			productName = "Rolling Capsule";
-			productReference = BFCA7818174DFD3F00666CBA /* Rolling Capsule.app */;
+			productReference = BFCA7818174DFD3F00666CBA /* memcap.app */;
 			productType = "com.apple.product-type.application";
 		};
-		BFCA783D174DFD3F00666CBA /* Rolling CapsuleTests */ = {
+		BFCA783D174DFD3F00666CBA /* memcapTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = BFCA7853174DFD3F00666CBA /* Build configuration list for PBXNativeTarget "Rolling CapsuleTests" */;
+			buildConfigurationList = BFCA7853174DFD3F00666CBA /* Build configuration list for PBXNativeTarget "memcapTests" */;
 			buildPhases = (
 				BFCA7839174DFD3F00666CBA /* Sources */,
 				BFCA783A174DFD3F00666CBA /* Frameworks */,
@@ -437,9 +434,9 @@
 			dependencies = (
 				BFCA7844174DFD3F00666CBA /* PBXTargetDependency */,
 			);
-			name = "Rolling CapsuleTests";
+			name = memcapTests;
 			productName = "Rolling CapsuleTests";
-			productReference = BFCA783E174DFD3F00666CBA /* Rolling CapsuleTests.octest */;
+			productReference = BFCA783E174DFD3F00666CBA /* memcapTests.octest */;
 			productType = "com.apple.product-type.bundle";
 		};
 /* End PBXNativeTarget section */
@@ -451,7 +448,7 @@
 				LastUpgradeCheck = 0460;
 				ORGANIZATIONNAME = "Fox Cradle";
 			};
-			buildConfigurationList = BFCA7813174DFD3F00666CBA /* Build configuration list for PBXProject "Rolling Capsule" */;
+			buildConfigurationList = BFCA7813174DFD3F00666CBA /* Build configuration list for PBXProject "memcap" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -463,8 +460,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				BFCA7817174DFD3F00666CBA /* Rolling Capsule */,
-				BFCA783D174DFD3F00666CBA /* Rolling CapsuleTests */,
+				BFCA7817174DFD3F00666CBA /* memcap */,
+				BFCA783D174DFD3F00666CBA /* memcapTests */,
 			);
 		};
 /* End PBXProject section */
@@ -491,9 +488,6 @@
 				643EACE8175BACC0002761D9 /* back_button.png in Resources */,
 				643EACEE175BBE51002761D9 /* RCNewPostViewController.xib in Resources */,
 				64549D89175F264600BA8164 /* RCPostDetailsViewController.xib in Resources */,
-				BF728EEB176767CD0050699C /* Default@2x.png in Resources */,
-				BF728EED176768000050699C /* Default-568h@2x.png in Resources */,
-				BF728EEF1767680F0050699C /* Default.png in Resources */,
 				BF8925EC1767697000F1978F /* icon114.png in Resources */,
 				BF8925EE1767698600F1978F /* icon57.png in Resources */,
 			);
@@ -578,7 +572,7 @@
 /* Begin PBXTargetDependency section */
 		BFCA7844174DFD3F00666CBA /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = BFCA7817174DFD3F00666CBA /* Rolling Capsule */;
+			target = BFCA7817174DFD3F00666CBA /* memcap */;
 			targetProxy = BFCA7843174DFD3F00666CBA /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -676,9 +670,9 @@
 					"\"$(SRCROOT)/Rolling Capsule\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Rolling Capsule/Rolling Capsule-Prefix.pch";
-				INFOPLIST_FILE = "Rolling Capsule/Rolling Capsule-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "Rolling Capsule/memcap-Prefix.pch";
+				INFOPLIST_FILE = "Rolling Capsule/memcap-Info.plist";
+				PRODUCT_NAME = memcap;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -686,15 +680,17 @@
 		BFCA7852174DFD3F00666CBA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Downloads/aws-ios-sdk-1.6.0\"",
 					"\"$(SRCROOT)/Rolling Capsule\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Rolling Capsule/Rolling Capsule-Prefix.pch";
-				INFOPLIST_FILE = "Rolling Capsule/Rolling Capsule-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				GCC_PREFIX_HEADER = "Rolling Capsule/memcap-Prefix.pch";
+				INFOPLIST_FILE = "Rolling Capsule/memcap-Info.plist";
+				PRODUCT_NAME = memcap;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "70FA776E-381D-4E23-87FF-515073A240BD";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -709,8 +705,8 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Rolling Capsule/Rolling Capsule-Prefix.pch";
-				INFOPLIST_FILE = "Rolling CapsuleTests/Rolling CapsuleTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_FILE = "Rolling CapsuleTests/memcapTests-Info.plist";
+				PRODUCT_NAME = memcapTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -726,8 +722,8 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Rolling Capsule/Rolling Capsule-Prefix.pch";
-				INFOPLIST_FILE = "Rolling CapsuleTests/Rolling CapsuleTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				INFOPLIST_FILE = "Rolling CapsuleTests/memcapTests-Info.plist";
+				PRODUCT_NAME = memcapTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = octest;
 			};
@@ -736,7 +732,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		BFCA7813174DFD3F00666CBA /* Build configuration list for PBXProject "Rolling Capsule" */ = {
+		BFCA7813174DFD3F00666CBA /* Build configuration list for PBXProject "memcap" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BFCA784E174DFD3F00666CBA /* Debug */,
@@ -745,7 +741,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		BFCA7850174DFD3F00666CBA /* Build configuration list for PBXNativeTarget "Rolling Capsule" */ = {
+		BFCA7850174DFD3F00666CBA /* Build configuration list for PBXNativeTarget "memcap" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BFCA7851174DFD3F00666CBA /* Debug */,
@@ -754,7 +750,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		BFCA7853174DFD3F00666CBA /* Build configuration list for PBXNativeTarget "Rolling CapsuleTests" */ = {
+		BFCA7853174DFD3F00666CBA /* Build configuration list for PBXNativeTarget "memcapTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BFCA7854174DFD3F00666CBA /* Debug */,

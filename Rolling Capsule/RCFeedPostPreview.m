@@ -52,7 +52,7 @@
 }
 
 - (void)getPostContentImageFromInternet:(RCUser *) user withPostContent:(RCPost *) post usingCollection:(NSMutableDictionary*)postCache {
-    
+    if ([post.fileUrl isKindOfClass:[NSNull class]]) return;
     RCResourceCache *cache = [RCResourceCache centralCache];
     NSString *key = [NSString stringWithFormat:@"%@/%d", RCPostsResource, post.postID];
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);

@@ -132,7 +132,11 @@ BOOL        _firstRefresh;
     //Asynchronous Request
     @try {
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@?mobile=1", RCServiceURL]];
+        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+        CLLocationCoordinate2D zoomLocation = appDelegate.currentLocation.coordinate;
+
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@?mobile=1&latitude=%f&longitude=%f&levels%%5B%%5D%%5Bdist%%5D=2000&levels%%5B%%5D%%5Bpopularity%%5D=-1&levels%%5B%%5D%%5Bdist%%5D=10000&levels%%5B%%5D%%5Bpopularity%%5D=100", RCServiceURL, zoomLocation.latitude, zoomLocation.longitude]];
+        NSLog(@"%@",url);
         NSURLRequest *request = CreateHttpGetRequest(url);
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
@@ -155,10 +159,10 @@ BOOL        _firstRefresh;
                 for (NSDictionary *postData in postList) {
                     RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
                     [_items addObject:post];
-                    if (abs(post.coordinate.longitude) > 1) {
+                    //if (abs(post.coordinate.longitude) > 1) {
                         [_mapView addAnnotation:post];
                         NSLog(@"post coordinates %f %f", post.coordinate.latitude, post.coordinate.longitude);
-                    }
+                    //}
                 }
                 [_tblFeedList reloadData];
                 if (_firstRefresh){
