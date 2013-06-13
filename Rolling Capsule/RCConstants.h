@@ -12,7 +12,7 @@
 #define METERS_PER_MILE 1609.344
 
 //prefix RC : rolling capsule
-static NSString* const RCServiceURL = @"https://shielded-fortress-7112.herokuapp.com";
+static NSString* const RCServiceURL = @"https://rocaps.herokuapp.com";
 static NSString* const RCSessionsResource = @"/sessions";
 static NSString* const RCUsersResource = @"/users";
 static NSString* const RCPostsResource = @"/posts";
