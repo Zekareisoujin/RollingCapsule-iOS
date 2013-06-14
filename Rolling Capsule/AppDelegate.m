@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import <QuartzCore/QuartzCore.h>
 
+#import "TestFlight.h"
 #import "RCLoginViewController.h"
 #import "RCFriendListViewController.h"
 #import "RCMainFeedViewController.h"
@@ -28,6 +29,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    
+    [TestFlight takeOff:@"Insert your Application Token here"];
+    
     RCUser *user = [[RCUser alloc] init];
     user.name = @"lolo";
     user.email = @"lolotp@hotmail.com";
