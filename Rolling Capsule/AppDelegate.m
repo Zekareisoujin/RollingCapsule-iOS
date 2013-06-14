@@ -30,7 +30,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     
-    [TestFlight takeOff:@"Insert your Application Token here"];
+    [TestFlight takeOff:@"9a1eac62-14de-493e-971e-bea0ff0cb99b"];
     
     RCUser *user = [[RCUser alloc] init];
     user.name = @"lolo";

@@ -16,7 +16,6 @@
 #import "RCNewPostViewController.h"
 #import "RCPostDetailsViewController.h"
 #import "RCAmazonS3Helper.h"
-#import "AppDelegate.h"
 
 @interface RCMainFeedViewController ()
 
