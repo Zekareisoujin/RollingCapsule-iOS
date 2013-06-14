@@ -118,8 +118,7 @@
 #pragma mark - CLLocationManager delegate
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
     _currentLocation = [locations lastObject];
-    NSLog(@"current location %f %f",_currentLocation.coordinate.latitude, _currentLocation.coordinate.longitude
-          );
+    //NSLog(@"current location %f %f",_currentLocation.coordinate.latitude, _currentLocation.coordinate.longitude);
     //NSLog(@"update current location %f,%f", _currentLocation.coordinate.latitude, _currentLocation.coordinate.longitude);
 }
 

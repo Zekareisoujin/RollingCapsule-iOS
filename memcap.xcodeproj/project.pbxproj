@@ -33,6 +33,7 @@
 		649A869D175B0CC30016674F /* RCAmazonS3Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 649A869C175B0CC30016674F /* RCAmazonS3Helper.m */; };
 		64A917081751E554007D629D /* RCRegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64A917071751E554007D629D /* RCRegisterViewController.xib */; };
 		64A9170B1751F6C9007D629D /* RCRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64A9170A1751F6C9007D629D /* RCRegisterViewController.m */; };
+		64FE8433176B9E0E00E561D8 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FE8432176B9E0E00E561D8 /* libTestFlight.a */; };
 		64FFD2CD17662D1B004337F8 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FFD2CC17662D1B004337F8 /* MapKit.framework */; };
 		BF1AF31B1766231B000824CC /* RCResourceCache.m in Sources */ = {isa = PBXBuildFile; fileRef = BF1AF31A1766231B000824CC /* RCResourceCache.m */; };
 		BF2CD6241754E12D00EF2E85 /* RCFeedPostPreview.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF2CD6231754E12D00EF2E85 /* RCFeedPostPreview.xib */; };
@@ -124,6 +125,8 @@
 		64A917071751E554007D629D /* RCRegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCRegisterViewController.xib; sourceTree = "<group>"; };
 		64A917091751F6C9007D629D /* RCRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCRegisterViewController.h; sourceTree = "<group>"; };
 		64A9170A1751F6C9007D629D /* RCRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCRegisterViewController.m; sourceTree = "<group>"; };
+		64FE8432176B9E0E00E561D8 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
+		64FE84E3176B9E4E00E561D8 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = SOURCE_ROOT; };
 		64FFD2CC17662D1B004337F8 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		BF1AF3191766231B000824CC /* RCResourceCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCResourceCache.h; sourceTree = "<group>"; };
 		BF1AF31A1766231B000824CC /* RCResourceCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCResourceCache.m; sourceTree = "<group>"; };
@@ -198,6 +201,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				64FE8433176B9E0E00E561D8 /* libTestFlight.a in Frameworks */,
 				64FFD2CD17662D1B004337F8 /* MapKit.framework in Frameworks */,
 				643EACF0175C1B5C002761D9 /* CoreLocation.framework in Frameworks */,
 				BFCA781C174DFD3F00666CBA /* UIKit.framework in Frameworks */,
@@ -235,6 +239,7 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
+				64FE8432176B9E0E00E561D8 /* libTestFlight.a */,
 				BF8925ED1767698600F1978F /* icon57.png */,
 				BF8925EB1767697000F1978F /* icon114.png */,
 				BF728EEE1767680F0050699C /* Default.png */,
@@ -277,6 +282,7 @@
 		BFCA7821174DFD3F00666CBA /* Rolling Capsule */ = {
 			isa = PBXGroup;
 			children = (
+				64FE84E3176B9E4E00E561D8 /* TestFlight.h */,
 				643EACE9175BBE0D002761D9 /* Images */,
 				BFCA7856174E1AD200666CBA /* Json */,
 				BFCA782A174DFD3F00666CBA /* AppDelegate.h */,
@@ -675,6 +681,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Rolling Capsule/memcap-Prefix.pch";
 				INFOPLIST_FILE = "Rolling Capsule/memcap-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				PRODUCT_NAME = memcap;
 				PROVISIONING_PROFILE = "30B6D929-C6A4-485F-B56F-1671654CCFE8";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "30B6D929-C6A4-485F-B56F-1671654CCFE8";
@@ -696,6 +706,10 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Rolling Capsule/memcap-Prefix.pch";
 				INFOPLIST_FILE = "Rolling Capsule/memcap-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
 				PRODUCT_NAME = memcap;
 				PROVISIONING_PROFILE = "30B6D929-C6A4-485F-B56F-1671654CCFE8";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "30B6D929-C6A4-485F-B56F-1671654CCFE8";

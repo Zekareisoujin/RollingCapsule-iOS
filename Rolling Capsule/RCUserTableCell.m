@@ -38,15 +38,15 @@
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
         UIImage* cachedImg = (UIImage*)[cache getResourceForKey:key usingQuery:^{
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-            UIImage *image = [RCAmazonS3Helper getAvatarImage:user withLoggedinUserID:loggedInUserID];
+            UIImage *cachedImg = [RCAmazonS3Helper getAvatarImage:user withLoggedinUserID:loggedInUserID];
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-            return image;
+            return cachedImg;
         }];
-        if (cachedImg != nil)
-            dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (cachedImg != nil)
                 [_imgViewAvatar setImage:cachedImg];
-            });
+            callback();
+        });
     });
 }
 

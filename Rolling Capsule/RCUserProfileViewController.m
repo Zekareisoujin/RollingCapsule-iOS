@@ -286,16 +286,16 @@ int       _friendshipID;
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         UIImage *image = [RCAmazonS3Helper getAvatarImage:_profileUser withLoggedinUserID:_viewingUserID];
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        if (image != nil) {    
-            dispatch_async(dispatch_get_main_queue(), ^{
-                UIControlState controlState = UIControlStateNormal;
-                if (_profileUser.userID != _viewingUserID)
-                    controlState = UIControlStateDisabled;
-                 else
-                     _btnAvatarImg.enabled = YES;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIControlState controlState = UIControlStateNormal;
+            if (_profileUser.userID != _viewingUserID)
+                controlState = UIControlStateDisabled;
+            else
+                _btnAvatarImg.enabled = YES;
+            if (image != nil)
                 [_btnAvatarImg setBackgroundImage:image forState:controlState];
-            });
-        }
+        });
+        
     });
 }
 
