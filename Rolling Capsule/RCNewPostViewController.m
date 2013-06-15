@@ -84,7 +84,8 @@ RCConnectionManager *_connectionManager;
     }
     [_connectionManager startConnection];
     self.navigationItem.rightBarButtonItem.enabled = NO;
-    NSData *imageData = UIImageJPEGRepresentation(_postImage, 1.0);
+    UIImage *rescaledImage = imageWithImage(_postImage, CGSizeMake(300,300));
+    NSData *imageData = UIImageJPEGRepresentation(rescaledImage, 1.0);
     [self performSelectorInBackground:@selector(uploadImageToS3:) withObject:imageData];
 }
 
@@ -102,7 +103,6 @@ RCConnectionManager *_connectionManager;
                                                              inBucket:RCAmazonS3UsersMediaBucket];
     por.contentType = @"image/jpeg";
     por.data = imageData;
-    //por.delegate = self;
     
     S3PutObjectResponse *putObjectResponse = [s3 putObject:por];
     if (putObjectResponse.error == nil)

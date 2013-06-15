@@ -97,4 +97,13 @@ static UITableViewController* setUpRefreshControlWithTableViewController(
     tableViewController.refreshControl = [[UIRefreshControl alloc] init];
     return tableViewController;
 }
+
+static UIImage *imageWithImage(UIImage*image,CGSize newSize) {
+    UIGraphicsBeginImageContext( newSize );
+    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return newImage;
+}
 #endif

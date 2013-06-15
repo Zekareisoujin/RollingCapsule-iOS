@@ -253,7 +253,7 @@ int       _friendshipID;
     
     // Get the selected image.
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
-    UIImage *resizedImage = [self imageWithImage:image scaledToSize:CGSizeMake(80,80)];
+    UIImage *resizedImage = imageWithImage(image, CGSizeMake(80,80));
     
     [self processBackgroundThreadUpload:resizedImage];
     
@@ -268,17 +268,6 @@ int       _friendshipID;
 }
 
 #pragma mark - Helper Methods
-
-- (UIImage*)imageWithImage:(UIImage*)image
-              scaledToSize:(CGSize)newSize;
-{
-    UIGraphicsBeginImageContext( newSize );
-    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
-    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    
-    return newImage;
-}
 
 -(void) getAvatarImageFromInternet {
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
