@@ -57,7 +57,7 @@
 }
 
 - (IBAction)btnActionMainFeedNav:(id)sender {
-    RCMainFeedViewController *mainFeedViewController = [[RCMainFeedViewController alloc] initWithUser:_user];
+    RCMainFeedViewController *mainFeedViewController = [[RCMainFeedViewController alloc] init];
     [self navigateToViewControllerFromMenu:mainFeedViewController];
 }
 

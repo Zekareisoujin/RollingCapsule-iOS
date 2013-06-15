@@ -107,7 +107,7 @@
 }
 
 - (void)switchToFeedView:(RCUser *)user {
-    RCMainFeedViewController *mainFeedViewController = [[RCMainFeedViewController alloc] initWithUser:user];
+    RCMainFeedViewController *mainFeedViewController = [[RCMainFeedViewController alloc] init];
     [self.navigationController pushViewController:mainFeedViewController animated:YES];
 }
 

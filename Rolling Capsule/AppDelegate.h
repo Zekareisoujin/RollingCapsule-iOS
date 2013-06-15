@@ -8,9 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
+#import "TestFlight.h"
+
+#define NSLog TFLog
 
 @class RCMainMenuViewController;
 @class RCSlideoutViewController;
+@class RCUser;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, CLLocationManagerDelegate>
 
@@ -23,4 +27,5 @@
 @property (strong, nonatomic) CLLocation        *currentLocation;
 -(void)showSideMenu;
 -(void)hideSideMenu;
+-(void)setCurrentUser:(RCUser*)user;
 @end

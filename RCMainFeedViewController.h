@@ -12,8 +12,6 @@
 
 @interface RCMainFeedViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
-- (id)initWithUser:(RCUser *) user;
-
 @property (weak, nonatomic) IBOutlet UITableView *tblFeedList;
 @property (nonatomic, strong) NSMutableArray *items;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;

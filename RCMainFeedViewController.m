@@ -38,10 +38,9 @@ BOOL        _firstRefresh;
     return self;
 }
 
-- (id)initWithUser:(RCUser *) user {
+- (id)init {
     self = [super init];
     if (self) {
-        _user = user;
     }
     return self;
 }
@@ -67,7 +66,6 @@ BOOL        _firstRefresh;
               forControlEvents:UIControlEventValueChanged  ];
     _firstRefresh = YES;
     [self handleRefresh:_refreshControl];
-    //[self asynchFetchFeeds];
 }
 
 - (void) handleRefresh:(UIRefreshControl*) refreshControl {
@@ -155,6 +153,10 @@ BOOL        _firstRefresh;
                 NSLog(@"current annotations:%@",_mapView.annotations);
                 [_mapView removeAnnotations:_mapView.annotations];
                 NSArray *postList = (NSArray *) [jsonData objectForKey:@"post_list"];
+                NSDictionary *userDictionary = (NSDictionary *) [jsonData objectForKey:@"user"];
+                _user = [[RCUser alloc] initWithNSDictionary:userDictionary];
+                AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                [appDelegate setCurrentUser:_user];
                 for (NSDictionary *postData in postList) {
                     RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
                     [_items addObject:post];

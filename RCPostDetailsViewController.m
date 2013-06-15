@@ -94,21 +94,6 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 
 #pragma mark - web request
 -(void) getPostImageFromInternet {
-    /*[_connectionManager startConnection];
-    dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
-    dispatch_async(queue, ^{
-        UIImage *image = [RCAmazonS3Helper getUserMediaImage:_postOwner withLoggedinUserID:_loggedInUser.userID   withImageUrl:_post.fileUrl];
-        [_connectionManager endConnection];
-        if (image != nil) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [_imgViewPostImage setImage:image];
-            });
-        } else {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                alertStatus(@"Couldn't connect to the server. Please try again later", @"Network error", self);
-            });
-        }
-    });*/
     
     RCResourceCache *cache = [RCResourceCache centralCache];
     NSString *key = [NSString stringWithFormat:@"%@/%d", RCPostsResource, _post.postID];

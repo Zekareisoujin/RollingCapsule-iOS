@@ -9,7 +9,6 @@
 #import "AppDelegate.h"
 #import <QuartzCore/QuartzCore.h>
 
-#import "TestFlight.h"
 #import "RCLoginViewController.h"
 #import "RCFriendListViewController.h"
 #import "RCMainFeedViewController.h"
@@ -31,7 +30,6 @@
 {
     
     [TestFlight takeOff:@"9a1eac62-14de-493e-971e-bea0ff0cb99b"];
-    
     RCUser *user = [[RCUser alloc] init];
     user.name = @"lolo";
     user.email = @"lolotp@hotmail.com";
@@ -64,7 +62,6 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:RCLogStatusDefault]) {
-        _menuViewController.user = user;
         [_menuViewController btnActionMainFeedNav:_mainViewController];
     }
     
@@ -79,6 +76,8 @@
     _locationManager.distanceFilter = kCLDistanceFilterNone;
     _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     [_locationManager startUpdatingLocation];
+    
+    [_menuViewController.view setUserInteractionEnabled:NO];
     return YES;
 }
 
@@ -125,5 +124,9 @@
     //NSLog(@"current location %f %f",_currentLocation.coordinate.latitude, _currentLocation.coordinate.longitude);
     //NSLog(@"update current location %f,%f", _currentLocation.coordinate.latitude, _currentLocation.coordinate.longitude);
 }
-
+#pragma mark - global data flow
+-(void)setCurrentUser:(RCUser *)user {
+    _menuViewController.user = user;
+    [_menuViewController.view setUserInteractionEnabled:YES];
+}
 @end
