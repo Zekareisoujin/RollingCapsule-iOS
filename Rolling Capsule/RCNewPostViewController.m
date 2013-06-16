@@ -237,6 +237,7 @@ RCConnectionManager *_connectionManager;
     // Get the selected image.
     _postImage = [info objectForKey:UIImagePickerControllerOriginalImage];
     [_btnPostImage setImage:_postImage forState:UIControlStateNormal];
+    UIImageWriteToSavedPhotosAlbum(_postImage, self, nil, nil);
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 

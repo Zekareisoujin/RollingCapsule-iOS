@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12E55</string>
+		<string key="IBDocument.SystemVersion">12D78</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.39</string>
+		<string key="IBDocument.AppKitVersion">1187.37</string>
 		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -43,7 +43,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{20, 162}, {43, 21}}</string>
 						<reference key="NSSuperview" ref="774585933"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1033143181"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -75,7 +74,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{20, 201}, {75, 21}}</string>
 						<reference key="NSSuperview" ref="774585933"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="934997097"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -96,7 +94,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{117, 158}, {183, 30}}</string>
 						<reference key="NSSuperview" ref="774585933"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="2966928"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -115,6 +112,7 @@
 						<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
 						<float key="IBUIMinimumFontSize">17</float>
 						<object class="IBUITextInputTraits" key="IBUITextInputTraits">
+							<int key="IBUIKeyboardType">7</int>
 							<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 						</object>
 						<object class="IBUIFontDescription" key="IBUIFontDescription" id="776436244">
@@ -132,7 +130,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{117, 197}, {183, 30}}</string>
 						<reference key="NSSuperview" ref="774585933"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="753198856"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -160,7 +157,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{85, 330}, {150, 44}}</string>
 						<reference key="NSSuperview" ref="774585933"/>
-						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="259959416"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -196,7 +192,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{85, 381}, {150, 44}}</string>
 						<reference key="NSSuperview" ref="774585933"/>
-						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -216,7 +212,6 @@
 				</array>
 				<string key="NSFrame">{{0, 20}, {320, 548}}</string>
 				<reference key="NSSuperview"/>
-				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="488182886"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -858,69 +853,7 @@
 			<nil key="sourceID"/>
 			<int key="maxID">101</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<object class="IBPartialClassDescription">
-					<string key="className">NSLayoutConstraint</string>
-					<string key="superclassName">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/NSLayoutConstraint.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">RCLoginViewController</string>
-					<string key="superclassName">UIViewController</string>
-					<dictionary class="NSMutableDictionary" key="actions">
-						<string key="btnActionLogIn:">id</string>
-						<string key="btnActionRegister:">id</string>
-						<string key="btnBackgroundTap:">id</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="actionInfosByName">
-						<object class="IBActionInfo" key="btnActionLogIn:">
-							<string key="name">btnActionLogIn:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="btnActionRegister:">
-							<string key="name">btnActionRegister:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-						<object class="IBActionInfo" key="btnBackgroundTap:">
-							<string key="name">btnBackgroundTap:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="btnLogIn">UIButton</string>
-						<string key="btnRegister">UIButton</string>
-						<string key="txtFieldPassword">UITextField</string>
-						<string key="txtFieldUsername">UITextField</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="btnLogIn">
-							<string key="name">btnLogIn</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="btnRegister">
-							<string key="name">btnRegister</string>
-							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="txtFieldPassword">
-							<string key="name">txtFieldPassword</string>
-							<string key="candidateClassName">UITextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="txtFieldUsername">
-							<string key="name">txtFieldUsername</string>
-							<string key="candidateClassName">UITextField</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/RCLoginViewController.h</string>
-					</object>
-				</object>
-			</array>
-		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
