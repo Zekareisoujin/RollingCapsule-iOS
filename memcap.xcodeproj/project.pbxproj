@@ -23,6 +23,7 @@
 		643EACF0175C1B5C002761D9 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 643EACEF175C1B5C002761D9 /* CoreLocation.framework */; };
 		64549D88175F264600BA8164 /* RCPostDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64549D86175F264600BA8164 /* RCPostDetailsViewController.m */; };
 		64549D89175F264600BA8164 /* RCPostDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64549D87175F264600BA8164 /* RCPostDetailsViewController.xib */; };
+		64610340176E5F8A008DD131 /* RCLandmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 6461033F176E5F8A008DD131 /* RCLandmark.m */; };
 		6490A90C1757C07100E5048F /* RCMainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6490A90A1757C07100E5048F /* RCMainMenuViewController.m */; };
 		6490A90D1757C07100E5048F /* RCMainMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6490A90B1757C07100E5048F /* RCMainMenuViewController.xib */; };
 		6490A9101758E2D000E5048F /* RCSlideoutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6490A90F1758E2D000E5048F /* RCSlideoutViewController.m */; };
@@ -110,6 +111,8 @@
 		64549D85175F264600BA8164 /* RCPostDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCPostDetailsViewController.h; path = ../RCPostDetailsViewController.h; sourceTree = "<group>"; };
 		64549D86175F264600BA8164 /* RCPostDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCPostDetailsViewController.m; path = ../RCPostDetailsViewController.m; sourceTree = "<group>"; };
 		64549D87175F264600BA8164 /* RCPostDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RCPostDetailsViewController.xib; path = ../RCPostDetailsViewController.xib; sourceTree = "<group>"; };
+		6461033E176E5F8A008DD131 /* RCLandmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCLandmark.h; path = ../RCLandmark.h; sourceTree = "<group>"; };
+		6461033F176E5F8A008DD131 /* RCLandmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCLandmark.m; path = ../RCLandmark.m; sourceTree = "<group>"; };
 		6490A9091757C07000E5048F /* RCMainMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMainMenuViewController.h; sourceTree = "<group>"; };
 		6490A90A1757C07100E5048F /* RCMainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMainMenuViewController.m; sourceTree = "<group>"; };
 		6490A90B1757C07100E5048F /* RCMainMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCMainMenuViewController.xib; sourceTree = "<group>"; };
@@ -142,11 +145,11 @@
 		BF68E7001756090200E5C1F4 /* RCMainFeedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCMainFeedViewController.h; path = ../RCMainFeedViewController.h; sourceTree = "<group>"; };
 		BF68E7011756090200E5C1F4 /* RCMainFeedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCMainFeedViewController.m; path = ../RCMainFeedViewController.m; sourceTree = "<group>"; };
 		BF68E7021756090200E5C1F4 /* RCMainFeedViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RCMainFeedViewController.xib; path = ../RCMainFeedViewController.xib; sourceTree = "<group>"; };
-		BF728EEA176767CD0050699C /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		BF728EEC176768000050699C /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		BF728EEE1767680F0050699C /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
-		BF8925EB1767697000F1978F /* icon114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon114.png; sourceTree = "<group>"; };
-		BF8925ED1767698600F1978F /* icon57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon57.png; sourceTree = "<group>"; };
+		BF728EEA176767CD0050699C /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x.png"; path = "../Default@2x.png"; sourceTree = "<group>"; };
+		BF728EEC176768000050699C /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-568h@2x.png"; path = "../Default-568h@2x.png"; sourceTree = "<group>"; };
+		BF728EEE1767680F0050699C /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = ../Default.png; sourceTree = "<group>"; };
+		BF8925EB1767697000F1978F /* icon114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon114.png; path = ../icon114.png; sourceTree = "<group>"; };
+		BF8925ED1767698600F1978F /* icon57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon57.png; path = ../icon57.png; sourceTree = "<group>"; };
 		BFC8414517586BFB00E52FE2 /* RCPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCPost.h; sourceTree = "<group>"; };
 		BFC8414617586BFB00E52FE2 /* RCPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCPost.m; sourceTree = "<group>"; };
 		BFCA7818174DFD3F00666CBA /* memcap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = memcap.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -233,6 +236,11 @@
 		643EACE9175BBE0D002761D9 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				BF8925ED1767698600F1978F /* icon57.png */,
+				BF8925EB1767697000F1978F /* icon114.png */,
+				BF728EEE1767680F0050699C /* Default.png */,
+				BF728EEC176768000050699C /* Default-568h@2x.png */,
+				BF728EEA176767CD0050699C /* Default@2x.png */,
 				643EACE7175BACC0002761D9 /* back_button.png */,
 				643EACE5175BA0B6002761D9 /* default_avatar.jpg */,
 			);
@@ -244,11 +252,6 @@
 			children = (
 				64FE84E4176BAAD800E561D8 /* libz.dylib */,
 				64FE8432176B9E0E00E561D8 /* libTestFlight.a */,
-				BF8925ED1767698600F1978F /* icon57.png */,
-				BF8925EB1767697000F1978F /* icon114.png */,
-				BF728EEE1767680F0050699C /* Default.png */,
-				BF728EEC176768000050699C /* Default-568h@2x.png */,
-				BF728EEA176767CD0050699C /* Default@2x.png */,
 				64FFD2CC17662D1B004337F8 /* MapKit.framework */,
 				BF4DCC44175C82280081B5AC /* AWSRuntime.framework */,
 				BF4DCC45175C82280081B5AC /* AWSS3.framework */,
@@ -324,6 +327,8 @@
 				643EACEA175BBE51002761D9 /* RCNewPostViewController.h */,
 				643EACEB175BBE51002761D9 /* RCNewPostViewController.m */,
 				643EACEC175BBE51002761D9 /* RCNewPostViewController.xib */,
+				6461033E176E5F8A008DD131 /* RCLandmark.h */,
+				6461033F176E5F8A008DD131 /* RCLandmark.m */,
 				6407BBD717545579000F29C5 /* RCUser.h */,
 				6407BBD817545579000F29C5 /* RCUser.m */,
 				BFC8414517586BFB00E52FE2 /* RCPost.h */,
@@ -566,6 +571,7 @@
 				642E71FE17639D9400B3464E /* RCConnectionManager.m in Sources */,
 				642E72011763A7F600B3464E /* RCKeyboardPushUpHandler.m in Sources */,
 				BF1AF31B1766231B000824CC /* RCResourceCache.m in Sources */,
+				64610340176E5F8A008DD131 /* RCLandmark.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

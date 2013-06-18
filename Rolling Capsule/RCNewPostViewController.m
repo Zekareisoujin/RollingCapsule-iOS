@@ -15,6 +15,7 @@
 #import "RCConnectionManager.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SBJson.h"
+#import "RCLandmark.h"
 
 @interface RCNewPostViewController ()
 
@@ -30,6 +31,8 @@
 @synthesize postContent = _postContent;
 @synthesize imageFileName = _imageFileName;
 @synthesize user = _user;
+@synthesize landmarks = _landmarks;
+@synthesize tblViewLandmark = _tblViewLandmark;
 
 BOOL _successfulPost = NO;
 RCKeyboardPushUpHandler *_keyboardPushHandler;
@@ -42,6 +45,11 @@ RCConnectionManager *_connectionManager;
         // Custom initialization
     }
     return self;
+}
+
+- (IBAction)callLandmarkTable:(id)sender {
+    [self asynchGetLandmarkRequest];
+    [self.view addSubview:_tblViewLandmark];
 }
 
 - (id) initWithUser:(RCUser *)user {
@@ -69,6 +77,12 @@ RCConnectionManager *_connectionManager;
                                                                    target:self
                                                                    action:@selector(postNew)];
     self.navigationItem.rightBarButtonItem = rightButton;
+    
+    _tblViewLandmark = [[UITableView alloc] initWithFrame:CGRectMake(0, 30, 320, 200) style:UITableViewStylePlain];
+    _tblViewLandmark.delegate = self;
+    _tblViewLandmark.dataSource = self;
+    
+    _landmarks = [[NSMutableArray alloc] init];
 }
 
 - (void)didReceiveMemoryWarning
@@ -184,6 +198,45 @@ RCConnectionManager *_connectionManager;
     }
 }
 
+- (void) asynchGetLandmarkRequest {
+    @try {
+        [_connectionManager startConnection];
+        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+        CLLocationCoordinate2D zoomLocation = appDelegate.currentLocation.coordinate;
+        
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@?mobile=1&latitude=%f&longitude=%f&%@", RCServiceURL, RCLandmarksResource, zoomLocation.latitude, zoomLocation.longitude, RCLevelsQueryString]];
+        NSURLRequest *request = CreateHttpGetRequest(url);
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+         {
+             [_connectionManager endConnection];
+             NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+             
+             NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+             int responseStatusCode = [httpResponse statusCode];
+             if (responseStatusCode != RCHttpOkStatusCode) {
+                 NSLog(@"New-Post: backend error %@", responseData);
+             } else {
+                 SBJsonParser *jsonParser = [SBJsonParser new];
+                 NSArray *jsonData = (NSArray *) [jsonParser objectWithString:responseData error:nil];
+                 [_landmarks removeAllObjects];
+                 for (NSDictionary *landmarkJson in jsonData) {
+                     RCLandmark *landmark = [[RCLandmark alloc] initWithNSDictionary:landmarkJson];
+                     [_landmarks addObject:landmark];
+                 }
+                 [_tblViewLandmark reloadData];
+             }
+         }];
+    }
+    @catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+        [_connectionManager endConnection];
+        self.navigationItem.rightBarButtonItem.enabled = YES;
+        alertStatus(@"Post Failed.",@"Post Failed!",self);
+    }
+
+}
+
 #pragma mark - UIActionSheetDelegate
 
 - (void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -274,4 +327,39 @@ RCConnectionManager *_connectionManager;
                                                   object:nil];
     [super viewWillDisappear:animated];
 }
+
+#pragma mark - Table view data source
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [_landmarks count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *simpleTableIdentifier = @"SimpleTableItem";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+    
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+    }
+    RCLandmark *landmark = [_landmarks objectAtIndex:indexPath.row];
+    cell.textLabel.text = landmark.description;
+    return cell;
+}
+
+/*- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return [RCUserTableCell cellHeight];
+}*/
+
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    
+    //RCUserProfileViewController *detailViewController = [[RCUserProfileViewController alloc] initWithUser:user viewingUser:_user];
+    //[self.navigationController pushViewController:detailViewController animated:YES];
+}
+
 @end

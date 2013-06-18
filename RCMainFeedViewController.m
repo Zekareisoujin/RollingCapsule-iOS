@@ -149,7 +149,9 @@ BOOL        _firstRefresh;
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
         CLLocationCoordinate2D zoomLocation = appDelegate.currentLocation.coordinate;
 
-        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@?mobile=1&latitude=%f&longitude=%f&levels%%5B%%5D%%5Bdist%%5D=2000&levels%%5B%%5D%%5Bpopularity%%5D=-1&levels%%5B%%5D%%5Bdist%%5D=10000&levels%%5B%%5D%%5Bpopularity%%5D=100", RCServiceURL, zoomLocation.latitude, zoomLocation.longitude]];
+        NSString *address = [[NSString alloc] initWithFormat:@"%@?mobile=1&latitude=%f&longitude=%f&%@", RCServiceURL, zoomLocation.latitude, zoomLocation.longitude, RCLevelsQueryString];
+        NSLog(@"Main-Feed: get feed address:%@",address);
+        NSURL *url=[NSURL URLWithString:address];
         NSURLRequest *request = CreateHttpGetRequest(url);
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]

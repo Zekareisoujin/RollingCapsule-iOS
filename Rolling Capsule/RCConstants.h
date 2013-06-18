@@ -17,6 +17,7 @@ static NSString* const RCSessionsResource = @"/sessions";
 static NSString* const RCUsersResource = @"/users";
 static NSString* const RCPostsResource = @"/posts";
 static NSString* const RCCommentsResource = @"/comments";
+static NSString* const RCLandmarksResource = @"/landmarks";
 static NSString* const RCFriendshipsResource = @"/friendships";
 static NSString* const RCFriendStatusAccepted = @"accepted";
 static NSString* const RCFriendStatusPending = @"pending";
@@ -29,6 +30,9 @@ static NSString* const RCImageSourceCamera = @"Camera";
 static NSString* const RCImageSourcePhotoAlbum = @"Photo Album";
 static int       const RCHttpOkStatusCode = 200;
 static const char* RCCStringAppDomain = "com.foxtwo.rollingcapsules";
+
+//query string for web request to indicate needed levels
+static NSString* const RCLevelsQueryString = @"levels%5B%5D%5Bdist%5D=2000&levels%5B%5D%5Bpopularity%5D=-1&levels%5B%5D%5Bdist%5D=10000&levels%5B%5D%5Bpopularity%5D=100";
 
 //info strings
 static NSString* const RCInfoStringLastUpdatedOnFormat = @"Last updated on %@";
