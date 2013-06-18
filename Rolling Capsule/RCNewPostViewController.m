@@ -15,7 +15,6 @@
 #import "RCConnectionManager.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SBJson.h"
-#import "RCLandmark.h"
 
 @interface RCNewPostViewController ()
 
@@ -33,7 +32,9 @@
 @synthesize user = _user;
 @synthesize landmarks = _landmarks;
 @synthesize tblViewLandmark = _tblViewLandmark;
+@synthesize currentLandmark = _currentLandmark;
 
+BOOL _landmarkTableVisible = NO;
 BOOL _successfulPost = NO;
 RCKeyboardPushUpHandler *_keyboardPushHandler;
 RCConnectionManager *_connectionManager;
@@ -48,8 +49,14 @@ RCConnectionManager *_connectionManager;
 }
 
 - (IBAction)callLandmarkTable:(id)sender {
-    [self asynchGetLandmarkRequest];
-    [self.view addSubview:_tblViewLandmark];
+    if (_landmarkTableVisible) {
+        _landmarkTableVisible = NO;
+        [_tblViewLandmark removeFromSuperview];
+    } else {
+        [self asynchGetLandmarkRequest];
+        [self.view addSubview:_tblViewLandmark];
+        _landmarkTableVisible = YES;
+    }
 }
 
 - (id) initWithUser:(RCUser *)user {
@@ -83,6 +90,8 @@ RCConnectionManager *_connectionManager;
     _tblViewLandmark.dataSource = self;
     
     _landmarks = [[NSMutableArray alloc] init];
+    _landmarkTableVisible = NO;
+    _currentLandmark = nil;
 }
 
 - (void)didReceiveMemoryWarning
@@ -160,6 +169,9 @@ RCConnectionManager *_connectionManager;
         addArgumentToQueryString(dataSt, @"post[latitude]", latSt);
         addArgumentToQueryString(dataSt, @"post[longitude]", longSt);
         addArgumentToQueryString(dataSt, @"post[file_url]", _imageFileName);
+        if (_currentLandmark != nil) {
+            addArgumentToQueryString(dataSt, @"post[landmark_id]", [NSString stringWithFormat:@"%d",_currentLandmark.landmarkID]);
+        }
         NSData *postData = [dataSt dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCPostsResource]];
@@ -357,9 +369,11 @@ RCConnectionManager *_connectionManager;
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    //RCUserProfileViewController *detailViewController = [[RCUserProfileViewController alloc] initWithUser:user viewingUser:_user];
-    //[self.navigationController pushViewController:detailViewController animated:YES];
+    RCLandmark *landmark = [_landmarks objectAtIndex:indexPath.row];
+    _currentLandmark = landmark;
+    [_btnLandmark setTitle:landmark.description forState:UIControlStateNormal];
+    [_tblViewLandmark removeFromSuperview];
+    _landmarkTableVisible = NO;
 }
 
 @end

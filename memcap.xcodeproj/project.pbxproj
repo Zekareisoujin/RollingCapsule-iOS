@@ -14,6 +14,8 @@
 		6407BBE11754D81C000F29C5 /* RCUserTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6407BBE01754D81C000F29C5 /* RCUserTableCell.m */; };
 		64176AFF175A260900443B59 /* AWSRuntime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64176AFD175A260900443B59 /* AWSRuntime.framework */; };
 		64176B00175A260900443B59 /* AWSS3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64176AFE175A260900443B59 /* AWSS3.framework */; };
+		64194AD61770AAF200822F9B /* RCMainFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 64194AD51770AAF100822F9B /* RCMainFeedCell.m */; };
+		64194ADA1770B44F00822F9B /* RCMainFeedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64194AD91770B44F00822F9B /* RCMainFeedCell.xib */; };
 		642E71FE17639D9400B3464E /* RCConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 642E71FD17639D9400B3464E /* RCConnectionManager.m */; };
 		642E72011763A7F600B3464E /* RCKeyboardPushUpHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 642E72001763A7F500B3464E /* RCKeyboardPushUpHandler.m */; };
 		643EACE6175BA0B6002761D9 /* default_avatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 643EACE5175BA0B6002761D9 /* default_avatar.jpg */; };
@@ -98,6 +100,9 @@
 		6407BBE01754D81C000F29C5 /* RCUserTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCUserTableCell.m; sourceTree = "<group>"; };
 		64176AFD175A260900443B59 /* AWSRuntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSRuntime.framework; path = "../../Downloads/aws-ios-sdk-1.6.0/AWSRuntime.framework"; sourceTree = "<group>"; };
 		64176AFE175A260900443B59 /* AWSS3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSS3.framework; path = "../../Downloads/aws-ios-sdk-1.6.0/AWSS3.framework"; sourceTree = "<group>"; };
+		64194AD41770AAF100822F9B /* RCMainFeedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMainFeedCell.h; sourceTree = "<group>"; };
+		64194AD51770AAF100822F9B /* RCMainFeedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMainFeedCell.m; sourceTree = "<group>"; };
+		64194AD91770B44F00822F9B /* RCMainFeedCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCMainFeedCell.xib; sourceTree = "<group>"; };
 		642E71FC17639D9400B3464E /* RCConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCConnectionManager.h; sourceTree = "<group>"; };
 		642E71FD17639D9400B3464E /* RCConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCConnectionManager.m; sourceTree = "<group>"; };
 		642E71FF1763A7F500B3464E /* RCKeyboardPushUpHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCKeyboardPushUpHandler.h; sourceTree = "<group>"; };
@@ -250,16 +255,19 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
+				64194AD91770B44F00822F9B /* RCMainFeedCell.xib */,
+				64194AD41770AAF100822F9B /* RCMainFeedCell.h */,
+				64194AD51770AAF100822F9B /* RCMainFeedCell.m */,
+				BFCA7821174DFD3F00666CBA /* Rolling Capsule */,
+				BFCA7845174DFD3F00666CBA /* Rolling CapsuleTests */,
+				BFCA781A174DFD3F00666CBA /* Frameworks */,
+				BFCA7819174DFD3F00666CBA /* Products */,
 				64FE84E4176BAAD800E561D8 /* libz.dylib */,
 				64FE8432176B9E0E00E561D8 /* libTestFlight.a */,
 				64FFD2CC17662D1B004337F8 /* MapKit.framework */,
 				BF4DCC44175C82280081B5AC /* AWSRuntime.framework */,
 				BF4DCC45175C82280081B5AC /* AWSS3.framework */,
 				643EACEF175C1B5C002761D9 /* CoreLocation.framework */,
-				BFCA7821174DFD3F00666CBA /* Rolling Capsule */,
-				BFCA7845174DFD3F00666CBA /* Rolling CapsuleTests */,
-				BFCA781A174DFD3F00666CBA /* Frameworks */,
-				BFCA7819174DFD3F00666CBA /* Products */,
 			);
 			sourceTree = "<group>";
 		};
@@ -335,8 +343,6 @@
 				BFC8414617586BFB00E52FE2 /* RCPost.m */,
 				BF2CD6201751C53900EF2E85 /* RCUtilities.h */,
 				BF3AFF971750763400D46558 /* RCConstants.h */,
-				BF1AF3191766231B000824CC /* RCResourceCache.h */,
-				BF1AF31A1766231B000824CC /* RCResourceCache.m */,
 				BFCA7822174DFD3F00666CBA /* Supporting Files */,
 				6490A90E1758E2D000E5048F /* RCSlideoutViewController.h */,
 				6490A90F1758E2D000E5048F /* RCSlideoutViewController.m */,
@@ -346,6 +352,8 @@
 				642E71FD17639D9400B3464E /* RCConnectionManager.m */,
 				642E71FF1763A7F500B3464E /* RCKeyboardPushUpHandler.h */,
 				642E72001763A7F500B3464E /* RCKeyboardPushUpHandler.m */,
+				BF1AF3191766231B000824CC /* RCResourceCache.h */,
+				BF1AF31A1766231B000824CC /* RCResourceCache.m */,
 			);
 			path = "Rolling Capsule";
 			sourceTree = "<group>";
@@ -505,6 +513,7 @@
 				64549D89175F264600BA8164 /* RCPostDetailsViewController.xib in Resources */,
 				BF8925EC1767697000F1978F /* icon114.png in Resources */,
 				BF8925EE1767698600F1978F /* icon57.png in Resources */,
+				64194ADA1770B44F00822F9B /* RCMainFeedCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -572,6 +581,7 @@
 				642E72011763A7F600B3464E /* RCKeyboardPushUpHandler.m in Sources */,
 				BF1AF31B1766231B000824CC /* RCResourceCache.m in Sources */,
 				64610340176E5F8A008DD131 /* RCLandmark.m in Sources */,
+				64194AD61770AAF200822F9B /* RCMainFeedCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

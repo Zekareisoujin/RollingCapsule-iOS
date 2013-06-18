@@ -16,8 +16,12 @@
 #import "RCNewPostViewController.h"
 #import "RCPostDetailsViewController.h"
 #import "RCAmazonS3Helper.h"
+#import "RCMainFeedCell.h"
+#import "RCConnectionManager.h"
 
 @interface RCMainFeedViewController ()
+
+@property (nonatomic, strong) RCConnectionManager *connectionManager;
 
 @end
 
@@ -28,6 +32,7 @@ BOOL        _firstRefresh;
 @synthesize user = _user;
 @synthesize userCache = _userCache;
 @synthesize postCache = _postCache;
+@synthesize connectionManager = _connectionManager;
 
 + (NSString*) debugTag {
     return @"MainFeedView";
@@ -38,7 +43,7 @@ BOOL        _firstRefresh;
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        _connectionManager = [[RCConnectionManager alloc] init];
     }
     return self;
 }
@@ -53,6 +58,9 @@ BOOL        _firstRefresh;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [_connectionManager reset];
+    
     _userCache = [[NSMutableDictionary alloc] init];
     _postCache = [[NSMutableDictionary alloc] init];
     
@@ -64,18 +72,17 @@ BOOL        _firstRefresh;
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"New Post" style:UIBarButtonItemStylePlain target:self action:@selector(switchToNewPostScreen)];
     self.navigationItem.rightBarButtonItem = rightButton;
     
-    //UITableViewController *tableViewController = setUpRefreshControlWithTableViewController(self, _tblFeedList);
-    //UICollectionViewController *collectionViewController;
     _refreshControl = [[UIRefreshControl alloc] init];//tableViewController.refreshControl;
     [_collectionView addSubview:_refreshControl];
     [_refreshControl addTarget:self
                         action:@selector(handleRefresh:)
               forControlEvents:UIControlEventValueChanged  ];
-    _collectionView.alwaysBounceVertical = YES;
     _firstRefresh = YES;
     
-    [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:@"FlickrCell"];
-    
+    NSString* cellIdentifier = [RCMainFeedCell cellIdentifier];
+    [self.collectionView registerClass:[RCMainFeedCell class] forCellWithReuseIdentifier:cellIdentifier];
+    UINib *nib = [UINib nibWithNibName:cellIdentifier bundle: nil];
+    [self.collectionView registerNib:nib forCellWithReuseIdentifier:cellIdentifier];
     [self handleRefresh:_refreshControl];
 }
 
@@ -222,7 +229,13 @@ BOOL        _firstRefresh;
 }
 // 3
 - (UICollectionViewCell *)collectionView:(UICollectionView *)cv cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell *cell = [cv dequeueReusableCellWithReuseIdentifier:@"FlickrCell" forIndexPath:indexPath];
+    NSString* cellIdentifier = [RCMainFeedCell cellIdentifier];
+    RCMainFeedCell *cell = [cv dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
+    RCPost *post = [_items objectAtIndex:indexPath.row];
+    [_connectionManager startConnection];
+    [cell getPostContentImageFromInternet:_user withPostContent:post usingCollection:nil completion:^{
+        [_connectionManager endConnection];
+    }];
     cell.backgroundColor = [UIColor whiteColor];
     return cell;
 }
