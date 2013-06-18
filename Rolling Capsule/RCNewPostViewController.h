@@ -10,15 +10,21 @@
 #import <AWSS3/AWSS3.h>
 #import "RCUser.h"
 #import "RCKeyboardPushUpHandler.h"
+#import "RCLandmark.h"
 
-@interface RCNewPostViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, AmazonServiceRequestDelegate, UIActionSheetDelegate>
+@interface RCNewPostViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, AmazonServiceRequestDelegate, UIActionSheetDelegate, UITableViewDataSource, UITableViewDelegate>
+
 @property (weak, nonatomic) IBOutlet UIButton *btnPostImage;
+@property (weak, nonatomic) IBOutlet UIButton *btnLandmark;
 @property (weak, nonatomic) IBOutlet UITextView *txtViewPostContent;
-
+@property (nonatomic, strong) NSMutableArray *landmarks;
 @property (nonatomic, strong) RCUser *user;
 @property (strong, nonatomic) RCKeyboardPushUpHandler *keyboardPushHandler;
+@property (nonatomic, strong) UITableView *tblViewLandmark;
+@property (nonatomic, strong) RCLandmark *currentLandmark;
 
 - (IBAction)backgroundTouchUpInside:(id)sender;
 - (IBAction)btnPostImageTouchUpInside:(id)sender;
+- (IBAction)callLandmarkTable:(id)sender;
 - (id) initWithUser:(RCUser *)user;
 @end

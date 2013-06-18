@@ -31,7 +31,11 @@
 @synthesize imageFileName = _imageFileName;
 @synthesize user = _user;
 @synthesize keyboardPushHandler = _keyboardPushHandler;
+@synthesize landmarks = _landmarks;
+@synthesize tblViewLandmark = _tblViewLandmark;
+@synthesize currentLandmark = _currentLandmark;
 
+BOOL _landmarkTableVisible = NO;
 BOOL _successfulPost = NO;
 RCConnectionManager *_connectionManager;
 
@@ -42,6 +46,17 @@ RCConnectionManager *_connectionManager;
         // Custom initialization
     }
     return self;
+}
+
+- (IBAction)callLandmarkTable:(id)sender {
+    if (_landmarkTableVisible) {
+        _landmarkTableVisible = NO;
+        [_tblViewLandmark removeFromSuperview];
+    } else {
+        [self asynchGetLandmarkRequest];
+        [self.view addSubview:_tblViewLandmark];
+        _landmarkTableVisible = YES;
+    }
 }
 
 - (id) initWithUser:(RCUser *)user {
@@ -70,6 +85,14 @@ RCConnectionManager *_connectionManager;
                                                                    target:self
                                                                    action:@selector(postNew)];
     self.navigationItem.rightBarButtonItem = rightButton;
+    
+    _tblViewLandmark = [[UITableView alloc] initWithFrame:CGRectMake(0, 30, 320, 200) style:UITableViewStylePlain];
+    _tblViewLandmark.delegate = self;
+    _tblViewLandmark.dataSource = self;
+    
+    _landmarks = [[NSMutableArray alloc] init];
+    _landmarkTableVisible = NO;
+    _currentLandmark = nil;
 }
 
 - (void)didReceiveMemoryWarning
@@ -147,6 +170,9 @@ RCConnectionManager *_connectionManager;
         addArgumentToQueryString(dataSt, @"post[latitude]", latSt);
         addArgumentToQueryString(dataSt, @"post[longitude]", longSt);
         addArgumentToQueryString(dataSt, @"post[file_url]", _imageFileName);
+        if (_currentLandmark != nil) {
+            addArgumentToQueryString(dataSt, @"post[landmark_id]", [NSString stringWithFormat:@"%d",_currentLandmark.landmarkID]);
+        }
         NSData *postData = [dataSt dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCPostsResource]];
@@ -183,6 +209,45 @@ RCConnectionManager *_connectionManager;
         self.navigationItem.rightBarButtonItem.enabled = YES;
         alertStatus(@"Post Failed.",@"Post Failed!",self);
     }
+}
+
+- (void) asynchGetLandmarkRequest {
+    @try {
+        [_connectionManager startConnection];
+        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+        CLLocationCoordinate2D zoomLocation = appDelegate.currentLocation.coordinate;
+        
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@?mobile=1&latitude=%f&longitude=%f&%@", RCServiceURL, RCLandmarksResource, zoomLocation.latitude, zoomLocation.longitude, RCLevelsQueryString]];
+        NSURLRequest *request = CreateHttpGetRequest(url);
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+         {
+             [_connectionManager endConnection];
+             NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
+             
+             NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+             int responseStatusCode = [httpResponse statusCode];
+             if (responseStatusCode != RCHttpOkStatusCode) {
+                 NSLog(@"New-Post: backend error %@", responseData);
+             } else {
+                 SBJsonParser *jsonParser = [SBJsonParser new];
+                 NSArray *jsonData = (NSArray *) [jsonParser objectWithString:responseData error:nil];
+                 [_landmarks removeAllObjects];
+                 for (NSDictionary *landmarkJson in jsonData) {
+                     RCLandmark *landmark = [[RCLandmark alloc] initWithNSDictionary:landmarkJson];
+                     [_landmarks addObject:landmark];
+                 }
+                 [_tblViewLandmark reloadData];
+             }
+         }];
+    }
+    @catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+        [_connectionManager endConnection];
+        self.navigationItem.rightBarButtonItem.enabled = YES;
+        alertStatus(@"Post Failed.",@"Post Failed!",self);
+    }
+
 }
 
 #pragma mark - UIActionSheetDelegate
@@ -279,4 +344,41 @@ RCConnectionManager *_connectionManager;
                                                   object:nil];
     [super viewWillDisappear:animated];
 }
+
+#pragma mark - Table view data source
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [_landmarks count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    static NSString *simpleTableIdentifier = @"SimpleTableItem";
+    
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
+    
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
+    }
+    RCLandmark *landmark = [_landmarks objectAtIndex:indexPath.row];
+    cell.textLabel.text = landmark.description;
+    return cell;
+}
+
+/*- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return [RCUserTableCell cellHeight];
+}*/
+
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    RCLandmark *landmark = [_landmarks objectAtIndex:indexPath.row];
+    _currentLandmark = landmark;
+    [_btnLandmark setTitle:landmark.description forState:UIControlStateNormal];
+    [_tblViewLandmark removeFromSuperview];
+    _landmarkTableVisible = NO;
+}
+
 @end

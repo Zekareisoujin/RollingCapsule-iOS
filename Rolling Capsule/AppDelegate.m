@@ -18,6 +18,7 @@
 #import "RCPostDetailsViewController.h"
 #import "RCConstants.h"
 
+
 @implementation AppDelegate
 
 @synthesize navigationController = _navigationController;
@@ -26,9 +27,12 @@
 @synthesize locationManager = _locationManager;
 @synthesize currentLocation = _currentLocation;
 
++ (NSString*) debugTag {
+    return @"AppDelegate";
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    
     [TestFlight takeOff:@"9a1eac62-14de-493e-971e-bea0ff0cb99b"];
     RCUser *user = [[RCUser alloc] init];
     user.name = @"lolo";
@@ -127,5 +131,6 @@
 -(void)setCurrentUser:(RCUser *)user {
     _menuViewController.user = user;
     [_menuViewController.view setUserInteractionEnabled:YES];
+    NSLog(@"%@ set current user %d:@",[AppDelegate debugTag], user.userID,user.email);
 }
 @end

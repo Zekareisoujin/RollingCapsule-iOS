@@ -98,6 +98,16 @@ static UITableViewController* setUpRefreshControlWithTableViewController(
     return tableViewController;
 }
 
+static UICollectionViewController* setUpRefreshControlWithCollectionViewController(
+                                                                         UIViewController* superViewController,
+                                                                         UICollectionView *collectionView) {
+    UICollectionViewController* collectionViewController = [[UICollectionViewController alloc] initWithCollectionViewLayout:collectionView.collectionViewLayout];
+    collectionViewController.collectionView = collectionView;
+    [superViewController addChildViewController:collectionViewController];
+    //collectionViewController. = [[UIRefreshControl alloc] init];
+    return collectionViewController;
+}
+
 static UIImage *imageWithImage(UIImage*image,CGSize newSize) {
     UIGraphicsBeginImageContext( newSize );
     [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];

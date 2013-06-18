@@ -16,8 +16,12 @@
 #import "RCNewPostViewController.h"
 #import "RCPostDetailsViewController.h"
 #import "RCAmazonS3Helper.h"
+#import "RCMainFeedCell.h"
+#import "RCConnectionManager.h"
 
 @interface RCMainFeedViewController ()
+
+@property (nonatomic, strong) RCConnectionManager *connectionManager;
 
 @end
 
@@ -28,12 +32,18 @@ BOOL        _firstRefresh;
 @synthesize user = _user;
 @synthesize userCache = _userCache;
 @synthesize postCache = _postCache;
+@synthesize connectionManager = _connectionManager;
+
++ (NSString*) debugTag {
+    return @"MainFeedView";
+}
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        _connectionManager = [[RCConnectionManager alloc] init];
     }
     return self;
 }
@@ -48,6 +58,9 @@ BOOL        _firstRefresh;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [_connectionManager reset];
+    
     _userCache = [[NSMutableDictionary alloc] init];
     _postCache = [[NSMutableDictionary alloc] init];
     
@@ -59,16 +72,27 @@ BOOL        _firstRefresh;
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"New Post" style:UIBarButtonItemStylePlain target:self action:@selector(switchToNewPostScreen)];
     self.navigationItem.rightBarButtonItem = rightButton;
     
-    UITableViewController *tableViewController = setUpRefreshControlWithTableViewController(self, _tblFeedList);
-    _refreshControl = tableViewController.refreshControl;
+    _refreshControl = [[UIRefreshControl alloc] init];//tableViewController.refreshControl;
+    [_collectionView addSubview:_refreshControl];
     [_refreshControl addTarget:self
                         action:@selector(handleRefresh:)
               forControlEvents:UIControlEventValueChanged  ];
     _firstRefresh = YES;
+    
+    NSString* cellIdentifier = [RCMainFeedCell cellIdentifier];
+    [self.collectionView registerClass:[RCMainFeedCell class] forCellWithReuseIdentifier:cellIdentifier];
+    UINib *nib = [UINib nibWithNibName:cellIdentifier bundle: nil];
+    [self.collectionView registerNib:nib forCellWithReuseIdentifier:cellIdentifier];
     [self handleRefresh:_refreshControl];
 }
 
 - (void) handleRefresh:(UIRefreshControl*) refreshControl {
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    CLLocationCoordinate2D zoomLocation = appDelegate.currentLocation.coordinate;
+    NSLog(@"current location %f %f", zoomLocation.longitude, zoomLocation.latitude);
+    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(zoomLocation, 0.5*METERS_PER_MILE, 0.5*METERS_PER_MILE);
+    [_mapView setRegion:viewRegion animated:YES];
+    
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:RCInfoStringDateFormat];
     NSString *lastUpdated = [NSString stringWithFormat:RCInfoStringLastUpdatedOnFormat, [formatter  stringFromDate:[NSDate date] ] ];
@@ -132,8 +156,9 @@ BOOL        _firstRefresh;
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
         CLLocationCoordinate2D zoomLocation = appDelegate.currentLocation.coordinate;
 
-        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@?mobile=1&latitude=%f&longitude=%f&levels%%5B%%5D%%5Bdist%%5D=2000&levels%%5B%%5D%%5Bpopularity%%5D=-1&levels%%5B%%5D%%5Bdist%%5D=10000&levels%%5B%%5D%%5Bpopularity%%5D=100", RCServiceURL, zoomLocation.latitude, zoomLocation.longitude]];
-        NSLog(@"%@",url);
+        NSString *address = [[NSString alloc] initWithFormat:@"%@?mobile=1&latitude=%f&longitude=%f&%@", RCServiceURL, zoomLocation.latitude, zoomLocation.longitude, RCLevelsQueryString];
+        NSLog(@"Main-Feed: get feed address:%@",address);
+        NSURL *url=[NSURL URLWithString:address];
         NSURLRequest *request = CreateHttpGetRequest(url);
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
@@ -146,13 +171,14 @@ BOOL        _firstRefresh;
             
             SBJsonParser *jsonParser = [SBJsonParser new];
             NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
-            //NSLog(@"%@",jsonData);
+            NSLog(@"%@%@",[RCMainFeedViewController debugTag], jsonData);
             
             if (jsonData != NULL) {
                 [_items removeAllObjects];
                 NSLog(@"current annotations:%@",_mapView.annotations);
                 [_mapView removeAnnotations:_mapView.annotations];
                 NSArray *postList = (NSArray *) [jsonData objectForKey:@"post_list"];
+                NSArray *landmarkList = (NSArray*) [jsonData objectForKey:@"landmark_list"];
                 NSDictionary *userDictionary = (NSDictionary *) [jsonData objectForKey:@"user"];
                 _user = [[RCUser alloc] initWithNSDictionary:userDictionary];
                 AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -160,12 +186,18 @@ BOOL        _firstRefresh;
                 for (NSDictionary *postData in postList) {
                     RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
                     [_items addObject:post];
-                    //if (abs(post.coordinate.longitude) > 1) {
-                        [_mapView addAnnotation:post];
-                        NSLog(@"post coordinates %f %f", post.coordinate.latitude, post.coordinate.longitude);
-                    //}
+                    [_mapView addAnnotation:post];
+                    NSLog(@"%@ post coordinates %f %f",[RCMainFeedViewController debugTag], post.coordinate.latitude, post.coordinate.longitude);
+                }
+                for (NSDictionary *landmarkData in landmarkList) {
+                    RCPost *post = [[RCPost alloc] init];
+                    post.latitude = [[landmarkData objectForKey:@"latitude"] doubleValue];
+                    post.longitude = [[landmarkData objectForKey:@"longitude"] doubleValue];
+                    [_mapView addAnnotation:post];
+                    NSLog(@"%@: landmark coordinates %f %f",[RCMainFeedViewController debugTag], post.coordinate.latitude, post.coordinate.longitude);
                 }
                 [_tblFeedList reloadData];
+                [_collectionView reloadData];
                 if (_firstRefresh){
                     [_tblFeedList setContentOffset:CGPointMake(0, 0) animated:YES];
                     _firstRefresh = NO;
@@ -186,16 +218,59 @@ BOOL        _firstRefresh;
     [self.navigationController pushViewController:newPostController animated:YES];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    // 1
-    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    CLLocationCoordinate2D zoomLocation = appDelegate.currentLocation.coordinate;
-    NSLog(@"current location %f %f", zoomLocation.longitude, zoomLocation.latitude);
+#pragma mark - UICollectionView Datasource
+// 1
+- (NSInteger)collectionView:(UICollectionView *)view numberOfItemsInSection:(NSInteger)section {
+    return section == 0 ? [_items count] : 0;
+}
+// 2
+- (NSInteger)numberOfSectionsInCollectionView: (UICollectionView *)collectionView {
+    return 1;
+}
+// 3
+- (UICollectionViewCell *)collectionView:(UICollectionView *)cv cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSString* cellIdentifier = [RCMainFeedCell cellIdentifier];
+    RCMainFeedCell *cell = [cv dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
+    RCPost *post = [_items objectAtIndex:indexPath.row];
+    [_connectionManager startConnection];
+    [cell getPostContentImageFromInternet:_user withPostContent:post usingCollection:nil completion:^{
+        [_connectionManager endConnection];
+    }];
+    cell.backgroundColor = [UIColor whiteColor];
+    return cell;
+}
+// 4
+/*- (UICollectionReusableView *)collectionView:
+ (UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+ {
+ return [[UICollectionReusableView alloc] init];
+ }*/
+
+#pragma mark - UICollectionViewDelegate
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    // TODO: Select Item
+}
+- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
+    // TODO: Deselect item
+}
+
+#pragma mark – UICollectionViewDelegateFlowLayout
+
+// 1
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    //NSString *searchTerm = self.searches[indexPath.section]; FlickrPhoto *photo =
+    //self.searchResults[searchTerm][indexPath.row];
     // 2
-    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(zoomLocation, 0.5*METERS_PER_MILE, 0.5*METERS_PER_MILE);
-    
-    // 3
-    [_mapView setRegion:viewRegion animated:YES];
+    CGSize retval = CGSizeMake(100, 100);
+    retval.height += 35; retval.width += 35;
+    return retval;
+}
+
+// 3
+- (UIEdgeInsets)collectionView:
+(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+    return UIEdgeInsetsMake(50, 20, 50, 20);
 }
 
 @end
