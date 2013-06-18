@@ -155,19 +155,19 @@ int       _friendshipID;
         _friendStatus = [friendshipJson objectForKey:@"status"];
         if ((NSNull *)_friendStatus == [NSNull null]) {
             _friendStatus = RCFriendStatusNull;
-            [_btnFriendAction setTitle:@"Add friend" forState:UIControlStateNormal];
+            [_btnFriendAction setTitle:RCFriendStatusActionRequestFriend forState:UIControlStateNormal];
             _btnFriendAction.enabled = YES;
         } else {
             NSNumber *num = [friendshipJson objectForKey:@"id"];
             _friendshipID = [num intValue];
             if ([_friendStatus isEqualToString:RCFriendStatusAccepted]) {
-                [_btnFriendAction setTitle:@"Unfriend" forState:UIControlStateNormal];
+                [_btnFriendAction setTitle:RCFriendStatusActionUnfriend forState:UIControlStateNormal];
                 _btnFriendAction.enabled = YES;
             } else if ([_friendStatus isEqualToString:RCFriendStatusPending]) {
-                [_btnFriendAction setTitle:@"Request sent" forState:UIControlStateNormal];
+                [_btnFriendAction setTitle:RCFriendStatusActionRequestSent forState:UIControlStateNormal];
                 _btnFriendAction.enabled = NO;
             } else if ([_friendStatus isEqualToString:RCFriendStatusRequested]) {
-                [_btnFriendAction setTitle:@"Accept requeset" forState:UIControlStateNormal];
+                [_btnFriendAction setTitle:RCFriendStatusActionRequestAccept forState:UIControlStateNormal];
                 _btnFriendAction.enabled = YES;
             }
         }

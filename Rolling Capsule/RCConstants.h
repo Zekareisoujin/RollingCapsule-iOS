@@ -24,9 +24,6 @@ static NSString* const RCFriendStatusRequested = @"requested";
 static NSString* const RCFriendStatusNull = @"null";
 static NSString* const RCAmazonS3AvatarPictureBucket = @"rcavatarimages";
 static NSString* const RCAmazonS3UsersMediaBucket = @"rcusersmedia";
-static NSString* const RCImageSourcePhotoLibrary = @"Photo Library";
-static NSString* const RCImageSourceCamera = @"Camera";
-static NSString* const RCImageSourcePhotoAlbum = @"Photo Album";
 static int       const RCHttpOkStatusCode = 200;
 static const char* RCCStringAppDomain = "com.foxtwo.rollingcapsules";
 
@@ -56,5 +53,15 @@ static NSString* const RCErrorMessageFailedToEditFriendStatus = @"Failure editin
 
 //NSUserDefault key
 static NSString* const RCLogStatusDefault = @"logStatus";
+
+//Displayed strings
+static NSString* const RCImageSourcePhotoLibrary = @"Photo Library";
+static NSString* const RCImageSourceCamera = @"Camera";
+static NSString* const RCImageSourcePhotoAlbum = @"Photo Album";
+static NSString* const RCFriendStatusActionUnfriend = @"Unfriend";
+static NSString* const RCFriendStatusActionRequestFriend = @"Add friend";
+static NSString* const RCFriendStatusActionRequestAccept = @"Accept request";
+static NSString* const RCFriendStatusActionRequestSent = @"Request sent";
+
 #endif
 

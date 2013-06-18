@@ -30,9 +30,9 @@
 @synthesize postContent = _postContent;
 @synthesize imageFileName = _imageFileName;
 @synthesize user = _user;
+@synthesize keyboardPushHandler = _keyboardPushHandler;
 
 BOOL _successfulPost = NO;
-RCKeyboardPushUpHandler *_keyboardPushHandler;
 RCConnectionManager *_connectionManager;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -50,6 +50,7 @@ RCConnectionManager *_connectionManager;
         _user = user;
         _keyboardPushHandler = [[RCKeyboardPushUpHandler alloc] init];
         _connectionManager = [[RCConnectionManager alloc] init];
+        //NSLog(@"RCNewPostViewController: %@", _keyboardPushHandler);
     }
     return self;
 }
@@ -195,8 +196,8 @@ RCConnectionManager *_connectionManager;
     NSString* buttonLabel = [actionSheet buttonTitleAtIndex:buttonIndex];
     if ([buttonLabel isEqualToString:RCImageSourcePhotoLibrary])
         [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-    else if ([buttonLabel isEqualToString:RCImageSourcePhotoAlbum])
-        [imagePicker setSourceType:UIImagePickerControllerSourceTypeSavedPhotosAlbum];
+    //else if ([buttonLabel isEqualToString:RCImageSourcePhotoAlbum])
+    //    [imagePicker setSourceType:UIImagePickerControllerSourceTypeSavedPhotosAlbum];
     else if ([buttonLabel isEqualToString:RCImageSourceCamera])
         [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
     [self presentViewController:imagePicker animated:YES completion:nil];
@@ -215,11 +216,13 @@ RCConnectionManager *_connectionManager;
                                                     otherButtonTitles:nil];
     
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
-    [actionSheet addButtonWithTitle:RCImageSourcePhotoLibrary];
+        [actionSheet addButtonWithTitle:RCImageSourcePhotoLibrary];
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
         [actionSheet addButtonWithTitle:RCImageSourceCamera];
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum])
-        [actionSheet addButtonWithTitle:RCImageSourcePhotoAlbum];
+    
+    // This is probably not necessary
+    //if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum])
+    //    [actionSheet addButtonWithTitle:RCImageSourcePhotoAlbum];
     
     actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:@"Cancel"];
     [actionSheet showInView:self.view];
@@ -237,7 +240,8 @@ RCConnectionManager *_connectionManager;
     // Get the selected image.
     _postImage = [info objectForKey:UIImagePickerControllerOriginalImage];
     [_btnPostImage setImage:_postImage forState:UIControlStateNormal];
-    UIImageWriteToSavedPhotosAlbum(_postImage, self, nil, nil);
+    if ([picker sourceType] == UIImagePickerControllerSourceTypeCamera)
+        UIImageWriteToSavedPhotosAlbum(_postImage, self, nil, nil);
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -266,11 +270,11 @@ RCConnectionManager *_connectionManager;
 - (void)viewWillDisappear:(BOOL)animated
 {
     // unregister for keyboard notifications while not visible.
-    [[NSNotificationCenter defaultCenter] removeObserver:self
+    [[NSNotificationCenter defaultCenter] removeObserver:_keyboardPushHandler
                                                     name:UIKeyboardWillShowNotification
                                                   object:nil];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self
+    [[NSNotificationCenter defaultCenter] removeObserver:_keyboardPushHandler
                                                     name:UIKeyboardWillHideNotification
                                                   object:nil];
     [super viewWillDisappear:animated];
