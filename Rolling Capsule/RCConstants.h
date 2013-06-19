@@ -26,7 +26,7 @@ static NSString* const RCFriendStatusNull = @"null";
 static NSString* const RCAmazonS3AvatarPictureBucket = @"rcavatarimages";
 static NSString* const RCAmazonS3UsersMediaBucket = @"rcusersmedia";
 static int       const RCHttpOkStatusCode = 200;
-static const char* RCCStringAppDomain = "com.foxtwo.rollingcapsules";
+#define RCCStringAppDomain "com.foxtwo.rollingcapsules"
 
 //query string for web request to indicate needed levels
 static NSString* const RCLevelsQueryString = @"levels%5B%5D%5Bdist%5D=2000&levels%5B%5D%5Bpopularity%5D=-1&levels%5B%5D%5Bdist%5D=10000&levels%5B%5D%5Bpopularity%5D=100";
@@ -59,8 +59,8 @@ static NSString* const RCErrorMessageFailedToEditFriendStatus = @"Failure editin
 static NSString* const RCLogStatusDefault = @"logStatus";
 
 //integer values
-static int RCUploadImageSizeWidth = 300;
-static int RCUploadImageSizeHeight = 300;
+#define RCUploadImageSizeWidth  300
+#define RCUploadImageSizeHeight 300
 
 //Displayed strings
 static NSString* const RCImageSourcePhotoLibrary = @"Photo Library";

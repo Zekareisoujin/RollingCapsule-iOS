@@ -22,6 +22,8 @@
 @interface RCMainFeedViewController ()
 
 @property (nonatomic, strong) RCConnectionManager *connectionManager;
+@property (nonatomic, strong) NSMutableDictionary *postsByLandmark;
+@property (nonatomic, assign) int currentLandmarkID;
 
 @end
 
@@ -33,6 +35,8 @@ BOOL        _firstRefresh;
 @synthesize userCache = _userCache;
 @synthesize postCache = _postCache;
 @synthesize connectionManager = _connectionManager;
+@synthesize postsByLandmark = _postsByLandmark;
+@synthesize currentLandmarkID = _currentLandmarkID;
 
 + (NSString*) debugTag {
     return @"MainFeedView";
@@ -51,6 +55,9 @@ BOOL        _firstRefresh;
 - (id)init {
     self = [super init];
     if (self) {
+        _connectionManager = [[RCConnectionManager alloc] init];
+        _postsByLandmark = [[NSMutableDictionary alloc] init];
+        
     }
     return self;
 }
@@ -60,6 +67,8 @@ BOOL        _firstRefresh;
     [super viewDidLoad];
     
     [_connectionManager reset];
+    _currentLandmarkID = -1;
+    [_postsByLandmark removeAllObjects];
     
     _userCache = [[NSMutableDictionary alloc] init];
     _postCache = [[NSMutableDictionary alloc] init];
@@ -186,6 +195,15 @@ BOOL        _firstRefresh;
                 for (NSDictionary *postData in postList) {
                     RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
                     [_items addObject:post];
+                    id key = [[NSNumber alloc] initWithInteger:post.landmarkID];
+                    NSMutableArray *postList = (NSMutableArray *)[_postsByLandmark objectForKey:key];
+                    if (postList != nil) {
+                        [postList addObject:post];
+                    } else {
+                        NSMutableArray* postList = [[NSMutableArray alloc] init];
+                        [postList addObject:post];
+                        [_postsByLandmark setObject:postList forKey:key];
+                    }
                     NSLog(@"%@ post coordinates %f %f",[RCMainFeedViewController debugTag], post.coordinate.latitude, post.coordinate.longitude);
                 }
                 for (NSDictionary *landmarkData in landmarkList) {
@@ -220,7 +238,7 @@ BOOL        _firstRefresh;
 #pragma mark - UICollectionView Datasource
 // 1
 - (NSInteger)collectionView:(UICollectionView *)view numberOfItemsInSection:(NSInteger)section {
-    return section == 0 ? [_items count] : 0;
+    return section == 0 ? [[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInteger:_currentLandmarkID]] count] : 0;
 }
 // 2
 - (NSInteger)numberOfSectionsInCollectionView: (UICollectionView *)collectionView {
@@ -230,10 +248,9 @@ BOOL        _firstRefresh;
 - (UICollectionViewCell *)collectionView:(UICollectionView *)cv cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     NSString* cellIdentifier = [RCMainFeedCell cellIdentifier];
     RCMainFeedCell *cell = [cv dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
-    RCPost *post = [_items objectAtIndex:indexPath.row];
+    NSArray* items = [_postsByLandmark objectForKey:[[NSNumber alloc] initWithInteger:_currentLandmarkID]];
+    RCPost *post = [items objectAtIndex:indexPath.row];
     [_connectionManager startConnection];
-    //UIImageView *imageView = cell.imageView;
-    //cell.imageView.frame = imageView.frame = CGRectMake(imageView.frame.origin.x, imageView.frame.origin.y,70, 70);
     [cell getPostContentImageFromInternet:_user withPostContent:post usingCollection:nil completion:^{
         [_connectionManager endConnection];
     }];
@@ -260,12 +277,7 @@ BOOL        _firstRefresh;
 
 // 1
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    //NSString *searchTerm = self.searches[indexPath.section]; FlickrPhoto *photo =
-    //self.searchResults[searchTerm][indexPath.row];
-    // 2
-    //RCMainFeedCell *cell = (RCMainFeedCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    CGSize retval = CGSizeMake(126,126);//RCUploadImageSizeWidth, RCUploadImageSizeWidth);
-    //retval.height += 35; retval.width += 35;
+    CGSize retval = CGSizeMake(126,126);
     return retval;
 }
 

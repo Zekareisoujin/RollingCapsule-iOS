@@ -11,17 +11,18 @@
 
 @interface RCPost : NSObject <MKAnnotation>
 
-@property (nonatomic,retain) NSString *content;
-@property (nonatomic,retain) NSString *createdTime;
-@property (nonatomic,retain) NSString *updatedTime;
-@property (nonatomic,retain) NSString *fileUrl;
-@property (nonatomic,retain) NSString *privacyOption;
-@property   int     likeCount;
-@property   int     viewCount;
-@property   double  longitude;
-@property   double  latitude;
-@property   int     postID;
-@property   int     userID;
+@property (nonatomic,retain)  NSString *content;
+@property (nonatomic,retain)  NSString *createdTime;
+@property (nonatomic,retain)  NSString *updatedTime;
+@property (nonatomic,retain)  NSString *fileUrl;
+@property (nonatomic,retain)  NSString *privacyOption;
+@property (nonatomic, assign) int     likeCount;
+@property (nonatomic, assign) int     viewCount;
+@property (nonatomic, assign) double  longitude;
+@property (nonatomic, assign) double  latitude;
+@property (nonatomic, assign) int     postID;
+@property (nonatomic, assign) int     userID;
+@property (nonatomic, assign) int     landmarkID;
 
 @property (nonatomic,retain) NSString *authorName;
 @property (nonatomic,retain) NSString *authorEmail;

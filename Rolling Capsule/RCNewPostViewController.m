@@ -164,14 +164,13 @@ RCConnectionManager *_connectionManager;
         CLLocationDegrees longitude = appDelegate.currentLocation.coordinate.longitude;
         NSString* latSt = [[NSString alloc] initWithFormat:@"%f",latitude];
         NSString* longSt = [[NSString alloc] initWithFormat:@"%f",longitude];
-        NSMutableString *dataSt = initQueryString(@"post[user_id]", [[NSString alloc] initWithFormat:@"%d",_user.userID]);
-        addArgumentToQueryString(dataSt, @"post[content]", _postContent);
+        NSMutableString *dataSt = initQueryString(@"post[content]", _postContent);
         addArgumentToQueryString(dataSt, @"post[rating]", @"5");
         addArgumentToQueryString(dataSt, @"post[latitude]", latSt);
         addArgumentToQueryString(dataSt, @"post[longitude]", longSt);
         addArgumentToQueryString(dataSt, @"post[file_url]", _imageFileName);
         if (_currentLandmark != nil) {
-            addArgumentToQueryString(dataSt, @"post[landmark_id]", [NSString stringWithFormat:@"%d",_currentLandmark.landmarkID]);
+            addArgumentToQueryString(dataSt, @"landmark_id", [NSString stringWithFormat:@"%d",_currentLandmark.landmarkID]);
         }
         NSData *postData = [dataSt dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
         

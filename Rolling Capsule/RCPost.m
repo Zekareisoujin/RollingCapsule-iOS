@@ -23,7 +23,7 @@
 @synthesize userID = _userID;
 @synthesize authorName = _authorName;
 @synthesize authorEmail = _authorEmail;
-
+@synthesize landmarkID = _landmarkID;
 
 
 - (id) initWithNSDictionary:(NSDictionary *)postData {
@@ -40,6 +40,11 @@
         _latitude = [[postData objectForKey:@"latitude"] doubleValue];
         _postID = [[postData objectForKey:@"id"] intValue];
         _userID = [[postData objectForKey:@"user_id"] intValue];
+        id landmarkObj = [postData objectForKey:@"landmark_id"];
+        if ([landmarkObj isKindOfClass:[NSNumber class]]) {
+            _landmarkID = [[postData objectForKey:@"landmark_id"] intValue];
+        } else
+            _landmarkID = -1;
         _authorName = [postData objectForKey:@"author_name"];
         _authorEmail = [postData objectForKey:@"author_email"];
     }
