@@ -186,7 +186,6 @@ BOOL        _firstRefresh;
                 for (NSDictionary *postData in postList) {
                     RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
                     [_items addObject:post];
-                    [_mapView addAnnotation:post];
                     NSLog(@"%@ post coordinates %f %f",[RCMainFeedViewController debugTag], post.coordinate.latitude, post.coordinate.longitude);
                 }
                 for (NSDictionary *landmarkData in landmarkList) {
@@ -233,10 +232,12 @@ BOOL        _firstRefresh;
     RCMainFeedCell *cell = [cv dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
     RCPost *post = [_items objectAtIndex:indexPath.row];
     [_connectionManager startConnection];
+    //UIImageView *imageView = cell.imageView;
+    //cell.imageView.frame = imageView.frame = CGRectMake(imageView.frame.origin.x, imageView.frame.origin.y,70, 70);
     [cell getPostContentImageFromInternet:_user withPostContent:post usingCollection:nil completion:^{
         [_connectionManager endConnection];
     }];
-    cell.backgroundColor = [UIColor whiteColor];
+    cell.backgroundColor = [UIColor blackColor];
     return cell;
 }
 // 4
@@ -262,15 +263,16 @@ BOOL        _firstRefresh;
     //NSString *searchTerm = self.searches[indexPath.section]; FlickrPhoto *photo =
     //self.searchResults[searchTerm][indexPath.row];
     // 2
-    CGSize retval = CGSizeMake(100, 100);
-    retval.height += 35; retval.width += 35;
+    //RCMainFeedCell *cell = (RCMainFeedCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    CGSize retval = CGSizeMake(126,126);//RCUploadImageSizeWidth, RCUploadImageSizeWidth);
+    //retval.height += 35; retval.width += 35;
     return retval;
 }
 
 // 3
 - (UIEdgeInsets)collectionView:
 (UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    return UIEdgeInsetsMake(50, 20, 50, 20);
+    return UIEdgeInsetsMake(10, 20, 10, 20);
 }
 
 @end

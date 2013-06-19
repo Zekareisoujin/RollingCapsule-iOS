@@ -100,9 +100,9 @@
 		6407BBE01754D81C000F29C5 /* RCUserTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCUserTableCell.m; sourceTree = "<group>"; };
 		64176AFD175A260900443B59 /* AWSRuntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSRuntime.framework; path = "../../Downloads/aws-ios-sdk-1.6.0/AWSRuntime.framework"; sourceTree = "<group>"; };
 		64176AFE175A260900443B59 /* AWSS3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSS3.framework; path = "../../Downloads/aws-ios-sdk-1.6.0/AWSS3.framework"; sourceTree = "<group>"; };
-		64194AD41770AAF100822F9B /* RCMainFeedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMainFeedCell.h; sourceTree = "<group>"; };
-		64194AD51770AAF100822F9B /* RCMainFeedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMainFeedCell.m; sourceTree = "<group>"; };
-		64194AD91770B44F00822F9B /* RCMainFeedCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCMainFeedCell.xib; sourceTree = "<group>"; };
+		64194AD41770AAF100822F9B /* RCMainFeedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCMainFeedCell.h; path = ../RCMainFeedCell.h; sourceTree = "<group>"; };
+		64194AD51770AAF100822F9B /* RCMainFeedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCMainFeedCell.m; path = ../RCMainFeedCell.m; sourceTree = "<group>"; };
+		64194AD91770B44F00822F9B /* RCMainFeedCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RCMainFeedCell.xib; path = ../RCMainFeedCell.xib; sourceTree = "<group>"; };
 		642E71FC17639D9400B3464E /* RCConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCConnectionManager.h; sourceTree = "<group>"; };
 		642E71FD17639D9400B3464E /* RCConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCConnectionManager.m; sourceTree = "<group>"; };
 		642E71FF1763A7F500B3464E /* RCKeyboardPushUpHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCKeyboardPushUpHandler.h; sourceTree = "<group>"; };
@@ -255,9 +255,6 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
-				64194AD91770B44F00822F9B /* RCMainFeedCell.xib */,
-				64194AD41770AAF100822F9B /* RCMainFeedCell.h */,
-				64194AD51770AAF100822F9B /* RCMainFeedCell.m */,
 				BFCA7821174DFD3F00666CBA /* Rolling Capsule */,
 				BFCA7845174DFD3F00666CBA /* Rolling CapsuleTests */,
 				BFCA781A174DFD3F00666CBA /* Frameworks */,
@@ -311,6 +308,9 @@
 				BF2CD6231754E12D00EF2E85 /* RCFeedPostPreview.xib */,
 				BF2CD6251754E60C00EF2E85 /* RCFeedPostPreview.h */,
 				BF2CD6261754E60C00EF2E85 /* RCFeedPostPreview.m */,
+				64194AD91770B44F00822F9B /* RCMainFeedCell.xib */,
+				64194AD41770AAF100822F9B /* RCMainFeedCell.h */,
+				64194AD51770AAF100822F9B /* RCMainFeedCell.m */,
 				BF68E7021756090200E5C1F4 /* RCMainFeedViewController.xib */,
 				BF68E7001756090200E5C1F4 /* RCMainFeedViewController.h */,
 				BF68E7011756090200E5C1F4 /* RCMainFeedViewController.m */,

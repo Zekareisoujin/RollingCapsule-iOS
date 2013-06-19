@@ -108,7 +108,7 @@ RCConnectionManager *_connectionManager;
     }
     [_connectionManager startConnection];
     self.navigationItem.rightBarButtonItem.enabled = NO;
-    UIImage *rescaledImage = imageWithImage(_postImage, CGSizeMake(300,300));
+    UIImage *rescaledImage = imageWithImage(_postImage, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
     NSData *imageData = UIImageJPEGRepresentation(rescaledImage, 1.0);
     [self performSelectorInBackground:@selector(uploadImageToS3:) withObject:imageData];
 }

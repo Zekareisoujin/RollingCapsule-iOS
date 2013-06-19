@@ -58,6 +58,10 @@ static NSString* const RCErrorMessageFailedToEditFriendStatus = @"Failure editin
 //NSUserDefault key
 static NSString* const RCLogStatusDefault = @"logStatus";
 
+//integer values
+static int RCUploadImageSizeWidth = 300;
+static int RCUploadImageSizeHeight = 300;
+
 //Displayed strings
 static NSString* const RCImageSourcePhotoLibrary = @"Photo Library";
 static NSString* const RCImageSourceCamera = @"Camera";
