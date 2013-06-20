@@ -39,4 +39,11 @@
     return self;
 }
 
+- (CLLocationCoordinate2D)coordinate {
+    CLLocationCoordinate2D _theCoordinate;
+    _theCoordinate.latitude = _latitude;
+    _theCoordinate.longitude = _longitude;
+    return _theCoordinate;
+}
+
 @end

@@ -7,8 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <MapKit/MapKit.h>
 
-@interface RCLandmark : NSObject
+@interface RCLandmark : NSObject <MKAnnotation>
 
 @property (nonatomic,retain) NSString *description;
 @property (nonatomic,retain) NSString *createdTime;

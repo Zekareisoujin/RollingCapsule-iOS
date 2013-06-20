@@ -207,11 +207,9 @@ BOOL        _firstRefresh;
                     NSLog(@"%@ post coordinates %f %f",[RCMainFeedViewController debugTag], post.coordinate.latitude, post.coordinate.longitude);
                 }
                 for (NSDictionary *landmarkData in landmarkList) {
-                    RCPost *post = [[RCPost alloc] init];
-                    post.latitude = [[landmarkData objectForKey:@"latitude"] doubleValue];
-                    post.longitude = [[landmarkData objectForKey:@"longitude"] doubleValue];
-                    [_mapView addAnnotation:post];
-                    NSLog(@"%@: landmark coordinates %f %f",[RCMainFeedViewController debugTag], post.coordinate.latitude, post.coordinate.longitude);
+                    RCLandmark *landmark = [[RCLandmark alloc] initWithNSDictionary:landmarkData];
+                    [_mapView addAnnotation:landmark];
+                    NSLog(@"%@: landmark coordinates %f %f",[RCMainFeedViewController debugTag], landmark.coordinate.latitude, landmark.coordinate.longitude);
                 }
                 [_tblFeedList reloadData];
                 [_collectionView reloadData];
@@ -267,10 +265,14 @@ BOOL        _firstRefresh;
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    // TODO: Select Item
-}
-- (void)collectionView:(UICollectionView *)collectionView didDeselectItemAtIndexPath:(NSIndexPath *)indexPath {
-    // TODO: Deselect item
+    int idx = [indexPath row];
+    NSArray* items = (NSArray*)[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInt:_currentLandmarkID]];
+    RCPost *post = [items objectAtIndex:idx];
+    RCUser *owner = [[RCUser alloc] init];
+    owner.userID = post.userID;
+    //owner.name = self.
+    RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user];
+    [self.navigationController pushViewController:postDetailsViewController animated:YES];
 }
 
 #pragma mark – UICollectionViewDelegateFlowLayout
@@ -285,6 +287,18 @@ BOOL        _firstRefresh;
 - (UIEdgeInsets)collectionView:
 (UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
     return UIEdgeInsetsMake(10, 20, 10, 20);
+}
+
+#pragma mark - MKMapViewDelegate
+- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
+    RCLandmark *landmark = (RCLandmark *)view.annotation;
+    _currentLandmarkID = landmark.landmarkID;
+    [_collectionView reloadData];
+}
+
+- (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
+    _currentLandmarkID = -1;
+    [_collectionView reloadData];
 }
 
 @end
