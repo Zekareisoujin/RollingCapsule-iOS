@@ -184,8 +184,9 @@ BOOL        _firstRefresh;
             
             if (jsonData != NULL) {
                 [_items removeAllObjects];
+                [_postsByLandmark removeAllObjects];
                 NSLog(@"current annotations:%@",_mapView.annotations);
-                [_mapView removeAnnotations:_mapView.annotations];
+                
                 NSArray *postList = (NSArray *) [jsonData objectForKey:@"post_list"];
                 NSArray *landmarkList = (NSArray*) [jsonData objectForKey:@"landmark_list"];
                 NSDictionary *userDictionary = (NSDictionary *) [jsonData objectForKey:@"user"];
@@ -206,6 +207,8 @@ BOOL        _firstRefresh;
                     }
                     NSLog(@"%@ post coordinates %f %f",[RCMainFeedViewController debugTag], post.coordinate.latitude, post.coordinate.longitude);
                 }
+                
+                [_mapView removeAnnotations:_mapView.annotations];
                 for (NSDictionary *landmarkData in landmarkList) {
                     RCLandmark *landmark = [[RCLandmark alloc] initWithNSDictionary:landmarkData];
                     [_mapView addAnnotation:landmark];
