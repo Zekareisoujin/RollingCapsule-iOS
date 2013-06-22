@@ -20,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnFriendViewNav;
 @property (weak, nonatomic) IBOutlet UIButton *btnLogOut;
 
+- (IBAction)openFriendRequestsView:(id)sender;
 
 - (id)initWithContentView:(UINavigationController *) mainNavigationController;
 

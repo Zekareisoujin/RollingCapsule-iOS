@@ -190,8 +190,6 @@ BOOL        _firstRefresh;
                 
                 NSArray *postList = (NSArray *) [jsonData objectForKey:@"post_list"];
                 NSArray *landmarkList = (NSArray*) [jsonData objectForKey:@"landmark_list"];
-                NSArray *notificationList = (NSArray*) [jsonData objectForKey:@"notifications"]
-                ;
                 NSDictionary *userDictionary = (NSDictionary *) [jsonData objectForKey:@"user"];
                 _user = [[RCUser alloc] initWithNSDictionary:userDictionary];
                 AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -218,13 +216,17 @@ BOOL        _firstRefresh;
                     [_mapView addAnnotation:landmark];
                     NSLog(@"%@: landmark coordinates %f %f",[RCMainFeedViewController debugTag], landmark.coordinate.latitude, landmark.coordinate.longitude);
                 }
-                NSMutableArray* notifications = [[NSMutableArray alloc] init];
-                for (NSDictionary *notificationData in notificationList) {
-                    RCNotification *notification = [[RCNotification alloc] initWithNSDictionary:notificationData];
-                    [notifications addObject:notification];
+                NSArray *notificationList = (NSArray*) [jsonData objectForKey:@"notifications"]
+                ;
+                if (notificationList != nil) {
+                    NSMutableArray* notifications = [[NSMutableArray alloc] init];
+                    for (NSDictionary *notificationData in notificationList) {
+                        RCNotification *notification = [[RCNotification alloc] initWithNSDictionary:notificationData];
+                        [notifications addObject:notification];
+                    }
+                    
+                    [appDelegate setNotificationList:notifications];
                 }
-                
-                [appDelegate setNotificationList:notifications];
                 [_tblFeedList reloadData];
                 [_collectionView reloadData];
                 if (_firstRefresh){

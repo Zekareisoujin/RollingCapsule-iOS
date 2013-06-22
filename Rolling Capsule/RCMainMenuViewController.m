@@ -32,6 +32,9 @@
     return self;
 }
 
+- (IBAction)openFriendRequestsView:(id)sender {
+}
+
 - (id)initWithContentView:(UINavigationController *) mainNavigationController
 {
     _navigationController = mainNavigationController;
