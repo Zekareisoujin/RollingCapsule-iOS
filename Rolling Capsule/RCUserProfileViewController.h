@@ -16,6 +16,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
 @property (weak, nonatomic) IBOutlet UILabel *lblEmail;
 @property (weak, nonatomic) IBOutlet UIButton *btnFriendAction;
+@property (strong, nonatomic) UIButton *btnDeclineRequest;
 
 @property (nonatomic, strong) RCUser *profileUser;
 @property (nonatomic, strong) RCUser *viewingUser;

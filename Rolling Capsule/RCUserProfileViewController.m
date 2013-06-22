@@ -19,6 +19,7 @@
 
 @implementation RCUserProfileViewController
 
+@synthesize btnDeclineRequest = _btnDeclineRequest;
 @synthesize profileUser = _profileUser;
 @synthesize viewingUser = _viewingUser;
 @synthesize viewingUserID = _viewingUserID;
@@ -50,7 +51,7 @@ int       _friendshipID;
     _lblName.text = _profileUser.name;
     _btnFriendAction.enabled = NO;
     _btnAvatarImg.enabled = NO;
-    [_btnFriendAction setTitle:@"Loading relation" forState:UIControlStateNormal];
+    [_btnFriendAction setTitle:RCLoadingRelation forState:UIControlStateNormal];
     [self getAvatarImageFromInternet];
     if (_profileUser.userID != _viewingUser.userID)
         [self asynchGetUserRelationRequest];
@@ -157,18 +158,32 @@ int       _friendshipID;
             _friendStatus = RCFriendStatusNull;
             [_btnFriendAction setTitle:RCFriendStatusActionRequestFriend forState:UIControlStateNormal];
             _btnFriendAction.enabled = YES;
+            if (_btnDeclineRequest != nil)
+                [_btnDeclineRequest removeFromSuperview];
         } else {
             NSNumber *num = [friendshipJson objectForKey:@"id"];
             _friendshipID = [num intValue];
             if ([_friendStatus isEqualToString:RCFriendStatusAccepted]) {
                 [_btnFriendAction setTitle:RCFriendStatusActionUnfriend forState:UIControlStateNormal];
                 _btnFriendAction.enabled = YES;
+                if (_btnDeclineRequest != nil)
+                    [_btnDeclineRequest removeFromSuperview];
             } else if ([_friendStatus isEqualToString:RCFriendStatusPending]) {
                 [_btnFriendAction setTitle:RCFriendStatusActionRequestSent forState:UIControlStateNormal];
                 _btnFriendAction.enabled = NO;
+                if (_btnDeclineRequest != nil)
+                    [_btnDeclineRequest removeFromSuperview];
             } else if ([_friendStatus isEqualToString:RCFriendStatusRequested]) {
                 [_btnFriendAction setTitle:RCFriendStatusActionRequestAccept forState:UIControlStateNormal];
+                CGRect baseFrame = _btnFriendAction.frame;
+                if (_btnDeclineRequest != nil)
+                    _btnDeclineRequest = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+                _btnDeclineRequest.frame = CGRectMake(baseFrame.origin.x, baseFrame.origin.y + baseFrame.size.height + 10, baseFrame.size.width, baseFrame.size.height);
+                [_btnDeclineRequest setTitle:RCDeclineRequest forState:UIControlStateNormal];
+                [_btnDeclineRequest addTarget:self action:@selector(asynchDeleteFriendshipRequest) forControlEvents:UIControlEventTouchUpInside];
+                [self.view addSubview:_btnDeclineRequest];
                 _btnFriendAction.enabled = YES;
+                
             }
         }
             
