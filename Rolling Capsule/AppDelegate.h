@@ -25,7 +25,10 @@
 @property (strong, nonatomic) RCSlideoutViewController *mainViewController;
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) CLLocation        *currentLocation;
+@property (strong, nonatomic) NSArray           *userNotifications;
+
 -(void)showSideMenu;
 -(void)hideSideMenu;
 -(void)setCurrentUser:(RCUser*)user;
+- (void) setNotificationList:(NSArray*)notifications;
 @end

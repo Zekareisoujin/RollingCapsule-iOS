@@ -26,6 +26,7 @@
 @synthesize menuViewController = _menuViewController;
 @synthesize locationManager = _locationManager;
 @synthesize currentLocation = _currentLocation;
+@synthesize userNotifications = _userNotifications;
 
 + (NSString*) debugTag {
     return @"AppDelegate";
@@ -128,9 +129,13 @@
     //NSLog(@"update current location %f,%f", _currentLocation.coordinate.latitude, _currentLocation.coordinate.longitude);
 }
 #pragma mark - global data flow
--(void)setCurrentUser:(RCUser *)user {
+- (void) setCurrentUser:(RCUser *)user {
     _menuViewController.user = user;
     [_menuViewController.view setUserInteractionEnabled:YES];
     NSLog(@"%@ set current user %d:@",[AppDelegate debugTag], user.userID,user.email);
+}
+
+- (void) setNotificationList:(NSArray*)notifications {
+    _userNotifications = notifications;
 }
 @end

@@ -11,7 +11,7 @@
 
 @interface RCFriendListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
-- (id)initWithUser:(RCUser *) user;
+- (id)initWithUser:(RCUser *)user;
 
 @property (weak, nonatomic) IBOutlet UITableView *tblViewFriendList;
 @property (nonatomic, strong) NSMutableArray *items;

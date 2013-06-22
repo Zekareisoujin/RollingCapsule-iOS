@@ -18,6 +18,7 @@
 #import "RCAmazonS3Helper.h"
 #import "RCMainFeedCell.h"
 #import "RCConnectionManager.h"
+#import "RCNotification.h"
 
 @interface RCMainFeedViewController ()
 
@@ -74,7 +75,7 @@ BOOL        _firstRefresh;
     _postCache = [[NSMutableDictionary alloc] init];
     
     // Do any additional setup after loading the view from its nib.
-    _items = [[NSMutableArray alloc] init];
+    //_items = [[NSMutableArray alloc] init];
     _tblFeedList.tableFooterView = [[UIView alloc] init];
     self.navigationItem.title = @"News Feed";
 
@@ -114,10 +115,10 @@ BOOL        _firstRefresh;
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+/*
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [_items count];
+    return 0;//[_items count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -132,7 +133,7 @@ BOOL        _firstRefresh;
         //cell = [[RCFeedPostPreview alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
     }
     
-    RCPost *post = [_items objectAtIndex:indexPath.row];
+    RCPost *post = nil;//[_items objectAtIndex:indexPath.row];
     cell.lblUserProfileName.text = post.authorName;
     cell.lblPostContent.text = post.content;
     
@@ -150,13 +151,13 @@ BOOL        _firstRefresh;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     int idx = [indexPath row];
-    RCPost *post = [_items objectAtIndex:idx];
+    RCPost *post = nil;//[_items objectAtIndex:idx];
     RCUser *owner = [[RCUser alloc] init];
     owner.userID = post.userID;
     //owner.name = self.
     RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user];
     [self.navigationController pushViewController:postDetailsViewController animated:YES];
-}
+}*/
 
 - (void) asynchFetchFeeds {
     //Asynchronous Request
@@ -183,19 +184,22 @@ BOOL        _firstRefresh;
             NSLog(@"%@%@",[RCMainFeedViewController debugTag], jsonData);
             
             if (jsonData != NULL) {
-                [_items removeAllObjects];
+                //[_items removeAllObjects];
                 [_postsByLandmark removeAllObjects];
                 NSLog(@"current annotations:%@",_mapView.annotations);
                 
                 NSArray *postList = (NSArray *) [jsonData objectForKey:@"post_list"];
                 NSArray *landmarkList = (NSArray*) [jsonData objectForKey:@"landmark_list"];
+                NSArray *notificationList = (NSArray*) [jsonData objectForKey:@"notifications"]
+                ;
                 NSDictionary *userDictionary = (NSDictionary *) [jsonData objectForKey:@"user"];
                 _user = [[RCUser alloc] initWithNSDictionary:userDictionary];
                 AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                 [appDelegate setCurrentUser:_user];
+                
                 for (NSDictionary *postData in postList) {
                     RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
-                    [_items addObject:post];
+                    //[_items addObject:post];
                     id key = [[NSNumber alloc] initWithInteger:post.landmarkID];
                     NSMutableArray *postList = (NSMutableArray *)[_postsByLandmark objectForKey:key];
                     if (postList != nil) {
@@ -214,6 +218,13 @@ BOOL        _firstRefresh;
                     [_mapView addAnnotation:landmark];
                     NSLog(@"%@: landmark coordinates %f %f",[RCMainFeedViewController debugTag], landmark.coordinate.latitude, landmark.coordinate.longitude);
                 }
+                NSMutableArray* notifications = [[NSMutableArray alloc] init];
+                for (NSDictionary *notificationData in notificationList) {
+                    RCNotification *notification = [[RCNotification alloc] initWithNSDictionary:notificationData];
+                    [notifications addObject:notification];
+                }
+                
+                [appDelegate setNotificationList:notifications];
                 [_tblFeedList reloadData];
                 [_collectionView reloadData];
                 if (_firstRefresh){

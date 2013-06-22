@@ -13,7 +13,7 @@
 @interface RCMainFeedViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDataSource, MKMapViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tblFeedList;
-@property (nonatomic, strong) NSMutableArray *items;
+//@property (nonatomic, strong) NSMutableArray *items;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) RCUser *user;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
