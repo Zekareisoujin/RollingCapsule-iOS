@@ -72,5 +72,6 @@ static NSString* const RCFriendStatusActionRequestAccept = @"Accept request";
 static NSString* const RCFriendStatusActionRequestSent = @"Request sent";
 static NSString* const RCLoadingRelation = @"Loading relation";
 static NSString* const RCDeclineRequest = @"Decline Request";
+static NSString* const RCUploadError = @"UploadError";
 #endif
 

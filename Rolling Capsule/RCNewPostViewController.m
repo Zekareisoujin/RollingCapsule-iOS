@@ -128,16 +128,24 @@ RCConnectionManager *_connectionManager;
     por.contentType = @"image/jpeg";
     por.data = imageData;
     
-    S3PutObjectResponse *putObjectResponse = [s3 putObject:por];
-    if (putObjectResponse.error == nil)
-    {
-        [self performSelectorOnMainThread:@selector(asynchPostNewResuest) withObject:nil waitUntilDone:YES];
-    } else {
-        NSLog(@"Error: %@", putObjectResponse.error);
+    @try {        
+        S3PutObjectResponse *putObjectResponse = [s3 putObject:por];
+        if (putObjectResponse.error == nil)
+        {
+            [self performSelectorOnMainThread:@selector(asynchPostNewResuest) withObject:nil waitUntilDone:YES];
+        } else {
+            NSLog(@"Error: %@", putObjectResponse.error);
+            [_connectionManager endConnection];
+            self.navigationItem.rightBarButtonItem.enabled = YES;
+            [self showAlertMessage:putObjectResponse.error.description withTitle:@"Upload Error"];
+            
+        }
+    }@catch (AmazonClientException *exception) {
+        NSLog(@"New-Post: Error: %@", exception);
+        NSLog(@"New-Post: Debug Description: %@",exception.debugDescription);
         [_connectionManager endConnection];
         self.navigationItem.rightBarButtonItem.enabled = YES;
-        [self showAlertMessage:putObjectResponse.error.description withTitle:@"Upload Error"];
-        
+        [self showAlertMessage:exception.description withTitle:RCUploadError];
     }
 }
 
