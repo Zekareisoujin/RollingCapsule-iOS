@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		64011D2D17775D6E00816D93 /* text_field.png in Resources */ = {isa = PBXBuildFile; fileRef = 64011D2C17775D6E00816D93 /* text_field.png */; };
+		64011D3017781DA400816D93 /* RCTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 64011D2F17781DA400816D93 /* RCTextField.m */; };
 		6407BBD61753B719000F29C5 /* RCFriendListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6407BBD51753B719000F29C5 /* RCFriendListViewController.xib */; };
 		6407BBD917545579000F29C5 /* RCUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 6407BBD817545579000F29C5 /* RCUser.m */; };
 		6407BBDC17545A87000F29C5 /* RCFriendListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6407BBDB17545A87000F29C5 /* RCFriendListViewController.m */; };
@@ -93,6 +95,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		64011D2C17775D6E00816D93 /* text_field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = text_field.png; path = ../../Desktop/text_field.png; sourceTree = "<group>"; };
+		64011D2E17781DA400816D93 /* RCTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTextField.h; sourceTree = "<group>"; };
+		64011D2F17781DA400816D93 /* RCTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTextField.m; sourceTree = "<group>"; };
 		6407BBD51753B719000F29C5 /* RCFriendListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RCFriendListViewController.xib; path = ../RCFriendListViewController.xib; sourceTree = "<group>"; };
 		6407BBD717545579000F29C5 /* RCUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCUser.h; sourceTree = "<group>"; };
 		6407BBD817545579000F29C5 /* RCUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCUser.m; sourceTree = "<group>"; };
@@ -263,6 +268,9 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
+				64011D2E17781DA400816D93 /* RCTextField.h */,
+				64011D2F17781DA400816D93 /* RCTextField.m */,
+				64011D2C17775D6E00816D93 /* text_field.png */,
 				6459A0F21775AFCB003DC896 /* RCFriendRequestsViewController.h */,
 				6459A0F31775AFCB003DC896 /* RCFriendRequestsViewController.m */,
 				6459A0F41775AFCB003DC896 /* RCFriendRequestsViewController.xib */,
@@ -528,6 +536,7 @@
 				BF8925EE1767698600F1978F /* icon57.png in Resources */,
 				64194ADA1770B44F00822F9B /* RCMainFeedCell.xib in Resources */,
 				6459A0F61775AFCB003DC896 /* RCFriendRequestsViewController.xib in Resources */,
+				64011D2D17775D6E00816D93 /* text_field.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -598,6 +607,7 @@
 				64194AD61770AAF200822F9B /* RCMainFeedCell.m in Sources */,
 				6459A0F117759F72003DC896 /* RCNotification.m in Sources */,
 				6459A0F51775AFCB003DC896 /* RCFriendRequestsViewController.m in Sources */,
+				64011D3017781DA400816D93 /* RCTextField.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

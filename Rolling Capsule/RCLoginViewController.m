@@ -14,6 +14,7 @@
 #import "RCMainFeedViewController.h"
 #import "RCUser.h"
 #import "RCUtilities.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface RCLoginViewController ()
 
@@ -25,6 +26,15 @@
 
 - (void)viewDidLoad
 {
+    _txtFieldUsername.borderStyle = UITextBorderStyleNone;
+    //_txtFieldUsername.background = nil;
+    _txtFieldUsername.layer.shadowColor = [UIColor whiteColor].CGColor;
+    _txtFieldUsername.layer.shadowOffset = CGSizeMake(0.0, 0.0);
+    _txtFieldUsername.layer.shadowRadius = 10.0;
+    _txtFieldUsername.layer.shadowOpacity = 0.9;
+    _txtFieldUsername.layer.masksToBounds = NO;
+    _txtFieldUsername.textAlignment = UITextAlignmentCenter;
+
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
 }
