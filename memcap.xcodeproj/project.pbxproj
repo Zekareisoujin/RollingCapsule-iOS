@@ -45,6 +45,8 @@
 		BF1AF31B1766231B000824CC /* RCResourceCache.m in Sources */ = {isa = PBXBuildFile; fileRef = BF1AF31A1766231B000824CC /* RCResourceCache.m */; };
 		BF2CD6241754E12D00EF2E85 /* RCFeedPostPreview.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF2CD6231754E12D00EF2E85 /* RCFeedPostPreview.xib */; };
 		BF2CD6271754E60C00EF2E85 /* RCFeedPostPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = BF2CD6261754E60C00EF2E85 /* RCFeedPostPreview.m */; };
+		BF46ECB61778476C00F26A05 /* btnStandard-depressed.png in Resources */ = {isa = PBXBuildFile; fileRef = BF46ECB41778476C00F26A05 /* btnStandard-depressed.png */; };
+		BF46ECB71778476C00F26A05 /* btnStandard-normal.png in Resources */ = {isa = PBXBuildFile; fileRef = BF46ECB51778476C00F26A05 /* btnStandard-normal.png */; };
 		BF4DCC46175C82280081B5AC /* AWSRuntime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF4DCC44175C82280081B5AC /* AWSRuntime.framework */; };
 		BF4DCC47175C82280081B5AC /* AWSS3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF4DCC45175C82280081B5AC /* AWSS3.framework */; };
 		BF68E7031756090200E5C1F4 /* RCMainFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BF68E7011756090200E5C1F4 /* RCMainFeedViewController.m */; };
@@ -153,6 +155,8 @@
 		BF2CD6251754E60C00EF2E85 /* RCFeedPostPreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCFeedPostPreview.h; sourceTree = "<group>"; };
 		BF2CD6261754E60C00EF2E85 /* RCFeedPostPreview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCFeedPostPreview.m; sourceTree = "<group>"; };
 		BF3AFF971750763400D46558 /* RCConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCConstants.h; sourceTree = "<group>"; };
+		BF46ECB41778476C00F26A05 /* btnStandard-depressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btnStandard-depressed.png"; sourceTree = "<group>"; };
+		BF46ECB51778476C00F26A05 /* btnStandard-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btnStandard-normal.png"; sourceTree = "<group>"; };
 		BF4DCC44175C82280081B5AC /* AWSRuntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSRuntime.framework; path = "Rolling Capsule/AWSRuntime.framework"; sourceTree = "<group>"; };
 		BF4DCC45175C82280081B5AC /* AWSS3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSS3.framework; path = "Rolling Capsule/AWSS3.framework"; sourceTree = "<group>"; };
 		BF68E7001756090200E5C1F4 /* RCMainFeedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCMainFeedViewController.h; path = ../RCMainFeedViewController.h; sourceTree = "<group>"; };
@@ -249,6 +253,8 @@
 		643EACE9175BBE0D002761D9 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				BF46ECB41778476C00F26A05 /* btnStandard-depressed.png */,
+				BF46ECB51778476C00F26A05 /* btnStandard-normal.png */,
 				BF8925ED1767698600F1978F /* icon57.png */,
 				BF8925EB1767697000F1978F /* icon114.png */,
 				BF728EEE1767680F0050699C /* Default.png */,
@@ -528,6 +534,8 @@
 				BF8925EE1767698600F1978F /* icon57.png in Resources */,
 				64194ADA1770B44F00822F9B /* RCMainFeedCell.xib in Resources */,
 				6459A0F61775AFCB003DC896 /* RCFriendRequestsViewController.xib in Resources */,
+				BF46ECB61778476C00F26A05 /* btnStandard-depressed.png in Resources */,
+				BF46ECB71778476C00F26A05 /* btnStandard-normal.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

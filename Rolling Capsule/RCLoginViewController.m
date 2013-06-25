@@ -27,6 +27,21 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    
+    UIFont *btnFont =[UIFont fontWithName:@"Copperplate" size:18.0];
+    [_btnLogIn.titleLabel setFont:btnFont];
+    [_btnRegister.titleLabel setFont:btnFont];
+    
+    UIImage *btnBackgroundImageActive = [UIImage imageNamed:@"btnStandard-normal.png"];
+    UIImage *btnStretchedImageActive = [btnBackgroundImageActive stretchableImageWithLeftCapWidth:30 topCapHeight:0];
+    UIImage *btnBackgroundImageDepressed = [UIImage imageNamed:@"btnStandard-depressed.png"];
+    UIImage *btnStretchedImageDepressed = [btnBackgroundImageDepressed stretchableImageWithLeftCapWidth:30 topCapHeight:0];
+    
+    [_btnLogIn setBackgroundImage:btnStretchedImageActive forState:UIControlStateNormal];
+    [_btnRegister setBackgroundImage:btnStretchedImageActive forState:UIControlStateNormal];
+    [_btnLogIn setBackgroundImage:btnStretchedImageDepressed forState:UIControlStateHighlighted];
+    [_btnRegister setBackgroundImage:btnStretchedImageDepressed forState:UIControlStateHighlighted];
+    
 }
 
 - (void)didReceiveMemoryWarning
