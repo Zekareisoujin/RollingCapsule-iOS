@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		64011D2D17775D6E00816D93 /* text_field.png in Resources */ = {isa = PBXBuildFile; fileRef = 64011D2C17775D6E00816D93 /* text_field.png */; };
 		64011D3017781DA400816D93 /* RCTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 64011D2F17781DA400816D93 /* RCTextField.m */; };
+		640149121778E1D9009B69DF /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 640149111778E1D9009B69DF /* background.png */; };
+		64014916177966F5009B69DF /* RCMainFeedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64014915177966F5009B69DF /* RCMainFeedCell.xib */; };
 		6407BBD61753B719000F29C5 /* RCFriendListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6407BBD51753B719000F29C5 /* RCFriendListViewController.xib */; };
 		6407BBD917545579000F29C5 /* RCUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 6407BBD817545579000F29C5 /* RCUser.m */; };
 		6407BBDC17545A87000F29C5 /* RCFriendListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6407BBDB17545A87000F29C5 /* RCFriendListViewController.m */; };
@@ -17,7 +19,6 @@
 		64176AFF175A260900443B59 /* AWSRuntime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64176AFD175A260900443B59 /* AWSRuntime.framework */; };
 		64176B00175A260900443B59 /* AWSS3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64176AFE175A260900443B59 /* AWSS3.framework */; };
 		64194AD61770AAF200822F9B /* RCMainFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 64194AD51770AAF100822F9B /* RCMainFeedCell.m */; };
-		64194ADA1770B44F00822F9B /* RCMainFeedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64194AD91770B44F00822F9B /* RCMainFeedCell.xib */; };
 		642E71FE17639D9400B3464E /* RCConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 642E71FD17639D9400B3464E /* RCConnectionManager.m */; };
 		642E72011763A7F600B3464E /* RCKeyboardPushUpHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 642E72001763A7F500B3464E /* RCKeyboardPushUpHandler.m */; };
 		643EACE6175BA0B6002761D9 /* default_avatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 643EACE5175BA0B6002761D9 /* default_avatar.jpg */; };
@@ -95,9 +96,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		64011D2C17775D6E00816D93 /* text_field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = text_field.png; path = ../../Desktop/text_field.png; sourceTree = "<group>"; };
+		64011D2C17775D6E00816D93 /* text_field.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = text_field.png; path = ../../../Desktop/text_field.png; sourceTree = "<group>"; };
 		64011D2E17781DA400816D93 /* RCTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTextField.h; sourceTree = "<group>"; };
 		64011D2F17781DA400816D93 /* RCTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTextField.m; sourceTree = "<group>"; };
+		640149111778E1D9009B69DF /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = background.png; path = ../../../Desktop/background.png; sourceTree = "<group>"; };
+		64014915177966F5009B69DF /* RCMainFeedCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RCMainFeedCell.xib; path = ../RCMainFeedCell.xib; sourceTree = "<group>"; };
 		6407BBD51753B719000F29C5 /* RCFriendListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RCFriendListViewController.xib; path = ../RCFriendListViewController.xib; sourceTree = "<group>"; };
 		6407BBD717545579000F29C5 /* RCUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCUser.h; sourceTree = "<group>"; };
 		6407BBD817545579000F29C5 /* RCUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCUser.m; sourceTree = "<group>"; };
@@ -110,7 +113,6 @@
 		64176AFE175A260900443B59 /* AWSS3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSS3.framework; path = "../../Downloads/aws-ios-sdk-1.6.0/AWSS3.framework"; sourceTree = "<group>"; };
 		64194AD41770AAF100822F9B /* RCMainFeedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCMainFeedCell.h; path = ../RCMainFeedCell.h; sourceTree = "<group>"; };
 		64194AD51770AAF100822F9B /* RCMainFeedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCMainFeedCell.m; path = ../RCMainFeedCell.m; sourceTree = "<group>"; };
-		64194AD91770B44F00822F9B /* RCMainFeedCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RCMainFeedCell.xib; path = ../RCMainFeedCell.xib; sourceTree = "<group>"; };
 		642E71FC17639D9400B3464E /* RCConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCConnectionManager.h; sourceTree = "<group>"; };
 		642E71FD17639D9400B3464E /* RCConnectionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCConnectionManager.m; sourceTree = "<group>"; };
 		642E71FF1763A7F500B3464E /* RCKeyboardPushUpHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCKeyboardPushUpHandler.h; sourceTree = "<group>"; };
@@ -254,6 +256,7 @@
 		643EACE9175BBE0D002761D9 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				64011D2C17775D6E00816D93 /* text_field.png */,
 				BF8925ED1767698600F1978F /* icon57.png */,
 				BF8925EB1767697000F1978F /* icon114.png */,
 				BF728EEE1767680F0050699C /* Default.png */,
@@ -261,6 +264,7 @@
 				BF728EEA176767CD0050699C /* Default@2x.png */,
 				643EACE7175BACC0002761D9 /* back_button.png */,
 				643EACE5175BA0B6002761D9 /* default_avatar.jpg */,
+				640149111778E1D9009B69DF /* background.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -270,7 +274,6 @@
 			children = (
 				64011D2E17781DA400816D93 /* RCTextField.h */,
 				64011D2F17781DA400816D93 /* RCTextField.m */,
-				64011D2C17775D6E00816D93 /* text_field.png */,
 				6459A0F21775AFCB003DC896 /* RCFriendRequestsViewController.h */,
 				6459A0F31775AFCB003DC896 /* RCFriendRequestsViewController.m */,
 				6459A0F41775AFCB003DC896 /* RCFriendRequestsViewController.xib */,
@@ -327,7 +330,7 @@
 				BF2CD6231754E12D00EF2E85 /* RCFeedPostPreview.xib */,
 				BF2CD6251754E60C00EF2E85 /* RCFeedPostPreview.h */,
 				BF2CD6261754E60C00EF2E85 /* RCFeedPostPreview.m */,
-				64194AD91770B44F00822F9B /* RCMainFeedCell.xib */,
+				64014915177966F5009B69DF /* RCMainFeedCell.xib */,
 				64194AD41770AAF100822F9B /* RCMainFeedCell.h */,
 				64194AD51770AAF100822F9B /* RCMainFeedCell.m */,
 				BF68E7021756090200E5C1F4 /* RCMainFeedViewController.xib */,
@@ -534,9 +537,10 @@
 				64549D89175F264600BA8164 /* RCPostDetailsViewController.xib in Resources */,
 				BF8925EC1767697000F1978F /* icon114.png in Resources */,
 				BF8925EE1767698600F1978F /* icon57.png in Resources */,
-				64194ADA1770B44F00822F9B /* RCMainFeedCell.xib in Resources */,
 				6459A0F61775AFCB003DC896 /* RCFriendRequestsViewController.xib in Resources */,
 				64011D2D17775D6E00816D93 /* text_field.png in Resources */,
+				640149121778E1D9009B69DF /* background.png in Resources */,
+				64014916177966F5009B69DF /* RCMainFeedCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

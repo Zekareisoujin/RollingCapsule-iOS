@@ -26,14 +26,8 @@
 
 - (void)viewDidLoad
 {
-    _txtFieldUsername.borderStyle = UITextBorderStyleNone;
-    //_txtFieldUsername.background = nil;
-    _txtFieldUsername.layer.shadowColor = [UIColor whiteColor].CGColor;
-    _txtFieldUsername.layer.shadowOffset = CGSizeMake(0.0, 0.0);
-    _txtFieldUsername.layer.shadowRadius = 10.0;
-    _txtFieldUsername.layer.shadowOpacity = 0.9;
-    _txtFieldUsername.layer.masksToBounds = NO;
-    _txtFieldUsername.textAlignment = UITextAlignmentCenter;
+    _txtFieldUsername.placeholder = RCEmailString;
+    _txtFieldPassword.placeholder = RCPasswordString;
 
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
@@ -100,7 +94,7 @@
 
 - (IBAction)btnBackgroundTap:(id)sender {
     [_txtFieldUsername resignFirstResponder];
-    [_txtFieldPassword resignFirstResponder];
+    [_txtFieldPassword endEditing:YES];
     
 }
 

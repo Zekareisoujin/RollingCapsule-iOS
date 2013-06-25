@@ -11,21 +11,31 @@
 
 @implementation RCTextField
 
-- (id)initWithFrame:(CGRect)frame
-{
+- (id)initWithFrame:(CGRect)frame {
     self = [super initWithFrame:frame];
     if (self) {
-        CALayer *layer = self.layer;
-        
-        //self.shadowColor = [UIColor whiteColor].CGColor;
-        layer.shadowOffset = CGSizeMake(0.0, 0.0);
-        layer.shadowRadius = 40.0;
-        layer.shadowOpacity = 0.5;
-        layer.masksToBounds = NO;
+       [self prepareTextField];
     }
     return self;
 }
+- (void) prepareTextField {
+    [self setBackground:[UIImage imageNamed:@"text_field.png"]];
+    [self setBorderStyle:UITextBorderStyleNone];
+    self.layer.shadowColor = [UIColor whiteColor].CGColor;
+    self.layer.shadowOffset = CGSizeMake(0.0, 0.0);
+    self.layer.shadowRadius = 10.0;
+    self.layer.shadowOpacity = 0.9;
+    self.layer.masksToBounds = NO;
+    self.textAlignment = NSTextAlignmentCenter;
+}
 
+- (id) initWithCoder:(NSCoder *) aDecoder {
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        [self prepareTextField];
+    }
+    return self;
+}
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
