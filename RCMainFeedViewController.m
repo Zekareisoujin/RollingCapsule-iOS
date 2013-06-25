@@ -114,49 +114,6 @@ BOOL        _firstRefresh;
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-/*
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    return 0;//[_items count];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *cellIdentifier = @"RCFeedPostPreview";
-    
-    RCFeedPostPreview *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    
-    if (cell == nil) {
-        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"RCFeedPostPreview" owner:self options:nil];
-        cell = [nib objectAtIndex:0];
-        //cell = [[RCFeedPostPreview alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellIdentifier];
-    }
-    
-    RCPost *post = nil;//[_items objectAtIndex:indexPath.row];
-    cell.lblUserProfileName.text = post.authorName;
-    cell.lblPostContent.text = post.content;
-    
-    RCUser *rowUser = [[RCUser alloc] init];
-    rowUser.userID = post.userID;
-    rowUser.email = post.authorEmail;
-    [cell getAvatarImageFromInternet:rowUser withLoggedInUserID:_user.userID usingCollection:_userCache];
-    [cell getPostContentImageFromInternet:_user withPostContent:post usingCollection:_postCache];
-    return cell;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 270;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    int idx = [indexPath row];
-    RCPost *post = nil;//[_items objectAtIndex:idx];
-    RCUser *owner = [[RCUser alloc] init];
-    owner.userID = post.userID;
-    //owner.name = self.
-    RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user];
-    [self.navigationController pushViewController:postDetailsViewController animated:YES];
-}*/
 
 - (void) asynchFetchFeeds {
     //Asynchronous Request
@@ -183,7 +140,6 @@ BOOL        _firstRefresh;
             NSLog(@"%@%@",[RCMainFeedViewController debugTag], jsonData);
             
             if (jsonData != NULL) {
-                //[_items removeAllObjects];
                 [_postsByLandmark removeAllObjects];
                 NSLog(@"current annotations:%@",_mapView.annotations);
                 
@@ -267,7 +223,6 @@ BOOL        _firstRefresh;
     [cell getPostContentImageFromInternet:_user withPostContent:post usingCollection:nil completion:^{
         [_connectionManager endConnection];
     }];
-    cell.backgroundColor = [UIColor blackColor];
     return cell;
 }
 // 4

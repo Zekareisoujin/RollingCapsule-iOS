@@ -14,6 +14,7 @@
 #import "RCMainFeedViewController.h"
 #import "RCUser.h"
 #import "RCUtilities.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface RCLoginViewController ()
 
@@ -25,12 +26,17 @@
 
 - (void)viewDidLoad
 {
+    _txtFieldUsername.placeholder = RCEmailString;
+    _txtFieldPassword.placeholder = RCPasswordString;
+
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
     UIFont *btnFont =[UIFont fontWithName:@"Copperplate" size:18.0];
     [_btnLogIn.titleLabel setFont:btnFont];
     [_btnRegister.titleLabel setFont:btnFont];
+    _txtFieldUsername.font = btnFont;
+    _txtFieldPassword.font = btnFont;
     
     UIImage *btnBackgroundImageActive = [UIImage imageNamed:@"btnStandard-normal.png"];
     UIImage *btnStretchedImageActive = [btnBackgroundImageActive stretchableImageWithLeftCapWidth:30 topCapHeight:0];
@@ -105,7 +111,7 @@
 
 - (IBAction)btnBackgroundTap:(id)sender {
     [_txtFieldUsername resignFirstResponder];
-    [_txtFieldPassword resignFirstResponder];
+    [_txtFieldPassword endEditing:YES];
     
 }
 

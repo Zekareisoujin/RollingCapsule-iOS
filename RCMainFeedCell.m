@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Fox Cradle. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
 #import "RCMainFeedCell.h"
 #import "RCResourceCache.h"
 #import "RCConstants.h"
@@ -21,7 +22,9 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code
+        self.layer.borderColor = [UIColor blackColor].CGColor;
+        self.layer.borderWidth = 2.0;
+        self.layer.cornerRadius = 5.0;
     }
     return self;
 }
@@ -36,7 +39,17 @@
 */
 
 - (void)getPostContentImageFromInternet:(RCUser *) user withPostContent:(RCPost *) post usingCollection:(NSMutableDictionary*)postCache completion:(void (^)(void))callback {
-    //_imageView.contentMode  = UIViewContentModeScaleAspectFit;
+    self.imageView.layer.borderColor = [UIColor colorWithRed:52.0/255.0 green:178.0/255.0 blue:167.0/255.0 alpha:1.0].CGColor;
+    self.imageView.layer.borderWidth = 2.0;
+    self.imageView.layer.cornerRadius = 5.0;
+    self.imageView.clipsToBounds = YES;
+    [self.layer setMasksToBounds:NO];
+    [self.layer setShadowColor:[UIColor blackColor].CGColor];
+    [self.layer setShadowRadius:5.0];
+    [self.layer setShadowOffset:CGSizeMake(2,2)];
+    [self.layer setShadowOpacity:0.5];
+    [self setBackgroundColor:[UIColor clearColor]];
+    
     if ([post.fileUrl isKindOfClass:[NSNull class]]) return;
     RCResourceCache *cache = [RCResourceCache centralCache];
     NSString *key = [NSString stringWithFormat:@"%@/%d", RCPostsResource, post.postID];
