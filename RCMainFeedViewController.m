@@ -223,6 +223,9 @@ BOOL        _firstRefresh;
     [cell getPostContentImageFromInternet:_user withPostContent:post usingCollection:nil completion:^{
         [_connectionManager endConnection];
     }];
+    
+    [cell enableDimMask:YES];
+    
     return cell;
 }
 // 4
@@ -243,6 +246,7 @@ BOOL        _firstRefresh;
     //owner.name = self.
     RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user];
     [self.navigationController pushViewController:postDetailsViewController animated:YES];
+    
 }
 
 #pragma mark – UICollectionViewDelegateFlowLayout

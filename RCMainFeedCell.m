@@ -14,6 +14,8 @@
 
 @implementation RCMainFeedCell
 
+UIView *dimMask;
+
 + (NSString*) cellIdentifier {
     return @"RCMainFeedCell";
 }
@@ -27,6 +29,7 @@
         self.layer.cornerRadius = 5.0;
     }
     return self;
+
 }
 
 /*
@@ -49,6 +52,11 @@
     [self.layer setShadowOffset:CGSizeMake(2,2)];
     [self.layer setShadowOpacity:0.5];
     [self setBackgroundColor:[UIColor clearColor]];
+    
+    dimMask = [[UIView alloc] initWithFrame:CGRectMake(0, 0, _imageView.frame.size.width, _imageView.frame.size.height)];
+    [dimMask setBackgroundColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:0.5]];
+    [_imageView addSubview:dimMask];
+    dimMask.hidden = YES;
     
     if ([post.fileUrl isKindOfClass:[NSNull class]]) return;
     RCResourceCache *cache = [RCResourceCache centralCache];
@@ -74,6 +82,10 @@
             callback();
         });
     });
+}
+
+- (void) enableDimMask:(bool)enable {
+    dimMask.hidden = !enable;
 }
 
 @end

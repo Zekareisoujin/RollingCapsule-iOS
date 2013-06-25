@@ -15,4 +15,5 @@
 
 + (NSString*) cellIdentifier;
 - (void)getPostContentImageFromInternet:(RCUser *) user withPostContent:(RCPost *) post usingCollection:(NSMutableDictionary*)postCache completion:(void (^)(void))callback;
+- (void) enableDimMask:(bool) enable;
 @end
