@@ -25,7 +25,6 @@
 @synthesize authorEmail = _authorEmail;
 @synthesize landmarkID = _landmarkID;
 
-
 - (id) initWithNSDictionary:(NSDictionary *)postData {
     self = [super init];
     if (self) {

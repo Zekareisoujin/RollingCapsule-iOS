@@ -14,6 +14,9 @@
 
 @implementation RCMainFeedCell
 
+@synthesize dimMask = _dimMask;
+@synthesize cellState = _cellState;
+
 + (NSString*) cellIdentifier {
     return @"RCMainFeedCell";
 }
@@ -22,9 +25,6 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        self.layer.borderColor = [UIColor blackColor].CGColor;
-        self.layer.borderWidth = 2.0;
-        self.layer.cornerRadius = 5.0;
     }
     return self;
 }
@@ -39,7 +39,9 @@
 */
 
 - (void)getPostContentImageFromInternet:(RCUser *) user withPostContent:(RCPost *) post usingCollection:(NSMutableDictionary*)postCache completion:(void (^)(void))callback {
-    self.imageView.layer.borderColor = [UIColor colorWithRed:52.0/255.0 green:178.0/255.0 blue:167.0/255.0 alpha:1.0].CGColor;
+    if (_dimMask != nil)
+        [_dimMask removeFromSuperview];
+    self.imageView.layer.borderColor = [UIColor colorWithRed:RCCellBorderRed green:RCCellBorderGreen blue:RCCellBorderBlue alpha:1.0].CGColor;
     self.imageView.layer.borderWidth = 2.0;
     self.imageView.layer.cornerRadius = 5.0;
     self.imageView.clipsToBounds = YES;
@@ -48,7 +50,9 @@
     [self.layer setShadowRadius:5.0];
     [self.layer setShadowOffset:CGSizeMake(2,2)];
     [self.layer setShadowOpacity:0.5];
-    [self setBackgroundColor:[UIColor clearColor]];
+    [self.layer setShadowPath:[[UIBezierPath
+                                  bezierPathWithRect:self.bounds] CGPath]];
+    [self.imageView setImage:nil];
     
     if ([post.fileUrl isKindOfClass:[NSNull class]]) return;
     RCResourceCache *cache = [RCResourceCache centralCache];
@@ -74,6 +78,42 @@
             callback();
         });
     });
+}
+
+- (void) changeCellState:(int)newState {
+    int backup = _cellState;
+    _cellState = newState;
+    switch (newState) {
+        case RCCellStateDimmed:
+            if (_dimMask == nil) {
+                _dimMask = [[UIView alloc] initWithFrame:self.imageView.frame];
+                [_dimMask setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.3]];
+            }
+            [self addSubview:_dimMask];
+            break;
+        case RCCellStateNormal:
+            if (_dimMask != nil)
+                [_dimMask removeFromSuperview];
+            [self.layer setMasksToBounds:NO];
+            [self.layer setShadowColor:[UIColor blackColor].CGColor];
+            [self.layer setShadowRadius:5.0];
+            [self.layer setShadowOffset:CGSizeMake(2,2)];
+            [self.layer setShadowOpacity:0.5];
+            break;
+        case RCCellStateFloat:
+            if (_dimMask != nil)
+                [_dimMask removeFromSuperview];
+            [self.layer setShadowColor:[UIColor blackColor].CGColor];
+            [self.layer setShadowRadius:5.0];
+            [self.layer setShadowOffset:CGSizeMake(5,5)];
+            [self.layer setShadowOpacity:0.8];
+            [self setBackgroundColor:[UIColor clearColor]];
+            break;
+        default:
+            _cellState = backup;
+            NSLog(@"Main-feed-cell: invalid state change");
+            break;
+    }
 }
 
 @end

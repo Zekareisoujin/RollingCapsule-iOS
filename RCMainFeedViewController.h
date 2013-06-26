@@ -20,5 +20,5 @@
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (nonatomic, strong) NSMutableDictionary *userCache;
 @property (nonatomic, strong) NSMutableDictionary *postCache;
-
+@property (nonatomic, strong) NSMutableSet *chosenPosts;
 @end

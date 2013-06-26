@@ -38,7 +38,7 @@ BOOL        _firstRefresh;
 @synthesize connectionManager = _connectionManager;
 @synthesize postsByLandmark = _postsByLandmark;
 @synthesize currentLandmarkID = _currentLandmarkID;
-
+@synthesize chosenPosts = _chosenPosts;
 + (NSString*) debugTag {
     return @"MainFeedView";
 }
@@ -58,7 +58,7 @@ BOOL        _firstRefresh;
     if (self) {
         _connectionManager = [[RCConnectionManager alloc] init];
         _postsByLandmark = [[NSMutableDictionary alloc] init];
-        
+        _chosenPosts = [[NSMutableSet alloc] init];
     }
     return self;
 }
@@ -66,6 +66,8 @@ BOOL        _firstRefresh;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [_chosenPosts removeAllObjects];
     
     [_connectionManager reset];
     _currentLandmarkID = -1;
@@ -224,6 +226,13 @@ BOOL        _firstRefresh;
     [cell getPostContentImageFromInternet:_user withPostContent:post usingCollection:nil completion:^{
         [_connectionManager endConnection];
     }];
+    if ([_chosenPosts count] != 0) {
+        if ([_chosenPosts containsObject:[[NSNumber alloc] initWithInt:post.postID]]) {
+            [cell changeCellState:RCCellStateFloat];
+        } else {
+            [cell changeCellState:RCCellStateDimmed];
+        }
+    }
     return cell;
 }
 // 4
@@ -239,11 +248,37 @@ BOOL        _firstRefresh;
     int idx = [indexPath row];
     NSArray* items = (NSArray*)[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInt:_currentLandmarkID]];
     RCPost *post = [items objectAtIndex:idx];
+    NSNumber *key = [[NSNumber alloc] initWithInt:post.postID];
+    RCMainFeedCell* currentCell = (RCMainFeedCell *)[collectionView cellForItemAtIndexPath:indexPath];
+    
+    if ([_chosenPosts containsObject:key]) {
+        [_chosenPosts removeObject:key];
+        if ([_chosenPosts count] == 0) {
+            [currentCell changeCellState:RCCellStateNormal];
+            for (UICollectionViewCell* cell in collectionView.visibleCells) {
+                RCMainFeedCell *feedCell = (RCMainFeedCell *)cell;
+                [feedCell changeCellState:RCCellStateNormal];
+            }
+        } else {
+            [currentCell changeCellState:RCCellStateDimmed];
+        }
+    } else {
+        [currentCell changeCellState:RCCellStateFloat];
+        [_chosenPosts addObject:[[NSNumber alloc] initWithInt:post.postID]];
+        for (UICollectionViewCell* cell in collectionView.visibleCells) {
+            RCMainFeedCell *feedCell = (RCMainFeedCell *)cell;
+            if (feedCell != currentCell)
+                [feedCell changeCellState:RCCellStateDimmed];
+        }
+    }
+    /*int idx = [indexPath row];
+    NSArray* items = (NSArray*)[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInt:_currentLandmarkID]];
+    RCPost *post = [items objectAtIndex:idx];
     RCUser *owner = [[RCUser alloc] init];
     owner.userID = post.userID;
     //owner.name = self.
     RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user];
-    [self.navigationController pushViewController:postDetailsViewController animated:YES];
+    [self.navigationController pushViewController:postDetailsViewController animated:YES];*/
 }
 
 #pragma mark – UICollectionViewDelegateFlowLayout

@@ -26,8 +26,8 @@
 
 - (void)viewDidLoad
 {
-    _txtFieldUsername.placeholder = RCEmailString;
-    _txtFieldPassword.placeholder = RCPasswordString;
+    _txtFieldUsername.placeholder = RCEmailCapitalString;
+    _txtFieldPassword.placeholder = RCPasswordCapitalString;
 
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.

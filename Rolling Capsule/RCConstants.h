@@ -73,7 +73,17 @@ static NSString* const RCFriendStatusActionRequestSent = @"Request sent";
 static NSString* const RCLoadingRelation = @"Loading relation";
 static NSString* const RCDeclineRequest = @"Decline Request";
 static NSString* const RCUploadError = @"UploadError";
-static NSString* const RCEmailString = @"Email";
-static NSString* const RCPasswordString = @"Password";
+static NSString* const RCEmailCapitalString = @"EMAIL";
+static NSString* const RCPasswordCapitalString = @"PASSWORD";
+
+//cell border color
+static double const RCCellBorderRed = 52.0/255.0;
+static double const RCCellBorderGreen = 178.0/255.0;
+static double const RCCellBorderBlue = 167.0/255.0;
+
+//cell states
+#define RCCellStateNormal 0
+#define RCCellStateDimmed -1
+#define RCCellStateFloat 1
 #endif
 
