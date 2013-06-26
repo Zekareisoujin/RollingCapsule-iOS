@@ -23,8 +23,8 @@
     [self setBorderStyle:UITextBorderStyleNone];
     self.layer.shadowColor = [UIColor whiteColor].CGColor;
     self.layer.shadowOffset = CGSizeMake(0.0, 0.0);
-    self.layer.shadowRadius = 10.0;
-    self.layer.shadowOpacity = 0.9;
+    self.layer.shadowRadius = 7.0;
+    self.layer.shadowOpacity = 0.5;
     self.layer.masksToBounds = NO;
     self.textAlignment = NSTextAlignmentCenter;
 }

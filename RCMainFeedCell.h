@@ -17,5 +17,4 @@
 + (NSString*) cellIdentifier;
 - (void)getPostContentImageFromInternet:(RCUser *) user withPostContent:(RCPost *) post usingCollection:(NSMutableDictionary*)postCache completion:(void (^)(void))callback;
 - (void) changeCellState:(int)newState;
-
 @end

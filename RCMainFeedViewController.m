@@ -95,7 +95,6 @@ BOOL        _firstRefresh;
     [self.collectionView registerClass:[RCMainFeedCell class] forCellWithReuseIdentifier:cellIdentifier];
     UINib *nib = [UINib nibWithNibName:cellIdentifier bundle: nil];
     [self.collectionView registerNib:nib forCellWithReuseIdentifier:cellIdentifier];
-    [self handleRefresh:_refreshControl];
 }
 
 - (void) handleRefresh:(UIRefreshControl*) refreshControl {
@@ -305,6 +304,10 @@ BOOL        _firstRefresh;
 - (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
     _currentLandmarkID = -1;
     [_collectionView reloadData];
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+    [self handleRefresh:_refreshControl];
 }
 
 @end

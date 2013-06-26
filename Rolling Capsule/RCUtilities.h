@@ -65,10 +65,20 @@ static void alertStatus(NSString *msg, NSString *title, id delegateObject)
 {
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
                                                         message:msg
-                                                       delegate:delegateObject
+                                                       delegate:nil
                                               cancelButtonTitle:@"Ok"
                                               otherButtonTitles:nil, nil];
     
+    // delegateObject is unnecessary, but lazy to refractor all the code that use this
+    [alertView show];
+}
+
+static void confirmationDialog(NSString *msg, NSString *title, id delegate){
+    UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:title
+                                                       message:msg
+                                                      delegate:delegate
+                                             cancelButtonTitle:@"Ok"
+                                             otherButtonTitles:@"Cancel", nil];
     [alertView show];
 }
 

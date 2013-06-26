@@ -78,6 +78,9 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     _textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     _textField.delegate = self;
     
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Delete Post" style:UIBarButtonItemStylePlain target:self action:@selector(deletePost)];
+    self.navigationItem.rightBarButtonItem = rightButton;
+    
     UIBarButtonItem *textFieldItem = [[UIBarButtonItem alloc] initWithCustomView:_textField];
     UIBarButtonItem *postButton = [[UIBarButtonItem alloc] initWithTitle:@"Post" style:UIBarButtonItemStyleDone  target:self action:@selector(asynchPostComment)];
     NSArray *topBarItems = [NSArray arrayWithObjects: textFieldItem, postButton, nil];
@@ -111,6 +114,18 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
             });
     });
 
+}
+
+
+#pragma mark - delete post
+- (void) deletePost {
+    confirmationDialog(@"Are you sure you want to delete this post?", @"Confirmation", self);
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0){
+        [self asynchDeletePost];
+    }
 }
 
 #pragma mark - Table view data source
@@ -181,7 +196,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
                  _textField.text = @"";
                  
              }else {
-                 alertStatus([NSString stringWithFormat:@"Please try again! %@", responseData], @"Comment Failed!", self);
+                 alertStatus([NSString stringWithFormat:@"Please try again! %@", responseData], @"Comment Failed!", nil);
              }
          }];
     }
@@ -189,7 +204,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
         NSLog(@"Exception: %@", e);
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         self.navigationItem.rightBarButtonItem.enabled = YES;
-        alertStatus(@"Post Failed.",@"Post Failed!",self);
+        alertStatus(@"Post Failed.",@"Post Failed!",nil);
     }
 }
 
@@ -216,8 +231,42 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        alertStatus(@"Failure getting friends from web service",@"Connection Failed!",self);
+        alertStatus(@"Failure getting friends from web service",@"Connection Failed!",nil);
     }
+}
+
+- (void) asynchDeletePost {
+    //Asynchronous Request
+    @try {
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d?mobile=1", RCServiceURL, RCPostsResource, _post.postID]];
+        NSURLRequest *request = CreateHttpDeleteRequest(url);
+        [_connectionManager startConnection];
+        
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+         {
+             [_connectionManager endConnection];
+             NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+             NSLog(@"Post deletion status string: %@", responseData);
+             
+             if ([responseData isEqualToString:@"ok"]){
+                 alertStatus(@"Post deleted successfully!", @"Success!", nil);
+                 [self.navigationController popViewControllerAnimated:YES];
+             }else if ([responseData isEqualToString:@"error"]){
+                 alertStatus(@"Please try again!", @"Deletion Failed", nil);
+             }
+             
+              /*SBJsonParser *jsonParser = [SBJsonParser new];
+              NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
+              NSLog(@"Post deleted: %@",jsonData);*/
+             
+         }];
+    }
+    @catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+        alertStatus(@"Failure deleting post.", @"Connection Failed!", nil);
+    }
+
 }
 
 #pragma mark - code to move views up/down appropriately when keyboard is going to cover text field
