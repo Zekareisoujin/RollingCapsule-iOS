@@ -10,7 +10,7 @@
 #import <MapKit/MapKit.h>
 #import "RCUser.h"
 
-@interface RCMainFeedViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDataSource, MKMapViewDelegate>
+@interface RCMainFeedViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDataSource, MKMapViewDelegate, UIGestureRecognizerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tblFeedList;
 //@property (nonatomic, strong) NSMutableArray *items;

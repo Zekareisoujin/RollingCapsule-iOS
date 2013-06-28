@@ -25,11 +25,15 @@
 @property (nonatomic, strong) RCConnectionManager *connectionManager;
 @property (nonatomic, strong) NSMutableDictionary *postsByLandmark;
 @property (nonatomic, assign) int currentLandmarkID;
+@property (nonatomic, strong) UIPinchGestureRecognizer *pinchGestureRecognizer;
+@property (nonatomic, strong) UILongPressGestureRecognizer *longPressGestureRecognizer;
+@property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 
 @end
 
 @implementation RCMainFeedViewController
 
+int _nRows;
 BOOL        _firstRefresh;
 @synthesize refreshControl = _refreshControl;
 @synthesize user = _user;
@@ -39,6 +43,10 @@ BOOL        _firstRefresh;
 @synthesize postsByLandmark = _postsByLandmark;
 @synthesize currentLandmarkID = _currentLandmarkID;
 @synthesize chosenPosts = _chosenPosts;
+@synthesize pinchGestureRecognizer = _pinchGestureRecognizer;
+@synthesize longPressGestureRecognizer = _longPressGestureRecognizer;
+@synthesize tapGestureRecognizer = _tapGestureRecognizer;
+
 + (NSString*) debugTag {
     return @"MainFeedView";
 }
@@ -76,14 +84,15 @@ BOOL        _firstRefresh;
     _userCache = [[NSMutableDictionary alloc] init];
     _postCache = [[NSMutableDictionary alloc] init];
     
-    // Do any additional setup after loading the view from its nib.
-    //_items = [[NSMutableArray alloc] init];
-    _tblFeedList.tableFooterView = [[UIView alloc] init];
     self.navigationItem.title = @"News Feed";
 
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"New Post" style:UIBarButtonItemStylePlain target:self action:@selector(switchToNewPostScreen)];
     self.navigationItem.rightBarButtonItem = rightButton;
     
+    //prepare collection view
+    
+    UICollectionViewFlowLayout *flow =  (UICollectionViewFlowLayout *)_collectionView.collectionViewLayout;
+    flow.minimumInteritemSpacing = 0.0;
     _refreshControl = [[UIRefreshControl alloc] init];//tableViewController.refreshControl;
     [_collectionView addSubview:_refreshControl];
     [_refreshControl addTarget:self
@@ -95,6 +104,11 @@ BOOL        _firstRefresh;
     [self.collectionView registerClass:[RCMainFeedCell class] forCellWithReuseIdentifier:cellIdentifier];
     UINib *nib = [UINib nibWithNibName:cellIdentifier bundle: nil];
     [self.collectionView registerNib:nib forCellWithReuseIdentifier:cellIdentifier];
+    
+    _pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
+    _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+    _longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    _nRows = 2;
 }
 
 - (void) handleRefresh:(UIRefreshControl*) refreshControl {
@@ -244,54 +258,21 @@ BOOL        _firstRefresh;
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    int idx = [indexPath row];
-    NSArray* items = (NSArray*)[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInt:_currentLandmarkID]];
-    RCPost *post = [items objectAtIndex:idx];
-    NSNumber *key = [[NSNumber alloc] initWithInt:post.postID];
-    RCMainFeedCell* currentCell = (RCMainFeedCell *)[collectionView cellForItemAtIndexPath:indexPath];
-    
-    if ([_chosenPosts containsObject:key]) {
-        [_chosenPosts removeObject:key];
-        if ([_chosenPosts count] == 0) {
-            [currentCell changeCellState:RCCellStateNormal];
-            for (UICollectionViewCell* cell in collectionView.visibleCells) {
-                RCMainFeedCell *feedCell = (RCMainFeedCell *)cell;
-                [feedCell changeCellState:RCCellStateNormal];
-            }
-        } else {
-            [currentCell changeCellState:RCCellStateDimmed];
-        }
-    } else {
-        [currentCell changeCellState:RCCellStateFloat];
-        [_chosenPosts addObject:[[NSNumber alloc] initWithInt:post.postID]];
-        for (UICollectionViewCell* cell in collectionView.visibleCells) {
-            RCMainFeedCell *feedCell = (RCMainFeedCell *)cell;
-            if (feedCell != currentCell)
-                [feedCell changeCellState:RCCellStateDimmed];
-        }
-    }
-    /*int idx = [indexPath row];
-    NSArray* items = (NSArray*)[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInt:_currentLandmarkID]];
-    RCPost *post = [items objectAtIndex:idx];
-    RCUser *owner = [[RCUser alloc] init];
-    owner.userID = post.userID;
-    //owner.name = self.
-    RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user];
-    [self.navigationController pushViewController:postDetailsViewController animated:YES];*/
 }
 
 #pragma mark – UICollectionViewDelegateFlowLayout
 
 // 1
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    CGSize retval = CGSizeMake(126,126);
+    float width = (collectionView.frame.size.height-42) / _nRows;
+    CGSize retval = CGSizeMake(width,width);
     return retval;
 }
 
 // 3
 - (UIEdgeInsets)collectionView:
 (UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    return UIEdgeInsetsMake(10, 20, 10, 20);
+    return UIEdgeInsetsMake(20, 10, 20, 10);//UIEdgeInsetsM
 }
 
 #pragma mark - MKMapViewDelegate
@@ -307,7 +288,70 @@ BOOL        _firstRefresh;
 }
 
 - (void) viewWillAppear:(BOOL)animated {
+    [_collectionView addGestureRecognizer:_pinchGestureRecognizer];
+    [_collectionView addGestureRecognizer:_tapGestureRecognizer];
+    [_collectionView addGestureRecognizer:_longPressGestureRecognizer];
     [self handleRefresh:_refreshControl];
+}
+
+#pragma mark - pinch gesture recognizer
+
+- (IBAction)handlePinch:(UIPinchGestureRecognizer *)recognizer {
+    NSLog(@"Main-feed:pinch scale %f",recognizer.scale);
+}
+
+- (IBAction)handleTap:(UITapGestureRecognizer *)recognizer {
+    //NSLog(@"Main-feed:pinch scale %f",recognizer.scale);
+    CGPoint point = [recognizer locationInView:_collectionView];
+    NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:point];
+    int idx = [indexPath row];
+    NSArray* items = (NSArray*)[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInt:_currentLandmarkID]];
+    RCPost *post = [items objectAtIndex:idx];
+    NSNumber *key = [[NSNumber alloc] initWithInt:post.postID];
+    RCMainFeedCell* currentCell = (RCMainFeedCell *)[_collectionView cellForItemAtIndexPath:indexPath];
+    
+    if ([_chosenPosts containsObject:key]) {
+        [_chosenPosts removeObject:key];
+        [_mapView removeAnnotation:post];
+        if ([_chosenPosts count] == 0) {
+            [currentCell changeCellState:RCCellStateNormal];
+            for (UICollectionViewCell* cell in _collectionView.visibleCells) {
+                RCMainFeedCell *feedCell = (RCMainFeedCell *)cell;
+                [feedCell changeCellState:RCCellStateNormal];
+            }
+        } else {
+            [currentCell changeCellState:RCCellStateDimmed];
+        }
+    } else {
+        [currentCell changeCellState:RCCellStateFloat];
+        [_chosenPosts addObject:[[NSNumber alloc] initWithInt:post.postID]];
+        [_mapView addAnnotation:post];
+        for (UICollectionViewCell* cell in _collectionView.visibleCells) {
+            RCMainFeedCell *feedCell = (RCMainFeedCell *)cell;
+            int index = [[_collectionView indexPathForCell:cell] row];
+            NSArray* items = (NSArray*)[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInt:_currentLandmarkID]];
+            RCPost *iteratingPost = [items objectAtIndex:index];
+            NSNumber *key = [[NSNumber alloc] initWithInt:iteratingPost.postID];
+            //if post not chosen then dim
+            if (![_chosenPosts containsObject:key])
+                [feedCell changeCellState:RCCellStateDimmed];
+        }
+    }
+}
+
+- (IBAction)handleLongPress:(UILongPressGestureRecognizer *)recognizer {
+    CGPoint point = [recognizer locationInView:_collectionView];
+    NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:point];
+    int idx = [indexPath row];
+    NSArray* items = (NSArray*)[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInt:_currentLandmarkID]];
+    
+    RCPost *post = [items objectAtIndex:idx];
+    RCUser *owner = [[RCUser alloc] init];
+    owner.userID = post.userID;
+    
+    [_collectionView removeGestureRecognizer:recognizer];
+    RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user];
+    [self.navigationController pushViewController:postDetailsViewController animated:YES];
 }
 
 @end
