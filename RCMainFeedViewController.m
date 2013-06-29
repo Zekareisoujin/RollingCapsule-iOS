@@ -292,11 +292,14 @@ BOOL        _willRefresh;
 }
 
 - (void) viewWillAppear:(BOOL)animated {
-    
-    //NSLog(@"menu-button-size:%f", self.navigationItem.leftBarButtonItem.width);
+
+    //add gesture recognizer
     [_collectionView addGestureRecognizer:_pinchGestureRecognizer];
     [_collectionView addGestureRecognizer:_tapGestureRecognizer];
     [_collectionView addGestureRecognizer:_longPressGestureRecognizer];
+    
+    //refresh if necessary, views like post where the main feed should refresh when finish
+    //would set the _willRefresh parameter
     if (_willRefresh) {
         [self handleRefresh:_refreshControl];
         _willRefresh = NO;
@@ -310,40 +313,43 @@ BOOL        _willRefresh;
 }
 
 - (IBAction)handleTap:(UITapGestureRecognizer *)recognizer {
-    //NSLog(@"Main-feed:pinch scale %f",recognizer.scale);
     CGPoint point = [recognizer locationInView:_collectionView];
     NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:point];
-    int idx = [indexPath row];
-    NSArray* items = (NSArray*)[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInt:_currentLandmarkID]];
-    RCPost *post = [items objectAtIndex:idx];
-    NSNumber *key = [[NSNumber alloc] initWithInt:post.postID];
-    RCMainFeedCell* currentCell = (RCMainFeedCell *)[_collectionView cellForItemAtIndexPath:indexPath];
     
-    if ([_chosenPosts containsObject:key]) {
-        [_chosenPosts removeObject:key];
-        [_mapView removeAnnotation:post];
-        if ([_chosenPosts count] == 0) {
-            [currentCell changeCellState:RCCellStateNormal];
-            for (UICollectionViewCell* cell in _collectionView.visibleCells) {
-                RCMainFeedCell *feedCell = (RCMainFeedCell *)cell;
-                [feedCell changeCellState:RCCellStateNormal];
+    //if there's no item at point of tap
+    if (indexPath != nil) {
+        int idx = [indexPath row];
+        NSArray* items = (NSArray*)[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInt:_currentLandmarkID]];
+        RCPost *post = [items objectAtIndex:idx];
+        NSNumber *key = [[NSNumber alloc] initWithInt:post.postID];
+        RCMainFeedCell* currentCell = (RCMainFeedCell *)[_collectionView cellForItemAtIndexPath:indexPath];
+        
+        if ([_chosenPosts containsObject:key]) {
+            [_chosenPosts removeObject:key];
+            [_mapView removeAnnotation:post];
+            if ([_chosenPosts count] == 0) {
+                [currentCell changeCellState:RCCellStateNormal];
+                for (UICollectionViewCell* cell in _collectionView.visibleCells) {
+                    RCMainFeedCell *feedCell = (RCMainFeedCell *)cell;
+                    [feedCell changeCellState:RCCellStateNormal];
+                }
+            } else {
+                [currentCell changeCellState:RCCellStateDimmed];
             }
         } else {
-            [currentCell changeCellState:RCCellStateDimmed];
-        }
-    } else {
-        [currentCell changeCellState:RCCellStateFloat];
-        [_chosenPosts addObject:[[NSNumber alloc] initWithInt:post.postID]];
-        [_mapView addAnnotation:post];
-        for (UICollectionViewCell* cell in _collectionView.visibleCells) {
-            RCMainFeedCell *feedCell = (RCMainFeedCell *)cell;
-            int index = [[_collectionView indexPathForCell:cell] row];
-            NSArray* items = (NSArray*)[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInt:_currentLandmarkID]];
-            RCPost *iteratingPost = [items objectAtIndex:index];
-            NSNumber *key = [[NSNumber alloc] initWithInt:iteratingPost.postID];
-            //if post not chosen then dim
-            if (![_chosenPosts containsObject:key])
-                [feedCell changeCellState:RCCellStateDimmed];
+            [currentCell changeCellState:RCCellStateFloat];
+            [_chosenPosts addObject:[[NSNumber alloc] initWithInt:post.postID]];
+            [_mapView addAnnotation:post];
+            for (UICollectionViewCell* cell in _collectionView.visibleCells) {
+                RCMainFeedCell *feedCell = (RCMainFeedCell *)cell;
+                int index = [[_collectionView indexPathForCell:cell] row];
+                NSArray* items = (NSArray*)[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInt:_currentLandmarkID]];
+                RCPost *iteratingPost = [items objectAtIndex:index];
+                NSNumber *key = [[NSNumber alloc] initWithInt:iteratingPost.postID];
+                //if post not chosen then dim
+                if (![_chosenPosts containsObject:key])
+                    [feedCell changeCellState:RCCellStateDimmed];
+            }
         }
     }
 }
@@ -351,16 +357,20 @@ BOOL        _willRefresh;
 - (IBAction)handleLongPress:(UILongPressGestureRecognizer *)recognizer {
     CGPoint point = [recognizer locationInView:_collectionView];
     NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:point];
-    int idx = [indexPath row];
-    NSArray* items = (NSArray*)[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInt:_currentLandmarkID]];
     
-    RCPost *post = [items objectAtIndex:idx];
-    RCUser *owner = [[RCUser alloc] init];
-    owner.userID = post.userID;
-    
-    [_collectionView removeGestureRecognizer:recognizer];
-    RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user];
-    [self.navigationController pushViewController:postDetailsViewController animated:YES];
+    //if index path for cell not found
+    if (indexPath != nil ) {
+        int idx = [indexPath row];
+        NSArray* items = (NSArray*)[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInt:_currentLandmarkID]];
+        
+        RCPost *post = [items objectAtIndex:idx];
+        RCUser *owner = [[RCUser alloc] init];
+        owner.userID = post.userID;
+        
+        [_collectionView removeGestureRecognizer:recognizer];
+        RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user];
+        [self.navigationController pushViewController:postDetailsViewController animated:YES];
+    }
 }
 
 @end

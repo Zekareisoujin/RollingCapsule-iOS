@@ -118,12 +118,6 @@
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
          {
              [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-             /*NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-             
-             SBJsonParser *jsonParser = [SBJsonParser new];
-             NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
-             NSLog(@"%@",jsonData);*/
-             
          }];
     }
     @catch (NSException * e) {
@@ -134,7 +128,7 @@
 
 -(void) setNavigationBarMenuBttonForViewController:(UIViewController *) viewController {
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc]
-                                   initWithTitle:@"                  "
+                                   initWithTitle:@"              "
                                            style:UIBarButtonItemStyleBordered
                                           target:self
                                           action:@selector(showSelfAsSideMenu)];
