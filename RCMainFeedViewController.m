@@ -292,6 +292,8 @@ BOOL        _willRefresh;
 }
 
 - (void) viewWillAppear:(BOOL)animated {
+    
+    //NSLog(@"menu-button-size:%f", self.navigationItem.leftBarButtonItem.width);
     [_collectionView addGestureRecognizer:_pinchGestureRecognizer];
     [_collectionView addGestureRecognizer:_tapGestureRecognizer];
     [_collectionView addGestureRecognizer:_longPressGestureRecognizer];

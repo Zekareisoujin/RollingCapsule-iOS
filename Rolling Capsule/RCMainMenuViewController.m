@@ -134,7 +134,7 @@
 
 -(void) setNavigationBarMenuBttonForViewController:(UIViewController *) viewController {
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc]
-                                   initWithTitle:@" "
+                                   initWithTitle:@"                  "
                                            style:UIBarButtonItemStyleBordered
                                           target:self
                                           action:@selector(showSelfAsSideMenu)];
