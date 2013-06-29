@@ -35,6 +35,7 @@
 
 int _nRows;
 BOOL        _firstRefresh;
+BOOL        _willRefresh;
 @synthesize refreshControl = _refreshControl;
 @synthesize user = _user;
 @synthesize userCache = _userCache;
@@ -109,6 +110,8 @@ BOOL        _firstRefresh;
     _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     _longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
     _nRows = 2;
+    
+    _willRefresh = YES;
 }
 
 - (void) handleRefresh:(UIRefreshControl*) refreshControl {
@@ -216,6 +219,7 @@ BOOL        _firstRefresh;
 }
 
 - (void) switchToNewPostScreen {
+    _willRefresh = YES;
     RCNewPostViewController *newPostController = [[RCNewPostViewController alloc] initWithUser:_user];
     [self.navigationController pushViewController:newPostController animated:YES];
 }
@@ -291,7 +295,10 @@ BOOL        _firstRefresh;
     [_collectionView addGestureRecognizer:_pinchGestureRecognizer];
     [_collectionView addGestureRecognizer:_tapGestureRecognizer];
     [_collectionView addGestureRecognizer:_longPressGestureRecognizer];
-    [self handleRefresh:_refreshControl];
+    if (_willRefresh) {
+        [self handleRefresh:_refreshControl];
+        _willRefresh = NO;
+    }
 }
 
 #pragma mark - pinch gesture recognizer

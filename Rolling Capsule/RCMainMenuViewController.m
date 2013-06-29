@@ -133,10 +133,15 @@
 }
 
 -(void) setNavigationBarMenuBttonForViewController:(UIViewController *) viewController {
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Menu"
-                                                                   style:UIBarButtonItemStyleBordered
-                                                                  target:self
-                                                                  action:@selector(showSelfAsSideMenu)];
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc]
+                                   initWithTitle:@" "
+                                           style:UIBarButtonItemStyleBordered
+                                          target:self
+                                          action:@selector(showSelfAsSideMenu)];
+    UIImage *image = [[UIImage imageNamed:@"menu.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+    [backButton setBackgroundImage:image forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+    //[backButton setImage:[UIImage imageNamed:@"menu.png"]];
+    backButton.imageInsets = UIEdgeInsetsMake(0,0,0,10);
     UINavigationItem *navigationItem = viewController.navigationItem;
     navigationItem.leftBarButtonItem = backButton;
 }

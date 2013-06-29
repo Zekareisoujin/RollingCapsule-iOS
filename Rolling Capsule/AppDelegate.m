@@ -58,6 +58,8 @@
     
     
     _navigationController = [[UINavigationController alloc] initWithRootViewController:firstViewController];
+    [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:RCAppThemeColorRed green:RCAppThemeColorGreen blue:RCAppThemeColorBlue alpha:1.0]];
+
     _menuViewController = [[RCMainMenuViewController alloc] initWithContentView:_navigationController];
     
     firstViewController.delegate = _menuViewController;

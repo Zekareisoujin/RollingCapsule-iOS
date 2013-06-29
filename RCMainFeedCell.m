@@ -42,7 +42,7 @@
 - (void)getPostContentImageFromInternet:(RCUser *) user withPostContent:(RCPost *) post usingCollection:(NSMutableDictionary*)postCache completion:(void (^)(void))callback {
     if (_dimMask != nil)
         [_dimMask removeFromSuperview];
-    self.imageView.layer.borderColor = [UIColor colorWithRed:RCCellBorderRed green:RCCellBorderGreen blue:RCCellBorderBlue alpha:1.0].CGColor;
+    self.imageView.layer.borderColor = [UIColor colorWithRed:RCAppThemeColorRed green:RCAppThemeColorGreen blue:RCAppThemeColorBlue alpha:1.0].CGColor;
     self.imageView.layer.borderWidth = 2.0;
     self.imageView.layer.cornerRadius = 5.0;
     self.imageView.clipsToBounds = YES;

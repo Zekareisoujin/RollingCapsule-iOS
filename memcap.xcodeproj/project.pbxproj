@@ -38,6 +38,7 @@
 		6491DCF21755E096006FBCD8 /* RCUserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6491DCF01755E096006FBCD8 /* RCUserProfileViewController.m */; };
 		6491DCF31755E096006FBCD8 /* RCUserProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6491DCF11755E096006FBCD8 /* RCUserProfileViewController.xib */; };
 		649A869D175B0CC30016674F /* RCAmazonS3Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 649A869C175B0CC30016674F /* RCAmazonS3Helper.m */; };
+		64A615D2177DFF0500940742 /* menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 64A615D1177DFF0500940742 /* menu.png */; };
 		64A917081751E554007D629D /* RCRegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64A917071751E554007D629D /* RCRegisterViewController.xib */; };
 		64A9170B1751F6C9007D629D /* RCRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64A9170A1751F6C9007D629D /* RCRegisterViewController.m */; };
 		64EA880417796DA000011F3E /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 64EA880317796D9F00011F3E /* background.png */; };
@@ -146,6 +147,7 @@
 		6491DCF11755E096006FBCD8 /* RCUserProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCUserProfileViewController.xib; sourceTree = "<group>"; };
 		649A869B175B0CC30016674F /* RCAmazonS3Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAmazonS3Helper.h; sourceTree = "<group>"; };
 		649A869C175B0CC30016674F /* RCAmazonS3Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAmazonS3Helper.m; sourceTree = "<group>"; };
+		64A615D1177DFF0500940742 /* menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = menu.png; path = ../../Desktop/menu.png; sourceTree = "<group>"; };
 		64A917071751E554007D629D /* RCRegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCRegisterViewController.xib; sourceTree = "<group>"; };
 		64A917091751F6C9007D629D /* RCRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCRegisterViewController.h; sourceTree = "<group>"; };
 		64A9170A1751F6C9007D629D /* RCRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCRegisterViewController.m; sourceTree = "<group>"; };
@@ -277,6 +279,7 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
+				64A615D1177DFF0500940742 /* menu.png */,
 				64EA880517796DAB00011F3E /* text_field.png */,
 				64011D2E17781DA400816D93 /* RCTextField.h */,
 				64011D2F17781DA400816D93 /* RCTextField.m */,
@@ -549,6 +552,7 @@
 				64014916177966F5009B69DF /* RCMainFeedCell.xib in Resources */,
 				64EA880417796DA000011F3E /* background.png in Resources */,
 				64EA880617796DAB00011F3E /* text_field.png in Resources */,
+				64A615D2177DFF0500940742 /* menu.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

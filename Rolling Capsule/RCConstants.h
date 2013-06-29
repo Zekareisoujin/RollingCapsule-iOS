@@ -77,9 +77,9 @@ static NSString* const RCEmailCapitalString = @"EMAIL";
 static NSString* const RCPasswordCapitalString = @"PASSWORD";
 
 //cell border color
-static double const RCCellBorderRed = 52.0/255.0;
-static double const RCCellBorderGreen = 178.0/255.0;
-static double const RCCellBorderBlue = 167.0/255.0;
+static double const RCAppThemeColorRed = 52.0/255.0;
+static double const RCAppThemeColorGreen = 178.0/255.0;
+static double const RCAppThemeColorBlue = 167.0/255.0;
 
 //cell states
 #define RCCellStateNormal 0
