@@ -17,8 +17,10 @@
 #import "RCPostDetailsViewController.h"
 #import "RCAmazonS3Helper.h"
 #import "RCMainFeedCell.h"
+#import "RCMainMenuViewController.h"
 #import "RCConnectionManager.h"
 #import "RCNotification.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface RCMainFeedViewController ()
 
@@ -28,7 +30,7 @@
 @property (nonatomic, strong) UIPinchGestureRecognizer *pinchGestureRecognizer;
 @property (nonatomic, strong) UILongPressGestureRecognizer *longPressGestureRecognizer;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
-
+@property (nonatomic, strong) UIImage *backgroundImage;
 @end
 
 @implementation RCMainFeedViewController
@@ -47,6 +49,7 @@ BOOL        _willRefresh;
 @synthesize pinchGestureRecognizer = _pinchGestureRecognizer;
 @synthesize longPressGestureRecognizer = _longPressGestureRecognizer;
 @synthesize tapGestureRecognizer = _tapGestureRecognizer;
+@synthesize backgroundImage = _backgroundImage;
 
 + (NSString*) debugTag {
     return @"MainFeedView";
@@ -220,8 +223,25 @@ BOOL        _willRefresh;
 
 - (void) switchToNewPostScreen {
     _willRefresh = YES;
-    RCNewPostViewController *newPostController = [[RCNewPostViewController alloc] initWithUser:_user];
-    [self.navigationController pushViewController:newPostController animated:YES];
+    if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)])
+        UIGraphicsBeginImageContextWithOptions(self.view.frame.size, NO, [UIScreen mainScreen].scale);
+    else
+        UIGraphicsBeginImageContext(self.view.frame.size);
+    [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
+    _backgroundImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    /*
+    CALayer *layer = [[UIApplication sharedApplication] keyWindow].layer;
+    CGFloat scale = [UIScreen mainScreen].scale;
+    UIGraphicsBeginImageContextWithOptions(layer.frame.size, NO, scale);
+    
+    [layer renderInContext:UIGraphicsGetCurrentContext()];
+    _backgroundImage = UIGraphicsGetImageFromCurrentImageContext();*/
+    RCNewPostViewController *newPostController = [[RCNewPostViewController alloc] initWithUser:_user withBackgroundImage:_backgroundImage];
+    AppDelegate *appDelegate = (AppDelegate*) [[UIApplication sharedApplication] delegate];
+    [appDelegate.menuViewController setNavigationBarMenuBttonForViewController:newPostController];
+    //self.navigationItem.backBarButtonItem = self.navigationItem.leftBarButtonItem;
+    [self.navigationController pushViewController:newPostController animated:NO];
 }
 
 #pragma mark - UICollectionView Datasource

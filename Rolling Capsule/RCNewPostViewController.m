@@ -21,7 +21,7 @@
 @property (nonatomic,strong) UIImage* postImage;
 @property (nonatomic,strong) NSString* postContent;
 @property (nonatomic,strong) NSString* imageFileName;
-
+@property (nonatomic,weak) UIImage *backgroundImage;
 @end
 
 @implementation RCNewPostViewController
@@ -34,6 +34,7 @@
 @synthesize landmarks = _landmarks;
 @synthesize tblViewLandmark = _tblViewLandmark;
 @synthesize currentLandmark = _currentLandmark;
+@synthesize backgroundImage = _backgroundImage;
 
 BOOL _landmarkTableVisible = NO;
 BOOL _successfulPost = NO;
@@ -65,6 +66,19 @@ RCConnectionManager *_connectionManager;
         _user = user;
         _keyboardPushHandler = [[RCKeyboardPushUpHandler alloc] init];
         _connectionManager = [[RCConnectionManager alloc] init];
+        _backgroundImage = nil;
+        //NSLog(@"RCNewPostViewController: %@", _keyboardPushHandler);
+    }
+    return self;
+}
+
+- (id) initWithUser:(RCUser *)user withBackgroundImage:(UIImage*) image{
+    self = [super init];
+    if (self) {
+        _user = user;
+        _keyboardPushHandler = [[RCKeyboardPushUpHandler alloc] init];
+        _connectionManager = [[RCConnectionManager alloc] init];
+        _backgroundImage = image;
         //NSLog(@"RCNewPostViewController: %@", _keyboardPushHandler);
     }
     return self;
@@ -77,14 +91,14 @@ RCConnectionManager *_connectionManager;
     [_keyboardPushHandler reset];
     _keyboardPushHandler.view = self.view;
     
-    [[_txtViewPostContent layer] setBorderColor:[[UIColor grayColor] CGColor]];
+    /*[[_txtViewPostContent layer] setBorderColor:[[UIColor grayColor] CGColor]];
     [[_txtViewPostContent layer] setBorderWidth:2.3];
-    [[_txtViewPostContent layer] setCornerRadius:15];
-    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Post"
+    [[_txtViewPostContent layer] setCornerRadius:15];*/
+    /*UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Post"
                                                                     style:UIBarButtonItemStyleDone
                                                                    target:self
                                                                    action:@selector(postNew)];
-    self.navigationItem.rightBarButtonItem = rightButton;
+    self.navigationItem.rightBarButtonItem = rightButton;*/
     
     _tblViewLandmark = [[UITableView alloc] initWithFrame:CGRectMake(0, 30, 320, 200) style:UITableViewStylePlain];
     _tblViewLandmark.delegate = self;
@@ -93,6 +107,9 @@ RCConnectionManager *_connectionManager;
     _landmarks = [[NSMutableArray alloc] init];
     _landmarkTableVisible = NO;
     _currentLandmark = nil;
+    
+    if (_backgroundImage != nil)
+        [_imageViewPreviousView setImage:_backgroundImage];
 }
 
 - (void)didReceiveMemoryWarning

@@ -126,4 +126,5 @@ static UIImage *imageWithImage(UIImage*image,CGSize newSize) {
     
     return newImage;
 }
+
 #endif

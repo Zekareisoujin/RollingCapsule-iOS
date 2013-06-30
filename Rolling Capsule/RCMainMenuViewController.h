@@ -29,5 +29,5 @@
 - (IBAction)btnActionUserProfileNav:(id)sender;
 - (IBAction)btnActionFriendViewNav:(id)sender;
 - (IBAction)btnActionLogOut:(id)sender;
-
+-(void) setNavigationBarMenuBttonForViewController:(UIViewController *) viewController;
 @end

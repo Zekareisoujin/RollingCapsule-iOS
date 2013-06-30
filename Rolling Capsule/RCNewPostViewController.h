@@ -14,6 +14,7 @@
 
 @interface RCNewPostViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, AmazonServiceRequestDelegate, UIActionSheetDelegate, UITableViewDataSource, UITableViewDelegate>
 
+@property (weak, nonatomic) IBOutlet UIImageView *imageViewPreviousView;
 @property (weak, nonatomic) IBOutlet UIButton *btnPostImage;
 @property (weak, nonatomic) IBOutlet UIButton *btnLandmark;
 @property (weak, nonatomic) IBOutlet UITextView *txtViewPostContent;
@@ -27,4 +28,5 @@
 - (IBAction)btnPostImageTouchUpInside:(id)sender;
 - (IBAction)callLandmarkTable:(id)sender;
 - (id) initWithUser:(RCUser *)user;
+- (id) initWithUser:(RCUser *)user withBackgroundImage:(UIImage*) image;
 @end
