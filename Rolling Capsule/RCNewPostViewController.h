@@ -12,11 +12,13 @@
 #import "RCKeyboardPushUpHandler.h"
 #import "RCLandmark.h"
 
-@interface RCNewPostViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, AmazonServiceRequestDelegate, UIActionSheetDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface RCNewPostViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, AmazonServiceRequestDelegate, UIActionSheetDelegate, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UITextFieldDelegate>
+@property (weak, nonatomic) IBOutlet UIView *imageViewDimVeil;
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageViewPreviousView;
 @property (weak, nonatomic) IBOutlet UIButton *btnPostImage;
 @property (weak, nonatomic) IBOutlet UIImageView *imageViewPostPicture;
+@property (weak, nonatomic) IBOutlet UITextField *txtFieldPostSubject;
 @property (weak, nonatomic) IBOutlet UIButton *btnLandmark;
 - (IBAction)btnActionChooseCameraSource:(id)sender;
 @property (weak, nonatomic) IBOutlet UIImageView *imageViewPostFrame;

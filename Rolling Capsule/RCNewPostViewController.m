@@ -23,7 +23,7 @@
 @property (nonatomic,strong) NSString* imageFileName;
 @property (nonatomic,weak) UIImage *backgroundImage;
 @property (nonatomic, strong) UIButton* postButton;
-
+@property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 @end
 
 @implementation RCNewPostViewController
@@ -39,8 +39,10 @@
 @synthesize backgroundImage = _backgroundImage;
 @synthesize postButton = _postButton;
 
+BOOL _isTapToCloseKeyboard = NO;
 BOOL _landmarkTableVisible = NO;
 BOOL _successfulPost = NO;
+BOOL _firstTimeEditPost = YES;
 RCConnectionManager *_connectionManager;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -92,16 +94,16 @@ RCConnectionManager *_connectionManager;
     [super viewDidLoad];
     [_connectionManager reset];
     [_keyboardPushHandler reset];
+    
+    //initialize tap gesture that would be used either by background image or by
+    //the whole view to handle keyboard pushing up/down
+    _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+    [_imageViewDimVeil addGestureRecognizer:_tapGestureRecognizer];
+    _isTapToCloseKeyboard = NO;
     _keyboardPushHandler.view = self.view;
     
-    /*[[_txtViewPostContent layer] setBorderColor:[[UIColor grayColor] CGColor]];
-    [[_txtViewPostContent layer] setBorderWidth:2.3];
-    [[_txtViewPostContent layer] setCornerRadius:15];*/
-    /*UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Post"
-                                                                    style:UIBarButtonItemStyleDone
-                                                                   target:self
-                                                                   action:@selector(postNew)];
-    self.navigationItem.rightBarButtonItem = rightButton;*/
+    //prepare text view placeholder
+    _firstTimeEditPost = YES;
     
     _tblViewLandmark = [[UITableView alloc] initWithFrame:CGRectMake(0, 30, 320, 200) style:UITableViewStylePlain];
     _tblViewLandmark.delegate = self;
@@ -187,6 +189,7 @@ RCConnectionManager *_connectionManager;
     //Asynchronous Request
     @try {
         _postContent = [_txtViewPostContent text];
+        NSString *postSubject = [_txtFieldPostSubject text];
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
         CLLocationDegrees latitude = appDelegate.currentLocation.coordinate.latitude;
         CLLocationDegrees longitude = appDelegate.currentLocation.coordinate.longitude;
@@ -197,6 +200,7 @@ RCConnectionManager *_connectionManager;
         addArgumentToQueryString(dataSt, @"post[latitude]", latSt);
         addArgumentToQueryString(dataSt, @"post[longitude]", longSt);
         addArgumentToQueryString(dataSt, @"post[file_url]", _imageFileName);
+        addArgumentToQueryString(dataSt, @"subject", postSubject);
         if (_currentLandmark != nil) {
             addArgumentToQueryString(dataSt, @"landmark_id", [NSString stringWithFormat:@"%d",_currentLandmark.landmarkID]);
         }
@@ -224,7 +228,7 @@ RCConnectionManager *_connectionManager;
             if (_successfulPost) {
                 //TODO open main news feed page
                 [self showAlertMessage:@"Image posted successfully!" withTitle:@"Success!"];
-                [self.navigationController popViewControllerAnimated:YES];
+                [self.navigationController popViewControllerAnimated:NO];
             }else {
                 alertStatus([NSString stringWithFormat:@"Please try again! %@", responseData], @"Post Failed!", self);
             }
@@ -322,7 +326,10 @@ RCConnectionManager *_connectionManager;
 }
 
 - (IBAction)backgroundTouchUpInside:(id)sender {
-    [_txtViewPostContent resignFirstResponder];
+    if ([_txtFieldPostSubject isEditing])
+        [_txtFieldPostSubject resignFirstResponder];
+    else
+        [_txtViewPostContent resignFirstResponder];
 }
 
 #pragma mark - UIImagePickerControllerDelegate methods
@@ -362,29 +369,14 @@ RCConnectionManager *_connectionManager;
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    // register for keyboard notifications
-    [[NSNotificationCenter defaultCenter] addObserver:_keyboardPushHandler
-                                             selector:@selector(keyboardWillShow:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:_keyboardPushHandler
-                                             selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
     [super viewWillAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     // unregister for keyboard notifications while not visible.
-    [[NSNotificationCenter defaultCenter] removeObserver:_keyboardPushHandler
-                                                    name:UIKeyboardWillShowNotification
-                                                  object:nil];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:_keyboardPushHandler
-                                                    name:UIKeyboardWillHideNotification
-                                                  object:nil];
     [super viewWillDisappear:animated];
 }
 
@@ -473,5 +465,71 @@ RCConnectionManager *_connectionManager;
                      completion:^(BOOL finished) {
                          //[self removePhotoSourceControlAndAddPrivacyControl];
 					 }];
+}
+
+#pragma mark - tap gesture handler
+-(void) handleTap:(UITapGestureRecognizer *)tapGestureRecognizer {
+    if (_isTapToCloseKeyboard){
+        [self backgroundTouchUpInside:tapGestureRecognizer];
+        [self.view removeGestureRecognizer:_tapGestureRecognizer];
+        [_imageViewDimVeil addGestureRecognizer:_tapGestureRecognizer];
+        _isTapToCloseKeyboard = NO;
+    }
+    else {
+        CGPoint point = [tapGestureRecognizer locationInView:_imageViewPostFrame];
+        //CGRect frame = _imageViewPostFrame.frame;
+        if (![_imageViewPostFrame pointInside:point withEvent:nil])
+            [self.navigationController popViewControllerAnimated:NO];
+    }
+}
+
+#pragma mark - UITextView delegate
+- (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
+    if ([textView isEqual:_txtViewPostContent]) {
+        // register for keyboard notifications
+        [[NSNotificationCenter defaultCenter] addObserver:_keyboardPushHandler
+                                                 selector:@selector(keyboardWillShow:)
+                                                     name:UIKeyboardWillShowNotification
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:_keyboardPushHandler
+                                                 selector:@selector(keyboardWillHide:)
+                                                     name:UIKeyboardWillHideNotification
+                                                   object:nil];
+    }
+    return YES;
+}
+- (void)textViewDidEndEditing:(UITextView *)textView {
+    if ([textView isEqual:_txtViewPostContent]) {
+        [[NSNotificationCenter defaultCenter] removeObserver:_keyboardPushHandler
+                                                        name:UIKeyboardWillShowNotification
+                                                      object:nil];
+        
+        [[NSNotificationCenter defaultCenter] removeObserver:_keyboardPushHandler
+                                                        name:UIKeyboardWillHideNotification
+                                                      object:nil];
+    }
+}
+
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+    [_imageViewDimVeil removeGestureRecognizer:_tapGestureRecognizer];
+    [self.view addGestureRecognizer:_tapGestureRecognizer];
+    _isTapToCloseKeyboard = YES;
+    if ([textView isEqual:_txtViewPostContent]) {
+        // register for keyboard notifications
+
+        if (_firstTimeEditPost )   {
+            [textView setText:@""];
+            _firstTimeEditPost = NO;
+        }
+    }
+}
+
+#pragma mark - UITextField delegate
+
+- (void)textFieldDidBeginEditing:(UITextView *)textView {
+    [_imageViewDimVeil removeGestureRecognizer:_tapGestureRecognizer];
+    [self.view addGestureRecognizer:_tapGestureRecognizer];
+    _isTapToCloseKeyboard = YES;
 }
 @end
