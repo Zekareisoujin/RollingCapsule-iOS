@@ -462,6 +462,7 @@ RCConnectionManager *_connectionManager;
     [_btnVideoSource removeFromSuperview];
     
     [self.view addSubview:_postButton];
+    [_postButton addTarget:self action:@selector(postNew) forControlEvents:UIControlEventTouchUpInside];
     _postButton.alpha = 0.0;
     [UIView animateWithDuration:1.0
 						  delay:0
