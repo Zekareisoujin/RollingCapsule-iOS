@@ -322,13 +322,13 @@ RCConnectionManager *_connectionManager;
     [_txtViewPostContent resignFirstResponder];
 }
 
-#pragma mark - UIImageControllerDelegate methods
+#pragma mark - UIImagePickerControllerDelegate methods
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     
     // Get the selected image.
     _postImage = [info objectForKey:UIImagePickerControllerOriginalImage];
-    [_btnPostImage setImage:_postImage forState:UIControlStateNormal];
+    [_imageViewPostPicture setImage:_postImage];
     if ([picker sourceType] == UIImagePickerControllerSourceTypeCamera)
         UIImageWriteToSavedPhotosAlbum(_postImage, self, nil, nil);
     [picker dismissViewControllerAnimated:YES completion:nil];
@@ -405,4 +405,33 @@ RCConnectionManager *_connectionManager;
     _landmarkTableVisible = NO;
 }
 
+#pragma mark - UI actions
+
+- (IBAction)btnActionChooseCameraSource:(id)sender {
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+        imagePicker.delegate = self;
+        
+        [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+        [self presentViewController:imagePicker animated:YES completion:nil];
+    } else {
+        alertStatus(@"Camera not available", @"Error!",nil);
+    }
+}
+
+- (IBAction)btnActionChoosePhotoLibrarySource:(id)sender {
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+        imagePicker.delegate = self;
+        
+        [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+        [self presentViewController:imagePicker animated:YES completion:nil];
+    } else {
+        alertStatus(@"Photo library not available", @"Error!",nil);
+    }
+
+}
+
+- (IBAction)btnActionChooseVideSource:(id)sender {
+}
 @end
