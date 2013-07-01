@@ -22,6 +22,8 @@
 @property (nonatomic,strong) NSString* postContent;
 @property (nonatomic,strong) NSString* imageFileName;
 @property (nonatomic,weak) UIImage *backgroundImage;
+@property (nonatomic, strong) UIButton* postButton;
+
 @end
 
 @implementation RCNewPostViewController
@@ -35,6 +37,7 @@
 @synthesize tblViewLandmark = _tblViewLandmark;
 @synthesize currentLandmark = _currentLandmark;
 @synthesize backgroundImage = _backgroundImage;
+@synthesize postButton = _postButton;
 
 BOOL _landmarkTableVisible = NO;
 BOOL _successfulPost = NO;
@@ -332,6 +335,22 @@ RCConnectionManager *_connectionManager;
     if ([picker sourceType] == UIImagePickerControllerSourceTypeCamera)
         UIImageWriteToSavedPhotosAlbum(_postImage, self, nil, nil);
     [picker dismissViewControllerAnimated:YES completion:nil];
+    /*CGRect frame = _btnCameraSource.frame;
+    frame.origin.y = 500;//_imageViewPostFrame.frame.origin.y + _imageViewPostFrame.frame.size.height;
+    [self.btnCameraSource setFrame: frame];*/
+    
+    [UIView animateWithDuration:1.0
+						  delay:0
+						options:UIViewAnimationOptionCurveEaseInOut
+					 animations:^{
+                         _btnCameraSource.alpha = 0.0;
+                         _btnPhotoLibrarySource.alpha = 0.0;
+                         _btnVideoSource.alpha = 0.0;
+					 }
+                     completion:^(BOOL finished) {
+                         [self removePhotoSourceControlAndAddPrivacyControl];
+					 }];
+
 }
 
 -(void) imagePickerControllerDidCancel:(UIImagePickerController *)picker
@@ -433,5 +452,25 @@ RCConnectionManager *_connectionManager;
 }
 
 - (IBAction)btnActionChooseVideSource:(id)sender {
+}
+
+- (void) removePhotoSourceControlAndAddPrivacyControl {
+    _postButton = [[UIButton alloc] initWithFrame:_btnVideoSource.frame];
+    [_postButton setImage:[UIImage imageNamed:@"postPostButton-normal.png"] forState:UIControlStateNormal];
+    [_btnCameraSource removeFromSuperview];
+    [_btnPhotoLibrarySource removeFromSuperview];
+    [_btnVideoSource removeFromSuperview];
+    
+    [self.view addSubview:_postButton];
+    _postButton.alpha = 0.0;
+    [UIView animateWithDuration:1.0
+						  delay:0
+						options:UIViewAnimationOptionCurveEaseInOut
+					 animations:^{
+                         _postButton.alpha = 1.0;
+					 }
+                     completion:^(BOOL finished) {
+                         //[self removePhotoSourceControlAndAddPrivacyControl];
+					 }];
 }
 @end
