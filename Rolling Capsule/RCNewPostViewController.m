@@ -23,7 +23,11 @@
 @property (nonatomic,strong) NSString* imageFileName;
 @property (nonatomic,weak) UIImage *backgroundImage;
 @property (nonatomic, strong) UIButton* postButton;
+@property (nonatomic, strong) UIButton* publicPrivacyButton;
+@property (nonatomic, strong) UIButton* friendPrivacyButton;
+@property (nonatomic, strong) UIButton* personalPrivacyButton;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
+@property (nonatomic, strong) NSString* privacyOption;
 @end
 
 @implementation RCNewPostViewController
@@ -38,7 +42,10 @@
 @synthesize currentLandmark = _currentLandmark;
 @synthesize backgroundImage = _backgroundImage;
 @synthesize postButton = _postButton;
-
+@synthesize publicPrivacyButton = _publicPrivacyButton;
+@synthesize friendPrivacyButton = _friendPrivacyButton;
+@synthesize personalPrivacyButton = _personalPrivacyButton;
+@synthesize privacyOption = _privacyOption;
 BOOL _isTapToCloseKeyboard = NO;
 BOOL _landmarkTableVisible = NO;
 BOOL _successfulPost = NO;
@@ -130,6 +137,10 @@ RCConnectionManager *_connectionManager;
         [self showAlertMessage:@"Please choose an image!" withTitle:@"Incomplete post!"];
         return;
     }
+    if (_privacyOption == nil) {
+        [self showAlertMessage:@"Please choose a privacy option!" withTitle:@"Incomplete post!"];
+        return;
+    }
     [_connectionManager startConnection];
     _postButton.enabled = NO;
     UIImage *rescaledImage = imageWithImage(_postImage, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
@@ -202,6 +213,7 @@ RCConnectionManager *_connectionManager;
         addArgumentToQueryString(dataSt, @"post[latitude]", latSt);
         addArgumentToQueryString(dataSt, @"post[longitude]", longSt);
         addArgumentToQueryString(dataSt, @"post[file_url]", _imageFileName);
+        addArgumentToQueryString(dataSt, @"post[privacy_option]", _privacyOption);
         addArgumentToQueryString(dataSt, @"subject", postSubject);
         if (_currentLandmark != nil) {
             addArgumentToQueryString(dataSt, @"landmark_id", [NSString stringWithFormat:@"%d",_currentLandmark.landmarkID]);
@@ -487,6 +499,17 @@ RCConnectionManager *_connectionManager;
 }
 
 - (void) removePhotoSourceControlAndAddPrivacyControl {
+    
+    CGRect frame1 = CGRectMake(_imageViewPostFrame.frame.origin.x + 10,_btnVideoSource.frame.origin.y,54,59);
+    CGRect frame2 = frame1, frame3 = frame1;
+    frame2.origin.x = frame1.origin.x+54;
+    frame3.origin.x = frame2.origin.x+54;
+    _publicPrivacyButton = [[UIButton alloc] initWithFrame:frame1];
+    [_publicPrivacyButton setImage:[UIImage imageNamed:@"postPublicPrivacyButton.png"] forState:UIControlStateNormal];
+    _friendPrivacyButton = [[UIButton alloc] initWithFrame:frame2];
+    [_friendPrivacyButton setImage:[UIImage imageNamed:@"postFriendPrivacyButton.png"] forState:UIControlStateNormal];
+    _personalPrivacyButton = [[UIButton alloc] initWithFrame:frame3];
+    [_personalPrivacyButton setImage:[UIImage imageNamed:@"postPersonalPrivacyButton.png"] forState:UIControlStateNormal];
     _postButton = [[UIButton alloc] initWithFrame:_btnVideoSource.frame];
     [_postButton setImage:[UIImage imageNamed:@"postPostButton-normal.png"] forState:UIControlStateNormal];
     [_btnCameraSource removeFromSuperview];
@@ -495,13 +518,25 @@ RCConnectionManager *_connectionManager;
     
     
     [_postButton addTarget:self action:@selector(postNew) forControlEvents:UIControlEventTouchUpInside];
+    [_publicPrivacyButton addTarget:self action:@selector(setPostPrivacyOption:) forControlEvents:UIControlEventTouchUpInside];
+    [_personalPrivacyButton addTarget:self action:@selector(setPostPrivacyOption:) forControlEvents:UIControlEventTouchUpInside];
+    [_friendPrivacyButton addTarget:self action:@selector(setPostPrivacyOption:) forControlEvents:UIControlEventTouchUpInside];
     _postButton.alpha = 0.0;
+    _publicPrivacyButton.alpha = 0.0;
+    _personalPrivacyButton.alpha = 0.0;
+    _friendPrivacyButton.alpha = 0.0;
     [self.view addSubview:_postButton];
+    [self.view addSubview:_publicPrivacyButton];
+    [self.view addSubview:_friendPrivacyButton];
+    [self.view addSubview:_personalPrivacyButton];
     [UIView animateWithDuration:0.3
 						  delay:0
 						options:UIViewAnimationOptionCurveEaseInOut
 					 animations:^{
                          _postButton.alpha = 1.0;
+                         _publicPrivacyButton.alpha = 1.0;
+                         _personalPrivacyButton.alpha = 1.0;
+                         _friendPrivacyButton.alpha = 1.0;
 					 }
                      completion:^(BOOL finished) {
                          //[self removePhotoSourceControlAndAddPrivacyControl];
@@ -579,5 +614,31 @@ RCConnectionManager *_connectionManager;
     [self animateViewDisapperance:^ {
         [self.navigationController popViewControllerAnimated:NO];
     }];
+}
+
+#pragma mark - post privacy options
+- (void) setPostPrivacyOption:(UIButton*) sender {
+    if ([sender isEqual:_publicPrivacyButton])
+        _privacyOption = @"public";
+    if ([sender isEqual:_friendPrivacyButton])
+        _privacyOption = @"friends";
+    if ([sender isEqual:_personalPrivacyButton])
+        _privacyOption = @"personal";
+    NSMutableArray *buttons = [[NSMutableArray alloc] init];
+    [buttons addObject:_publicPrivacyButton];
+    [buttons addObject:_friendPrivacyButton];
+    [buttons addObject:_personalPrivacyButton];
+    NSMutableArray *buttonFileNames = [[NSMutableArray alloc] init];
+    [buttonFileNames addObject:@"postPublicPrivacyButton"];
+    [buttonFileNames addObject:@"postFriendPrivacyButton"];
+    [buttonFileNames addObject:@"postPersonalPrivacyButton"];
+    int i = 0;
+    for (UIButton *button in buttons) {
+        if([button isEqual:sender]) {
+            [button setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-highlighted.png",[buttonFileNames objectAtIndex:i]]] forState:UIControlStateNormal];
+        } else 
+            [button setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@.png",[buttonFileNames objectAtIndex:i]]] forState:UIControlStateNormal];
+        i++;
+    }
 }
 @end
