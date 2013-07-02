@@ -15,6 +15,7 @@
 @interface RCNewPostViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, AmazonServiceRequestDelegate, UIActionSheetDelegate, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UITextFieldDelegate>
 @property (weak, nonatomic) IBOutlet UIView *imageViewDimVeil;
 
+- (IBAction)closeBtnTouchUpInside:(id)sender;
 @property (weak, nonatomic) IBOutlet UIImageView *imageViewPreviousView;
 @property (weak, nonatomic) IBOutlet UIButton *btnPostImage;
 @property (weak, nonatomic) IBOutlet UIImageView *imageViewPostPicture;

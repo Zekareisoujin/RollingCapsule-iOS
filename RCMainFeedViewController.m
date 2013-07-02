@@ -88,7 +88,7 @@ BOOL        _willRefresh;
     _userCache = [[NSMutableDictionary alloc] init];
     _postCache = [[NSMutableDictionary alloc] init];
     
-    self.navigationItem.title = @"News Feed";
+    self.navigationItem.title = @"";
 
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"New Post" style:UIBarButtonItemStylePlain target:self action:@selector(switchToNewPostScreen)];
     self.navigationItem.rightBarButtonItem = rightButton;
@@ -222,7 +222,7 @@ BOOL        _willRefresh;
 }
 
 - (void) switchToNewPostScreen {
-    _willRefresh = YES;
+    _willRefresh = NO;
     if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)])
         UIGraphicsBeginImageContextWithOptions(self.view.frame.size, NO, [UIScreen mainScreen].scale);
     else

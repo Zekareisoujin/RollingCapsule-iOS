@@ -115,6 +115,8 @@ RCConnectionManager *_connectionManager;
     
     if (_backgroundImage != nil)
         [_imageViewPreviousView setImage:_backgroundImage];
+    
+    [self animateViewApperance];
 }
 
 - (void)didReceiveMemoryWarning
@@ -129,7 +131,7 @@ RCConnectionManager *_connectionManager;
         return;
     }
     [_connectionManager startConnection];
-    self.navigationItem.rightBarButtonItem.enabled = NO;
+    _postButton.enabled = NO;
     UIImage *rescaledImage = imageWithImage(_postImage, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
     NSData *imageData = UIImageJPEGRepresentation(rescaledImage, 1.0);
     [self performSelectorInBackground:@selector(uploadImageToS3:) withObject:imageData];
@@ -158,7 +160,7 @@ RCConnectionManager *_connectionManager;
         } else {
             NSLog(@"Error: %@", putObjectResponse.error);
             [_connectionManager endConnection];
-            self.navigationItem.rightBarButtonItem.enabled = YES;
+            _postButton.enabled = YES;
             [self showAlertMessage:putObjectResponse.error.description withTitle:@"Upload Error"];
             
         }
@@ -166,7 +168,7 @@ RCConnectionManager *_connectionManager;
         NSLog(@"New-Post: Error: %@", exception);
         NSLog(@"New-Post: Debug Description: %@",exception.debugDescription);
         [_connectionManager endConnection];
-        self.navigationItem.rightBarButtonItem.enabled = YES;
+        _postButton.enabled = YES;
         [self showAlertMessage:exception.description withTitle:RCUploadError];
     }
 }
@@ -219,7 +221,7 @@ RCConnectionManager *_connectionManager;
             } else _successfulPost = YES;
             
             [_connectionManager endConnection];
-            self.navigationItem.rightBarButtonItem.enabled = YES;
+            _postButton.enabled = YES;
             
             NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
             NSLog(@"%@",responseData);
@@ -228,7 +230,9 @@ RCConnectionManager *_connectionManager;
             if (_successfulPost) {
                 //TODO open main news feed page
                 [self showAlertMessage:@"Image posted successfully!" withTitle:@"Success!"];
-                [self.navigationController popViewControllerAnimated:NO];
+                [self animateViewDisapperance:^ {
+                    [self.navigationController popViewControllerAnimated:NO];
+                }];
             }else {
                 alertStatus([NSString stringWithFormat:@"Please try again! %@", responseData], @"Post Failed!", self);
             }
@@ -342,11 +346,8 @@ RCConnectionManager *_connectionManager;
     if ([picker sourceType] == UIImagePickerControllerSourceTypeCamera)
         UIImageWriteToSavedPhotosAlbum(_postImage, self, nil, nil);
     [picker dismissViewControllerAnimated:YES completion:nil];
-    /*CGRect frame = _btnCameraSource.frame;
-    frame.origin.y = 500;//_imageViewPostFrame.frame.origin.y + _imageViewPostFrame.frame.size.height;
-    [self.btnCameraSource setFrame: frame];*/
     
-    [UIView animateWithDuration:1.0
+    [UIView animateWithDuration:0.6
 						  delay:0
 						options:UIViewAnimationOptionCurveEaseInOut
 					 animations:^{
@@ -369,7 +370,6 @@ RCConnectionManager *_connectionManager;
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    
     [super viewWillAppear:animated];
 }
 
@@ -378,6 +378,46 @@ RCConnectionManager *_connectionManager;
     // unregister for keyboard notifications while not visible.
     
     [super viewWillDisappear:animated];
+}
+#pragma mark - animate in the view
+/*- (void)viewDidAppear:(BOOL)animated {
+    
+    [super viewDidAppear:animated];
+    
+    
+}*/
+
+- (void) animateViewApperance {
+    for (UIView *view in self.view.subviews) {
+        if (view != _imageViewPreviousView)
+            view.alpha = 0.0;
+    }
+    //_imageViewDimVeil.alpha = 0.0;
+    [UIView animateWithDuration:0.5
+						  delay:0
+						options:UIViewAnimationOptionCurveEaseInOut
+					 animations:^{
+                         for (UIView *view in self.view.subviews)
+                             if (view != _imageViewPreviousView)
+                                 view.alpha = 1.0;
+					 }
+                     completion:^(BOOL finished) {
+                         //[self removePhotoSourceControlAndAddPrivacyControl];
+					 }];
+}
+- (void) animateViewDisapperance:(void (^)(void))completeCallback {
+    //_imageViewDimVeil.alpha = 0.0;
+    [UIView animateWithDuration:0.5
+						  delay:0
+						options:UIViewAnimationOptionCurveEaseInOut
+					 animations:^{
+                         for (UIView *view in self.view.subviews)
+                             if (view != _imageViewPreviousView)
+                                 view.alpha = 0.0;
+					 }
+                     completion:^(BOOL finished) {
+                         completeCallback();
+					 }];
 }
 
 #pragma mark - Table view data source
@@ -453,10 +493,11 @@ RCConnectionManager *_connectionManager;
     [_btnPhotoLibrarySource removeFromSuperview];
     [_btnVideoSource removeFromSuperview];
     
-    [self.view addSubview:_postButton];
+    
     [_postButton addTarget:self action:@selector(postNew) forControlEvents:UIControlEventTouchUpInside];
     _postButton.alpha = 0.0;
-    [UIView animateWithDuration:1.0
+    [self.view addSubview:_postButton];
+    [UIView animateWithDuration:0.3
 						  delay:0
 						options:UIViewAnimationOptionCurveEaseInOut
 					 animations:^{
@@ -479,7 +520,9 @@ RCConnectionManager *_connectionManager;
         CGPoint point = [tapGestureRecognizer locationInView:_imageViewPostFrame];
         //CGRect frame = _imageViewPostFrame.frame;
         if (![_imageViewPostFrame pointInside:point withEvent:nil])
-            [self.navigationController popViewControllerAnimated:NO];
+            [self animateViewDisapperance:^ {
+                [self.navigationController popViewControllerAnimated:NO];
+            }];
     }
 }
 
@@ -531,5 +574,10 @@ RCConnectionManager *_connectionManager;
     [_imageViewDimVeil removeGestureRecognizer:_tapGestureRecognizer];
     [self.view addGestureRecognizer:_tapGestureRecognizer];
     _isTapToCloseKeyboard = YES;
+}
+- (IBAction)closeBtnTouchUpInside:(id)sender {
+    [self animateViewDisapperance:^ {
+        [self.navigationController popViewControllerAnimated:NO];
+    }];
 }
 @end
