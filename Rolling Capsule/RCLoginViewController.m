@@ -32,7 +32,8 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    UIFont *btnFont =[UIFont fontWithName:@"Copperplate" size:18.0];
+    // Programmatically customize UIButton:
+    /*UIFont *btnFont =[UIFont fontWithName:@"Copperplate" size:18.0];
     [_btnLogIn.titleLabel setFont:btnFont];
     [_btnRegister.titleLabel setFont:btnFont];
     _txtFieldUsername.font = btnFont;
@@ -46,7 +47,9 @@
     [_btnLogIn setBackgroundImage:btnStretchedImageActive forState:UIControlStateNormal];
     [_btnRegister setBackgroundImage:btnStretchedImageActive forState:UIControlStateNormal];
     [_btnLogIn setBackgroundImage:btnStretchedImageDepressed forState:UIControlStateHighlighted];
-    [_btnRegister setBackgroundImage:btnStretchedImageDepressed forState:UIControlStateHighlighted];
+    [_btnRegister setBackgroundImage:btnStretchedImageDepressed forState:UIControlStateHighlighted];*/
+    [_btnLogIn setBackgroundImage:[UIImage imageNamed:@"loginBtnLoginPressed"] forState:UIControlStateHighlighted];
+    [_btnRegister setBackgroundImage:[UIImage imageNamed:@"loginBtnRegisterPressed"] forState:UIControlStateHighlighted];
     
 }
 
@@ -113,6 +116,10 @@
     [_txtFieldUsername resignFirstResponder];
     [_txtFieldPassword endEditing:YES];
     
+}
+
+- (IBAction)btnForgotPassword:(id)sender {
+    alertStatus(@"Not yet implemented!", @"Error", nil);
 }
 
 - (void)viewWillAppear:(BOOL)animated

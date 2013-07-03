@@ -25,5 +25,6 @@
 - (IBAction)btnActionLogIn:(id)sender;
 - (IBAction)btnActionRegister:(id)sender;
 - (IBAction)btnBackgroundTap:(id)sender;
+- (IBAction)btnForgotPassword:(id)sender;
 
 @end
