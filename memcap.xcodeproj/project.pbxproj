@@ -22,13 +22,14 @@
 		641199FC1780B57600BF0B05 /* postPhotoLibrarySourceButton-normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 641199FA1780B57600BF0B05 /* postPhotoLibrarySourceButton-normal.png */; };
 		641199FD1780B57600BF0B05 /* postVideoSourceButton-normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 641199FB1780B57600BF0B05 /* postVideoSourceButton-normal.png */; };
 		64119A031781B83000BF0B05 /* postPostButton-normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 64119A021781B83000BF0B05 /* postPostButton-normal.png */; };
-		64119A051782D32500BF0B05 /* closeButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64119A041782D32500BF0B05 /* closeButton@2x.png */; };
 		64119A0917833A8B00BF0B05 /* postFriendPrivacyButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 64119A0617833A8A00BF0B05 /* postFriendPrivacyButton.png */; };
 		64119A0A17833A8B00BF0B05 /* postPersonalPrivacyButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 64119A0717833A8A00BF0B05 /* postPersonalPrivacyButton.png */; };
 		64119A0B17833A8B00BF0B05 /* postPublicPrivacyButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 64119A0817833A8B00BF0B05 /* postPublicPrivacyButton.png */; };
 		64119A0F17834E9800BF0B05 /* postFriendPrivacyButton-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 64119A0C17834E9700BF0B05 /* postFriendPrivacyButton-highlighted.png */; };
 		64119A1017834E9800BF0B05 /* postPersonalPrivacyButton-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 64119A0D17834E9700BF0B05 /* postPersonalPrivacyButton-highlighted.png */; };
 		64119A1117834E9800BF0B05 /* postPublicPrivacyButton-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 64119A0E17834E9700BF0B05 /* postPublicPrivacyButton-highlighted.png */; };
+		64119A13178460A500BF0B05 /* closeButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 64119A12178460A500BF0B05 /* closeButton.png */; };
+		64119A161784611700BF0B05 /* RCLightboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64119A151784611700BF0B05 /* RCLightboxViewController.m */; };
 		64176AFF175A260900443B59 /* AWSRuntime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64176AFD175A260900443B59 /* AWSRuntime.framework */; };
 		64176B00175A260900443B59 /* AWSS3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64176AFE175A260900443B59 /* AWSS3.framework */; };
 		64194AD61770AAF200822F9B /* RCMainFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 64194AD51770AAF100822F9B /* RCMainFeedCell.m */; };
@@ -114,8 +115,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		64011D2E17781DA400816D93 /* RCTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTextField.h; sourceTree = "<group>"; };
-		64011D2F17781DA400816D93 /* RCTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTextField.m; sourceTree = "<group>"; };
+		64011D2E17781DA400816D93 /* RCTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCTextField.h; path = ../RCTextField.h; sourceTree = "<group>"; };
+		64011D2F17781DA400816D93 /* RCTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCTextField.m; path = ../RCTextField.m; sourceTree = "<group>"; };
 		64014915177966F5009B69DF /* RCMainFeedCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RCMainFeedCell.xib; path = ../RCMainFeedCell.xib; sourceTree = "<group>"; };
 		6407BBD51753B719000F29C5 /* RCFriendListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RCFriendListViewController.xib; path = ../RCFriendListViewController.xib; sourceTree = "<group>"; };
 		6407BBD717545579000F29C5 /* RCUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCUser.h; sourceTree = "<group>"; };
@@ -133,13 +134,15 @@
 		641199FA1780B57600BF0B05 /* postPhotoLibrarySourceButton-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "postPhotoLibrarySourceButton-normal.png"; path = "../postPhotoLibrarySourceButton-normal.png"; sourceTree = "<group>"; };
 		641199FB1780B57600BF0B05 /* postVideoSourceButton-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "postVideoSourceButton-normal.png"; path = "../postVideoSourceButton-normal.png"; sourceTree = "<group>"; };
 		64119A021781B83000BF0B05 /* postPostButton-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "postPostButton-normal.png"; path = "../postPostButton-normal.png"; sourceTree = "<group>"; };
-		64119A041782D32500BF0B05 /* closeButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "closeButton@2x.png"; path = "../../Desktop/closeButton@2x.png"; sourceTree = "<group>"; };
 		64119A0617833A8A00BF0B05 /* postFriendPrivacyButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = postFriendPrivacyButton.png; path = ../postFriendPrivacyButton.png; sourceTree = "<group>"; };
 		64119A0717833A8A00BF0B05 /* postPersonalPrivacyButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = postPersonalPrivacyButton.png; path = ../postPersonalPrivacyButton.png; sourceTree = "<group>"; };
 		64119A0817833A8B00BF0B05 /* postPublicPrivacyButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = postPublicPrivacyButton.png; path = ../postPublicPrivacyButton.png; sourceTree = "<group>"; };
 		64119A0C17834E9700BF0B05 /* postFriendPrivacyButton-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "postFriendPrivacyButton-highlighted.png"; path = "../postFriendPrivacyButton-highlighted.png"; sourceTree = "<group>"; };
 		64119A0D17834E9700BF0B05 /* postPersonalPrivacyButton-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "postPersonalPrivacyButton-highlighted.png"; path = "../postPersonalPrivacyButton-highlighted.png"; sourceTree = "<group>"; };
 		64119A0E17834E9700BF0B05 /* postPublicPrivacyButton-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "postPublicPrivacyButton-highlighted.png"; path = "../postPublicPrivacyButton-highlighted.png"; sourceTree = "<group>"; };
+		64119A12178460A500BF0B05 /* closeButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = closeButton.png; path = ../closeButton.png; sourceTree = "<group>"; };
+		64119A141784611700BF0B05 /* RCLightboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCLightboxViewController.h; sourceTree = "<group>"; };
+		64119A151784611700BF0B05 /* RCLightboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCLightboxViewController.m; sourceTree = "<group>"; };
 		64176AFD175A260900443B59 /* AWSRuntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSRuntime.framework; path = "../../Downloads/aws-ios-sdk-1.6.0/AWSRuntime.framework"; sourceTree = "<group>"; };
 		64176AFE175A260900443B59 /* AWSS3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSS3.framework; path = "../../Downloads/aws-ios-sdk-1.6.0/AWSS3.framework"; sourceTree = "<group>"; };
 		64194AD41770AAF100822F9B /* RCMainFeedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCMainFeedCell.h; path = ../RCMainFeedCell.h; sourceTree = "<group>"; };
@@ -159,9 +162,9 @@
 		64549D87175F264600BA8164 /* RCPostDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RCPostDetailsViewController.xib; path = ../RCPostDetailsViewController.xib; sourceTree = "<group>"; };
 		6459A0EF17759F72003DC896 /* RCNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCNotification.h; path = ../RCNotification.h; sourceTree = "<group>"; };
 		6459A0F017759F72003DC896 /* RCNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCNotification.m; path = ../RCNotification.m; sourceTree = "<group>"; };
-		6459A0F21775AFCB003DC896 /* RCFriendRequestsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCFriendRequestsViewController.h; sourceTree = "<group>"; };
-		6459A0F31775AFCB003DC896 /* RCFriendRequestsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCFriendRequestsViewController.m; sourceTree = "<group>"; };
-		6459A0F41775AFCB003DC896 /* RCFriendRequestsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCFriendRequestsViewController.xib; sourceTree = "<group>"; };
+		6459A0F21775AFCB003DC896 /* RCFriendRequestsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCFriendRequestsViewController.h; path = ../RCFriendRequestsViewController.h; sourceTree = "<group>"; };
+		6459A0F31775AFCB003DC896 /* RCFriendRequestsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCFriendRequestsViewController.m; path = ../RCFriendRequestsViewController.m; sourceTree = "<group>"; };
+		6459A0F41775AFCB003DC896 /* RCFriendRequestsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RCFriendRequestsViewController.xib; path = ../RCFriendRequestsViewController.xib; sourceTree = "<group>"; };
 		6461033E176E5F8A008DD131 /* RCLandmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCLandmark.h; path = ../RCLandmark.h; sourceTree = "<group>"; };
 		6461033F176E5F8A008DD131 /* RCLandmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCLandmark.m; path = ../RCLandmark.m; sourceTree = "<group>"; };
 		6490A9091757C07000E5048F /* RCMainMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMainMenuViewController.h; sourceTree = "<group>"; };
@@ -293,6 +296,7 @@
 			isa = PBXGroup;
 			children = (
 				64119A021781B83000BF0B05 /* postPostButton-normal.png */,
+				64119A12178460A500BF0B05 /* closeButton.png */,
 				64119A0C17834E9700BF0B05 /* postFriendPrivacyButton-highlighted.png */,
 				64119A0D17834E9700BF0B05 /* postPersonalPrivacyButton-highlighted.png */,
 				64119A0E17834E9700BF0B05 /* postPublicPrivacyButton-highlighted.png */,
@@ -325,12 +329,8 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
-				64119A041782D32500BF0B05 /* closeButton@2x.png */,
-				64011D2E17781DA400816D93 /* RCTextField.h */,
-				64011D2F17781DA400816D93 /* RCTextField.m */,
-				6459A0F21775AFCB003DC896 /* RCFriendRequestsViewController.h */,
-				6459A0F31775AFCB003DC896 /* RCFriendRequestsViewController.m */,
-				6459A0F41775AFCB003DC896 /* RCFriendRequestsViewController.xib */,
+				64119A141784611700BF0B05 /* RCLightboxViewController.h */,
+				64119A151784611700BF0B05 /* RCLightboxViewController.m */,
 				BFCA7821174DFD3F00666CBA /* Rolling Capsule */,
 				BFCA7845174DFD3F00666CBA /* Rolling CapsuleTests */,
 				BFCA781A174DFD3F00666CBA /* Frameworks */,
@@ -424,6 +424,11 @@
 				BFCA7822174DFD3F00666CBA /* Supporting Files */,
 				6490A90E1758E2D000E5048F /* RCSlideoutViewController.h */,
 				6490A90F1758E2D000E5048F /* RCSlideoutViewController.m */,
+				64011D2E17781DA400816D93 /* RCTextField.h */,
+				64011D2F17781DA400816D93 /* RCTextField.m */,
+				6459A0F21775AFCB003DC896 /* RCFriendRequestsViewController.h */,
+				6459A0F31775AFCB003DC896 /* RCFriendRequestsViewController.m */,
+				6459A0F41775AFCB003DC896 /* RCFriendRequestsViewController.xib */,
 				649A869B175B0CC30016674F /* RCAmazonS3Helper.h */,
 				649A869C175B0CC30016674F /* RCAmazonS3Helper.m */,
 				642E71FC17639D9400B3464E /* RCConnectionManager.h */,
@@ -606,13 +611,13 @@
 				641199FC1780B57600BF0B05 /* postPhotoLibrarySourceButton-normal.png in Resources */,
 				641199FD1780B57600BF0B05 /* postVideoSourceButton-normal.png in Resources */,
 				64119A031781B83000BF0B05 /* postPostButton-normal.png in Resources */,
-				64119A051782D32500BF0B05 /* closeButton@2x.png in Resources */,
 				64119A0917833A8B00BF0B05 /* postFriendPrivacyButton.png in Resources */,
 				64119A0A17833A8B00BF0B05 /* postPersonalPrivacyButton.png in Resources */,
 				64119A0B17833A8B00BF0B05 /* postPublicPrivacyButton.png in Resources */,
 				64119A0F17834E9800BF0B05 /* postFriendPrivacyButton-highlighted.png in Resources */,
 				64119A1017834E9800BF0B05 /* postPersonalPrivacyButton-highlighted.png in Resources */,
 				64119A1117834E9800BF0B05 /* postPublicPrivacyButton-highlighted.png in Resources */,
+				64119A13178460A500BF0B05 /* closeButton.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -684,6 +689,7 @@
 				6459A0F117759F72003DC896 /* RCNotification.m in Sources */,
 				6459A0F51775AFCB003DC896 /* RCFriendRequestsViewController.m in Sources */,
 				64011D3017781DA400816D93 /* RCTextField.m in Sources */,
+				64119A161784611700BF0B05 /* RCLightboxViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
