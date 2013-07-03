@@ -21,7 +21,6 @@
 @property (nonatomic,strong) UIImage* postImage;
 @property (nonatomic,strong) NSString* postContent;
 @property (nonatomic,strong) NSString* imageFileName;
-@property (nonatomic,weak) UIImage *backgroundImage;
 @property (nonatomic, strong) UIButton* postButton;
 @property (nonatomic, strong) UIButton* publicPrivacyButton;
 @property (nonatomic, strong) UIButton* friendPrivacyButton;
@@ -40,7 +39,6 @@
 @synthesize landmarks = _landmarks;
 @synthesize tblViewLandmark = _tblViewLandmark;
 @synthesize currentLandmark = _currentLandmark;
-@synthesize backgroundImage = _backgroundImage;
 @synthesize postButton = _postButton;
 @synthesize publicPrivacyButton = _publicPrivacyButton;
 @synthesize friendPrivacyButton = _friendPrivacyButton;
@@ -78,7 +76,7 @@ RCConnectionManager *_connectionManager;
         _user = user;
         _keyboardPushHandler = [[RCKeyboardPushUpHandler alloc] init];
         _connectionManager = [[RCConnectionManager alloc] init];
-        _backgroundImage = nil;
+        self.backgroundImage = nil;
         //NSLog(@"RCNewPostViewController: %@", _keyboardPushHandler);
     }
     return self;
@@ -90,7 +88,7 @@ RCConnectionManager *_connectionManager;
         _user = user;
         _keyboardPushHandler = [[RCKeyboardPushUpHandler alloc] init];
         _connectionManager = [[RCConnectionManager alloc] init];
-        _backgroundImage = image;
+        self.backgroundImage = image;
         //NSLog(@"RCNewPostViewController: %@", _keyboardPushHandler);
     }
     return self;
@@ -105,7 +103,7 @@ RCConnectionManager *_connectionManager;
     //initialize tap gesture that would be used either by background image or by
     //the whole view to handle keyboard pushing up/down
     _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
-    [_imageViewDimVeil addGestureRecognizer:_tapGestureRecognizer];
+    [self.view addGestureRecognizer:_tapGestureRecognizer];
     _isTapToCloseKeyboard = NO;
     _keyboardPushHandler.view = self.view;
     
@@ -120,10 +118,7 @@ RCConnectionManager *_connectionManager;
     _landmarkTableVisible = NO;
     _currentLandmark = nil;
     
-    if (_backgroundImage != nil)
-        [_imageViewPreviousView setImage:_backgroundImage];
-    
-    [self animateViewApperance];
+    [self animateViewAppearance];
 }
 
 - (void)didReceiveMemoryWarning
@@ -399,38 +394,7 @@ RCConnectionManager *_connectionManager;
     
 }*/
 
-- (void) animateViewApperance {
-    for (UIView *view in self.view.subviews) {
-        if (view != _imageViewPreviousView)
-            view.alpha = 0.0;
-    }
-    //_imageViewDimVeil.alpha = 0.0;
-    [UIView animateWithDuration:0.5
-						  delay:0
-						options:UIViewAnimationOptionCurveEaseInOut
-					 animations:^{
-                         for (UIView *view in self.view.subviews)
-                             if (view != _imageViewPreviousView)
-                                 view.alpha = 1.0;
-					 }
-                     completion:^(BOOL finished) {
-                         //[self removePhotoSourceControlAndAddPrivacyControl];
-					 }];
-}
-- (void) animateViewDisapperance:(void (^)(void))completeCallback {
-    //_imageViewDimVeil.alpha = 0.0;
-    [UIView animateWithDuration:0.5
-						  delay:0
-						options:UIViewAnimationOptionCurveEaseInOut
-					 animations:^{
-                         for (UIView *view in self.view.subviews)
-                             if (view != _imageViewPreviousView)
-                                 view.alpha = 0.0;
-					 }
-                     completion:^(BOOL finished) {
-                         completeCallback();
-					 }];
-}
+
 
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -547,8 +511,6 @@ RCConnectionManager *_connectionManager;
 -(void) handleTap:(UITapGestureRecognizer *)tapGestureRecognizer {
     if (_isTapToCloseKeyboard){
         [self backgroundTouchUpInside:tapGestureRecognizer];
-        [self.view removeGestureRecognizer:_tapGestureRecognizer];
-        [_imageViewDimVeil addGestureRecognizer:_tapGestureRecognizer];
         _isTapToCloseKeyboard = NO;
     }
     else {
@@ -590,8 +552,6 @@ RCConnectionManager *_connectionManager;
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
-    [_imageViewDimVeil removeGestureRecognizer:_tapGestureRecognizer];
-    [self.view addGestureRecognizer:_tapGestureRecognizer];
     _isTapToCloseKeyboard = YES;
     if ([textView isEqual:_txtViewPostContent]) {
         // register for keyboard notifications
@@ -606,8 +566,6 @@ RCConnectionManager *_connectionManager;
 #pragma mark - UITextField delegate
 
 - (void)textFieldDidBeginEditing:(UITextView *)textView {
-    [_imageViewDimVeil removeGestureRecognizer:_tapGestureRecognizer];
-    [self.view addGestureRecognizer:_tapGestureRecognizer];
     _isTapToCloseKeyboard = YES;
 }
 - (IBAction)closeBtnTouchUpInside:(id)sender {

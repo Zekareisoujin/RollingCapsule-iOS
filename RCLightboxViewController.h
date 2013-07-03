@@ -13,4 +13,6 @@
 @property (nonatomic, strong) UIImageView *imageViewPreviousView;
 @property (nonatomic, strong) UIView      *viewDimVeil;
 @property (nonatomic, weak)   UIImage*     backgroundImage;
+- (void) animateViewAppearance;
+- (void) animateViewDisapperance:(void (^)(void))completeCallback;
 @end
