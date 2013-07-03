@@ -38,7 +38,7 @@
     RCUser *user = [[RCUser alloc] init];
     user.name = @"lolo";
     user.email = @"lolotp@hotmail.com";
-    user.userID = 1;
+    user.userID = 3;
     RCPost *post = [[RCPost alloc] init];
     post.postID = 14;
     post.content = @"hh";
@@ -62,7 +62,7 @@
 
     _menuViewController = [[RCMainMenuViewController alloc] initWithContentView:_navigationController];
     
-    firstViewController.delegate = _menuViewController;
+    //firstViewController.delegate = _menuViewController;
     _mainViewController = [[RCSlideoutViewController alloc] init];
     _mainViewController.contentController = _navigationController;
     _mainViewController.menuViewController = _menuViewController;

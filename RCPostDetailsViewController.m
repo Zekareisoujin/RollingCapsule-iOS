@@ -18,6 +18,7 @@
 @interface RCPostDetailsViewController ()
 @property (nonatomic,strong) NSMutableArray* comments;
 @property (nonatomic,strong) UITextField* textField;
+@property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 @end
 
 @implementation RCPostDetailsViewController
@@ -28,7 +29,10 @@
 @synthesize comments = _comments;
 @synthesize barItemTextField = _barItemTextField;
 @synthesize textField = _textField;
+@synthesize tapGestureRecognizer = _tapGestureRecognizer;
 
+BOOL _isTapToCloseKeyboard;
+BOOL _firstTimeEditPost;
 RCConnectionManager *_connectionManager;
 RCKeyboardPushUpHandler *_keyboardPushHandler;
 
@@ -87,12 +91,45 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     [_toolBar setItems:topBarItems animated:NO];
     [self getPostImageFromInternet];
     [self asynchGetCommentsRequest];
+    
+    [_btnComment setImage:[UIImage imageNamed:@"viewPostCommentButton-highlighted.png"] forState:UIControlStateHighlighted];
+    _lblUsername.text = _post.authorName;
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
+    NSDate *createdDate = [formatter dateFromString:_post.createdTime];
+    [formatter setDateFormat:@"dd/M/yyyy"];
+    _lblDatePosted.text = [formatter stringFromDate:createdDate];
+    _lblLandmark.text = @"";
+    
+    _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+    [self.view addGestureRecognizer:_tapGestureRecognizer];
+    _isTapToCloseKeyboard = NO;
+    _firstTimeEditPost = YES;
+    
+    [self animateViewAppearance];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - tap gesture handler
+-(void) handleTap:(UITapGestureRecognizer *)tapGestureRecognizer {
+    if (_isTapToCloseKeyboard){
+        [self backgroundTap:nil];
+        _isTapToCloseKeyboard = NO;
+    }
+    else {
+        CGPoint point = [tapGestureRecognizer locationInView:_imgViewMainFrame];
+        //CGRect frame = _imageViewPostFrame.frame;
+        if (![_imgViewMainFrame pointInside:point withEvent:nil])
+            [self animateViewDisapperance:^ {
+                [self.navigationController popViewControllerAnimated:NO];
+            }];
+    }
 }
 
 #pragma mark - web request
@@ -125,6 +162,20 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     if (buttonIndex == 0){
         [self asynchDeletePost];
+    }
+}
+
+#pragma mark - UITextViewDelegate
+
+- (void)textViewDidBeginEditing:(UITextView *)textView {
+    _isTapToCloseKeyboard = YES;
+    if ([textView isEqual:_txtViewPostComment]) {
+        // register for keyboard notifications
+        
+        if (_firstTimeEditPost )   {
+            [textView setText:@""];
+            _firstTimeEditPost = NO;
+        }
     }
 }
 
@@ -302,8 +353,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 #pragma mark - ui events
 
 - (IBAction)backgroundTap:(id)sender {
-    if ([_textField isEditing])
-        [_textField resignFirstResponder];
+    [_txtViewPostComment resignFirstResponder];
 }
 
 #pragma mark - UITextFieldDelegate methods
@@ -315,5 +365,10 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
     [textField resignFirstResponder];
     return YES;
+}
+- (IBAction)btnCloseTouchUpInside:(id)sender {
+    [self animateViewDisapperance:^ {
+        [self.navigationController popViewControllerAnimated:NO];
+    }];
 }
 @end

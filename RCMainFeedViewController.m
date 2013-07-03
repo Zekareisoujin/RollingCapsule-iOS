@@ -221,15 +221,21 @@ BOOL        _willRefresh;
     }
 }
 
-- (void) switchToNewPostScreen {
-    _willRefresh = NO;
+- (UIImage*) takeScreenshot {
     if ([[UIScreen mainScreen] respondsToSelector:@selector(scale)])
         UIGraphicsBeginImageContextWithOptions(self.view.frame.size, NO, [UIScreen mainScreen].scale);
     else
         UIGraphicsBeginImageContext(self.view.frame.size);
     [self.view.layer renderInContext:UIGraphicsGetCurrentContext()];
-    _backgroundImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
+    return image;
+}
+
+- (void) switchToNewPostScreen {
+    _willRefresh = NO;
+    _backgroundImage = [self takeScreenshot];
+
     /*
     CALayer *layer = [[UIApplication sharedApplication] keyWindow].layer;
     CGFloat scale = [UIScreen mainScreen].scale;
@@ -389,7 +395,9 @@ BOOL        _willRefresh;
         
         [_collectionView removeGestureRecognizer:recognizer];
         RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user];
-        [self.navigationController pushViewController:postDetailsViewController animated:YES];
+        _backgroundImage = [self takeScreenshot];
+        postDetailsViewController.backgroundImage = _backgroundImage;
+        [self.navigationController pushViewController:postDetailsViewController animated:NO];
     }
 }
 

@@ -56,6 +56,25 @@ double _movedUpBy;
 //method to move the view up/down whenever the keyboard is shown/dismissed
 - (void) setViewMovedUp:(BOOL)movedUp offset:(double)kOffsetForKeyboard
 {
+    /*CGRect rect = self.view.frame;
+    if (movedUp)
+    {
+        rect.origin.y -= kOffsetForKeyboard;
+    }
+    else
+    {
+        // revert back to the normal state.
+        rect.origin.y += kOffsetForKeyboard;
+    }
+    self.view.frame = rect;
+    [UIView animateWithDuration:0.3
+						  delay:0
+						options:UIViewAnimationOptionCurveEaseInOut
+					 animations:^{
+                         self.view.frame = rect;					 }
+                     completion:^(BOOL finished) {
+                         //[self removePhotoSourceControlAndAddPrivacyControl];
+					 }];*/
     [UIView beginAnimations:nil context:NULL];
     [UIView setAnimationDuration:0.3]; // if you want to slide up the view
     

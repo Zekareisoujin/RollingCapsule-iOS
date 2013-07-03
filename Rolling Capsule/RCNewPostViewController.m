@@ -98,14 +98,12 @@ RCConnectionManager *_connectionManager;
 {
     [super viewDidLoad];
     [_connectionManager reset];
-    [_keyboardPushHandler reset];
     
     //initialize tap gesture that would be used either by background image or by
     //the whole view to handle keyboard pushing up/down
     _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     [self.view addGestureRecognizer:_tapGestureRecognizer];
     _isTapToCloseKeyboard = NO;
-    _keyboardPushHandler.view = self.view;
     
     //prepare text view placeholder
     _firstTimeEditPost = YES;
@@ -377,13 +375,13 @@ RCConnectionManager *_connectionManager;
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    _keyboardPushHandler.view = self.view;
+    [_keyboardPushHandler reset];
     [super viewWillAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    // unregister for keyboard notifications while not visible.
-    
     [super viewWillDisappear:animated];
 }
 #pragma mark - animate in the view
@@ -440,6 +438,7 @@ RCConnectionManager *_connectionManager;
         imagePicker.delegate = self;
         
         [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+        [_txtViewPostContent resignFirstResponder];
         [self presentViewController:imagePicker animated:YES completion:nil];
     } else {
         alertStatus(@"Camera not available", @"Error!",nil);
@@ -452,6 +451,7 @@ RCConnectionManager *_connectionManager;
         imagePicker.delegate = self;
         
         [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+        [_txtViewPostContent resignFirstResponder];
         [self presentViewController:imagePicker animated:YES completion:nil];
     } else {
         alertStatus(@"Photo library not available", @"Error!",nil);

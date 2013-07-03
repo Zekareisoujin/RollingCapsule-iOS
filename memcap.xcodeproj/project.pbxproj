@@ -30,6 +30,7 @@
 		64119A1117834E9800BF0B05 /* postPublicPrivacyButton-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 64119A0E17834E9700BF0B05 /* postPublicPrivacyButton-highlighted.png */; };
 		64119A13178460A500BF0B05 /* closeButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 64119A12178460A500BF0B05 /* closeButton.png */; };
 		64119A161784611700BF0B05 /* RCLightboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64119A151784611700BF0B05 /* RCLightboxViewController.m */; };
+		64119A1817849DBB00BF0B05 /* viewPostMainFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 64119A1717849DBB00BF0B05 /* viewPostMainFrame.png */; };
 		64176AFF175A260900443B59 /* AWSRuntime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64176AFD175A260900443B59 /* AWSRuntime.framework */; };
 		64176B00175A260900443B59 /* AWSS3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64176AFE175A260900443B59 /* AWSS3.framework */; };
 		64194AD61770AAF200822F9B /* RCMainFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 64194AD51770AAF100822F9B /* RCMainFeedCell.m */; };
@@ -57,6 +58,12 @@
 		64A917081751E554007D629D /* RCRegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64A917071751E554007D629D /* RCRegisterViewController.xib */; };
 		64A9170B1751F6C9007D629D /* RCRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64A9170A1751F6C9007D629D /* RCRegisterViewController.m */; };
 		64D2442B177F123D00C1206F /* menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D2442A177F123D00C1206F /* menu.png */; };
+		64E293101784A84B009496FF /* viewPostCommentButton-normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */; };
+		64E293121784A8C8009496FF /* viewPostCommentButton-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */; };
+		64E293161784ABEE009496FF /* viewPostFollowLabel.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293131784ABEE009496FF /* viewPostFollowLabel.png */; };
+		64E293171784ABEE009496FF /* viewPostFriendWithLabel.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293141784ABEE009496FF /* viewPostFriendWithLabel.png */; };
+		64E293181784ABEE009496FF /* viewPostViewSeedLabel.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293151784ABEE009496FF /* viewPostViewSeedLabel.png */; };
+		64E2931A1784AE14009496FF /* viewPostCommentTextView.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293191784AE14009496FF /* viewPostCommentTextView.png */; };
 		64EA880417796DA000011F3E /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 64EA880317796D9F00011F3E /* background.png */; };
 		64EA880617796DAB00011F3E /* textField.png in Resources */ = {isa = PBXBuildFile; fileRef = 64EA880517796DAB00011F3E /* textField.png */; };
 		64FE8433176B9E0E00E561D8 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FE8432176B9E0E00E561D8 /* libTestFlight.a */; };
@@ -143,6 +150,7 @@
 		64119A12178460A500BF0B05 /* closeButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = closeButton.png; path = ../closeButton.png; sourceTree = "<group>"; };
 		64119A141784611700BF0B05 /* RCLightboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCLightboxViewController.h; sourceTree = "<group>"; };
 		64119A151784611700BF0B05 /* RCLightboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCLightboxViewController.m; sourceTree = "<group>"; };
+		64119A1717849DBB00BF0B05 /* viewPostMainFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = viewPostMainFrame.png; sourceTree = "<group>"; };
 		64176AFD175A260900443B59 /* AWSRuntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSRuntime.framework; path = "../../Downloads/aws-ios-sdk-1.6.0/AWSRuntime.framework"; sourceTree = "<group>"; };
 		64176AFE175A260900443B59 /* AWSS3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSS3.framework; path = "../../Downloads/aws-ios-sdk-1.6.0/AWSS3.framework"; sourceTree = "<group>"; };
 		64194AD41770AAF100822F9B /* RCMainFeedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCMainFeedCell.h; path = ../RCMainFeedCell.h; sourceTree = "<group>"; };
@@ -184,6 +192,12 @@
 		64A917091751F6C9007D629D /* RCRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCRegisterViewController.h; sourceTree = "<group>"; };
 		64A9170A1751F6C9007D629D /* RCRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCRegisterViewController.m; sourceTree = "<group>"; };
 		64D2442A177F123D00C1206F /* menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = menu.png; path = ../menu.png; sourceTree = "<group>"; };
+		64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "viewPostCommentButton-normal.png"; sourceTree = "<group>"; };
+		64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "viewPostCommentButton-highlighted.png"; sourceTree = "<group>"; };
+		64E293131784ABEE009496FF /* viewPostFollowLabel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = viewPostFollowLabel.png; sourceTree = "<group>"; };
+		64E293141784ABEE009496FF /* viewPostFriendWithLabel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = viewPostFriendWithLabel.png; sourceTree = "<group>"; };
+		64E293151784ABEE009496FF /* viewPostViewSeedLabel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = viewPostViewSeedLabel.png; sourceTree = "<group>"; };
+		64E293191784AE14009496FF /* viewPostCommentTextView.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = viewPostCommentTextView.png; sourceTree = "<group>"; };
 		64EA880317796D9F00011F3E /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = background.png; path = ../background.png; sourceTree = "<group>"; };
 		64EA880517796DAB00011F3E /* textField.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = textField.png; path = ../textField.png; sourceTree = "<group>"; };
 		64FE8432176B9E0E00E561D8 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
@@ -329,6 +343,13 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
+				64E293191784AE14009496FF /* viewPostCommentTextView.png */,
+				64E293131784ABEE009496FF /* viewPostFollowLabel.png */,
+				64E293141784ABEE009496FF /* viewPostFriendWithLabel.png */,
+				64E293151784ABEE009496FF /* viewPostViewSeedLabel.png */,
+				64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */,
+				64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */,
+				64119A1717849DBB00BF0B05 /* viewPostMainFrame.png */,
 				64119A141784611700BF0B05 /* RCLightboxViewController.h */,
 				64119A151784611700BF0B05 /* RCLightboxViewController.m */,
 				BFCA7821174DFD3F00666CBA /* Rolling Capsule */,
@@ -618,6 +639,13 @@
 				64119A1017834E9800BF0B05 /* postPersonalPrivacyButton-highlighted.png in Resources */,
 				64119A1117834E9800BF0B05 /* postPublicPrivacyButton-highlighted.png in Resources */,
 				64119A13178460A500BF0B05 /* closeButton.png in Resources */,
+				64119A1817849DBB00BF0B05 /* viewPostMainFrame.png in Resources */,
+				64E293101784A84B009496FF /* viewPostCommentButton-normal.png in Resources */,
+				64E293121784A8C8009496FF /* viewPostCommentButton-highlighted.png in Resources */,
+				64E293161784ABEE009496FF /* viewPostFollowLabel.png in Resources */,
+				64E293171784ABEE009496FF /* viewPostFriendWithLabel.png in Resources */,
+				64E293181784ABEE009496FF /* viewPostViewSeedLabel.png in Resources */,
+				64E2931A1784AE14009496FF /* viewPostCommentTextView.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
