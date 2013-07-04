@@ -13,6 +13,8 @@
 @interface RCMainFeedViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDataSource, MKMapViewDelegate, UIGestureRecognizerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tblFeedList;
+@property (weak, nonatomic) IBOutlet UILabel *lblUsername;
+@property (weak, nonatomic) IBOutlet UIImageView *imgViewUserAvatar;
 //@property (nonatomic, strong) NSMutableArray *items;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) RCUser *user;

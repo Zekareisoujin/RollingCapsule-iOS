@@ -38,6 +38,7 @@
 int _nRows;
 BOOL        _firstRefresh;
 BOOL        _willRefresh;
+BOOL        _haveScreenshot;
 @synthesize refreshControl = _refreshControl;
 @synthesize user = _user;
 @synthesize userCache = _userCache;
@@ -90,7 +91,13 @@ BOOL        _willRefresh;
     
     self.navigationItem.title = @"";
 
-    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"New Post" style:UIBarButtonItemStylePlain target:self action:@selector(switchToNewPostScreen)];
+    UIImage *buttonImage = [UIImage imageNamed:@"mainNavbarPostButton"];
+    UIButton *postButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [postButton setFrame:CGRectMake(0,0,buttonImage.size.width, buttonImage.size.height)];
+    [postButton setBackgroundImage:buttonImage forState:UIControlStateNormal];
+    [postButton addTarget:self action:@selector(switchToNewPostScreen) forControlEvents:UIControlEventTouchUpInside];
+    [postButton addTarget:self action:@selector(postButtonTouchDown) forControlEvents:UIControlEventTouchDown];
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithCustomView:postButton] ;
     self.navigationItem.rightBarButtonItem = rightButton;
     
     //prepare collection view
@@ -112,9 +119,10 @@ BOOL        _willRefresh;
     _pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
     _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     _longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
-    _nRows = 2;
+    _nRows = 4;
     
     _willRefresh = YES;
+    _haveScreenshot = NO;
 }
 
 - (void) handleRefresh:(UIRefreshControl*) refreshControl {
@@ -170,6 +178,8 @@ BOOL        _willRefresh;
                 NSDictionary *userDictionary = (NSDictionary *) [jsonData objectForKey:@"user"];
                 _user = [[RCUser alloc] initWithNSDictionary:userDictionary];
                 AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                _lblUsername.text = _user.name;
+                [_imgViewUserAvatar setImage:[RCAmazonS3Helper getAvatarImage:_user withLoggedinUserID:_user.userID]];
                 [appDelegate setCurrentUser:_user];
                 
                 for (NSDictionary *postData in postList) {
@@ -232,9 +242,20 @@ BOOL        _willRefresh;
     return image;
 }
 
+
+- (void) postButtonTouchDown {
+    [self performSelectorInBackground:@selector(rememberScreenshot:) withObject:^{_haveScreenshot = YES;}];
+}
+
+- (void) rememberScreenshot : (void(^)(void))completion {
+    _backgroundImage = [self takeScreenshot];
+    completion();
+}
+
 - (void) switchToNewPostScreen {
     _willRefresh = NO;
-    _backgroundImage = [self takeScreenshot];
+    while (!_haveScreenshot){};
+    _haveScreenshot = NO;
 
     /*
     CALayer *layer = [[UIApplication sharedApplication] keyWindow].layer;
