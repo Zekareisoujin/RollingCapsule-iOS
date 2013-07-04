@@ -334,7 +334,7 @@ RCConnectionManager *_connectionManager;
     
 }
 
-- (IBAction)backgroundTouchUpInside:(id)sender {
+- (void)backgroundTouchUpInside {
     if ([_txtFieldPostSubject isEditing])
         [_txtFieldPostSubject resignFirstResponder];
     else
@@ -510,7 +510,7 @@ RCConnectionManager *_connectionManager;
 #pragma mark - tap gesture handler
 -(void) handleTap:(UITapGestureRecognizer *)tapGestureRecognizer {
     if (_isTapToCloseKeyboard){
-        [self backgroundTouchUpInside:tapGestureRecognizer];
+        [self backgroundTouchUpInside];
         _isTapToCloseKeyboard = NO;
     }
     else {
