@@ -397,6 +397,9 @@ BOOL        _willRefresh;
         RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user];
         _backgroundImage = [self takeScreenshot];
         postDetailsViewController.backgroundImage = _backgroundImage;
+        
+        AppDelegate *appDelegate = (AppDelegate*) [[UIApplication sharedApplication] delegate];
+        [appDelegate.menuViewController setNavigationBarMenuBttonForViewController:postDetailsViewController];
         [self.navigationController pushViewController:postDetailsViewController animated:NO];
     }
 }
