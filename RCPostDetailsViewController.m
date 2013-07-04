@@ -17,7 +17,6 @@
 
 @interface RCPostDetailsViewController ()
 @property (nonatomic,strong) NSMutableArray* comments;
-@property (nonatomic,strong) UITextField* textField;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 @end
 
@@ -27,8 +26,6 @@
 @synthesize postOwner = _postOwner;
 @synthesize loggedInUser = _loggedInUser;
 @synthesize comments = _comments;
-@synthesize barItemTextField = _barItemTextField;
-@synthesize textField = _textField;
 @synthesize tapGestureRecognizer = _tapGestureRecognizer;
 
 BOOL _isTapToCloseKeyboard;
@@ -68,29 +65,9 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     
     _tblViewPostDiscussion.tableFooterView = [[UIView alloc] init];
     _comments = [[NSMutableArray alloc] init];
-    CGRect frame = CGRectMake(0, 0, 240, 30);
-    _textField = [[UITextField alloc] initWithFrame:frame];
-    _textField.placeholder = @"Write a comment...";
-    _textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    _textField.backgroundColor = [UIColor whiteColor];
-    _textField.borderStyle = UITextBorderStyleRoundedRect;
-    _textField.textColor = [UIColor blackColor];
-    _textField.font = [UIFont systemFontOfSize:14.0];
-    _textField.autocorrectionType = UITextAutocorrectionTypeNo;
-    _textField.keyboardType = UIKeyboardTypeDefault;
-    _textField.returnKeyType = UIReturnKeyDone;
-    _textField.clearButtonMode = UITextFieldViewModeWhileEditing;
-    _textField.delegate = self;
     
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Delete Post" style:UIBarButtonItemStylePlain target:self action:@selector(deletePost)];
     self.navigationItem.rightBarButtonItem = rightButton;
-    
-    UIBarButtonItem *textFieldItem = [[UIBarButtonItem alloc] initWithCustomView:_textField];
-    UIBarButtonItem *postButton = [[UIBarButtonItem alloc] initWithTitle:@"Post" style:UIBarButtonItemStyleDone  target:self action:@selector(asynchPostComment)];
-    NSArray *topBarItems = [NSArray arrayWithObjects: textFieldItem, postButton, nil];
-    [_toolBar setItems:topBarItems animated:NO];
-    [self getPostImageFromInternet];
-    [self asynchGetCommentsRequest];
     
     [_btnComment setImage:[UIImage imageNamed:@"viewPostCommentButton-highlighted.png"] forState:UIControlStateHighlighted];
     _lblUsername.text = _post.authorName;
@@ -107,6 +84,8 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     _isTapToCloseKeyboard = NO;
     _firstTimeEditPost = YES;
     
+    [self getPostImageFromInternet];
+    [self asynchGetCommentsRequest];
     [self animateViewAppearance];
 }
 
@@ -211,10 +190,11 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 
 #pragma mark - web request
 - (void) asynchPostComment {
-    [_textField resignFirstResponder];
+    [_txtViewPostComment resignFirstResponder];
+    _btnComment.enabled = NO;
     //Asynchronous Request
     @try {
-        NSString* commentContent = [_textField text];
+        NSString* commentContent = [_txtViewPostComment text];
         NSMutableString *dataSt = initQueryString(@"comment[content]", commentContent);
         addArgumentToQueryString(dataSt, @"post_id",[NSString stringWithFormat:@"%d", _post.postID]);
         NSData *postData = [dataSt dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
@@ -235,7 +215,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
              } else _successfulPost = YES;
              
              
-             self.navigationItem.rightBarButtonItem.enabled = YES;
+             _btnComment.enabled = YES;
              
              NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
              NSLog(@"%@",responseData);
@@ -244,7 +224,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
              if (_successfulPost) {
                  [_comments addObject:commentContent];
                  [_tblViewPostDiscussion reloadData];
-                 _textField.text = @"";
+                 _txtViewPostComment.text = @"";
                  
              }else {
                  alertStatus([NSString stringWithFormat:@"Please try again! %@", responseData], @"Comment Failed!", nil);
@@ -254,7 +234,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        self.navigationItem.rightBarButtonItem.enabled = YES;
+         _btnComment.enabled = YES;
         alertStatus(@"Post Failed.",@"Post Failed!",nil);
     }
 }
@@ -359,7 +339,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 #pragma mark - UITextFieldDelegate methods
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    [_textField resignFirstResponder];
+    [textField resignFirstResponder];
 }
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
@@ -370,5 +350,8 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     [self animateViewDisapperance:^ {
         [self.navigationController popViewControllerAnimated:NO];
     }];
+}
+- (IBAction)commentButtonTouchUpInside:(id)sender {
+    [self asynchPostComment];
 }
 @end
