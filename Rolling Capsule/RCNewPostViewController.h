@@ -18,6 +18,7 @@
 - (IBAction)closeBtnTouchUpInside:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *btnPostImage;
 @property (weak, nonatomic) IBOutlet UIImageView *imageViewPostPicture;
+@property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @property (weak, nonatomic) IBOutlet UITextField *txtFieldPostSubject;
 @property (weak, nonatomic) IBOutlet UIButton *btnLandmark;
 - (IBAction)btnActionChooseCameraSource:(id)sender;

@@ -98,7 +98,6 @@ BOOL        _haveScreenshot;
     [postButton setFrame:CGRectMake(0,0,buttonImage.size.width, buttonImage.size.height)];
     [postButton setBackgroundImage:buttonImage forState:UIControlStateNormal];
     [postButton addTarget:self action:@selector(switchToNewPostScreen) forControlEvents:UIControlEventTouchUpInside];
-    [postButton addTarget:self action:@selector(postButtonTouchDown) forControlEvents:UIControlEventTouchDown];
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithCustomView:postButton] ;
     self.navigationItem.rightBarButtonItem = rightButton;
     
@@ -193,7 +192,7 @@ BOOL        _haveScreenshot;
                 _user = [[RCUser alloc] initWithNSDictionary:userDictionary];
                 AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                 _lblUsername.text = _user.name;
-                [_imgViewUserAvatar setImage:[RCAmazonS3Helper getAvatarImage:_user withLoggedinUserID:_user.userID]];
+                //[_imgViewUserAvatar setImage:[RCAmazonS3Helper getAvatarImage:_user withLoggedinUserID:_user.userID]];
                 [appDelegate setCurrentUser:_user];
                 
                 for (NSDictionary *postData in postList) {
@@ -254,16 +253,6 @@ BOOL        _haveScreenshot;
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return image;
-}
-
-
-- (void) postButtonTouchDown {
-    [self performSelectorInBackground:@selector(rememberScreenshot:) withObject:^{_haveScreenshot = YES;}];
-}
-
-- (void) rememberScreenshot : (void(^)(void))completion {
-    _backgroundImage = [self takeScreenshot];
-    completion();
 }
 
 - (void) switchToNewPostScreen {

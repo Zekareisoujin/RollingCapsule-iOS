@@ -378,6 +378,20 @@ RCConnectionManager *_connectionManager;
 {
     _keyboardPushHandler.view = self.view;
     [_keyboardPushHandler reset];
+    NSLog(@"screen size: %d",[[UIScreen mainScreen] bounds].size.height );
+    if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height) {
+        [_closeButton setHidden:YES];
+        [_closeButton setEnabled:NO];
+        CGRect frame = self.view.frame;
+        //move view up so that the whole post frame fits in iphone 4 screen
+        //here we basically move the y coordinate back by exactly the amount
+        //with which the post frame is away from screen top edge
+        //leaving some gap in between
+        frame.origin.y = -_imageViewPostFrame.frame.origin.y + 2;
+        frame.size.height +=  _imageViewPostFrame.frame.origin.y - 2;
+        self.view.frame = frame;
+        
+    }
     [super viewWillAppear:animated];
 }
 

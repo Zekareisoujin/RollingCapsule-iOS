@@ -61,6 +61,7 @@ static NSString* const RCLogStatusDefault = @"logStatus";
 //integer values
 #define RCUploadImageSizeWidth  300
 #define RCUploadImageSizeHeight 300
+#define RCIphone5Height         568
 
 //Displayed strings
 static NSString* const RCImageSourcePhotoLibrary = @"Photo Library";
