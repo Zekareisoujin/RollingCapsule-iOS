@@ -76,7 +76,7 @@ RCConnectionManager *_connectionManager;
         _user = user;
         _keyboardPushHandler = [[RCKeyboardPushUpHandler alloc] init];
         _connectionManager = [[RCConnectionManager alloc] init];
-        self.backgroundImage = nil;
+        //self.backgroundImage = nil;
         //NSLog(@"RCNewPostViewController: %@", _keyboardPushHandler);
     }
     return self;
@@ -88,7 +88,7 @@ RCConnectionManager *_connectionManager;
         _user = user;
         _keyboardPushHandler = [[RCKeyboardPushUpHandler alloc] init];
         _connectionManager = [[RCConnectionManager alloc] init];
-        self.backgroundImage = image;
+        //self.backgroundImage = image;
         //NSLog(@"RCNewPostViewController: %@", _keyboardPushHandler);
     }
     return self;
@@ -236,7 +236,8 @@ RCConnectionManager *_connectionManager;
                 //TODO open main news feed page
                 [self showAlertMessage:@"Image posted successfully!" withTitle:@"Success!"];
                 [self animateViewDisapperance:^ {
-                    [self.navigationController popViewControllerAnimated:NO];
+                    [self.view removeFromSuperview];
+                    [self removeFromParentViewController];
                 }];
             }else {
                 alertStatus([NSString stringWithFormat:@"Please try again! %@", responseData], @"Post Failed!", self);
@@ -518,7 +519,8 @@ RCConnectionManager *_connectionManager;
         //CGRect frame = _imageViewPostFrame.frame;
         if (![_imageViewPostFrame pointInside:point withEvent:nil])
             [self animateViewDisapperance:^ {
-                [self.navigationController popViewControllerAnimated:NO];
+                [self.view removeFromSuperview];
+                [self removeFromParentViewController];
             }];
     }
 }
@@ -570,7 +572,8 @@ RCConnectionManager *_connectionManager;
 }
 - (IBAction)closeBtnTouchUpInside:(id)sender {
     [self animateViewDisapperance:^ {
-        [self.navigationController popViewControllerAnimated:NO];
+        [self.view removeFromSuperview];
+        [self removeFromParentViewController];
     }];
 }
 

@@ -25,7 +25,6 @@ typedef enum RCMainFeedViewMode RCMainFeedViewMode;
 @property (weak, nonatomic) IBOutlet UIButton *btnViewModeFriends;
 - (IBAction)btnViewModeChosen:(UIButton *)sender;
 @property (weak, nonatomic) IBOutlet UIImageView *imgViewUserAvatar;
-//@property (nonatomic, strong) NSMutableArray *items;
 @property (weak, nonatomic) IBOutlet UIButton *btnViewModePublic;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) RCUser *user;
@@ -34,4 +33,5 @@ typedef enum RCMainFeedViewMode RCMainFeedViewMode;
 @property (nonatomic, strong) NSMutableDictionary *userCache;
 @property (nonatomic, strong) NSMutableDictionary *postCache;
 @property (nonatomic, strong) NSMutableSet *chosenPosts;
+
 @end

@@ -267,15 +267,11 @@ BOOL        _haveScreenshot;
 }
 
 - (void) switchToNewPostScreen {
-    _willRefresh = NO;
-    while (!_haveScreenshot){};
-    _haveScreenshot = NO;
-
-    RCNewPostViewController *newPostController = [[RCNewPostViewController alloc] initWithUser:_user withBackgroundImage:_backgroundImage];
-    AppDelegate *appDelegate = (AppDelegate*) [[UIApplication sharedApplication] delegate];
-    [appDelegate.menuViewController setNavigationBarMenuBttonForViewController:newPostController];
-    //self.navigationItem.backBarButtonItem = self.navigationItem.leftBarButtonItem;
-    [self.navigationController pushViewController:newPostController animated:NO];
+    RCNewPostViewController *newPostController = [[RCNewPostViewController alloc] initWithUser:_user withBackgroundImage:nil];
+    [self addChildViewController:newPostController];
+    newPostController.view.frame = self.view.frame;
+    [self.view addSubview:newPostController.view];
+    [newPostController didMoveToParentViewController:self];
 }
 
 #pragma mark - UICollectionView Datasource
@@ -411,26 +407,27 @@ BOOL        _haveScreenshot;
 }
 
 - (IBAction)handleLongPress:(UILongPressGestureRecognizer *)recognizer {
-    CGPoint point = [recognizer locationInView:_collectionView];
-    NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:point];
-    
-    //if index path for cell not found
-    if (indexPath != nil ) {
-        int idx = [indexPath row];
-        NSArray* items = (NSArray*)[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInt:_currentLandmarkID]];
+    if (recognizer.state == UIGestureRecognizerStateBegan) {
+        CGPoint point = [recognizer locationInView:_collectionView];
+        NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:point];
         
-        RCPost *post = [items objectAtIndex:idx];
-        RCUser *owner = [[RCUser alloc] init];
-        owner.userID = post.userID;
-        
-        [_collectionView removeGestureRecognizer:recognizer];
-        RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user];
-        _backgroundImage = [self takeScreenshot];
-        postDetailsViewController.backgroundImage = _backgroundImage;
-        
-        AppDelegate *appDelegate = (AppDelegate*) [[UIApplication sharedApplication] delegate];
-        [appDelegate.menuViewController setNavigationBarMenuBttonForViewController:postDetailsViewController];
-        [self.navigationController pushViewController:postDetailsViewController animated:NO];
+        //if index path for cell not found
+        if (indexPath != nil ) {
+            int idx = [indexPath row];
+            NSArray* items = (NSArray*)[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInt:_currentLandmarkID]];
+            
+            RCPost *post = [items objectAtIndex:idx];
+            RCUser *owner = [[RCUser alloc] init];
+            owner.userID = post.userID;
+            
+            //[_collectionView removeGestureRecognizer:recognizer];
+            RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user];
+            [self addChildViewController:postDetailsViewController];
+            postDetailsViewController.view.frame = self.view.frame;
+            [self.view addSubview:postDetailsViewController.view];
+            [postDetailsViewController didMoveToParentViewController:self];
+            
+        }
     }
 }
 
