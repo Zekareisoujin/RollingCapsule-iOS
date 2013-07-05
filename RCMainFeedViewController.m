@@ -31,6 +31,7 @@
 @property (nonatomic, strong) UILongPressGestureRecognizer *longPressGestureRecognizer;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 @property (nonatomic, strong) UIImage *backgroundImage;
+@property (nonatomic, assign) RCMainFeedViewMode      currentViewMode;
 @end
 
 @implementation RCMainFeedViewController
@@ -51,6 +52,7 @@ BOOL        _haveScreenshot;
 @synthesize longPressGestureRecognizer = _longPressGestureRecognizer;
 @synthesize tapGestureRecognizer = _tapGestureRecognizer;
 @synthesize backgroundImage = _backgroundImage;
+@synthesize currentViewMode = _currentViewMode;
 
 + (NSString*) debugTag {
     return @"MainFeedView";
@@ -119,10 +121,22 @@ BOOL        _haveScreenshot;
     _pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
     _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     _longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
-    _nRows = 4;
     
-    _willRefresh = YES;
+    //set the current view mode of the view, the default view is public
+    _currentViewMode = RCMainFeedViewModePublic;
+    _btnViewModePublic.enabled = NO;
+    
+    
+    //initialize miscellaneaous constants
+    _nRows = 4; //the number of rows of images that are gonig to be displayed in the UICollectionView
+    _willRefresh = YES; //indicate whether this view will refresh after returning from another view
+    
+    /*this flag indicate if the screenshot of this view has been taken
+       this is used when opening light box view where a screenshot needs to be taken
+       since taking screenshot is slow it is run in background and this flag
+       will be set to true when it's done, after this flag is set to true, the code can open the view*/
     _haveScreenshot = NO;
+    
 }
 
 - (void) handleRefresh:(UIRefreshControl*) refreshControl {
@@ -425,4 +439,21 @@ BOOL        _haveScreenshot;
     }
 }
 
+- (IBAction)btnViewModeChosen:(UIButton *)sender {
+    if ([sender isEqual:_btnViewModePublic]) {
+        _currentViewMode = RCMainFeedViewModePublic;
+        _btnViewModeFriends.enabled = YES;
+        _btnViewModeFollow.enabled = YES;
+    } else if ([sender isEqual:_btnViewModeFriends]) {
+        _currentViewMode = RCMainFeedViewModeFriends;
+        _btnViewModePublic.enabled = YES;
+        _btnViewModeFollow.enabled = YES;
+    } else if ([sender isEqual:_btnViewModeFollow]) {
+        _currentViewMode = RCMainFeedViewModeFollow;
+        _btnViewModeFriends.enabled = YES;
+        _btnViewModePublic.enabled = YES;
+    }
+    sender.enabled = NO;
+    
+}
 @end
