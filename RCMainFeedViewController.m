@@ -128,7 +128,7 @@ BOOL        _haveScreenshot;
     
     
     //initialize miscellaneaous constants
-    _nRows = 4; //the number of rows of images that are gonig to be displayed in the UICollectionView
+    _nRows = 2; //the number of rows of images that are gonig to be displayed in the UICollectionView
     _willRefresh = YES; //indicate whether this view will refresh after returning from another view
     
     /*this flag indicate if the screenshot of this view has been taken
@@ -271,13 +271,6 @@ BOOL        _haveScreenshot;
     while (!_haveScreenshot){};
     _haveScreenshot = NO;
 
-    /*
-    CALayer *layer = [[UIApplication sharedApplication] keyWindow].layer;
-    CGFloat scale = [UIScreen mainScreen].scale;
-    UIGraphicsBeginImageContextWithOptions(layer.frame.size, NO, scale);
-    
-    [layer renderInContext:UIGraphicsGetCurrentContext()];
-    _backgroundImage = UIGraphicsGetImageFromCurrentImageContext();*/
     RCNewPostViewController *newPostController = [[RCNewPostViewController alloc] initWithUser:_user withBackgroundImage:_backgroundImage];
     AppDelegate *appDelegate = (AppDelegate*) [[UIApplication sharedApplication] delegate];
     [appDelegate.menuViewController setNavigationBarMenuBttonForViewController:newPostController];
@@ -398,6 +391,8 @@ BOOL        _haveScreenshot;
                 [currentCell changeCellState:RCCellStateDimmed];
             }
         } else {
+            MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(post.coordinate, 0.5*METERS_PER_MILE, 0.5*METERS_PER_MILE);
+            [_mapView setRegion:viewRegion animated:YES];
             [currentCell changeCellState:RCCellStateFloat];
             [_chosenPosts addObject:[[NSNumber alloc] initWithInt:post.postID]];
             [_mapView addAnnotation:post];

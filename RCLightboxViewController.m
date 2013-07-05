@@ -33,7 +33,7 @@
     [_viewDimVeil setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.5]];
     [self.view addSubview:_viewDimVeil];
     [self.view sendSubviewToBack:_viewDimVeil];
-	_imageViewPreviousView = [[UIImageView alloc] initWithFrame:self.view.frame];
+	_imageViewPreviousView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,_backgroundImage.size.width,_backgroundImage.size.height)];
     [_imageViewPreviousView setImage:_backgroundImage];
     [self.view addSubview:_imageViewPreviousView];
     [self.view sendSubviewToBack:_imageViewPreviousView];
