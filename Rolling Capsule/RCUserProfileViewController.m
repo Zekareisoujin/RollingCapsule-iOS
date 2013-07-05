@@ -13,15 +13,19 @@
 #import "RCAmazonS3Helper.h"
 #import <AWSRuntime/AWSRuntime.h>
 
+#import "RCMainFeedCell.h"
+
 @interface RCUserProfileViewController ()
 
 @end
 
 @implementation RCUserProfileViewController
 
+@synthesize collectionView = _collectionView;
 @synthesize btnDeclineRequest = _btnDeclineRequest;
 @synthesize profileUser = _profileUser;
 @synthesize viewingUser = _viewingUser;
+@synthesize postList = _postList;
 @synthesize viewingUserID = _viewingUserID;
 
 NSString *_friendStatus;
@@ -59,6 +63,16 @@ int       _friendshipID;
         [_btnFriendAction removeFromSuperview];
     }
     
+    UICollectionViewFlowLayout *flow =  (UICollectionViewFlowLayout *)_collectionView.collectionViewLayout;
+    flow.minimumInteritemSpacing = 0.0;
+    
+    NSString* cellIdentifier = [RCMainFeedCell cellIdentifier];
+    [self.collectionView registerClass:[RCMainFeedCell class] forCellWithReuseIdentifier:cellIdentifier];
+    UINib *nib = [UINib nibWithNibName:cellIdentifier bundle: nil];
+    [self.collectionView registerNib:nib forCellWithReuseIdentifier:cellIdentifier];
+    
+    [self asynchFetchFeeds];
+    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -67,6 +81,37 @@ int       _friendshipID;
 }
 
 #pragma mark - web requests
+
+- (void)asynchFetchFeeds {
+    //Asynchronous Request
+    @try {
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@?mobile=1", RCServiceURL]];
+        NSURLRequest *request = CreateHttpGetRequest(url);
+        
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+         {
+             NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+             
+             SBJsonParser *jsonParser = [SBJsonParser new];
+             NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
+             
+             if (jsonData != NULL) {
+                 //NSLog(@"Profile View: fetched feeds: %@", jsonData);
+                 _postList = (NSArray *) [jsonData objectForKey:@"post_list"];
+                 //NSLog(@"Profile View: post lists: %@", _postList);
+                 
+                 [_collectionView reloadData];
+             }else {
+                 alertStatus([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetFeed, responseData], RCAlertMessageConnectionFailed, self);
+             }
+         }];
+    }
+    @catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+        alertStatus(RCErrorMessageFailedToGetUsersRelation, RCAlertMessageConnectionFailed,self);
+    }
+}
 
 - (void)asynchGetUserRelationRequest{
     //Asynchronous Request
@@ -302,5 +347,51 @@ int       _friendshipID;
         
     });
 }
+
+#pragma mark - UICollectionView Datasource
+
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    NSLog(@"number of items: %d", [_postList count]);
+    return section == 0 ? [_postList count] : 0;
+}
+
+- (NSInteger)numberOfSectionsInCollectionView: (UICollectionView *)collectionView {
+    return 1;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
+    NSString* cellIdentifier = [RCMainFeedCell cellIdentifier];
+    RCMainFeedCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
+    
+    RCPost *post = [[RCPost alloc] initWithNSDictionary:[_postList objectAtIndex:indexPath.row]];
+
+    [cell getPostContentImageFromInternet:_viewingUser withPostContent:post usingCollection:nil completion:^{
+    }];
+    
+    /*if ([_chosenPosts count] != 0) {
+        if ([_chosenPosts containsObject:[[NSNumber alloc] initWithInt:post.postID]]) {
+            [cell changeCellState:RCCellStateFloat];
+        } else {
+            [cell changeCellState:RCCellStateDimmed];
+        }
+    }*/
+    return cell;
+}
+
+#pragma mark – UICollectionViewDelegateFlowLayout
+
+// 1
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    float width = (collectionView.frame.size.height-42) / 3; // hard coding the number of rows to be 3 atm
+    CGSize retval = CGSizeMake(width,width);
+    return retval;
+}
+
+// 3
+- (UIEdgeInsets)collectionView:
+(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+    return UIEdgeInsetsMake(20, 10, 20, 10);//UIEdgeInsetsM
+}
+
 
 @end

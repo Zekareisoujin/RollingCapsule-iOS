@@ -1,4 +1,4 @@
-HE// !$*UTF8*$!
+// !$*UTF8*$!
 {
 	archiveVersion = 1;
 	classes = {
@@ -64,7 +64,19 @@ HE// !$*UTF8*$!
 		64E293171784ABEE009496FF /* viewPostFriendWithLabel.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293141784ABEE009496FF /* viewPostFriendWithLabel.png */; };
 		64E293181784ABEE009496FF /* viewPostViewSeedLabel.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293151784ABEE009496FF /* viewPostViewSeedLabel.png */; };
 		64E2931A1784AE14009496FF /* viewPostCommentTextView.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293191784AE14009496FF /* viewPostCommentTextView.png */; };
-		64EA880417796DA000011F3E /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 64EA880317796D9F00011F3E /* background.png */; };
+		64E293BE17856F43009496FF /* loginBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293B517856F43009496FF /* loginBackground.png */; };
+		64E293BF17856F43009496FF /* loginBtnForgotPwd.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293B617856F43009496FF /* loginBtnForgotPwd.png */; };
+		64E293C017856F43009496FF /* loginBtnLogin.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293B717856F43009496FF /* loginBtnLogin.png */; };
+		64E293C117856F43009496FF /* loginBtnLoginPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293B817856F43009496FF /* loginBtnLoginPressed.png */; };
+		64E293C217856F43009496FF /* loginBtnRegister.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293B917856F43009496FF /* loginBtnRegister.png */; };
+		64E293C317856F43009496FF /* loginBtnRegisterPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293BA17856F43009496FF /* loginBtnRegisterPressed.png */; };
+		64E293C417856F43009496FF /* loginLblLogin.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293BB17856F43009496FF /* loginLblLogin.png */; };
+		64E293C517856F43009496FF /* loginLblRegister.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293BC17856F43009496FF /* loginLblRegister.png */; };
+		64E293C617856F43009496FF /* loginTextfield.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293BD17856F43009496FF /* loginTextfield.png */; };
+		64E293C817857C25009496FF /* mainTopBanner.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293C717857C25009496FF /* mainTopBanner.png */; };
+		64E293CA17857E4C009496FF /* mainNavbarPostButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293C917857E4C009496FF /* mainNavbarPostButton@2x.png */; };
+		64E293CC178587BE009496FF /* mainMapViewBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293CB178587BE009496FF /* mainMapViewBackground.png */; };
+		64EA880417796DA000011F3E /* mainBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 64EA880317796D9F00011F3E /* mainBackground.png */; };
 		64EA880617796DAB00011F3E /* textField.png in Resources */ = {isa = PBXBuildFile; fileRef = 64EA880517796DAB00011F3E /* textField.png */; };
 		64FE8433176B9E0E00E561D8 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FE8432176B9E0E00E561D8 /* libTestFlight.a */; };
 		64FE84E5176BAAD800E561D8 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FE84E4176BAAD800E561D8 /* libz.dylib */; };
@@ -80,15 +92,7 @@ HE// !$*UTF8*$!
 		BF68E7041756090200E5C1F4 /* RCMainFeedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF68E7021756090200E5C1F4 /* RCMainFeedViewController.xib */; };
 		BF8925EC1767697000F1978F /* icon114.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8925EB1767697000F1978F /* icon114.png */; };
 		BF8925EE1767698600F1978F /* icon57.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8925ED1767698600F1978F /* icon57.png */; };
-		BFBC430D1784B57900C179F6 /* loginBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = BFBC430C1784B57900C179F6 /* loginBackground.png */; };
-		BFBC430F1784C59000C179F6 /* loginTextfield.png in Resources */ = {isa = PBXBuildFile; fileRef = BFBC430E1784C59000C179F6 /* loginTextfield.png */; };
-		BFBC43141784C80400C179F6 /* loginBtnRegister.png in Resources */ = {isa = PBXBuildFile; fileRef = BFBC43101784C80400C179F6 /* loginBtnRegister.png */; };
-		BFBC43151784C80400C179F6 /* loginBtnLoginPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = BFBC43111784C80400C179F6 /* loginBtnLoginPressed.png */; };
-		BFBC43161784C80400C179F6 /* loginBtnLogin.png in Resources */ = {isa = PBXBuildFile; fileRef = BFBC43121784C80400C179F6 /* loginBtnLogin.png */; };
-		BFBC43171784C80400C179F6 /* loginBtnRegisterPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = BFBC43131784C80400C179F6 /* loginBtnRegisterPressed.png */; };
-		BFBC43191784CC9200C179F6 /* loginBtnForgotPwd.png in Resources */ = {isa = PBXBuildFile; fileRef = BFBC43181784CC9200C179F6 /* loginBtnForgotPwd.png */; };
-		BFBC431C1784CD4500C179F6 /* loginLblRegister.png in Resources */ = {isa = PBXBuildFile; fileRef = BFBC431A1784CD4500C179F6 /* loginLblRegister.png */; };
-		BFBC431D1784CD4500C179F6 /* loginLblLogin.png in Resources */ = {isa = PBXBuildFile; fileRef = BFBC431B1784CD4500C179F6 /* loginLblLogin.png */; };
+		BFA53F511785B4FD007686F1 /* profileAvatarBar.png in Resources */ = {isa = PBXBuildFile; fileRef = BFA53F501785B4FD007686F1 /* profileAvatarBar.png */; };
 		BFC8414717586BFB00E52FE2 /* RCPost.m in Sources */ = {isa = PBXBuildFile; fileRef = BFC8414617586BFB00E52FE2 /* RCPost.m */; };
 		BFCA781C174DFD3F00666CBA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFCA781B174DFD3F00666CBA /* UIKit.framework */; };
 		BFCA781E174DFD3F00666CBA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFCA781D174DFD3F00666CBA /* Foundation.framework */; };
@@ -159,7 +163,7 @@ HE// !$*UTF8*$!
 		64119A12178460A500BF0B05 /* closeButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = closeButton.png; path = ../closeButton.png; sourceTree = "<group>"; };
 		64119A141784611700BF0B05 /* RCLightboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCLightboxViewController.h; sourceTree = "<group>"; };
 		64119A151784611700BF0B05 /* RCLightboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCLightboxViewController.m; sourceTree = "<group>"; };
-		64119A1717849DBB00BF0B05 /* viewPostMainFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = viewPostMainFrame.png; sourceTree = "<group>"; };
+		64119A1717849DBB00BF0B05 /* viewPostMainFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostMainFrame.png; path = ../viewPostMainFrame.png; sourceTree = "<group>"; };
 		64176AFD175A260900443B59 /* AWSRuntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSRuntime.framework; path = "../../Downloads/aws-ios-sdk-1.6.0/AWSRuntime.framework"; sourceTree = "<group>"; };
 		64176AFE175A260900443B59 /* AWSS3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSS3.framework; path = "../../Downloads/aws-ios-sdk-1.6.0/AWSS3.framework"; sourceTree = "<group>"; };
 		64194AD41770AAF100822F9B /* RCMainFeedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCMainFeedCell.h; path = ../RCMainFeedCell.h; sourceTree = "<group>"; };
@@ -201,13 +205,25 @@ HE// !$*UTF8*$!
 		64A917091751F6C9007D629D /* RCRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCRegisterViewController.h; sourceTree = "<group>"; };
 		64A9170A1751F6C9007D629D /* RCRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCRegisterViewController.m; sourceTree = "<group>"; };
 		64D2442A177F123D00C1206F /* menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = menu.png; path = ../menu.png; sourceTree = "<group>"; };
-		64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "viewPostCommentButton-normal.png"; sourceTree = "<group>"; };
-		64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "viewPostCommentButton-highlighted.png"; sourceTree = "<group>"; };
-		64E293131784ABEE009496FF /* viewPostFollowLabel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = viewPostFollowLabel.png; sourceTree = "<group>"; };
-		64E293141784ABEE009496FF /* viewPostFriendWithLabel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = viewPostFriendWithLabel.png; sourceTree = "<group>"; };
-		64E293151784ABEE009496FF /* viewPostViewSeedLabel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = viewPostViewSeedLabel.png; sourceTree = "<group>"; };
-		64E293191784AE14009496FF /* viewPostCommentTextView.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = viewPostCommentTextView.png; sourceTree = "<group>"; };
-		64EA880317796D9F00011F3E /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = background.png; path = ../background.png; sourceTree = "<group>"; };
+		64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "viewPostCommentButton-normal.png"; path = "../viewPostCommentButton-normal.png"; sourceTree = "<group>"; };
+		64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "viewPostCommentButton-highlighted.png"; path = "../viewPostCommentButton-highlighted.png"; sourceTree = "<group>"; };
+		64E293131784ABEE009496FF /* viewPostFollowLabel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostFollowLabel.png; path = ../viewPostFollowLabel.png; sourceTree = "<group>"; };
+		64E293141784ABEE009496FF /* viewPostFriendWithLabel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostFriendWithLabel.png; path = ../viewPostFriendWithLabel.png; sourceTree = "<group>"; };
+		64E293151784ABEE009496FF /* viewPostViewSeedLabel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostViewSeedLabel.png; path = ../viewPostViewSeedLabel.png; sourceTree = "<group>"; };
+		64E293191784AE14009496FF /* viewPostCommentTextView.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostCommentTextView.png; path = ../viewPostCommentTextView.png; sourceTree = "<group>"; };
+		64E293B517856F43009496FF /* loginBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginBackground.png; sourceTree = "<group>"; };
+		64E293B617856F43009496FF /* loginBtnForgotPwd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginBtnForgotPwd.png; sourceTree = "<group>"; };
+		64E293B717856F43009496FF /* loginBtnLogin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginBtnLogin.png; sourceTree = "<group>"; };
+		64E293B817856F43009496FF /* loginBtnLoginPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginBtnLoginPressed.png; sourceTree = "<group>"; };
+		64E293B917856F43009496FF /* loginBtnRegister.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginBtnRegister.png; sourceTree = "<group>"; };
+		64E293BA17856F43009496FF /* loginBtnRegisterPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginBtnRegisterPressed.png; sourceTree = "<group>"; };
+		64E293BB17856F43009496FF /* loginLblLogin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginLblLogin.png; sourceTree = "<group>"; };
+		64E293BC17856F43009496FF /* loginLblRegister.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginLblRegister.png; sourceTree = "<group>"; };
+		64E293BD17856F43009496FF /* loginTextfield.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginTextfield.png; sourceTree = "<group>"; };
+		64E293C717857C25009496FF /* mainTopBanner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mainTopBanner.png; path = ../mainTopBanner.png; sourceTree = "<group>"; };
+		64E293C917857E4C009496FF /* mainNavbarPostButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "mainNavbarPostButton@2x.png"; path = "../mainNavbarPostButton@2x.png"; sourceTree = "<group>"; };
+		64E293CB178587BE009496FF /* mainMapViewBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainMapViewBackground.png; sourceTree = "<group>"; };
+		64EA880317796D9F00011F3E /* mainBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mainBackground.png; path = ../mainBackground.png; sourceTree = "<group>"; };
 		64EA880517796DAB00011F3E /* textField.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = textField.png; path = ../textField.png; sourceTree = "<group>"; };
 		64FE8432176B9E0E00E561D8 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
 		64FE84E3176B9E4E00E561D8 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = SOURCE_ROOT; };
@@ -232,15 +248,7 @@ HE// !$*UTF8*$!
 		BF728EEE1767680F0050699C /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = ../Default.png; sourceTree = "<group>"; };
 		BF8925EB1767697000F1978F /* icon114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon114.png; path = ../icon114.png; sourceTree = "<group>"; };
 		BF8925ED1767698600F1978F /* icon57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon57.png; path = ../icon57.png; sourceTree = "<group>"; };
-		BFBC430C1784B57900C179F6 /* loginBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginBackground.png; sourceTree = "<group>"; };
-		BFBC430E1784C59000C179F6 /* loginTextfield.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginTextfield.png; sourceTree = "<group>"; };
-		BFBC43101784C80400C179F6 /* loginBtnRegister.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginBtnRegister.png; sourceTree = "<group>"; };
-		BFBC43111784C80400C179F6 /* loginBtnLoginPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginBtnLoginPressed.png; sourceTree = "<group>"; };
-		BFBC43121784C80400C179F6 /* loginBtnLogin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginBtnLogin.png; sourceTree = "<group>"; };
-		BFBC43131784C80400C179F6 /* loginBtnRegisterPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginBtnRegisterPressed.png; sourceTree = "<group>"; };
-		BFBC43181784CC9200C179F6 /* loginBtnForgotPwd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginBtnForgotPwd.png; sourceTree = "<group>"; };
-		BFBC431A1784CD4500C179F6 /* loginLblRegister.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginLblRegister.png; sourceTree = "<group>"; };
-		BFBC431B1784CD4500C179F6 /* loginLblLogin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginLblLogin.png; sourceTree = "<group>"; };
+		BFA53F501785B4FD007686F1 /* profileAvatarBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profileAvatarBar.png; sourceTree = "<group>"; };
 		BFC8414517586BFB00E52FE2 /* RCPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCPost.h; sourceTree = "<group>"; };
 		BFC8414617586BFB00E52FE2 /* RCPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCPost.m; sourceTree = "<group>"; };
 		BFCA7818174DFD3F00666CBA /* memcap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = memcap.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -327,17 +335,28 @@ HE// !$*UTF8*$!
 		643EACE9175BBE0D002761D9 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				BFBC430C1784B57900C179F6 /* loginBackground.png */,
-				BFBC430E1784C59000C179F6 /* loginTextfield.png */,
-				BFBC43101784C80400C179F6 /* loginBtnRegister.png */,
-				BFBC43111784C80400C179F6 /* loginBtnLoginPressed.png */,
-				BFBC43121784C80400C179F6 /* loginBtnLogin.png */,
-				BFBC43131784C80400C179F6 /* loginBtnRegisterPressed.png */,
-				BFBC43181784CC9200C179F6 /* loginBtnForgotPwd.png */,
-				BFBC431A1784CD4500C179F6 /* loginLblRegister.png */,
-				BFBC431B1784CD4500C179F6 /* loginLblLogin.png */,
+				64E293C917857E4C009496FF /* mainNavbarPostButton@2x.png */,
+				64E293C717857C25009496FF /* mainTopBanner.png */,
+				64EA880317796D9F00011F3E /* mainBackground.png */,
+				64E293B617856F43009496FF /* loginBtnForgotPwd.png */,
+				64E293B517856F43009496FF /* loginBackground.png */,
+				64E293B717856F43009496FF /* loginBtnLogin.png */,
+				64E293B817856F43009496FF /* loginBtnLoginPressed.png */,
+				64E293B917856F43009496FF /* loginBtnRegister.png */,
+				64E293BA17856F43009496FF /* loginBtnRegisterPressed.png */,
+				64E293BB17856F43009496FF /* loginLblLogin.png */,
+				64E293BC17856F43009496FF /* loginLblRegister.png */,
+				64E293BD17856F43009496FF /* loginTextfield.png */,
+				BFA53F501785B4FD007686F1 /* profileAvatarBar.png */,
 				64119A021781B83000BF0B05 /* postPostButton-normal.png */,
 				64119A12178460A500BF0B05 /* closeButton.png */,
+				64E293191784AE14009496FF /* viewPostCommentTextView.png */,
+				64E293131784ABEE009496FF /* viewPostFollowLabel.png */,
+				64E293141784ABEE009496FF /* viewPostFriendWithLabel.png */,
+				64E293151784ABEE009496FF /* viewPostViewSeedLabel.png */,
+				64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */,
+				64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */,
+				64119A1717849DBB00BF0B05 /* viewPostMainFrame.png */,
 				64119A0C17834E9700BF0B05 /* postFriendPrivacyButton-highlighted.png */,
 				64119A0D17834E9700BF0B05 /* postPersonalPrivacyButton-highlighted.png */,
 				64119A0E17834E9700BF0B05 /* postPublicPrivacyButton-highlighted.png */,
@@ -352,7 +371,6 @@ HE// !$*UTF8*$!
 				641199F0178088FF00BF0B05 /* postImageFrame.png */,
 				641199F1178088FF00BF0B05 /* postSubjectTextField.png */,
 				BF46ECB51778476C00F26A05 /* btnStandard-normal.png */,
-				64EA880317796D9F00011F3E /* background.png */,
 				641199E4177F5CB300BF0B05 /* menu@2x.png */,
 				64EA880517796DAB00011F3E /* textField.png */,
 				64D2442A177F123D00C1206F /* menu.png */,
@@ -370,13 +388,7 @@ HE// !$*UTF8*$!
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
-				64E293191784AE14009496FF /* viewPostCommentTextView.png */,
-				64E293131784ABEE009496FF /* viewPostFollowLabel.png */,
-				64E293141784ABEE009496FF /* viewPostFriendWithLabel.png */,
-				64E293151784ABEE009496FF /* viewPostViewSeedLabel.png */,
-				64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */,
-				64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */,
-				64119A1717849DBB00BF0B05 /* viewPostMainFrame.png */,
+				64E293CB178587BE009496FF /* mainMapViewBackground.png */,
 				64119A141784611700BF0B05 /* RCLightboxViewController.h */,
 				64119A151784611700BF0B05 /* RCLightboxViewController.m */,
 				BFCA7821174DFD3F00666CBA /* Rolling Capsule */,
@@ -435,9 +447,9 @@ HE// !$*UTF8*$!
 				64014915177966F5009B69DF /* RCMainFeedCell.xib */,
 				64194AD41770AAF100822F9B /* RCMainFeedCell.h */,
 				64194AD51770AAF100822F9B /* RCMainFeedCell.m */,
-				BF68E7021756090200E5C1F4 /* RCMainFeedViewController.xib */,
 				BF68E7001756090200E5C1F4 /* RCMainFeedViewController.h */,
 				BF68E7011756090200E5C1F4 /* RCMainFeedViewController.m */,
+				BF68E7021756090200E5C1F4 /* RCMainFeedViewController.xib */,
 				6407BBDA17545A87000F29C5 /* RCFriendListViewController.h */,
 				6407BBDB17545A87000F29C5 /* RCFriendListViewController.m */,
 				6407BBD51753B719000F29C5 /* RCFriendListViewController.xib */,
@@ -648,7 +660,7 @@ HE// !$*UTF8*$!
 				BF46ECB61778476C00F26A05 /* btnStandard-depressed.png in Resources */,
 				BF46ECB71778476C00F26A05 /* btnStandard-normal.png in Resources */,
 				64014916177966F5009B69DF /* RCMainFeedCell.xib in Resources */,
-				64EA880417796DA000011F3E /* background.png in Resources */,
+				64EA880417796DA000011F3E /* mainBackground.png in Resources */,
 				64EA880617796DAB00011F3E /* textField.png in Resources */,
 				64D2442B177F123D00C1206F /* menu.png in Resources */,
 				641199E5177F5CB300BF0B05 /* menu@2x.png in Resources */,
@@ -673,15 +685,22 @@ HE// !$*UTF8*$!
 				64E293171784ABEE009496FF /* viewPostFriendWithLabel.png in Resources */,
 				64E293181784ABEE009496FF /* viewPostViewSeedLabel.png in Resources */,
 				64E2931A1784AE14009496FF /* viewPostCommentTextView.png in Resources */,
-				BFBC430D1784B57900C179F6 /* loginBackground.png in Resources */,
-				BFBC430F1784C59000C179F6 /* loginTextfield.png in Resources */,
-				BFBC43141784C80400C179F6 /* loginBtnRegister.png in Resources */,
-				BFBC43151784C80400C179F6 /* loginBtnLoginPressed.png in Resources */,
-				BFBC43161784C80400C179F6 /* loginBtnLogin.png in Resources */,
-				BFBC43171784C80400C179F6 /* loginBtnRegisterPressed.png in Resources */,
-				BFBC43191784CC9200C179F6 /* loginBtnForgotPwd.png in Resources */,
-				BFBC431C1784CD4500C179F6 /* loginLblRegister.png in Resources */,
-				BFBC431D1784CD4500C179F6 /* loginLblLogin.png in Resources */,
+				64E293BE17856F43009496FF /* loginBackground.png in Resources */,
+				64E293BF17856F43009496FF /* loginBtnForgotPwd.png in Resources */,
+				64E293C017856F43009496FF /* loginBtnLogin.png in Resources */,
+				64E293C117856F43009496FF /* loginBtnLoginPressed.png in Resources */,
+				64E293C217856F43009496FF /* loginBtnRegister.png in Resources */,
+				64E293C317856F43009496FF /* loginBtnRegisterPressed.png in Resources */,
+				64E293C417856F43009496FF /* loginLblLogin.png in Resources */,
+				64E293C517856F43009496FF /* loginLblRegister.png in Resources */,
+				64E293C617856F43009496FF /* loginTextfield.png in Resources */,
+<<<<<<< HEAD
+				BFA53F511785B4FD007686F1 /* profileAvatarBar.png in Resources */,
+=======
+				64E293C817857C25009496FF /* mainTopBanner.png in Resources */,
+				64E293CA17857E4C009496FF /* mainNavbarPostButton@2x.png in Resources */,
+				64E293CC178587BE009496FF /* mainMapViewBackground.png in Resources */,
+>>>>>>> 3277d393d935b6e37841c86bdfa7fd4371161013
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
