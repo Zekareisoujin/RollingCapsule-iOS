@@ -16,7 +16,6 @@
 @interface RCNewPostViewController : RCLightboxViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, AmazonServiceRequestDelegate, UIActionSheetDelegate, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UITextFieldDelegate>
 
 - (IBAction)closeBtnTouchUpInside:(id)sender;
-//@property (weak, nonatomic) IBOutlet UIImageView *imageViewPreviousView;
 @property (weak, nonatomic) IBOutlet UIButton *btnPostImage;
 @property (weak, nonatomic) IBOutlet UIImageView *imageViewPostPicture;
 @property (weak, nonatomic) IBOutlet UITextField *txtFieldPostSubject;
@@ -35,7 +34,7 @@
 @property (nonatomic, strong) UITableView *tblViewLandmark;
 @property (nonatomic, strong) RCLandmark *currentLandmark;
 
-- (IBAction)backgroundTouchUpInside:(id)sender;
+- (void)backgroundTouchUpInside;
 - (IBAction)btnPostImageTouchUpInside:(id)sender;
 - (IBAction)callLandmarkTable:(id)sender;
 - (id) initWithUser:(RCUser *)user;

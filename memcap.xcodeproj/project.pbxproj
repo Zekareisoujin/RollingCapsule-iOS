@@ -73,7 +73,10 @@
 		64E293C417856F43009496FF /* loginLblLogin.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293BB17856F43009496FF /* loginLblLogin.png */; };
 		64E293C517856F43009496FF /* loginLblRegister.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293BC17856F43009496FF /* loginLblRegister.png */; };
 		64E293C617856F43009496FF /* loginTextfield.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293BD17856F43009496FF /* loginTextfield.png */; };
-		64EA880417796DA000011F3E /* background.png in Resources */ = {isa = PBXBuildFile; fileRef = 64EA880317796D9F00011F3E /* background.png */; };
+		64E293C817857C25009496FF /* mainTopBanner.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293C717857C25009496FF /* mainTopBanner.png */; };
+		64E293CA17857E4C009496FF /* mainNavbarPostButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293C917857E4C009496FF /* mainNavbarPostButton@2x.png */; };
+		64E293CC178587BE009496FF /* mainMapViewBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293CB178587BE009496FF /* mainMapViewBackground.png */; };
+		64EA880417796DA000011F3E /* mainBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 64EA880317796D9F00011F3E /* mainBackground.png */; };
 		64EA880617796DAB00011F3E /* textField.png in Resources */ = {isa = PBXBuildFile; fileRef = 64EA880517796DAB00011F3E /* textField.png */; };
 		64FE8433176B9E0E00E561D8 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FE8432176B9E0E00E561D8 /* libTestFlight.a */; };
 		64FE84E5176BAAD800E561D8 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FE84E4176BAAD800E561D8 /* libz.dylib */; };
@@ -217,7 +220,10 @@
 		64E293BB17856F43009496FF /* loginLblLogin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginLblLogin.png; sourceTree = "<group>"; };
 		64E293BC17856F43009496FF /* loginLblRegister.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginLblRegister.png; sourceTree = "<group>"; };
 		64E293BD17856F43009496FF /* loginTextfield.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginTextfield.png; sourceTree = "<group>"; };
-		64EA880317796D9F00011F3E /* background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = background.png; path = ../background.png; sourceTree = "<group>"; };
+		64E293C717857C25009496FF /* mainTopBanner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mainTopBanner.png; path = ../mainTopBanner.png; sourceTree = "<group>"; };
+		64E293C917857E4C009496FF /* mainNavbarPostButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "mainNavbarPostButton@2x.png"; path = "../mainNavbarPostButton@2x.png"; sourceTree = "<group>"; };
+		64E293CB178587BE009496FF /* mainMapViewBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainMapViewBackground.png; sourceTree = "<group>"; };
+		64EA880317796D9F00011F3E /* mainBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mainBackground.png; path = ../mainBackground.png; sourceTree = "<group>"; };
 		64EA880517796DAB00011F3E /* textField.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = textField.png; path = ../textField.png; sourceTree = "<group>"; };
 		64FE8432176B9E0E00E561D8 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
 		64FE84E3176B9E4E00E561D8 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = SOURCE_ROOT; };
@@ -329,8 +335,11 @@
 		643EACE9175BBE0D002761D9 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				64E293B517856F43009496FF /* loginBackground.png */,
+				64E293C917857E4C009496FF /* mainNavbarPostButton@2x.png */,
+				64E293C717857C25009496FF /* mainTopBanner.png */,
+				64EA880317796D9F00011F3E /* mainBackground.png */,
 				64E293B617856F43009496FF /* loginBtnForgotPwd.png */,
+				64E293B517856F43009496FF /* loginBackground.png */,
 				64E293B717856F43009496FF /* loginBtnLogin.png */,
 				64E293B817856F43009496FF /* loginBtnLoginPressed.png */,
 				64E293B917856F43009496FF /* loginBtnRegister.png */,
@@ -362,7 +371,6 @@
 				641199F0178088FF00BF0B05 /* postImageFrame.png */,
 				641199F1178088FF00BF0B05 /* postSubjectTextField.png */,
 				BF46ECB51778476C00F26A05 /* btnStandard-normal.png */,
-				64EA880317796D9F00011F3E /* background.png */,
 				641199E4177F5CB300BF0B05 /* menu@2x.png */,
 				64EA880517796DAB00011F3E /* textField.png */,
 				64D2442A177F123D00C1206F /* menu.png */,
@@ -380,6 +388,7 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
+				64E293CB178587BE009496FF /* mainMapViewBackground.png */,
 				64119A141784611700BF0B05 /* RCLightboxViewController.h */,
 				64119A151784611700BF0B05 /* RCLightboxViewController.m */,
 				BFCA7821174DFD3F00666CBA /* Rolling Capsule */,
@@ -438,9 +447,9 @@
 				64014915177966F5009B69DF /* RCMainFeedCell.xib */,
 				64194AD41770AAF100822F9B /* RCMainFeedCell.h */,
 				64194AD51770AAF100822F9B /* RCMainFeedCell.m */,
-				BF68E7021756090200E5C1F4 /* RCMainFeedViewController.xib */,
 				BF68E7001756090200E5C1F4 /* RCMainFeedViewController.h */,
 				BF68E7011756090200E5C1F4 /* RCMainFeedViewController.m */,
+				BF68E7021756090200E5C1F4 /* RCMainFeedViewController.xib */,
 				6407BBDA17545A87000F29C5 /* RCFriendListViewController.h */,
 				6407BBDB17545A87000F29C5 /* RCFriendListViewController.m */,
 				6407BBD51753B719000F29C5 /* RCFriendListViewController.xib */,
@@ -651,7 +660,7 @@
 				BF46ECB61778476C00F26A05 /* btnStandard-depressed.png in Resources */,
 				BF46ECB71778476C00F26A05 /* btnStandard-normal.png in Resources */,
 				64014916177966F5009B69DF /* RCMainFeedCell.xib in Resources */,
-				64EA880417796DA000011F3E /* background.png in Resources */,
+				64EA880417796DA000011F3E /* mainBackground.png in Resources */,
 				64EA880617796DAB00011F3E /* textField.png in Resources */,
 				64D2442B177F123D00C1206F /* menu.png in Resources */,
 				641199E5177F5CB300BF0B05 /* menu@2x.png in Resources */,
@@ -686,6 +695,9 @@
 				64E293C517856F43009496FF /* loginLblRegister.png in Resources */,
 				64E293C617856F43009496FF /* loginTextfield.png in Resources */,
 				BFA53F511785B4FD007686F1 /* profileAvatarBar.png in Resources */,
+				64E293C817857C25009496FF /* mainTopBanner.png in Resources */,
+				64E293CA17857E4C009496FF /* mainNavbarPostButton@2x.png in Resources */,
+				64E293CC178587BE009496FF /* mainMapViewBackground.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -867,8 +879,8 @@
 		BFCA7851174DFD3F00666CBA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Downloads/aws-ios-sdk-1.6.0\"",
@@ -882,8 +894,8 @@
 					"\"$(SRCROOT)\"",
 				);
 				PRODUCT_NAME = memcap;
-				PROVISIONING_PROFILE = "E30D16D1-E6A6-4748-BBA8-411F5E255399";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E30D16D1-E6A6-4748-BBA8-411F5E255399";
+				PROVISIONING_PROFILE = "4A228280-B9AD-483F-A3BC-340AE51523ED";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4A228280-B9AD-483F-A3BC-340AE51523ED";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -892,8 +904,8 @@
 		BFCA7852174DFD3F00666CBA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Downloads/aws-ios-sdk-1.6.0\"",
@@ -907,8 +919,8 @@
 					"\"$(SRCROOT)\"",
 				);
 				PRODUCT_NAME = memcap;
-				PROVISIONING_PROFILE = "E30D16D1-E6A6-4748-BBA8-411F5E255399";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E30D16D1-E6A6-4748-BBA8-411F5E255399";
+				PROVISIONING_PROFILE = "4A228280-B9AD-483F-A3BC-340AE51523ED";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4A228280-B9AD-483F-A3BC-340AE51523ED";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

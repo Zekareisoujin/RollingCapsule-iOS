@@ -85,6 +85,9 @@
     [_locationManager startUpdatingLocation];
     
     [_menuViewController.view setUserInteractionEnabled:NO];
+    
+    //navigation bar appearnce
+    //[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"mainTopBanner.png"] forBarMetrics:UIBarMetricsDefault];
     return YES;
 }
 
