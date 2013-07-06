@@ -58,7 +58,9 @@
     
     
     _navigationController = [[UINavigationController alloc] initWithRootViewController:firstViewController];
-    [[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:RCAppThemeColorRed green:RCAppThemeColorGreen blue:RCAppThemeColorBlue alpha:1.0]];
+    //navigation bar appearance
+    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"navigationBarBackground.png"] forBarMetrics:UIBarMetricsDefault];
+    //[[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:RCAppThemeColorRed green:RCAppThemeColorGreen blue:RCAppThemeColorBlue alpha:1.0]];
 
     _menuViewController = [[RCMainMenuViewController alloc] initWithContentView:_navigationController];
     
@@ -85,9 +87,7 @@
     [_locationManager startUpdatingLocation];
     
     [_menuViewController.view setUserInteractionEnabled:NO];
-    
-    //navigation bar appearnce
-    //[[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"mainTopBanner.png"] forBarMetrics:UIBarMetricsDefault];
+
     return YES;
 }
 
