@@ -316,6 +316,25 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
+    if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height) {
+        [_closeButton setHidden:YES];
+        [_closeButton setEnabled:NO];
+        CGRect closeFrame = _closeButton.frame;
+        closeFrame.origin.y += 20;
+        UIButton *newCloseButton = [[UIButton alloc] initWithFrame:closeFrame];
+        [newCloseButton setImage:[UIImage imageNamed:@"closeButton.png"] forState:UIControlStateNormal];
+        [newCloseButton addTarget:self action:@selector(btnCloseTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:newCloseButton];
+        CGRect frame = self.view.frame;
+        //move view up so that the whole post frame fits in iphone 4 screen
+        //here we basically move the y coordinate back by exactly the amount
+        //with which the post frame is away from screen top edge
+        //leaving some gap in between
+        frame.origin.y = -_imgViewMainFrame.frame.origin.y + 2;
+        frame.size.height +=  _imgViewMainFrame.frame.origin.y - 2;
+        self.view.frame = frame;
+        
+    }
     [super viewWillAppear:animated];
 }
 

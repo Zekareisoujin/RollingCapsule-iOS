@@ -28,6 +28,7 @@
 @property (nonatomic, strong) UIButton* personalPrivacyButton;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 @property (nonatomic, strong) NSString* privacyOption;
+@property (nonatomic, strong) UIView *viewLandmark;
 @end
 
 @implementation RCNewPostViewController
@@ -45,6 +46,8 @@
 @synthesize friendPrivacyButton = _friendPrivacyButton;
 @synthesize personalPrivacyButton = _personalPrivacyButton;
 @synthesize privacyOption = _privacyOption;
+@synthesize viewLandmark = _viewLandmark;
+
 BOOL _isTapToCloseKeyboard = NO;
 BOOL _landmarkTableVisible = NO;
 BOOL _successfulPost = NO;
@@ -63,10 +66,11 @@ RCConnectionManager *_connectionManager;
 - (IBAction)callLandmarkTable:(id)sender {
     if (_landmarkTableVisible) {
         _landmarkTableVisible = NO;
-        [_tblViewLandmark removeFromSuperview];
+        [_viewLandmark removeFromSuperview];
+        [self.view addGestureRecognizer:_tapGestureRecognizer];
     } else {
         [self asynchGetLandmarkRequest];
-        [self.view addSubview:_tblViewLandmark];
+        [self.view addSubview:_viewLandmark];
         _landmarkTableVisible = YES;
     }
 }
@@ -77,8 +81,6 @@ RCConnectionManager *_connectionManager;
         _user = user;
         _keyboardPushHandler = [[RCKeyboardPushUpHandler alloc] init];
         _connectionManager = [[RCConnectionManager alloc] init];
-        //self.backgroundImage = nil;
-        //NSLog(@"RCNewPostViewController: %@", _keyboardPushHandler);
     }
     return self;
 }
@@ -89,8 +91,6 @@ RCConnectionManager *_connectionManager;
         _user = user;
         _keyboardPushHandler = [[RCKeyboardPushUpHandler alloc] init];
         _connectionManager = [[RCConnectionManager alloc] init];
-        //self.backgroundImage = image;
-        //NSLog(@"RCNewPostViewController: %@", _keyboardPushHandler);
     }
     return self;
 }
@@ -116,13 +116,17 @@ RCConnectionManager *_connectionManager;
     _txtFieldPostSubject.leftView = paddingView;
     _txtFieldPostSubject.leftViewMode = UITextFieldViewModeAlways;
     
-    //[UICollectionView alloc] initWith
+    //
+    _viewLandmark = [[UIView alloc] initWithFrame:CGRectMake(10, 90, 300, 160)];
     UIImageView *landmarkBackground = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 300, 160)];
     [landmarkBackground setImage:[UIImage imageNamed:@"postLandmarkBackground.png"]];
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    _tblViewLandmark = [[UICollectionView alloc] initWithFrame:CGRectMake(10, 90, 300, 160) collectionViewLayout:flowLayout];
-
-    [_tblViewLandmark setBackgroundView:landmarkBackground];
+    _tblViewLandmark = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, 280, 160) collectionViewLayout:flowLayout];
+    [_viewLandmark addSubview:landmarkBackground];
+    landmarkBackground.frame = CGRectMake(0,0,_viewLandmark.frame.size.width, _viewLandmark.frame.size.height);
+    [_viewLandmark addSubview:_tblViewLandmark];
+    _tblViewLandmark.frame = CGRectMake(10,0,280,160);
+    //[_tblViewLandmark setBackgroundView:landmarkBackground];
     [_tblViewLandmark setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0]];
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
     _tblViewLandmark.allowsSelection = YES;
@@ -408,6 +412,12 @@ RCConnectionManager *_connectionManager;
     if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height) {
         [_closeButton setHidden:YES];
         [_closeButton setEnabled:NO];
+        CGRect closeFrame = _closeButton.frame;
+        closeFrame.origin.y += 20;
+        UIButton *newCloseButton = [[UIButton alloc] initWithFrame:closeFrame];
+        [newCloseButton setImage:[UIImage imageNamed:@"closeButton.png"] forState:UIControlStateNormal];
+        [newCloseButton addTarget:self action:@selector(closeBtnTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:newCloseButton];
         CGRect frame = self.view.frame;
         //move view up so that the whole post frame fits in iphone 4 screen
         //here we basically move the y coordinate back by exactly the amount
@@ -467,7 +477,7 @@ RCConnectionManager *_connectionManager;
     RCLandmark *landmark = [_landmarks objectAtIndex:indexPath.row];
     _currentLandmark = landmark;
     [_btnLandmark setTitle:landmark.description forState:UIControlStateNormal];
-    [_tblViewLandmark removeFromSuperview];
+    [_viewLandmark removeFromSuperview];
     _landmarkTableVisible = NO;
 }
 
@@ -661,6 +671,10 @@ RCConnectionManager *_connectionManager;
     NSString *imageName = [NSString stringWithFormat:@"landmarkCategory%@.png", landmark.category];
     [cell.imgViewCategory setImage:[UIImage imageNamed:imageName]];
     cell.lblLandmarkTitle.text = landmark.name;
+    if (landmark.landmarkID == _currentLandmark.landmarkID)
+        [cell.imgViewChosenMark setImage:[UIImage imageNamed:@"postLandmarkChosenBackground.png"]];
+    else
+        [cell.imgViewChosenMark setImage:nil];
     return cell;
 }
 // 4
@@ -679,7 +693,7 @@ RCConnectionManager *_connectionManager;
     UIButton *button = (UIButton*)_txtFieldPostSubject.leftView;
     NSString *imageName = [NSString stringWithFormat:@"landmarkCategory%@.png", landmark.category];
     [button setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
-    [collectionView removeFromSuperview];
+    [_viewLandmark removeFromSuperview];
     [self.view addGestureRecognizer:_tapGestureRecognizer];
     _landmarkTableVisible = NO;
 }

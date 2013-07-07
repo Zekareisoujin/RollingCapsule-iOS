@@ -11,6 +11,7 @@
 @interface RCLandmarkCell : UICollectionViewCell
 
 @property (weak, nonatomic) IBOutlet UIImageView *imgViewCategory;
+@property (weak, nonatomic) IBOutlet UIImageView *imgViewChosenMark;
 @property (weak, nonatomic) IBOutlet UILabel *lblLandmarkTitle;
 + (NSString*) cellIdentifier;
 

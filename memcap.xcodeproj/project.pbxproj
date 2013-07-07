@@ -57,6 +57,7 @@
 		649A869D175B0CC30016674F /* RCAmazonS3Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 649A869C175B0CC30016674F /* RCAmazonS3Helper.m */; };
 		64A917081751E554007D629D /* RCRegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64A917071751E554007D629D /* RCRegisterViewController.xib */; };
 		64A9170B1751F6C9007D629D /* RCRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64A9170A1751F6C9007D629D /* RCRegisterViewController.m */; };
+		64CA28451789ED1C0018D626 /* postLandmarkChosenBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 64CA28441789ED1C0018D626 /* postLandmarkChosenBackground.png */; };
 		64D2442B177F123D00C1206F /* menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D2442A177F123D00C1206F /* menu.png */; };
 		64E293101784A84B009496FF /* viewPostCommentButton-normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */; };
 		64E293121784A8C8009496FF /* viewPostCommentButton-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */; };
@@ -219,6 +220,7 @@
 		64A917071751E554007D629D /* RCRegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCRegisterViewController.xib; sourceTree = "<group>"; };
 		64A917091751F6C9007D629D /* RCRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCRegisterViewController.h; sourceTree = "<group>"; };
 		64A9170A1751F6C9007D629D /* RCRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCRegisterViewController.m; sourceTree = "<group>"; };
+		64CA28441789ED1C0018D626 /* postLandmarkChosenBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = postLandmarkChosenBackground.png; sourceTree = "<group>"; };
 		64D2442A177F123D00C1206F /* menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = menu.png; path = ../menu.png; sourceTree = "<group>"; };
 		64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "viewPostCommentButton-normal.png"; path = "../viewPostCommentButton-normal.png"; sourceTree = "<group>"; };
 		64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "viewPostCommentButton-highlighted.png"; path = "../viewPostCommentButton-highlighted.png"; sourceTree = "<group>"; };
@@ -384,7 +386,6 @@
 				64E293BD17856F43009496FF /* loginTextfield.png */,
 				BFA53F501785B4FD007686F1 /* profileAvatarBar.png */,
 				64119A021781B83000BF0B05 /* postPostButton-normal.png */,
-				64119A12178460A500BF0B05 /* closeButton.png */,
 				64E293191784AE14009496FF /* viewPostCommentTextView.png */,
 				64E293131784ABEE009496FF /* viewPostFollowLabel.png */,
 				64E293141784ABEE009496FF /* viewPostFriendWithLabel.png */,
@@ -408,6 +409,7 @@
 				641199F1178088FF00BF0B05 /* postSubjectTextField.png */,
 				BF46ECB51778476C00F26A05 /* btnStandard-normal.png */,
 				641199E4177F5CB300BF0B05 /* menu@2x.png */,
+				64119A12178460A500BF0B05 /* closeButton.png */,
 				64EA880517796DAB00011F3E /* textField.png */,
 				64D2442A177F123D00C1206F /* menu.png */,
 				BF8925ED1767698600F1978F /* icon57.png */,
@@ -424,6 +426,7 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
+				64CA28441789ED1C0018D626 /* postLandmarkChosenBackground.png */,
 				64EA9B5817895B560022FA67 /* landmarkCategoryCinema.png */,
 				64EA9B5917895B560022FA67 /* landmarkCategoryMall.png */,
 				64EA9B5A17895B560022FA67 /* landmarkCategorySchool.png */,
@@ -759,6 +762,7 @@
 				64EA9B5D17895B560022FA67 /* landmarkCategoryMall.png in Resources */,
 				64EA9B5E17895B560022FA67 /* landmarkCategorySchool.png in Resources */,
 				64EA9B5F17895B560022FA67 /* landmarkCategoryShop.png in Resources */,
+				64CA28451789ED1C0018D626 /* postLandmarkChosenBackground.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

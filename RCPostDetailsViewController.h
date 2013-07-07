@@ -17,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imgViewMainFrame;
 - (IBAction)commentButtonTouchUpInside:(id)sender;
 @property (weak, nonatomic) IBOutlet UITextView *txtViewPostComment;
+@property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @property (weak, nonatomic) IBOutlet UILabel *lblLandmark;
 @property (weak, nonatomic) IBOutlet UILabel *lblDatePosted;
 - (IBAction)backgroundTap:(id)sender;
