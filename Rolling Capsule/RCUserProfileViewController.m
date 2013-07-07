@@ -35,6 +35,7 @@
 
 @synthesize selectedCell = _selectedCell;
 
+NSArray  *_postPreviewElements;
 NSString *_friendStatus;
 int       _friendshipID;
 
@@ -75,6 +76,7 @@ int       _friendshipID;
     
     _postList = [[NSMutableArray alloc] init];
     
+    _postPreviewElements = [[NSArray alloc] initWithObjects:_previewBackground, _previewPostImage, _previewLabelDate, _previewLabelDescription, _previewLabelLocation, nil];
     [_previewPostImage.layer setCornerRadius:10.0];
     [_previewPostImage setClipsToBounds:YES];
     [self hidePostPreview];
@@ -444,17 +446,17 @@ int       _friendshipID;
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (_selectedCell != nil) {
-        [_selectedCell setHighlightShadow:NO];
-        [self hidePostPreview];
-    }
-    
     RCProfileViewCell *cell = (RCProfileViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
     RCPost *post = (RCPost*)[_postList objectAtIndex:indexPath.row];
     
-    if (_selectedCell == cell)
+    if (_selectedCell == cell) {
+        if (_selectedCell != nil) {
+            [_selectedCell setHighlightShadow:NO];
+            [self hidePostPreview];
+        }
         _selectedCell = nil;
-    else {
+    }else {
+        [_selectedCell setHighlightShadow:NO];
         _selectedCell = cell;
         [_selectedCell setHighlightShadow:YES];
         [self showPostPreview:post withImageFromCell:cell];
@@ -463,23 +465,31 @@ int       _friendshipID;
 
 //Preview panel related methods
 - (void) hidePostPreview {
-    [_previewBackground setHidden:YES];
-    [_previewPostImage setHidden:YES];
-    [_previewLabelDate setHidden:YES];
-    [_previewLabelDescription setHidden:YES];
-    [_previewLabelLocation setHidden:YES];
+    [UIView animateWithDuration:0.3 animations:^{
+        for (UIView *elem in _postPreviewElements)
+            elem.layer.opacity = 0.0;
+    }completion:^(BOOL finished){
+        for (UIView *elem in _postPreviewElements)
+            [elem setHidden:YES];
+    }];
 }
 
 - (void) showPostPreview: (RCPost*) post withImageFromCell: (RCProfileViewCell*) cell{
-    [_previewBackground setHidden:NO];
-    [_previewPostImage setHidden:NO];
-    [_previewLabelDate setHidden:NO];
-    [_previewLabelDescription setHidden:NO];
-    [_previewLabelLocation setHidden:NO];
+    for (UIView *elem in _postPreviewElements)
+        [elem setHidden:NO];
     
     [_previewPostImage setImage:cell.imageView.image];
     [_previewLabelDescription setText:post.content];
-    //Left date & location
+    
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"dd.MM.yyyy"];
+    [_previewLabelDate setText:[formatter stringFromDate:post.createdTime]];
+    //Left location
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        for (UIView *elem in _postPreviewElements)
+            elem.layer.opacity = 1.0;
+    }];
 }
 
 @end
