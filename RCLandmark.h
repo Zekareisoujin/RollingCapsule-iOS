@@ -11,11 +11,13 @@
 
 @interface RCLandmark : NSObject <MKAnnotation>
 
-@property (nonatomic,retain) NSString *description;
-@property (nonatomic,retain) NSString *createdTime;
-@property (nonatomic,retain) NSString *updatedTime;
-@property (nonatomic,retain) NSString *fileUrl;
-@property (nonatomic,retain) NSString *privacyOption;
+@property (nonatomic,strong) NSString *description;
+@property (nonatomic,strong) NSString *createdTime;
+@property (nonatomic,strong) NSString *updatedTime;
+@property (nonatomic,strong) NSString *fileUrl;
+@property (nonatomic,strong) NSString *privacyOption;
+@property (nonatomic,strong) NSString *name;
+@property (nonatomic,strong) NSString *category;
 @property   int     likeCount;
 @property   int     viewCount;
 @property   double  longitude;

@@ -111,7 +111,7 @@ RCConnectionManager *_connectionManager;
     
     //init landmark button within
     UIButton *paddingView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
-    [paddingView setImage:[UIImage imageNamed:@"loginBtnLogin.png"] forState:UIControlStateNormal];
+    [paddingView setImage:[UIImage imageNamed:@"mainViewOptionPublic.png"] forState:UIControlStateNormal];
     [paddingView addTarget:self action:@selector(openLandmarkView) forControlEvents:UIControlEventTouchUpInside];
     _txtFieldPostSubject.leftView = paddingView;
     _txtFieldPostSubject.leftViewMode = UITextFieldViewModeAlways;
@@ -656,27 +656,12 @@ RCConnectionManager *_connectionManager;
 - (UICollectionViewCell *)collectionView:(UICollectionView *)cv cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     NSString* cellIdentifier = [RCLandmarkCell cellIdentifier];
     RCLandmarkCell *cell = [cv dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
-    //[cell setBackgroundColor:[UIColor yellowColor]];
-    [cell.imgViewCategory setImage:[UIImage imageNamed:@"landmarkCategoryRestaurant.png"]];
     int idx = [indexPath row];
     RCLandmark *landmark = [_landmarks objectAtIndex:idx];
-    cell.lblLandmarkTitle.text = landmark.description;
-    return cell;/*
-    RCMainFeedCell *cell = [cv dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
-    NSArray* items = [_postsByLandmark objectForKey:[[NSNumber alloc] initWithInteger:_currentLandmarkID]];
-    RCPost *post = [items objectAtIndex:indexPath.row];
-    [_connectionManager startConnection];
-    [cell getPostContentImageFromInternet:_user withPostContent:post usingCollection:nil completion:^{
-        [_connectionManager endConnection];
-    }];
-    if ([_chosenPosts count] != 0) {
-        if ([_chosenPosts containsObject:[[NSNumber alloc] initWithInt:post.postID]]) {
-            [cell changeCellState:RCCellStateFloat];
-        } else {
-            [cell changeCellState:RCCellStateDimmed];
-        }
-    }
-    return cell;*/
+    NSString *imageName = [NSString stringWithFormat:@"landmarkCategory%@.png", landmark.category];
+    [cell.imgViewCategory setImage:[UIImage imageNamed:imageName]];
+    cell.lblLandmarkTitle.text = landmark.name;
+    return cell;
 }
 // 4
 /*- (UICollectionReusableView *)collectionView:
@@ -692,7 +677,8 @@ RCConnectionManager *_connectionManager;
     RCLandmark *landmark = [_landmarks objectAtIndex:idx];
     _currentLandmark = landmark;
     UIButton *button = (UIButton*)_txtFieldPostSubject.leftView;
-    [button setImage:[UIImage imageNamed:@"landmarkCategoryRestaurant.png"] forState:UIControlStateNormal];
+    NSString *imageName = [NSString stringWithFormat:@"landmarkCategory%@.png", landmark.category];
+    [button setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
     [collectionView removeFromSuperview];
     [self.view addGestureRecognizer:_tapGestureRecognizer];
     _landmarkTableVisible = NO;
@@ -711,6 +697,6 @@ RCConnectionManager *_connectionManager;
 // 3
 - (UIEdgeInsets)collectionView:
 (UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    return UIEdgeInsetsMake(30,10,10,10);//, <#CGFloat left#>, <#CGFloat bottom#>, <#CGFloat right#>)
+    return UIEdgeInsetsMake(30,10,10,10);
 }
 @end
