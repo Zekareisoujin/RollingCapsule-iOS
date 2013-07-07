@@ -12,7 +12,6 @@
 #import "RCUserProfileViewController.h"
 #import "RCAmazonS3Helper.h"
 #import "RCResourceCache.h"
-#import "RCProfileViewCell.h"
 #import <AWSRuntime/AWSRuntime.h>
 
 @interface RCUserProfileViewController ()
@@ -27,6 +26,14 @@
 @synthesize viewingUser = _viewingUser;
 @synthesize postList = _postList;
 @synthesize viewingUserID = _viewingUserID;
+
+@synthesize previewBackground = _previewBackground;
+@synthesize previewPostImage = _previewPostImage;
+@synthesize previewLabelLocation = _previewLabelLocation;
+@synthesize previewLabelDate = _previewLabelDate;
+@synthesize previewLabelDescription = _previewLabelDescription;
+
+@synthesize selectedCell = _selectedCell;
 
 NSString *_friendStatus;
 int       _friendshipID;
@@ -66,12 +73,18 @@ int       _friendshipID;
     UICollectionViewFlowLayout *flow =  (UICollectionViewFlowLayout *)_collectionView.collectionViewLayout;
     flow.minimumInteritemSpacing = 0.0;
     
-    UIImage *buttonImage = [UIImage imageNamed:@"mainNavbarPostButton"];
+    _postList = [[NSMutableArray alloc] init];
+    
+    [_previewPostImage.layer setCornerRadius:10.0];
+    [_previewPostImage setClipsToBounds:YES];
+    [self hidePostPreview];
+    
+    /*UIImage *buttonImage = [UIImage imageNamed:@"mainNavbarPostButton"];
     UIButton *postButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [postButton setFrame:CGRectMake(0,0,buttonImage.size.width, buttonImage.size.height)];
     [postButton setBackgroundImage:buttonImage forState:UIControlStateNormal];
     [postButton addTarget:self action:@selector(switchToNewPostScreen) forControlEvents:UIControlEventTouchUpInside];
-    [postButton addTarget:self action:@selector(postButtonTouchDown) forControlEvents:UIControlEventTouchDown];
+    [postButton addTarget:self action:@selector(postButtonTouchDown) forControlEvents:UIControlEventTouchDown];*/
     
     NSString* cellIdentifier = [RCProfileViewCell cellIdentifier];
     [self.collectionView registerClass:[RCProfileViewCell class] forCellWithReuseIdentifier:cellIdentifier];
@@ -91,6 +104,7 @@ int       _friendshipID;
 
 - (void)asynchFetchFeeds {
     //Asynchronous Request
+    [_postList removeAllObjects];
     @try {
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@?mobile=1", RCServiceURL]];
         NSURLRequest *request = CreateHttpGetRequest(url);
@@ -105,8 +119,11 @@ int       _friendshipID;
              
              if (jsonData != NULL) {
                  //NSLog(@"Profile View: fetched feeds: %@", jsonData);
-                 _postList = (NSArray *) [jsonData objectForKey:@"post_list"];
-                 //NSLog(@"Profile View: post lists: %@", _postList);
+                 NSArray *jsonDataArray = (NSArray *) [jsonData objectForKey:@"post_list"];
+                 //NSLog(@"Profile View: post lists: %@", jsonDataArray);
+                 for (NSDictionary* elem in jsonDataArray){
+                     [_postList addObject:[[RCPost alloc] initWithNSDictionary:elem]];
+                 }
                  
                  [_collectionView reloadData];
              }else {
@@ -393,7 +410,8 @@ int       _friendshipID;
     NSString* cellIdentifier = [RCProfileViewCell cellIdentifier];
     RCProfileViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
     
-    RCPost *post = [[RCPost alloc] initWithNSDictionary:[_postList objectAtIndex:indexPath.row]];
+    //RCPost *post = [[RCPost alloc] initWithNSDictionary:[_postList objectAtIndex:indexPath.row]];
+    RCPost *post = [_postList objectAtIndex:indexPath.row];
 
     [cell getPostContentImageFromInternet:_viewingUser withPostContent:post usingCollection:nil completion:^{
     }];
@@ -423,5 +441,45 @@ int       _friendshipID;
     return UIEdgeInsetsMake(10, 10, 10, 10);//UIEdgeInsetsM
 }
 
+#pragma mark - UICollectionViewDelegate
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (_selectedCell != nil) {
+        [_selectedCell setHighlightShadow:NO];
+        [self hidePostPreview];
+    }
+    
+    RCProfileViewCell *cell = (RCProfileViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
+    RCPost *post = (RCPost*)[_postList objectAtIndex:indexPath.row];
+    
+    if (_selectedCell == cell)
+        _selectedCell = nil;
+    else {
+        _selectedCell = cell;
+        [_selectedCell setHighlightShadow:YES];
+        [self showPostPreview:post withImageFromCell:cell];
+    }
+}
+
+//Preview panel related methods
+- (void) hidePostPreview {
+    [_previewBackground setHidden:YES];
+    [_previewPostImage setHidden:YES];
+    [_previewLabelDate setHidden:YES];
+    [_previewLabelDescription setHidden:YES];
+    [_previewLabelLocation setHidden:YES];
+}
+
+- (void) showPostPreview: (RCPost*) post withImageFromCell: (RCProfileViewCell*) cell{
+    [_previewBackground setHidden:NO];
+    [_previewPostImage setHidden:NO];
+    [_previewLabelDate setHidden:NO];
+    [_previewLabelDescription setHidden:NO];
+    [_previewLabelLocation setHidden:NO];
+    
+    [_previewPostImage setImage:cell.imageView.image];
+    [_previewLabelDescription setText:post.content];
+    //Left date & location
+}
 
 @end

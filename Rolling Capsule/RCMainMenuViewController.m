@@ -53,12 +53,6 @@
     // Dispose of any resources that can be recreated.
 }
 
--(IBAction)btnTestTouchUpInside:(id)sender
-{
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate hideSideMenu];
-}
-
 - (IBAction)btnActionMainFeedNav:(id)sender {
     RCMainFeedViewController *mainFeedViewController = [[RCMainFeedViewController alloc] init];
     [self navigateToViewControllerFromMenu:mainFeedViewController];

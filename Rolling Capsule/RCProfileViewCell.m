@@ -31,8 +31,15 @@
 
 - (void)getPostContentImageFromInternet:(RCUser *) user withPostContent:(RCPost *) post usingCollection:(NSMutableDictionary*)postCache completion:(void (^)(void))callback {
     
-    self.imageView.layer.cornerRadius = 5.0;
-    self.imageView.clipsToBounds = YES;
+    [self.imageView.layer setCornerRadius:10.0];
+    [self.imageView setClipsToBounds:YES];
+    
+    [self.layer setMasksToBounds:NO];
+    [self.layer setShadowColor:[UIColor whiteColor].CGColor];
+    [self.layer setShadowRadius:5.0];
+    [self.layer setShadowOffset:CGSizeZero];
+    [self.layer setShadowPath:[[UIBezierPath
+                                bezierPathWithRect:self.bounds] CGPath]];
     
     if ([post.fileUrl isKindOfClass:[NSNull class]]) return;
     RCResourceCache *cache = [RCResourceCache centralCache];
@@ -58,6 +65,10 @@
             callback();
         });
     });
+}
+
+- (void) setHighlightShadow: (BOOL)highlight {
+    [self.layer setShadowOpacity:highlight?1.0:0.0];
 }
 
 /*
