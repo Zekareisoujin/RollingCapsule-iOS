@@ -13,6 +13,7 @@
 #import "RCNewPostViewController.h"
 #import "RCKeyboardPushUpHandler.h"
 #import "RCConnectionManager.h"
+#import "RCLandmarkCell.h"
 #import <QuartzCore/QuartzCore.h>
 #import "SBJson.h"
 
@@ -76,7 +77,7 @@ RCConnectionManager *_connectionManager;
         _user = user;
         _keyboardPushHandler = [[RCKeyboardPushUpHandler alloc] init];
         _connectionManager = [[RCConnectionManager alloc] init];
-        self.backgroundImage = nil;
+        //self.backgroundImage = nil;
         //NSLog(@"RCNewPostViewController: %@", _keyboardPushHandler);
     }
     return self;
@@ -88,7 +89,7 @@ RCConnectionManager *_connectionManager;
         _user = user;
         _keyboardPushHandler = [[RCKeyboardPushUpHandler alloc] init];
         _connectionManager = [[RCConnectionManager alloc] init];
-        self.backgroundImage = image;
+        //self.backgroundImage = image;
         //NSLog(@"RCNewPostViewController: %@", _keyboardPushHandler);
     }
     return self;
@@ -108,9 +109,29 @@ RCConnectionManager *_connectionManager;
     //prepare text view placeholder
     _firstTimeEditPost = YES;
     
-    _tblViewLandmark = [[UITableView alloc] initWithFrame:CGRectMake(0, 30, 320, 200) style:UITableViewStylePlain];
+    //init landmark button within
+    UIButton *paddingView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+    [paddingView setImage:[UIImage imageNamed:@"mainViewOptionPublic.png"] forState:UIControlStateNormal];
+    [paddingView addTarget:self action:@selector(openLandmarkView) forControlEvents:UIControlEventTouchUpInside];
+    _txtFieldPostSubject.leftView = paddingView;
+    _txtFieldPostSubject.leftViewMode = UITextFieldViewModeAlways;
+    
+    //[UICollectionView alloc] initWith
+    UIImageView *landmarkBackground = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 300, 160)];
+    [landmarkBackground setImage:[UIImage imageNamed:@"postLandmarkBackground.png"]];
+    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    _tblViewLandmark = [[UICollectionView alloc] initWithFrame:CGRectMake(10, 90, 300, 160) collectionViewLayout:flowLayout];
+
+    [_tblViewLandmark setBackgroundView:landmarkBackground];
+    [_tblViewLandmark setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0]];
+    [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+    _tblViewLandmark.allowsSelection = YES;
     _tblViewLandmark.delegate = self;
     _tblViewLandmark.dataSource = self;
+    NSString* cellIdentifier = [RCLandmarkCell cellIdentifier];
+    [_tblViewLandmark registerClass:[RCLandmarkCell class] forCellWithReuseIdentifier:cellIdentifier];
+    UINib *nib = [UINib nibWithNibName:cellIdentifier bundle: nil];
+    [_tblViewLandmark registerNib:nib forCellWithReuseIdentifier:cellIdentifier];
     
     _landmarks = [[NSMutableArray alloc] init];
     _landmarkTableVisible = NO;
@@ -236,7 +257,8 @@ RCConnectionManager *_connectionManager;
                 //TODO open main news feed page
                 [self showAlertMessage:@"Image posted successfully!" withTitle:@"Success!"];
                 [self animateViewDisapperance:^ {
-                    [self.navigationController popViewControllerAnimated:NO];
+                    [self.view removeFromSuperview];
+                    [self removeFromParentViewController];
                 }];
             }else {
                 alertStatus([NSString stringWithFormat:@"Please try again! %@", responseData], @"Post Failed!", self);
@@ -341,6 +363,11 @@ RCConnectionManager *_connectionManager;
         [_txtViewPostContent resignFirstResponder];
 }
 
+- (void) openLandmarkView {
+    [self.view removeGestureRecognizer:_tapGestureRecognizer];
+    [self callLandmarkTable:nil];
+}
+
 #pragma mark - UIImagePickerControllerDelegate methods
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
@@ -377,6 +404,20 @@ RCConnectionManager *_connectionManager;
 {
     _keyboardPushHandler.view = self.view;
     [_keyboardPushHandler reset];
+    NSLog(@"screen size: %d",[[UIScreen mainScreen] bounds].size.height );
+    if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height) {
+        [_closeButton setHidden:YES];
+        [_closeButton setEnabled:NO];
+        CGRect frame = self.view.frame;
+        //move view up so that the whole post frame fits in iphone 4 screen
+        //here we basically move the y coordinate back by exactly the amount
+        //with which the post frame is away from screen top edge
+        //leaving some gap in between
+        frame.origin.y = -_imageViewPostFrame.frame.origin.y + 2;
+        frame.size.height +=  _imageViewPostFrame.frame.origin.y - 2;
+        self.view.frame = frame;
+        
+    }
     [super viewWillAppear:animated];
 }
 
@@ -518,7 +559,8 @@ RCConnectionManager *_connectionManager;
         //CGRect frame = _imageViewPostFrame.frame;
         if (![_imageViewPostFrame pointInside:point withEvent:nil])
             [self animateViewDisapperance:^ {
-                [self.navigationController popViewControllerAnimated:NO];
+                [self.view removeFromSuperview];
+                [self removeFromParentViewController];
             }];
     }
 }
@@ -570,7 +612,8 @@ RCConnectionManager *_connectionManager;
 }
 - (IBAction)closeBtnTouchUpInside:(id)sender {
     [self animateViewDisapperance:^ {
-        [self.navigationController popViewControllerAnimated:NO];
+        [self.view removeFromSuperview];
+        [self removeFromParentViewController];
     }];
 }
 
@@ -598,5 +641,62 @@ RCConnectionManager *_connectionManager;
             [button setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@.png",[buttonFileNames objectAtIndex:i]]] forState:UIControlStateNormal];
         i++;
     }
+}
+
+#pragma mark - UICollectionView Datasource
+// 1
+- (NSInteger)collectionView:(UICollectionView *)view numberOfItemsInSection:(NSInteger)section {
+    return [_landmarks count];//section == 0 ? [[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInteger:_currentLandmarkID]] count] : 0;
+}
+// 2
+- (NSInteger)numberOfSectionsInCollectionView: (UICollectionView *)collectionView {
+    return 1;
+}
+// 3
+- (UICollectionViewCell *)collectionView:(UICollectionView *)cv cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSString* cellIdentifier = [RCLandmarkCell cellIdentifier];
+    RCLandmarkCell *cell = [cv dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
+    int idx = [indexPath row];
+    RCLandmark *landmark = [_landmarks objectAtIndex:idx];
+    NSString *imageName = [NSString stringWithFormat:@"landmarkCategory%@.png", landmark.category];
+    [cell.imgViewCategory setImage:[UIImage imageNamed:imageName]];
+    cell.lblLandmarkTitle.text = landmark.name;
+    return cell;
+}
+// 4
+/*- (UICollectionReusableView *)collectionView:
+ (UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+ {
+ return [[UICollectionReusableView alloc] init];
+ }*/
+
+#pragma mark - UICollectionViewDelegate
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    int idx = [indexPath row];
+    RCLandmark *landmark = [_landmarks objectAtIndex:idx];
+    _currentLandmark = landmark;
+    UIButton *button = (UIButton*)_txtFieldPostSubject.leftView;
+    NSString *imageName = [NSString stringWithFormat:@"landmarkCategory%@.png", landmark.category];
+    [button setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+    [collectionView removeFromSuperview];
+    [self.view addGestureRecognizer:_tapGestureRecognizer];
+    _landmarkTableVisible = NO;
+}
+
+#pragma mark – UICollectionViewDelegateFlowLayout
+
+// 1
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    float height = (collectionView.frame.size.height-42);
+    float width = collectionView.frame.size.width - 22;
+    CGSize retval = CGSizeMake(width,height);
+    return retval;
+}
+
+// 3
+- (UIEdgeInsets)collectionView:
+(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+    return UIEdgeInsetsMake(30,10,10,10);
 }
 @end

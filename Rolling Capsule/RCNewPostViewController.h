@@ -13,11 +13,12 @@
 #import "RCLandmark.h"
 #import "RCLightboxViewController.h"
 
-@interface RCNewPostViewController : RCLightboxViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, AmazonServiceRequestDelegate, UIActionSheetDelegate, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UITextFieldDelegate>
+@interface RCNewPostViewController : RCLightboxViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, AmazonServiceRequestDelegate, UIActionSheetDelegate, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
 - (IBAction)closeBtnTouchUpInside:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *btnPostImage;
 @property (weak, nonatomic) IBOutlet UIImageView *imageViewPostPicture;
+@property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @property (weak, nonatomic) IBOutlet UITextField *txtFieldPostSubject;
 @property (weak, nonatomic) IBOutlet UIButton *btnLandmark;
 - (IBAction)btnActionChooseCameraSource:(id)sender;
@@ -31,7 +32,7 @@
 @property (nonatomic, strong) NSMutableArray *landmarks;
 @property (nonatomic, strong) RCUser *user;
 @property (strong, nonatomic) RCKeyboardPushUpHandler *keyboardPushHandler;
-@property (nonatomic, strong) UITableView *tblViewLandmark;
+@property (nonatomic, strong) UICollectionView *tblViewLandmark;
 @property (nonatomic, strong) RCLandmark *currentLandmark;
 
 - (void)backgroundTouchUpInside;

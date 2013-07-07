@@ -106,7 +106,8 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
         //CGRect frame = _imageViewPostFrame.frame;
         if (![_imgViewMainFrame pointInside:point withEvent:nil])
             [self animateViewDisapperance:^ {
-                [self.navigationController popViewControllerAnimated:NO];
+                [self.view removeFromSuperview];
+                [self removeFromParentViewController];
             }];
     }
 }
@@ -282,7 +283,8 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
              
              if ([responseData isEqualToString:@"ok"]){
                  alertStatus(@"Post deleted successfully!", @"Success!", nil);
-                 [self.navigationController popViewControllerAnimated:YES];
+                 [self.view removeFromSuperview];
+                 [self removeFromParentViewController];
              }else if ([responseData isEqualToString:@"error"]){
                  alertStatus(@"Please try again!", @"Deletion Failed", nil);
              }
@@ -348,7 +350,8 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 }
 - (IBAction)btnCloseTouchUpInside:(id)sender {
     [self animateViewDisapperance:^ {
-        [self.navigationController popViewControllerAnimated:NO];
+        [self.view removeFromSuperview];
+        [self removeFromParentViewController];
     }];
 }
 - (IBAction)commentButtonTouchUpInside:(id)sender {

@@ -31,6 +31,7 @@
 @property (nonatomic, strong) UILongPressGestureRecognizer *longPressGestureRecognizer;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 @property (nonatomic, strong) UIImage *backgroundImage;
+@property (nonatomic, assign) RCMainFeedViewMode      currentViewMode;
 @end
 
 @implementation RCMainFeedViewController
@@ -51,6 +52,7 @@ BOOL        _haveScreenshot;
 @synthesize longPressGestureRecognizer = _longPressGestureRecognizer;
 @synthesize tapGestureRecognizer = _tapGestureRecognizer;
 @synthesize backgroundImage = _backgroundImage;
+@synthesize currentViewMode = _currentViewMode;
 
 + (NSString*) debugTag {
     return @"MainFeedView";
@@ -96,7 +98,6 @@ BOOL        _haveScreenshot;
     [postButton setFrame:CGRectMake(0,0,buttonImage.size.width, buttonImage.size.height)];
     [postButton setBackgroundImage:buttonImage forState:UIControlStateNormal];
     [postButton addTarget:self action:@selector(switchToNewPostScreen) forControlEvents:UIControlEventTouchUpInside];
-    [postButton addTarget:self action:@selector(postButtonTouchDown) forControlEvents:UIControlEventTouchDown];
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithCustomView:postButton] ;
     self.navigationItem.rightBarButtonItem = rightButton;
     
@@ -119,10 +120,22 @@ BOOL        _haveScreenshot;
     _pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
     _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     _longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
-    _nRows = 4;
     
-    _willRefresh = YES;
+    //set the current view mode of the view, the default view is public
+    _currentViewMode = RCMainFeedViewModePublic;
+    _btnViewModePublic.enabled = NO;
+    
+    
+    //initialize miscellaneaous constants
+    _nRows = 2; //the number of rows of images that are gonig to be displayed in the UICollectionView
+    _willRefresh = YES; //indicate whether this view will refresh after returning from another view
+    
+    /*this flag indicate if the screenshot of this view has been taken
+       this is used when opening light box view where a screenshot needs to be taken
+       since taking screenshot is slow it is run in background and this flag
+       will be set to true when it's done, after this flag is set to true, the code can open the view*/
     _haveScreenshot = NO;
+    
 }
 
 - (void) handleRefresh:(UIRefreshControl*) refreshControl {
@@ -179,7 +192,7 @@ BOOL        _haveScreenshot;
                 _user = [[RCUser alloc] initWithNSDictionary:userDictionary];
                 AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                 _lblUsername.text = _user.name;
-                [_imgViewUserAvatar setImage:[RCAmazonS3Helper getAvatarImage:_user withLoggedinUserID:_user.userID]];
+                //[_imgViewUserAvatar setImage:[RCAmazonS3Helper getAvatarImage:_user withLoggedinUserID:_user.userID]];
                 [appDelegate setCurrentUser:_user];
                 
                 for (NSDictionary *postData in postList) {
@@ -242,33 +255,12 @@ BOOL        _haveScreenshot;
     return image;
 }
 
-
-- (void) postButtonTouchDown {
-    [self performSelectorInBackground:@selector(rememberScreenshot:) withObject:^{_haveScreenshot = YES;}];
-}
-
-- (void) rememberScreenshot : (void(^)(void))completion {
-    _backgroundImage = [self takeScreenshot];
-    completion();
-}
-
 - (void) switchToNewPostScreen {
-    _willRefresh = NO;
-    while (!_haveScreenshot){};
-    _haveScreenshot = NO;
-
-    /*
-    CALayer *layer = [[UIApplication sharedApplication] keyWindow].layer;
-    CGFloat scale = [UIScreen mainScreen].scale;
-    UIGraphicsBeginImageContextWithOptions(layer.frame.size, NO, scale);
-    
-    [layer renderInContext:UIGraphicsGetCurrentContext()];
-    _backgroundImage = UIGraphicsGetImageFromCurrentImageContext();*/
-    RCNewPostViewController *newPostController = [[RCNewPostViewController alloc] initWithUser:_user withBackgroundImage:_backgroundImage];
-    AppDelegate *appDelegate = (AppDelegate*) [[UIApplication sharedApplication] delegate];
-    [appDelegate.menuViewController setNavigationBarMenuBttonForViewController:newPostController];
-    //self.navigationItem.backBarButtonItem = self.navigationItem.leftBarButtonItem;
-    [self.navigationController pushViewController:newPostController animated:NO];
+    RCNewPostViewController *newPostController = [[RCNewPostViewController alloc] initWithUser:_user withBackgroundImage:nil];
+    [self addChildViewController:newPostController];
+    newPostController.view.frame = self.view.frame;
+    [self.view addSubview:newPostController.view];
+    [newPostController didMoveToParentViewController:self];
 }
 
 #pragma mark - UICollectionView Datasource
@@ -384,6 +376,8 @@ BOOL        _haveScreenshot;
                 [currentCell changeCellState:RCCellStateDimmed];
             }
         } else {
+            MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(post.coordinate, 0.5*METERS_PER_MILE, 0.5*METERS_PER_MILE);
+            [_mapView setRegion:viewRegion animated:YES];
             [currentCell changeCellState:RCCellStateFloat];
             [_chosenPosts addObject:[[NSNumber alloc] initWithInt:post.postID]];
             [_mapView addAnnotation:post];
@@ -402,27 +396,45 @@ BOOL        _haveScreenshot;
 }
 
 - (IBAction)handleLongPress:(UILongPressGestureRecognizer *)recognizer {
-    CGPoint point = [recognizer locationInView:_collectionView];
-    NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:point];
-    
-    //if index path for cell not found
-    if (indexPath != nil ) {
-        int idx = [indexPath row];
-        NSArray* items = (NSArray*)[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInt:_currentLandmarkID]];
+    if (recognizer.state == UIGestureRecognizerStateBegan) {
+        CGPoint point = [recognizer locationInView:_collectionView];
+        NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:point];
         
-        RCPost *post = [items objectAtIndex:idx];
-        RCUser *owner = [[RCUser alloc] init];
-        owner.userID = post.userID;
-        
-        [_collectionView removeGestureRecognizer:recognizer];
-        RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user];
-        _backgroundImage = [self takeScreenshot];
-        postDetailsViewController.backgroundImage = _backgroundImage;
-        
-        AppDelegate *appDelegate = (AppDelegate*) [[UIApplication sharedApplication] delegate];
-        [appDelegate.menuViewController setNavigationBarMenuBttonForViewController:postDetailsViewController];
-        [self.navigationController pushViewController:postDetailsViewController animated:NO];
+        //if index path for cell not found
+        if (indexPath != nil ) {
+            int idx = [indexPath row];
+            NSArray* items = (NSArray*)[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInt:_currentLandmarkID]];
+            
+            RCPost *post = [items objectAtIndex:idx];
+            RCUser *owner = [[RCUser alloc] init];
+            owner.userID = post.userID;
+            
+            //[_collectionView removeGestureRecognizer:recognizer];
+            RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user];
+            [self addChildViewController:postDetailsViewController];
+            postDetailsViewController.view.frame = self.view.frame;
+            [self.view addSubview:postDetailsViewController.view];
+            [postDetailsViewController didMoveToParentViewController:self];
+            
+        }
     }
 }
 
+- (IBAction)btnViewModeChosen:(UIButton *)sender {
+    if ([sender isEqual:_btnViewModePublic]) {
+        _currentViewMode = RCMainFeedViewModePublic;
+        _btnViewModeFriends.enabled = YES;
+        _btnViewModeFollow.enabled = YES;
+    } else if ([sender isEqual:_btnViewModeFriends]) {
+        _currentViewMode = RCMainFeedViewModeFriends;
+        _btnViewModePublic.enabled = YES;
+        _btnViewModeFollow.enabled = YES;
+    } else if ([sender isEqual:_btnViewModeFollow]) {
+        _currentViewMode = RCMainFeedViewModeFollow;
+        _btnViewModeFriends.enabled = YES;
+        _btnViewModePublic.enabled = YES;
+    }
+    sender.enabled = NO;
+    
+}
 @end

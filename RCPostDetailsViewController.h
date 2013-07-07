@@ -10,6 +10,7 @@
 #import "RCPost.h"
 #import "RCUSer.h"
 #import "RCLightboxViewController.h"
+#import "RCMainFeedViewController.h"
 
 @interface RCPostDetailsViewController : RCLightboxViewController<UITableViewDataSource, UITableViewDataSource, UITextFieldDelegate, UITextViewDelegate>
 - (IBAction)btnCloseTouchUpInside:(id)sender;
@@ -28,6 +29,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnComment;
 @property (nonatomic, strong) RCUser *postOwner;
 @property (nonatomic, strong) RCUser *loggedInUser;
+//@property (nonatomic, strong)
 
 - (id) initWithPost:(RCPost *)post withOwner:(RCUser*)owner withLoggedInUser:(RCUser *) loggedInUser;
 @end

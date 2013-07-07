@@ -29,44 +29,28 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    _viewDimVeil = [[UIView alloc] initWithFrame:self.view.frame];
-    [_viewDimVeil setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.5]];
-    [self.view addSubview:_viewDimVeil];
-    [self.view sendSubviewToBack:_viewDimVeil];
-	_imageViewPreviousView = [[UIImageView alloc] initWithFrame:self.view.frame];
-    [_imageViewPreviousView setImage:_backgroundImage];
-    [self.view addSubview:_imageViewPreviousView];
-    [self.view sendSubviewToBack:_imageViewPreviousView];
+    [self.view setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.5]];
     
 }
 
 - (void) animateViewAppearance {
-    for (UIView *view in self.view.subviews) {
-        if (view != self.imageViewPreviousView)
-            view.alpha = 0.0;
-    }
-    //_imageViewDimVeil.alpha = 0.0;
+    self.view.alpha = 0.0;
     [UIView animateWithDuration:0.5
 						  delay:0
 						options:UIViewAnimationOptionCurveEaseInOut
 					 animations:^{
-                         for (UIView *view in self.view.subviews)
-                             if (view != self.imageViewPreviousView)
-                                 view.alpha = 1.0;
+                         self.view.alpha = 1.0;
 					 }
                      completion:^(BOOL finished) {
                          //[self removePhotoSourceControlAndAddPrivacyControl];
 					 }];
 }
 - (void) animateViewDisapperance:(void (^)(void))completeCallback {
-    //_imageViewDimVeil.alpha = 0.0;
     [UIView animateWithDuration:0.5
 						  delay:0
 						options:UIViewAnimationOptionCurveEaseInOut
 					 animations:^{
-                         for (UIView *view in self.view.subviews)
-                             if (view != self.imageViewPreviousView)
-                                 view.alpha = 0.0;
+                         self.view.alpha = 0.0;
 					 }
                      completion:^(BOOL finished) {
                          completeCallback();

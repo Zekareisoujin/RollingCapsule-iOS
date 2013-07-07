@@ -76,8 +76,23 @@
 		64E293C817857C25009496FF /* mainTopBanner.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293C717857C25009496FF /* mainTopBanner.png */; };
 		64E293CA17857E4C009496FF /* mainNavbarPostButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293C917857E4C009496FF /* mainNavbarPostButton@2x.png */; };
 		64E293CC178587BE009496FF /* mainMapViewBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293CB178587BE009496FF /* mainMapViewBackground.png */; };
+		64E293D0178638AB009496FF /* mainViewOptionFollow.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293CD178638AB009496FF /* mainViewOptionFollow.png */; };
+		64E293D1178638AB009496FF /* mainViewOptionFriends.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293CE178638AB009496FF /* mainViewOptionFriends.png */; };
+		64E293D2178638AB009496FF /* mainViewOptionPublic.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293CF178638AB009496FF /* mainViewOptionPublic.png */; };
 		64EA880417796DA000011F3E /* mainBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 64EA880317796D9F00011F3E /* mainBackground.png */; };
 		64EA880617796DAB00011F3E /* textField.png in Resources */ = {isa = PBXBuildFile; fileRef = 64EA880517796DAB00011F3E /* textField.png */; };
+		64EA9B4817887B5A0022FA67 /* navigationBarBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64EA9B4717887B5A0022FA67 /* navigationBarBackground@2x.png */; };
+		64EA9B4A17888B7C0022FA67 /* postLandmarkBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 64EA9B4917888B7C0022FA67 /* postLandmarkBackground.png */; };
+		64EA9B4C178893E40022FA67 /* RCLandmarkCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64EA9B4B178893E40022FA67 /* RCLandmarkCell.xib */; };
+		64EA9B4F178894DB0022FA67 /* RCLandmarkCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 64EA9B4E178894DB0022FA67 /* RCLandmarkCell.m */; };
+		64EA9B51178896BA0022FA67 /* landmarkCategoryRestaurant.png in Resources */ = {isa = PBXBuildFile; fileRef = 64EA9B50178896BA0022FA67 /* landmarkCategoryRestaurant.png */; };
+		64EA9B5517895A1F0022FA67 /* landmarkCategoryCafe.png in Resources */ = {isa = PBXBuildFile; fileRef = 64EA9B5217895A1F0022FA67 /* landmarkCategoryCafe.png */; };
+		64EA9B5617895A1F0022FA67 /* landmarkCategoryInterest.png in Resources */ = {isa = PBXBuildFile; fileRef = 64EA9B5317895A1F0022FA67 /* landmarkCategoryInterest.png */; };
+		64EA9B5717895A1F0022FA67 /* landmarkCategoryOthers.png in Resources */ = {isa = PBXBuildFile; fileRef = 64EA9B5417895A1F0022FA67 /* landmarkCategoryOthers.png */; };
+		64EA9B5C17895B560022FA67 /* landmarkCategoryCinema.png in Resources */ = {isa = PBXBuildFile; fileRef = 64EA9B5817895B560022FA67 /* landmarkCategoryCinema.png */; };
+		64EA9B5D17895B560022FA67 /* landmarkCategoryMall.png in Resources */ = {isa = PBXBuildFile; fileRef = 64EA9B5917895B560022FA67 /* landmarkCategoryMall.png */; };
+		64EA9B5E17895B560022FA67 /* landmarkCategorySchool.png in Resources */ = {isa = PBXBuildFile; fileRef = 64EA9B5A17895B560022FA67 /* landmarkCategorySchool.png */; };
+		64EA9B5F17895B560022FA67 /* landmarkCategoryShop.png in Resources */ = {isa = PBXBuildFile; fileRef = 64EA9B5B17895B560022FA67 /* landmarkCategoryShop.png */; };
 		64FE8433176B9E0E00E561D8 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FE8432176B9E0E00E561D8 /* libTestFlight.a */; };
 		64FE84E5176BAAD800E561D8 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FE84E4176BAAD800E561D8 /* libz.dylib */; };
 		64FFD2CD17662D1B004337F8 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FFD2CC17662D1B004337F8 /* MapKit.framework */; };
@@ -224,9 +239,25 @@
 		64E293BD17856F43009496FF /* loginTextfield.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginTextfield.png; sourceTree = "<group>"; };
 		64E293C717857C25009496FF /* mainTopBanner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mainTopBanner.png; path = ../mainTopBanner.png; sourceTree = "<group>"; };
 		64E293C917857E4C009496FF /* mainNavbarPostButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "mainNavbarPostButton@2x.png"; path = "../mainNavbarPostButton@2x.png"; sourceTree = "<group>"; };
-		64E293CB178587BE009496FF /* mainMapViewBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainMapViewBackground.png; sourceTree = "<group>"; };
+		64E293CB178587BE009496FF /* mainMapViewBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mainMapViewBackground.png; path = ../mainMapViewBackground.png; sourceTree = "<group>"; };
+		64E293CD178638AB009496FF /* mainViewOptionFollow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mainViewOptionFollow.png; path = ../mainViewOptionFollow.png; sourceTree = "<group>"; };
+		64E293CE178638AB009496FF /* mainViewOptionFriends.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mainViewOptionFriends.png; path = ../mainViewOptionFriends.png; sourceTree = "<group>"; };
+		64E293CF178638AB009496FF /* mainViewOptionPublic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mainViewOptionPublic.png; path = ../mainViewOptionPublic.png; sourceTree = "<group>"; };
 		64EA880317796D9F00011F3E /* mainBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mainBackground.png; path = ../mainBackground.png; sourceTree = "<group>"; };
 		64EA880517796DAB00011F3E /* textField.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = textField.png; path = ../textField.png; sourceTree = "<group>"; };
+		64EA9B4717887B5A0022FA67 /* navigationBarBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "navigationBarBackground@2x.png"; path = "../navigationBarBackground@2x.png"; sourceTree = "<group>"; };
+		64EA9B4917888B7C0022FA67 /* postLandmarkBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = postLandmarkBackground.png; path = ../postLandmarkBackground.png; sourceTree = "<group>"; };
+		64EA9B4B178893E40022FA67 /* RCLandmarkCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCLandmarkCell.xib; sourceTree = "<group>"; };
+		64EA9B4D178894DB0022FA67 /* RCLandmarkCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCLandmarkCell.h; sourceTree = "<group>"; };
+		64EA9B4E178894DB0022FA67 /* RCLandmarkCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCLandmarkCell.m; sourceTree = "<group>"; };
+		64EA9B50178896BA0022FA67 /* landmarkCategoryRestaurant.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = landmarkCategoryRestaurant.png; sourceTree = "<group>"; };
+		64EA9B5217895A1F0022FA67 /* landmarkCategoryCafe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = landmarkCategoryCafe.png; sourceTree = "<group>"; };
+		64EA9B5317895A1F0022FA67 /* landmarkCategoryInterest.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = landmarkCategoryInterest.png; sourceTree = "<group>"; };
+		64EA9B5417895A1F0022FA67 /* landmarkCategoryOthers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = landmarkCategoryOthers.png; sourceTree = "<group>"; };
+		64EA9B5817895B560022FA67 /* landmarkCategoryCinema.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = landmarkCategoryCinema.png; sourceTree = "<group>"; };
+		64EA9B5917895B560022FA67 /* landmarkCategoryMall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = landmarkCategoryMall.png; sourceTree = "<group>"; };
+		64EA9B5A17895B560022FA67 /* landmarkCategorySchool.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = landmarkCategorySchool.png; sourceTree = "<group>"; };
+		64EA9B5B17895B560022FA67 /* landmarkCategoryShop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = landmarkCategoryShop.png; sourceTree = "<group>"; };
 		64FE8432176B9E0E00E561D8 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
 		64FE84E3176B9E4E00E561D8 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = SOURCE_ROOT; };
 		64FE84E4176BAAD800E561D8 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -340,9 +371,14 @@
 		643EACE9175BBE0D002761D9 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				64EA9B4717887B5A0022FA67 /* navigationBarBackground@2x.png */,
 				64E293C917857E4C009496FF /* mainNavbarPostButton@2x.png */,
 				64E293C717857C25009496FF /* mainTopBanner.png */,
 				64EA880317796D9F00011F3E /* mainBackground.png */,
+				64E293CB178587BE009496FF /* mainMapViewBackground.png */,
+				64E293CD178638AB009496FF /* mainViewOptionFollow.png */,
+				64E293CE178638AB009496FF /* mainViewOptionFriends.png */,
+				64E293CF178638AB009496FF /* mainViewOptionPublic.png */,
 				64E293B617856F43009496FF /* loginBtnForgotPwd.png */,
 				64E293B517856F43009496FF /* loginBackground.png */,
 				64E293B717856F43009496FF /* loginBtnLogin.png */,
@@ -370,6 +406,7 @@
 				64119A0817833A8B00BF0B05 /* postPublicPrivacyButton.png */,
 				BF46ECB41778476C00F26A05 /* btnStandard-depressed.png */,
 				641199EE178088FE00BF0B05 /* postBackground.png */,
+				64EA9B4917888B7C0022FA67 /* postLandmarkBackground.png */,
 				641199EF178088FE00BF0B05 /* postCameraSourceButton-normal.png */,
 				641199FA1780B57600BF0B05 /* postPhotoLibrarySourceButton-normal.png */,
 				641199FB1780B57600BF0B05 /* postVideoSourceButton-normal.png */,
@@ -393,7 +430,17 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
-				64E293CB178587BE009496FF /* mainMapViewBackground.png */,
+				64EA9B5817895B560022FA67 /* landmarkCategoryCinema.png */,
+				64EA9B5917895B560022FA67 /* landmarkCategoryMall.png */,
+				64EA9B5A17895B560022FA67 /* landmarkCategorySchool.png */,
+				64EA9B5B17895B560022FA67 /* landmarkCategoryShop.png */,
+				64EA9B5217895A1F0022FA67 /* landmarkCategoryCafe.png */,
+				64EA9B5317895A1F0022FA67 /* landmarkCategoryInterest.png */,
+				64EA9B5417895A1F0022FA67 /* landmarkCategoryOthers.png */,
+				64EA9B50178896BA0022FA67 /* landmarkCategoryRestaurant.png */,
+				64EA9B4D178894DB0022FA67 /* RCLandmarkCell.h */,
+				64EA9B4E178894DB0022FA67 /* RCLandmarkCell.m */,
+				64EA9B4B178893E40022FA67 /* RCLandmarkCell.xib */,
 				64119A141784611700BF0B05 /* RCLightboxViewController.h */,
 				64119A151784611700BF0B05 /* RCLightboxViewController.m */,
 				BFCA7821174DFD3F00666CBA /* Rolling Capsule */,
@@ -707,6 +754,20 @@
 				64E293CA17857E4C009496FF /* mainNavbarPostButton@2x.png in Resources */,
 				64E293CC178587BE009496FF /* mainMapViewBackground.png in Resources */,
 				BFA53F5617895C89007686F1 /* RCProfileViewCell.xib in Resources */,
+				64E293D0178638AB009496FF /* mainViewOptionFollow.png in Resources */,
+				64E293D1178638AB009496FF /* mainViewOptionFriends.png in Resources */,
+				64E293D2178638AB009496FF /* mainViewOptionPublic.png in Resources */,
+				64EA9B4817887B5A0022FA67 /* navigationBarBackground@2x.png in Resources */,
+				64EA9B4A17888B7C0022FA67 /* postLandmarkBackground.png in Resources */,
+				64EA9B4C178893E40022FA67 /* RCLandmarkCell.xib in Resources */,
+				64EA9B51178896BA0022FA67 /* landmarkCategoryRestaurant.png in Resources */,
+				64EA9B5517895A1F0022FA67 /* landmarkCategoryCafe.png in Resources */,
+				64EA9B5617895A1F0022FA67 /* landmarkCategoryInterest.png in Resources */,
+				64EA9B5717895A1F0022FA67 /* landmarkCategoryOthers.png in Resources */,
+				64EA9B5C17895B560022FA67 /* landmarkCategoryCinema.png in Resources */,
+				64EA9B5D17895B560022FA67 /* landmarkCategoryMall.png in Resources */,
+				64EA9B5E17895B560022FA67 /* landmarkCategorySchool.png in Resources */,
+				64EA9B5F17895B560022FA67 /* landmarkCategoryShop.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -780,6 +841,7 @@
 				64011D3017781DA400816D93 /* RCTextField.m in Sources */,
 				64119A161784611700BF0B05 /* RCLightboxViewController.m in Sources */,
 				BFA53F5917895CDA007686F1 /* RCProfileViewCell.m in Sources */,
+				64EA9B4F178894DB0022FA67 /* RCLandmarkCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -889,8 +951,8 @@
 		BFCA7851174DFD3F00666CBA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Downloads/aws-ios-sdk-1.6.0\"",
@@ -904,8 +966,8 @@
 					"\"$(SRCROOT)\"",
 				);
 				PRODUCT_NAME = memcap;
-				PROVISIONING_PROFILE = "4A228280-B9AD-483F-A3BC-340AE51523ED";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4A228280-B9AD-483F-A3BC-340AE51523ED";
+				PROVISIONING_PROFILE = "E30D16D1-E6A6-4748-BBA8-411F5E255399";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E30D16D1-E6A6-4748-BBA8-411F5E255399";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -914,8 +976,8 @@
 		BFCA7852174DFD3F00666CBA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Downloads/aws-ios-sdk-1.6.0\"",
@@ -929,8 +991,8 @@
 					"\"$(SRCROOT)\"",
 				);
 				PRODUCT_NAME = memcap;
-				PROVISIONING_PROFILE = "4A228280-B9AD-483F-A3BC-340AE51523ED";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4A228280-B9AD-483F-A3BC-340AE51523ED";
+				PROVISIONING_PROFILE = "E30D16D1-E6A6-4748-BBA8-411F5E255399";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E30D16D1-E6A6-4748-BBA8-411F5E255399";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

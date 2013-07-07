@@ -20,6 +20,8 @@
 @synthesize latitude = _latitude;
 @synthesize landmarkID = _landmarkID;
 @synthesize userID = _userID;
+@synthesize name = _name;
+@synthesize category = _category;
 
 - (id) initWithNSDictionary:(NSDictionary *)postData {
     self = [super init];
@@ -35,6 +37,8 @@
         _latitude = [[postData objectForKey:@"latitude"] doubleValue];
         _landmarkID = [[postData objectForKey:@"id"] intValue];
         _userID = [[postData objectForKey:@"user_id"] intValue];
+        _name = (NSString*)[postData objectForKey:@"name"];
+        _category = (NSString*)[postData objectForKey:@"category"];
     }
     return self;
 }

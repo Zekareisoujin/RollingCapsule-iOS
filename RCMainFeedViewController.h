@@ -10,12 +10,22 @@
 #import <MapKit/MapKit.h>
 #import "RCUser.h"
 
+enum RCMainFeedViewMode {
+    RCMainFeedViewModePublic,
+    RCMainFeedViewModeFriends,
+    RCMainFeedViewModeFollow
+};
+typedef enum RCMainFeedViewMode RCMainFeedViewMode;
+
 @interface RCMainFeedViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDataSource, MKMapViewDelegate, UIGestureRecognizerDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *tblFeedList;
+@property (weak, nonatomic) IBOutlet UIButton *btnViewModeFollow;
 @property (weak, nonatomic) IBOutlet UILabel *lblUsername;
+@property (weak, nonatomic) IBOutlet UIButton *btnViewModeFriends;
+- (IBAction)btnViewModeChosen:(UIButton *)sender;
 @property (weak, nonatomic) IBOutlet UIImageView *imgViewUserAvatar;
-//@property (nonatomic, strong) NSMutableArray *items;
+@property (weak, nonatomic) IBOutlet UIButton *btnViewModePublic;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) RCUser *user;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
@@ -23,4 +33,5 @@
 @property (nonatomic, strong) NSMutableDictionary *userCache;
 @property (nonatomic, strong) NSMutableDictionary *postCache;
 @property (nonatomic, strong) NSMutableSet *chosenPosts;
+
 @end
