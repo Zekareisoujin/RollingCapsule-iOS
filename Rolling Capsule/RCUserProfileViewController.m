@@ -11,9 +11,9 @@
 #import "SBJson.h"
 #import "RCUserProfileViewController.h"
 #import "RCAmazonS3Helper.h"
+#import "RCResourceCache.h"
+#import "RCProfileViewCell.h"
 #import <AWSRuntime/AWSRuntime.h>
-
-#import "RCMainFeedCell.h"
 
 @interface RCUserProfileViewController ()
 
@@ -66,8 +66,15 @@ int       _friendshipID;
     UICollectionViewFlowLayout *flow =  (UICollectionViewFlowLayout *)_collectionView.collectionViewLayout;
     flow.minimumInteritemSpacing = 0.0;
     
-    NSString* cellIdentifier = [RCMainFeedCell cellIdentifier];
-    [self.collectionView registerClass:[RCMainFeedCell class] forCellWithReuseIdentifier:cellIdentifier];
+    UIImage *buttonImage = [UIImage imageNamed:@"mainNavbarPostButton"];
+    UIButton *postButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [postButton setFrame:CGRectMake(0,0,buttonImage.size.width, buttonImage.size.height)];
+    [postButton setBackgroundImage:buttonImage forState:UIControlStateNormal];
+    [postButton addTarget:self action:@selector(switchToNewPostScreen) forControlEvents:UIControlEventTouchUpInside];
+    [postButton addTarget:self action:@selector(postButtonTouchDown) forControlEvents:UIControlEventTouchDown];
+    
+    NSString* cellIdentifier = [RCProfileViewCell cellIdentifier];
+    [self.collectionView registerClass:[RCProfileViewCell class] forCellWithReuseIdentifier:cellIdentifier];
     UINib *nib = [UINib nibWithNibName:cellIdentifier bundle: nil];
     [self.collectionView registerNib:nib forCellWithReuseIdentifier:cellIdentifier];
     
@@ -330,7 +337,30 @@ int       _friendshipID;
 #pragma mark - Helper Methods
 
 -(void) getAvatarImageFromInternet {
+    RCResourceCache *cache = [RCResourceCache centralCache];
+    NSString *key = [[NSString alloc] initWithFormat:@"%@/%d", RCUsersResource, _profileUser.userID];
+    
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
+    dispatch_async(queue, ^{
+        UIImage *cachedImg = [cache getResourceForKey:key usingQuery:^{
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+            UIImage *image = [RCAmazonS3Helper getAvatarImage:_profileUser withLoggedinUserID:_viewingUserID];
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            return image;
+        }];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            UIControlState controlState = UIControlStateNormal;
+            if (_profileUser.userID != _viewingUserID)
+                controlState = UIControlStateDisabled;
+            else
+                _btnAvatarImg.enabled = YES;
+            if (cachedImg != nil)
+                [_btnAvatarImg setBackgroundImage:cachedImg forState:controlState];
+        });
+    });
+    
+    /*dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         UIImage *image = [RCAmazonS3Helper getAvatarImage:_profileUser withLoggedinUserID:_viewingUserID];
@@ -345,7 +375,7 @@ int       _friendshipID;
                 [_btnAvatarImg setBackgroundImage:image forState:controlState];
         });
         
-    });
+    });*/
 }
 
 #pragma mark - UICollectionView Datasource
@@ -360,8 +390,8 @@ int       _friendshipID;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath{
-    NSString* cellIdentifier = [RCMainFeedCell cellIdentifier];
-    RCMainFeedCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
+    NSString* cellIdentifier = [RCProfileViewCell cellIdentifier];
+    RCProfileViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
     
     RCPost *post = [[RCPost alloc] initWithNSDictionary:[_postList objectAtIndex:indexPath.row]];
 
@@ -382,7 +412,7 @@ int       _friendshipID;
 
 // 1
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    float width = (collectionView.frame.size.height-42) / 3; // hard coding the number of rows to be 3 atm
+    float width = (collectionView.frame.size.height-24) / 3; // hard coding the number of rows to be 3 atm
     CGSize retval = CGSizeMake(width,width);
     return retval;
 }
@@ -390,7 +420,7 @@ int       _friendshipID;
 // 3
 - (UIEdgeInsets)collectionView:
 (UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
-    return UIEdgeInsetsMake(20, 10, 20, 10);//UIEdgeInsetsM
+    return UIEdgeInsetsMake(10, 10, 10, 10);//UIEdgeInsetsM
 }
 
 
