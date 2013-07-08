@@ -86,7 +86,7 @@
     _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     [_locationManager startUpdatingLocation];
     
-    [_menuViewController.view setUserInteractionEnabled:NO];
+    _menuViewController.btnUserProfileNav.enabled = NO;
 
     return YES;
 }
@@ -136,7 +136,7 @@
 #pragma mark - global data flow
 - (void) setCurrentUser:(RCUser *)user {
     _menuViewController.user = user;
-    [_menuViewController.view setUserInteractionEnabled:YES];
+    _menuViewController.btnUserProfileNav.enabled = YES;
     NSLog(@"%@ set current user %d:@",[AppDelegate debugTag], user.userID,user.email);
 }
 
