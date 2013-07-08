@@ -109,7 +109,11 @@
 - (IBAction)btnActionRegister:(id)sender {
     RCRegisterViewController *registerViewController = [[RCRegisterViewController alloc]
                                                       init];
-    [self.navigationController pushViewController:registerViewController animated:YES];
+    [self addChildViewController:registerViewController];
+    registerViewController.view.frame = self.view.frame;
+    [self.view addSubview:registerViewController.view];
+    [registerViewController didMoveToParentViewController:self];
+    //[self.navigationController pushViewController:registerViewController animated:YES];
 }
 
 - (IBAction)btnBackgroundTap:(id)sender {

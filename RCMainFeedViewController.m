@@ -330,6 +330,27 @@ BOOL        _haveScreenshot;
     [_collectionView reloadData];
 }
 
+-(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
+{
+    if ([annotation isKindOfClass:[MKUserLocation class]])
+        return nil;
+    
+    if ([annotation isKindOfClass:[RCLandmark class]]) {
+        RCLandmark *landmark = (RCLandmark*) annotation;
+        NSString *annotationIdentifier = @"landmark";
+        MKAnnotationView *landmarkButton = (MKAnnotationView*) [mapView dequeueReusableAnnotationViewWithIdentifier:annotationIdentifier];
+        if (landmarkButton == nil)
+            landmarkButton = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:annotationIdentifier];
+        NSString *imageName = [NSString stringWithFormat:@"landmarkCategory%@.png",landmark.category];
+        UIImage *scaledLandmarkImage = imageWithImage([UIImage imageNamed:imageName], CGSizeMake(20,20));
+        [landmarkButton setImage:scaledLandmarkImage];
+        return (MKAnnotationView*)landmarkButton;
+    }
+    return nil;
+}
+
+#pragma mark - view event
+
 - (void) viewWillAppear:(BOOL)animated {
 
     //add gesture recognizer

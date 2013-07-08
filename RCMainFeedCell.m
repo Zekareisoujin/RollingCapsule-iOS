@@ -69,12 +69,12 @@
             UIImage *image = [RCAmazonS3Helper getUserMediaImage:owner withLoggedinUserID:user.userID withImageUrl:post.fileUrl];
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             NSLog(@"downloading images");
-            if (image == nil)
-                image = [UIImage imageNamed:@"default_avatar.jpg"];
             return image;
         }];
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (cachedImg != nil)
+            if (cachedImg == nil)
+                [_imageView setImage:[UIImage imageNamed:@"default_avatar.jpg"]];
+            else
                 [_imageView setImage:cachedImg];
             callback();
         });

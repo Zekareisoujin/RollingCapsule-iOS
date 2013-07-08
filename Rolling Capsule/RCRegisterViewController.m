@@ -25,6 +25,7 @@ BOOL        _willMoveKeyboardUp;
     _txtFieldPassword.delegate = self;
 	_willMoveKeyboardUp = FALSE;
     _keyboardVisible = FALSE;
+    [self animateViewAppearance];
 }
 
 #pragma mark - web request
@@ -169,5 +170,11 @@ BOOL        _willMoveKeyboardUp;
     self.view.frame = rect;
     
     [UIView commitAnimations];
+}
+- (IBAction)btnCloseTouchUpInside:(id)sender {
+    [self animateViewDisapperance:^ {
+        [self.view removeFromSuperview];
+        [self removeFromParentViewController];
+    }];
 }
 @end
