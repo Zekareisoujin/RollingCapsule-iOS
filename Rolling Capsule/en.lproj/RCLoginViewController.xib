@@ -94,6 +94,10 @@
 						<int key="IBUIContentHorizontalAlignment">3</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<string key="IBUIText"/>
+						<object class="NSColor" key="IBUITextColor" id="417846055">
+							<int key="NSColorSpace">3</int>
+							<bytes key="NSWhite">MQA</bytes>
+						</object>
 						<int key="IBUITextAlignment">1</int>
 						<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
 						<float key="IBUIMinimumFontSize">17</float>
@@ -125,10 +129,7 @@
 						<int key="IBUIContentHorizontalAlignment">0</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<int key="IBUIButtonType">1</int>
-						<object class="NSColor" key="IBUIHighlightedTitleColor" id="417846055">
-							<int key="NSColorSpace">3</int>
-							<bytes key="NSWhite">MQA</bytes>
-						</object>
+						<reference key="IBUIHighlightedTitleColor" ref="417846055"/>
 						<object class="NSColor" key="IBUINormalTitleColor">
 							<int key="NSColorSpace">1</int>
 							<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
@@ -164,6 +165,7 @@
 						<int key="IBUIContentHorizontalAlignment">3</int>
 						<int key="IBUIContentVerticalAlignment">0</int>
 						<string key="IBUIText"/>
+						<reference key="IBUITextColor" ref="417846055"/>
 						<int key="IBUITextAlignment">1</int>
 						<bool key="IBUIAdjustsFontSizeToFit">YES</bool>
 						<float key="IBUIMinimumFontSize">17</float>
@@ -1459,13 +1461,13 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="loginBackground.png">{16, 16}</string>
-			<string key="loginBtnForgotPwd.png">{16, 16}</string>
-			<string key="loginBtnLogin.png">{16, 16}</string>
-			<string key="loginBtnRegister.png">{16, 16}</string>
-			<string key="loginLblLogin.png">{16, 16}</string>
-			<string key="loginLblRegister.png">{16, 16}</string>
-			<string key="loginTextfield.png">{16, 16}</string>
+			<string key="loginBackground.png">{640, 1096}</string>
+			<string key="loginBtnForgotPwd.png">{640, 40}</string>
+			<string key="loginBtnLogin.png">{200, 200}</string>
+			<string key="loginBtnRegister.png">{200, 200}</string>
+			<string key="loginLblLogin.png">{210, 60}</string>
+			<string key="loginLblRegister.png">{240, 60}</string>
+			<string key="loginTextfield.png">{690, 74}</string>
 		</dictionary>
 		<bool key="IBDocument.UseAutolayout">YES</bool>
 		<string key="IBCocoaTouchPluginVersion">2083</string>

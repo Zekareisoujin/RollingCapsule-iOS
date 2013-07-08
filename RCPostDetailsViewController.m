@@ -73,10 +73,8 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     _lblUsername.text = _post.authorName;
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
-    NSDate *createdDate = [formatter dateFromString:_post.createdTime];
     [formatter setDateFormat:@"dd/M/yyyy"];
-    _lblDatePosted.text = [formatter stringFromDate:createdDate];
+    _lblDatePosted.text = [formatter stringFromDate:_post.createdTime];
     _lblLandmark.text = @"";
     
     _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];

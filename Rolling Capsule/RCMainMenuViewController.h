@@ -24,7 +24,6 @@
 
 - (id)initWithContentView:(UINavigationController *) mainNavigationController;
 
-- (IBAction)btnTestTouchUpInside:(id)sender;
 - (IBAction)btnActionMainFeedNav:(id)sender;
 - (IBAction)btnActionUserProfileNav:(id)sender;
 - (IBAction)btnActionFriendViewNav:(id)sender;

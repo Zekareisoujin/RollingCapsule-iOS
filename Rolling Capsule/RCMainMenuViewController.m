@@ -53,12 +53,6 @@
     // Dispose of any resources that can be recreated.
 }
 
--(IBAction)btnTestTouchUpInside:(id)sender
-{
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate hideSideMenu];
-}
-
 - (IBAction)btnActionMainFeedNav:(id)sender {
     RCMainFeedViewController *mainFeedViewController = [[RCMainFeedViewController alloc] init];
     [self navigateToViewControllerFromMenu:mainFeedViewController];
@@ -90,7 +84,7 @@
 - (void) navigateToViewControllerFromMenu:(UIViewController*) viewController {
     viewController.navigationItem.hidesBackButton = YES;
     [_navigationController popToRootViewControllerAnimated:NO];
-    [_navigationController pushViewController:viewController animated:YES];
+    [_navigationController pushViewController:viewController animated:NO];
     [self setNavigationBarMenuBttonForViewController:viewController];
     [self slideThenHide];
 }

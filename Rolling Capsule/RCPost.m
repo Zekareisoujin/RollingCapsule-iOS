@@ -29,8 +29,6 @@
     self = [super init];
     if (self) {
         _content = (NSString*)[postData objectForKey:@"content"];
-        _createdTime = (NSString*)[postData objectForKey:@"created_at"];
-        _updatedTime = (NSString*)[postData objectForKey:@"updated_at"];
         _fileUrl = (NSString*)[postData objectForKey:@"file_url"];
         _privacyOption = (NSString*)[postData objectForKey:@"privacy_option"];
         _likeCount = [[postData objectForKey:@"like_count"] intValue];
@@ -46,6 +44,11 @@
             _landmarkID = -1;
         _authorName = [postData objectForKey:@"author_name"];
         _authorEmail = [postData objectForKey:@"author_email"];
+        
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
+        _createdTime = [formatter dateFromString:(NSString*)[postData objectForKey:@"created_at"]];
+        _updatedTime = [formatter dateFromString:(NSString*)[postData objectForKey:@"updated_at"]];
     }
     return self;
 }

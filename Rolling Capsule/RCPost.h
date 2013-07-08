@@ -12,8 +12,8 @@
 @interface RCPost : NSObject <MKAnnotation>
 
 @property (nonatomic,retain)  NSString *content;
-@property (nonatomic,retain)  NSString *createdTime;
-@property (nonatomic,retain)  NSString *updatedTime;
+@property (nonatomic,retain)  NSDate *createdTime;
+@property (nonatomic,retain)  NSDate *updatedTime;
 @property (nonatomic,retain)  NSString *fileUrl;
 @property (nonatomic,retain)  NSString *privacyOption;
 @property (nonatomic, assign) int     likeCount;
