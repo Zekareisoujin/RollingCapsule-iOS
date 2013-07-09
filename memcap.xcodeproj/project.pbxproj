@@ -61,6 +61,9 @@
 		6460E885178B274A0065D6BA /* registerRegisterButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 6460E883178B274A0065D6BA /* registerRegisterButton.png */; };
 		6460E887178B2D3E0065D6BA /* registerMainFrame@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6460E886178B2D3E0065D6BA /* registerMainFrame@2x.png */; };
 		6460E889178B2D800065D6BA /* closeButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6460E888178B2D800065D6BA /* closeButton@2x.png */; };
+		6460E88B178C66C70065D6BA /* locate-iamhere.png in Resources */ = {isa = PBXBuildFile; fileRef = 6460E88A178C66C60065D6BA /* locate-iamhere.png */; };
+		6460E88D178C68460065D6BA /* landmarkEmpty.png in Resources */ = {isa = PBXBuildFile; fileRef = 6460E88C178C68460065D6BA /* landmarkEmpty.png */; };
+		6460E88F178C88FE0065D6BA /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6460E88E178C88FE0065D6BA /* MobileCoreServices.framework */; };
 		64610340176E5F8A008DD131 /* RCLandmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 6461033F176E5F8A008DD131 /* RCLandmark.m */; };
 		6490A90C1757C07100E5048F /* RCMainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6490A90A1757C07100E5048F /* RCMainMenuViewController.m */; };
 		6490A90D1757C07100E5048F /* RCMainMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6490A90B1757C07100E5048F /* RCMainMenuViewController.xib */; };
@@ -229,10 +232,13 @@
 		6460E875178AE4070065D6BA /* slideMenuMainFeed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slideMenuMainFeed.png; sourceTree = "<group>"; };
 		6460E876178AE4070065D6BA /* slideMenuProfile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slideMenuProfile.png; sourceTree = "<group>"; };
 		6460E877178AE4070065D6BA /* slideMenuSettings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slideMenuSettings.png; sourceTree = "<group>"; };
-		6460E882178B274A0065D6BA /* registerMainFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = registerMainFrame.png; sourceTree = "<group>"; };
-		6460E883178B274A0065D6BA /* registerRegisterButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = registerRegisterButton.png; sourceTree = "<group>"; };
-		6460E886178B2D3E0065D6BA /* registerMainFrame@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "registerMainFrame@2x.png"; sourceTree = "<group>"; };
-		6460E888178B2D800065D6BA /* closeButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "closeButton@2x.png"; sourceTree = "<group>"; };
+		6460E882178B274A0065D6BA /* registerMainFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = registerMainFrame.png; path = ../registerMainFrame.png; sourceTree = "<group>"; };
+		6460E883178B274A0065D6BA /* registerRegisterButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = registerRegisterButton.png; path = ../registerRegisterButton.png; sourceTree = "<group>"; };
+		6460E886178B2D3E0065D6BA /* registerMainFrame@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "registerMainFrame@2x.png"; path = "../registerMainFrame@2x.png"; sourceTree = "<group>"; };
+		6460E888178B2D800065D6BA /* closeButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "closeButton@2x.png"; path = "../closeButton@2x.png"; sourceTree = "<group>"; };
+		6460E88A178C66C60065D6BA /* locate-iamhere.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "locate-iamhere.png"; sourceTree = "<group>"; };
+		6460E88C178C68460065D6BA /* landmarkEmpty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = landmarkEmpty.png; sourceTree = "<group>"; };
+		6460E88E178C88FE0065D6BA /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		6461033E176E5F8A008DD131 /* RCLandmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCLandmark.h; path = ../RCLandmark.h; sourceTree = "<group>"; };
 		6461033F176E5F8A008DD131 /* RCLandmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCLandmark.m; path = ../RCLandmark.m; sourceTree = "<group>"; };
 		6490A9091757C07000E5048F /* RCMainMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMainMenuViewController.h; sourceTree = "<group>"; };
@@ -276,7 +282,7 @@
 		64E293CF178638AB009496FF /* mainViewOptionPublic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mainViewOptionPublic.png; path = ../mainViewOptionPublic.png; sourceTree = "<group>"; };
 		64EA880317796D9F00011F3E /* mainBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mainBackground.png; path = ../mainBackground.png; sourceTree = "<group>"; };
 		64EA880517796DAB00011F3E /* textField.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = textField.png; path = ../textField.png; sourceTree = "<group>"; };
-		64EA9B4717887B5A0022FA67 /* navigationBarBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "navigationBarBackground@2x.png"; sourceTree = "<group>"; };
+		64EA9B4717887B5A0022FA67 /* navigationBarBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "navigationBarBackground@2x.png"; path = "../navigationBarBackground@2x.png"; sourceTree = "<group>"; };
 		64EA9B4917888B7C0022FA67 /* postLandmarkBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = postLandmarkBackground.png; path = ../postLandmarkBackground.png; sourceTree = "<group>"; };
 		64EA9B4B178893E40022FA67 /* RCLandmarkCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCLandmarkCell.xib; sourceTree = "<group>"; };
 		64EA9B4D178894DB0022FA67 /* RCLandmarkCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCLandmarkCell.h; sourceTree = "<group>"; };
@@ -369,6 +375,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6460E88F178C88FE0065D6BA /* MobileCoreServices.framework in Frameworks */,
 				64FE84E5176BAAD800E561D8 /* libz.dylib in Frameworks */,
 				64FE8433176B9E0E00E561D8 /* libTestFlight.a in Frameworks */,
 				64FFD2CD17662D1B004337F8 /* MapKit.framework in Frameworks */,
@@ -399,6 +406,11 @@
 		643EACE9175BBE0D002761D9 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				64EA9B4717887B5A0022FA67 /* navigationBarBackground@2x.png */,
+				6460E888178B2D800065D6BA /* closeButton@2x.png */,
+				6460E886178B2D3E0065D6BA /* registerMainFrame@2x.png */,
+				6460E882178B274A0065D6BA /* registerMainFrame.png */,
+				6460E883178B274A0065D6BA /* registerRegisterButton.png */,
 				6460E86D178AE4070065D6BA /* profileViewPostPreview.png */,
 				6460E872178AE4070065D6BA /* slideMenuBackground.png */,
 				6460E873178AE4070065D6BA /* slideMenuFriend.png */,
@@ -475,17 +487,15 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
-				6460E888178B2D800065D6BA /* closeButton@2x.png */,
-				6460E886178B2D3E0065D6BA /* registerMainFrame@2x.png */,
-				6460E882178B274A0065D6BA /* registerMainFrame.png */,
-				6460E883178B274A0065D6BA /* registerRegisterButton.png */,
+				6460E88E178C88FE0065D6BA /* MobileCoreServices.framework */,
+				6460E88C178C68460065D6BA /* landmarkEmpty.png */,
+				6460E88A178C66C60065D6BA /* locate-iamhere.png */,
 				6460E86F178AE4070065D6BA /* RCProfileViewCell.h */,
 				6460E870178AE4070065D6BA /* RCProfileViewCell.m */,
 				6460E871178AE4070065D6BA /* RCProfileViewCell.xib */,
 				64EA9B4D178894DB0022FA67 /* RCLandmarkCell.h */,
 				64EA9B4E178894DB0022FA67 /* RCLandmarkCell.m */,
 				64EA9B4B178893E40022FA67 /* RCLandmarkCell.xib */,
-				64EA9B4717887B5A0022FA67 /* navigationBarBackground@2x.png */,
 				64119A141784611700BF0B05 /* RCLightboxViewController.h */,
 				64119A151784611700BF0B05 /* RCLightboxViewController.m */,
 				BFCA7821174DFD3F00666CBA /* Rolling Capsule */,
@@ -824,6 +834,8 @@
 				6460E885178B274A0065D6BA /* registerRegisterButton.png in Resources */,
 				6460E887178B2D3E0065D6BA /* registerMainFrame@2x.png in Resources */,
 				6460E889178B2D800065D6BA /* closeButton@2x.png in Resources */,
+				6460E88B178C66C70065D6BA /* locate-iamhere.png in Resources */,
+				6460E88D178C68460065D6BA /* landmarkEmpty.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

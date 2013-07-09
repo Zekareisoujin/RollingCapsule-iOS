@@ -12,6 +12,8 @@
 // temporary
 #define IS_IPHONE_5 ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON )
 
+typedef void (^VoidBlock)();
+
 static NSMutableURLRequest* CreateHttpPostRequest (NSURL* url, NSData* postData) {
     NSString *plength = [NSString stringWithFormat:@"%d", [postData length]];
     

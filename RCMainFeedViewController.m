@@ -139,11 +139,7 @@ BOOL        _haveScreenshot;
 }
 
 - (void) handleRefresh:(UIRefreshControl*) refreshControl {
-    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    CLLocationCoordinate2D zoomLocation = appDelegate.currentLocation.coordinate;
-    NSLog(@"current location %f %f", zoomLocation.longitude, zoomLocation.latitude);
-    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(zoomLocation, 0.5*METERS_PER_MILE, 0.5*METERS_PER_MILE);
-    [_mapView setRegion:viewRegion animated:YES];
+    [self btnCenterMapTouchUpInside:nil];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:RCInfoStringDateFormat];
@@ -185,19 +181,28 @@ BOOL        _haveScreenshot;
             if (jsonData != NULL) {
                 [_postsByLandmark removeAllObjects];
                 NSLog(@"current annotations:%@",_mapView.annotations);
-                
+                NSLog(@"currentlandmark %d",_currentLandmarkID);
+                int pastCurrentLandmark = _currentLandmarkID;
                 NSArray *postList = (NSArray *) [jsonData objectForKey:@"post_list"];
                 NSArray *landmarkList = (NSArray*) [jsonData objectForKey:@"landmark_list"];
                 NSDictionary *userDictionary = (NSDictionary *) [jsonData objectForKey:@"user"];
                 _user = [[RCUser alloc] initWithNSDictionary:userDictionary];
                 AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                 _lblUsername.text = _user.name;
-                //[_imgViewUserAvatar setImage:[RCAmazonS3Helper getAvatarImage:_user withLoggedinUserID:_user.userID]];
+                
+                //set user avataer image in background
+                dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
+                dispatch_async(queue, ^{
+                    UIImage *image = [RCAmazonS3Helper getAvatarImage:_user withLoggedinUserID:_user.userID];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [_imgViewUserAvatar setImage:image];
+                    });
+                });
+                
                 [appDelegate setCurrentUser:_user];
                 
                 for (NSDictionary *postData in postList) {
                     RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
-                    //[_items addObject:post];
                     id key = [[NSNumber alloc] initWithInteger:post.landmarkID];
                     NSMutableArray *postList = (NSMutableArray *)[_postsByLandmark objectForKey:key];
                     if (postList != nil) {
@@ -211,11 +216,16 @@ BOOL        _haveScreenshot;
                 }
                 
                 [_mapView removeAnnotations:_mapView.annotations];
+                NSLog(@"current landmark Id %d",_currentLandmarkID);
+                _currentLandmarkID = -1;
                 for (NSDictionary *landmarkData in landmarkList) {
                     RCLandmark *landmark = [[RCLandmark alloc] initWithNSDictionary:landmarkData];
                     [_mapView addAnnotation:landmark];
+                    if (landmark.landmarkID == pastCurrentLandmark)
+                        _currentLandmarkID = landmark.landmarkID;
                     NSLog(@"%@: landmark coordinates %f %f",[RCMainFeedViewController debugTag], landmark.coordinate.latitude, landmark.coordinate.longitude);
                 }
+                NSLog(@"current landmark Id %d",_currentLandmarkID);
                 NSArray *notificationList = (NSArray*) [jsonData objectForKey:@"notifications"]
                 ;
                 if (notificationList != nil) {
@@ -227,6 +237,7 @@ BOOL        _haveScreenshot;
                     
                     [appDelegate setNotificationList:notifications];
                 }
+                NSLog(@"before reload currentlandmark %d",_currentLandmarkID);
                 [_tblFeedList reloadData];
                 [_collectionView reloadData];
                 if (_firstRefresh){
@@ -259,6 +270,7 @@ BOOL        _haveScreenshot;
     RCNewPostViewController *newPostController = [[RCNewPostViewController alloc] initWithUser:_user withBackgroundImage:nil];
     [self addChildViewController:newPostController];
     newPostController.view.frame = self.view.frame;
+    newPostController.postComplete = ^{ [self handleRefresh:_refreshControl]; };
     [self.view addSubview:newPostController.view];
     [newPostController didMoveToParentViewController:self];
 }
@@ -457,5 +469,13 @@ BOOL        _haveScreenshot;
     }
     sender.enabled = NO;
     
+}
+
+- (IBAction)btnCenterMapTouchUpInside:(id)sender {
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    CLLocationCoordinate2D zoomLocation = appDelegate.currentLocation.coordinate;
+    NSLog(@"current location %f %f", zoomLocation.longitude, zoomLocation.latitude);
+    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(zoomLocation, 0.5*METERS_PER_MILE, 0.5*METERS_PER_MILE);
+    [_mapView setRegion:viewRegion animated:YES];
 }
 @end

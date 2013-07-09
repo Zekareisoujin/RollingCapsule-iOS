@@ -15,6 +15,7 @@
 #import "RCConnectionManager.h"
 #import "RCLandmarkCell.h"
 #import <QuartzCore/QuartzCore.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 #import "SBJson.h"
 
 @interface RCNewPostViewController ()
@@ -47,11 +48,14 @@
 @synthesize personalPrivacyButton = _personalPrivacyButton;
 @synthesize privacyOption = _privacyOption;
 @synthesize viewLandmark = _viewLandmark;
+@synthesize postComplete = _postComplete;
 
 BOOL _isTapToCloseKeyboard = NO;
 BOOL _landmarkTableVisible = NO;
 BOOL _successfulPost = NO;
 BOOL _firstTimeEditPost = YES;
+BOOL _didFinishUploadingImage = NO;
+S3PutObjectResponse *_putObjectResponse;
 RCConnectionManager *_connectionManager;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -111,12 +115,12 @@ RCConnectionManager *_connectionManager;
     
     //init landmark button within
     UIButton *paddingView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
-    [paddingView setImage:[UIImage imageNamed:@"mainViewOptionPublic.png"] forState:UIControlStateNormal];
+    [paddingView setImage:[UIImage imageNamed:@"landmarkEmpty.png"] forState:UIControlStateNormal];
     [paddingView addTarget:self action:@selector(openLandmarkView) forControlEvents:UIControlEventTouchUpInside];
     _txtFieldPostSubject.leftView = paddingView;
     _txtFieldPostSubject.leftViewMode = UITextFieldViewModeAlways;
     
-    //
+    //prepare landmark view
     _viewLandmark = [[UIView alloc] initWithFrame:CGRectMake(10, 90, 300, 160)];
     UIImageView *landmarkBackground = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 300, 160)];
     [landmarkBackground setImage:[UIImage imageNamed:@"postLandmarkBackground.png"]];
@@ -126,7 +130,6 @@ RCConnectionManager *_connectionManager;
     landmarkBackground.frame = CGRectMake(0,0,_viewLandmark.frame.size.width, _viewLandmark.frame.size.height);
     [_viewLandmark addSubview:_tblViewLandmark];
     _tblViewLandmark.frame = CGRectMake(10,0,280,160);
-    //[_tblViewLandmark setBackgroundView:landmarkBackground];
     [_tblViewLandmark setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0]];
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
     _tblViewLandmark.allowsSelection = YES;
@@ -140,7 +143,7 @@ RCConnectionManager *_connectionManager;
     _landmarks = [[NSMutableArray alloc] init];
     _landmarkTableVisible = NO;
     _currentLandmark = nil;
-    
+    _didFinishUploadingImage = NO;
     [self animateViewAppearance];
 }
 
@@ -161,14 +164,14 @@ RCConnectionManager *_connectionManager;
     }
     [_connectionManager startConnection];
     _postButton.enabled = NO;
-    UIImage *rescaledImage = imageWithImage(_postImage, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
-    NSData *imageData = UIImageJPEGRepresentation(rescaledImage, 1.0);
-    [self performSelectorInBackground:@selector(uploadImageToS3:) withObject:imageData];
+    while (!_didFinishUploadingImage) {
+    }
+    [self performSelectorOnMainThread:@selector(asynchPostNewResuest) withObject:nil waitUntilDone:YES];
 }
 
 #pragma mark - upload method
 
-- (void)uploadImageToS3:(NSData *)imageData
+- (BOOL)uploadImageToS3:(NSData *)imageData
 {
     AmazonS3Client *s3 = [RCAmazonS3Helper s3:_user.userID forResource:[NSString stringWithFormat:@"%@/*", RCAmazonS3UsersMediaBucket]];
     CFUUIDRef theUUID = CFUUIDCreate(NULL);
@@ -182,23 +185,23 @@ RCConnectionManager *_connectionManager;
     por.data = imageData;
     
     @try {        
-        S3PutObjectResponse *putObjectResponse = [s3 putObject:por];
-        if (putObjectResponse.error == nil)
+        _putObjectResponse = [s3 putObject:por];
+        if (_putObjectResponse.error != nil)
         {
-            [self performSelectorOnMainThread:@selector(asynchPostNewResuest) withObject:nil waitUntilDone:YES];
-        } else {
-            NSLog(@"Error: %@", putObjectResponse.error);
+            NSLog(@"Error: %@", _putObjectResponse.error);
             [_connectionManager endConnection];
             _postButton.enabled = YES;
-            [self showAlertMessage:putObjectResponse.error.description withTitle:@"Upload Error"];
-            
-        }
+            [self showAlertMessage:_putObjectResponse.error.description withTitle:@"Upload Error"];
+            return NO;
+        } else
+            return YES;
     }@catch (AmazonClientException *exception) {
         NSLog(@"New-Post: Error: %@", exception);
         NSLog(@"New-Post: Debug Description: %@",exception.debugDescription);
         [_connectionManager endConnection];
         _postButton.enabled = YES;
         [self showAlertMessage:exception.description withTitle:RCUploadError];
+        return NO;
     }
 }
 
@@ -261,6 +264,8 @@ RCConnectionManager *_connectionManager;
                 //TODO open main news feed page
                 [self showAlertMessage:@"Image posted successfully!" withTitle:@"Success!"];
                 [self animateViewDisapperance:^ {
+                    if (_postComplete != nil)
+                        _postComplete();
                     [self.view removeFromSuperview];
                     [self removeFromParentViewController];
                 }];
@@ -351,10 +356,6 @@ RCConnectionManager *_connectionManager;
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
         [actionSheet addButtonWithTitle:RCImageSourceCamera];
     
-    // This is probably not necessary
-    //if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeSavedPhotosAlbum])
-    //    [actionSheet addButtonWithTitle:RCImageSourcePhotoAlbum];
-    
     actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:@"Cancel"];
     [actionSheet showInView:self.view];
     
@@ -376,12 +377,41 @@ RCConnectionManager *_connectionManager;
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     
-    // Get the selected image.
-    _postImage = [info objectForKey:UIImagePickerControllerOriginalImage];
-    [_imageViewPostPicture setImage:_postImage];
-    if ([picker sourceType] == UIImagePickerControllerSourceTypeCamera)
-        UIImageWriteToSavedPhotosAlbum(_postImage, self, nil, nil);
-    [picker dismissViewControllerAnimated:YES completion:nil];
+    NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
+    NSData *uploadData;
+    
+    //check if media is a video
+    if (CFStringCompare ((__bridge CFStringRef) mediaType, kUTTypeMovie, 0)
+        == kCFCompareEqualTo)
+    {
+        
+        NSString *moviePath = [[info objectForKey:UIImagePickerControllerMediaURL] path];
+        
+        // NSLog(@"%@",moviePath);
+        
+        NSURL *videoUrl=(NSURL*)[info objectForKey:UIImagePickerControllerMediaURL];
+        
+        if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum (moviePath)) {
+            UISaveVideoAtPathToSavedPhotosAlbum (moviePath, nil, nil, nil);
+        }
+        uploadData = [NSData dataWithContentsOfURL:videoUrl];
+    } else {
+    
+        // Get the selected image.
+        _postImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+        [_imageViewPostPicture setImage:_postImage];
+        if ([picker sourceType] == UIImagePickerControllerSourceTypeCamera)
+            UIImageWriteToSavedPhotosAlbum(_postImage, self, nil, nil);
+        [picker dismissViewControllerAnimated:YES completion:nil];
+        UIImage *rescaledImage = imageWithImage(_postImage, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
+        uploadData = UIImageJPEGRepresentation(rescaledImage, 1.0);
+    }
+    dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
+    dispatch_async(queue, ^{
+        BOOL success = [self uploadImageToS3:uploadData];
+        if (success)
+            _didFinishUploadingImage = YES;
+    });
     
     [UIView animateWithDuration:0.6
 						  delay:0
@@ -511,6 +541,16 @@ RCConnectionManager *_connectionManager;
 }
 
 - (IBAction)btnActionChooseVideSource:(id)sender {
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+        imagePicker.delegate = self;
+        imagePicker.mediaTypes =[[NSArray alloc] initWithObjects: (NSString *) kUTTypeMovie, nil];
+        [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+        [_txtViewPostContent resignFirstResponder];
+        [self presentViewController:imagePicker animated:YES completion:nil];
+    } else {
+        alertStatus(@"Photo library not available", @"Error!",nil);
+    }
 }
 
 - (void) removePhotoSourceControlAndAddPrivacyControl {
@@ -554,7 +594,7 @@ RCConnectionManager *_connectionManager;
                          _friendPrivacyButton.alpha = 1.0;
 					 }
                      completion:^(BOOL finished) {
-                         //[self removePhotoSourceControlAndAddPrivacyControl];
+                         [self setPostPrivacyOption:_publicPrivacyButton];
 					 }];
 }
 
@@ -568,10 +608,7 @@ RCConnectionManager *_connectionManager;
         CGPoint point = [tapGestureRecognizer locationInView:_imageViewPostFrame];
         //CGRect frame = _imageViewPostFrame.frame;
         if (![_imageViewPostFrame pointInside:point withEvent:nil])
-            [self animateViewDisapperance:^ {
-                [self.view removeFromSuperview];
-                [self removeFromParentViewController];
-            }];
+            [self closeBtnTouchUpInside:nil];
     }
 }
 
@@ -656,7 +693,7 @@ RCConnectionManager *_connectionManager;
 #pragma mark - UICollectionView Datasource
 // 1
 - (NSInteger)collectionView:(UICollectionView *)view numberOfItemsInSection:(NSInteger)section {
-    return [_landmarks count];//section == 0 ? [[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInteger:_currentLandmarkID]] count] : 0;
+    return [_landmarks count] + 1;//section == 0 ? [[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInteger:_currentLandmarkID]] count] : 0;
 }
 // 2
 - (NSInteger)numberOfSectionsInCollectionView: (UICollectionView *)collectionView {
@@ -666,15 +703,24 @@ RCConnectionManager *_connectionManager;
 - (UICollectionViewCell *)collectionView:(UICollectionView *)cv cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     NSString* cellIdentifier = [RCLandmarkCell cellIdentifier];
     RCLandmarkCell *cell = [cv dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
-    int idx = [indexPath row];
-    RCLandmark *landmark = [_landmarks objectAtIndex:idx];
-    NSString *imageName = [NSString stringWithFormat:@"landmarkCategory%@.png", landmark.category];
-    [cell.imgViewCategory setImage:[UIImage imageNamed:imageName]];
-    cell.lblLandmarkTitle.text = landmark.name;
-    if (landmark.landmarkID == _currentLandmark.landmarkID)
-        [cell.imgViewChosenMark setImage:[UIImage imageNamed:@"postLandmarkChosenBackground.png"]];
-    else
-        [cell.imgViewChosenMark setImage:nil];
+    int idx = [indexPath row] - 1;
+    if (idx < 0) {
+        if (_currentLandmark == nil)
+            [cell.imgViewChosenMark setImage:[UIImage imageNamed:@"postLandmarkChosenBackground.png"]];
+        else
+            [cell.imgViewChosenMark setImage:nil];
+        [cell.imgViewCategory setImage:[UIImage imageNamed:@"landmarkEmpty.png"]];
+        cell.lblLandmarkTitle.text = @"No location";        
+    } else {
+        RCLandmark *landmark = [_landmarks objectAtIndex:idx];
+        NSString *imageName = [NSString stringWithFormat:@"landmarkCategory%@.png", landmark.category];
+        [cell.imgViewCategory setImage:[UIImage imageNamed:imageName]];
+        cell.lblLandmarkTitle.text = landmark.name;
+        if (landmark.landmarkID == _currentLandmark.landmarkID)
+            [cell.imgViewChosenMark setImage:[UIImage imageNamed:@"postLandmarkChosenBackground.png"]];
+        else
+            [cell.imgViewChosenMark setImage:nil];
+    }
     return cell;
 }
 // 4

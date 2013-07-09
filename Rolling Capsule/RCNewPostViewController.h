@@ -12,6 +12,7 @@
 #import "RCKeyboardPushUpHandler.h"
 #import "RCLandmark.h"
 #import "RCLightboxViewController.h"
+#import "RCUtilities.h"
 
 @interface RCNewPostViewController : RCLightboxViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, AmazonServiceRequestDelegate, UIActionSheetDelegate, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 
@@ -34,6 +35,7 @@
 @property (strong, nonatomic) RCKeyboardPushUpHandler *keyboardPushHandler;
 @property (nonatomic, strong) UICollectionView *tblViewLandmark;
 @property (nonatomic, strong) RCLandmark *currentLandmark;
+@property (nonatomic, copy)   VoidBlock   postComplete;
 
 - (void)backgroundTouchUpInside;
 - (IBAction)btnPostImageTouchUpInside:(id)sender;

@@ -24,6 +24,7 @@ typedef enum RCMainFeedViewMode RCMainFeedViewMode;
 @property (weak, nonatomic) IBOutlet UILabel *lblUsername;
 @property (weak, nonatomic) IBOutlet UIButton *btnViewModeFriends;
 - (IBAction)btnViewModeChosen:(UIButton *)sender;
+- (IBAction)btnCenterMapTouchUpInside:(id)sender;
 @property (weak, nonatomic) IBOutlet UIImageView *imgViewUserAvatar;
 @property (weak, nonatomic) IBOutlet UIButton *btnViewModePublic;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
