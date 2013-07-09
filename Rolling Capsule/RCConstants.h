@@ -57,6 +57,7 @@ static NSString* const RCErrorMessageFailedToEditFriendStatus = @"Failure editin
 
 //NSUserDefault key
 static NSString* const RCLogStatusDefault = @"logStatus";
+static NSString* const RCLogUserDefault = @"loggedUser";
 
 //integer values
 #define RCUploadImageSizeWidth  300
