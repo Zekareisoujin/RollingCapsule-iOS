@@ -81,12 +81,16 @@ int       _friendshipID;
     [_previewPostImage setClipsToBounds:YES];
     [self hidePostPreview];
     
-    /*UIImage *buttonImage = [UIImage imageNamed:@"mainNavbarPostButton"];
-    UIButton *postButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [postButton setFrame:CGRectMake(0,0,buttonImage.size.width, buttonImage.size.height)];
-    [postButton setBackgroundImage:buttonImage forState:UIControlStateNormal];
-    [postButton addTarget:self action:@selector(switchToNewPostScreen) forControlEvents:UIControlEventTouchUpInside];
-    [postButton addTarget:self action:@selector(postButtonTouchDown) forControlEvents:UIControlEventTouchDown];*/
+    if (_viewingUser.userID != _profileUser.userID) {
+        UIImage *buttonImage = [UIImage imageNamed:@"profileBtnFriendAction"];
+        UIButton *postButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _btnFriendAction = postButton;
+        [postButton setFrame:CGRectMake(0,0,buttonImage.size.width, buttonImage.size.height)];
+        [postButton setBackgroundImage:buttonImage forState:UIControlStateNormal];
+        [postButton addTarget:self action:@selector(btnFriendActionClicked:) forControlEvents:UIControlEventTouchUpInside];
+        UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithCustomView:postButton] ;
+        self.navigationItem.rightBarButtonItem = rightButton;
+    }
     
     NSString* cellIdentifier = [RCProfileViewCell cellIdentifier];
     [self.collectionView registerClass:[RCProfileViewCell class] forCellWithReuseIdentifier:cellIdentifier];
@@ -117,9 +121,16 @@ int       _friendshipID;
              NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
              
              SBJsonParser *jsonParser = [SBJsonParser new];
-             NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
+             NSArray *jsonData = (NSArray *) [jsonParser objectWithString:responseData error:nil];
              
-             if (jsonData != NULL) {
+             if ([jsonData count] > 0) {
+                 for (NSDictionary* elem in jsonData){
+                     [_postList addObject:[[RCPost alloc] initWithNSDictionary:elem]];
+                 }
+                 [_collectionView reloadData];
+             }
+             
+             /*if (jsonData != NULL) {
                  //NSLog(@"Profile View: fetched feeds: %@", jsonData);
                  NSArray *jsonDataArray = (NSArray *) [jsonData objectForKey:@"post_list"];
                  //NSLog(@"Profile View: post lists: %@", jsonDataArray);
@@ -130,7 +141,7 @@ int       _friendshipID;
                  [_collectionView reloadData];
              }else {
                  alertStatus([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetFeed, responseData], RCAlertMessageConnectionFailed, self);
-             }
+             }*/
          }];
     }
     @catch (NSException * e) {
