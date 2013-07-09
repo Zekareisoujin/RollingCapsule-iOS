@@ -56,7 +56,9 @@ BOOL _successfulPost = NO;
 BOOL _firstTimeEditPost = YES;
 BOOL _didFinishUploadingImage = NO;
 S3PutObjectResponse *_putObjectResponse;
+AmazonClientException *_amazonException;
 RCConnectionManager *_connectionManager;
+NSData *_uploadData;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -143,8 +145,17 @@ RCConnectionManager *_connectionManager;
     _landmarks = [[NSMutableArray alloc] init];
     _landmarkTableVisible = NO;
     _currentLandmark = nil;
-    _didFinishUploadingImage = NO;
+    
+    //the view upload image in background and remember the status of the upload (fail, successful etc.)
+    //this method helps reset the status to initial state (have not uploaded)
+    [self resetUploadStatus];
+    _uploadData = nil;
     [self animateViewAppearance];
+}
+
+- (void) resetUploadStatus {
+    _didFinishUploadingImage = NO;
+    _amazonException = nil;
 }
 
 - (void)didReceiveMemoryWarning
@@ -166,42 +177,65 @@ RCConnectionManager *_connectionManager;
     _postButton.enabled = NO;
     while (!_didFinishUploadingImage) {
     }
+    if (_amazonException != nil) {
+        [_connectionManager endConnection];
+        _postButton.enabled = YES;
+        [self showAlertMessage:@"Failed to upload image, please try again later!" withTitle:RCUploadError];
+        [self resetUploadStatus];
+        dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
+        dispatch_async(queue, ^{
+            [self uploadImageToS3:_uploadData];
+            _didFinishUploadingImage = YES;
+        });
+        return;
+    }
+    else if (_putObjectResponse.error != nil) {
+        
+        [_connectionManager endConnection];
+        _postButton.enabled = YES;
+        [self showAlertMessage:_putObjectResponse.error.description withTitle:@"Upload Error"];
+        [self resetUploadStatus];
+        dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
+        dispatch_async(queue, ^{
+            [self uploadImageToS3:_uploadData];
+            _didFinishUploadingImage = YES;
+        });
+        return;
+    }
     [self performSelectorOnMainThread:@selector(asynchPostNewResuest) withObject:nil waitUntilDone:YES];
 }
 
 #pragma mark - upload method
 
-- (BOOL)uploadImageToS3:(NSData *)imageData
+- (void)uploadImageToS3:(NSData *)imageData
 {
     AmazonS3Client *s3 = [RCAmazonS3Helper s3:_user.userID forResource:[NSString stringWithFormat:@"%@/*", RCAmazonS3UsersMediaBucket]];
-    CFUUIDRef theUUID = CFUUIDCreate(NULL);
-    CFStringRef string = CFUUIDCreateString(NULL, theUUID);
-    CFRelease(theUUID);
-    _imageFileName = [(__bridge NSString*)string stringByReplacingOccurrencesOfString:@"-"withString:@""];
-    // Upload image data.  Remember to set the content type.
-    S3PutObjectRequest *por = [[S3PutObjectRequest alloc] initWithKey:_imageFileName
-                                                             inBucket:RCAmazonS3UsersMediaBucket];
-    por.contentType = @"image/jpeg";
-    por.data = imageData;
-    
-    @try {        
-        _putObjectResponse = [s3 putObject:por];
-        if (_putObjectResponse.error != nil)
-        {
-            NSLog(@"Error: %@", _putObjectResponse.error);
-            [_connectionManager endConnection];
-            _postButton.enabled = YES;
-            [self showAlertMessage:_putObjectResponse.error.description withTitle:@"Upload Error"];
-            return NO;
-        } else
-            return YES;
-    }@catch (AmazonClientException *exception) {
-        NSLog(@"New-Post: Error: %@", exception);
-        NSLog(@"New-Post: Debug Description: %@",exception.debugDescription);
-        [_connectionManager endConnection];
-        _postButton.enabled = YES;
-        [self showAlertMessage:exception.description withTitle:RCUploadError];
-        return NO;
+    if (s3 != nil) {
+        CFUUIDRef theUUID = CFUUIDCreate(NULL);
+        CFStringRef string = CFUUIDCreateString(NULL, theUUID);
+        CFRelease(theUUID);
+        _imageFileName = [(__bridge NSString*)string stringByReplacingOccurrencesOfString:@"-"withString:@""];
+        // Upload image data.  Remember to set the content type.
+        S3PutObjectRequest *por = [[S3PutObjectRequest alloc] initWithKey:_imageFileName
+                                                                 inBucket:RCAmazonS3UsersMediaBucket];
+        por.contentType = @"image/jpeg";
+        por.data = imageData;
+        
+        @try {        
+            _putObjectResponse = [s3 putObject:por];
+            if (_putObjectResponse.error != nil)
+            {
+                NSLog(@"Error: %@", _putObjectResponse.error);
+            }
+        }@catch (AmazonClientException *exception) {
+            NSLog(@"New-Post: Error: %@", exception);
+            NSLog(@"New-Post: Debug Description: %@",exception.debugDescription);
+            _amazonException = exception;
+        }
+    } else {
+        NSString* errorString = @"Failed to obtain S3 credentails from backend";
+        NSLog(@"New-Post: Error: %@", errorString);
+        _amazonException = [AmazonClientException exceptionWithMessage:errorString];
     }
 }
 
@@ -235,6 +269,7 @@ RCConnectionManager *_connectionManager;
         addArgumentToQueryString(dataSt, @"post[longitude]", longSt);
         addArgumentToQueryString(dataSt, @"post[file_url]", _imageFileName);
         addArgumentToQueryString(dataSt, @"post[privacy_option]", _privacyOption);
+        addArgumentToQueryString(dataSt, @"post[thumbnail_url]", _imageFileName);
         addArgumentToQueryString(dataSt, @"subject", postSubject);
         if (_currentLandmark != nil) {
             addArgumentToQueryString(dataSt, @"landmark_id", [NSString stringWithFormat:@"%d",_currentLandmark.landmarkID]);
@@ -378,7 +413,6 @@ RCConnectionManager *_connectionManager;
 {
     
     NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
-    NSData *uploadData;
     
     //check if media is a video
     if (CFStringCompare ((__bridge CFStringRef) mediaType, kUTTypeMovie, 0)
@@ -394,7 +428,7 @@ RCConnectionManager *_connectionManager;
         if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum (moviePath)) {
             UISaveVideoAtPathToSavedPhotosAlbum (moviePath, nil, nil, nil);
         }
-        uploadData = [NSData dataWithContentsOfURL:videoUrl];
+        _uploadData = [NSData dataWithContentsOfURL:videoUrl];
     } else {
     
         // Get the selected image.
@@ -404,13 +438,12 @@ RCConnectionManager *_connectionManager;
             UIImageWriteToSavedPhotosAlbum(_postImage, self, nil, nil);
         [picker dismissViewControllerAnimated:YES completion:nil];
         UIImage *rescaledImage = imageWithImage(_postImage, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
-        uploadData = UIImageJPEGRepresentation(rescaledImage, 1.0);
+        _uploadData = UIImageJPEGRepresentation(rescaledImage, 1.0);
     }
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
-        BOOL success = [self uploadImageToS3:uploadData];
-        if (success)
-            _didFinishUploadingImage = YES;
+        [self uploadImageToS3:_uploadData];
+        _didFinishUploadingImage = YES;
     });
     
     [UIView animateWithDuration:0.6
@@ -733,12 +766,17 @@ RCConnectionManager *_connectionManager;
 #pragma mark - UICollectionViewDelegate
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    int idx = [indexPath row];
-    RCLandmark *landmark = [_landmarks objectAtIndex:idx];
-    _currentLandmark = landmark;
+    int idx = [indexPath row] - 1;
     UIButton *button = (UIButton*)_txtFieldPostSubject.leftView;
-    NSString *imageName = [NSString stringWithFormat:@"landmarkCategory%@.png", landmark.category];
-    [button setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+    if (idx >= 0) {
+        RCLandmark *landmark = [_landmarks objectAtIndex:idx];
+        _currentLandmark = landmark;
+        NSString *imageName = [NSString stringWithFormat:@"landmarkCategory%@.png", landmark.category];
+        [button setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+    } else {
+        _currentLandmark = nil;
+        [button setImage:[UIImage imageNamed:@"landmarkEmpty.png"] forState:UIControlStateNormal];
+    }
     [_viewLandmark removeFromSuperview];
     [self.view addGestureRecognizer:_tapGestureRecognizer];
     _landmarkTableVisible = NO;
