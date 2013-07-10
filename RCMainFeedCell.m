@@ -66,7 +66,7 @@
         owner.name = post.authorName;
         UIImage* cachedImg = (UIImage*)[cache getResourceForKey:key usingQuery:^{
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-            UIImage *image = [RCAmazonS3Helper getUserMediaImage:owner withLoggedinUserID:user.userID withImageUrl:post.fileUrl];
+            UIImage *image = [RCAmazonS3Helper getUserMediaImage:owner withLoggedinUserID:user.userID withImageUrl:post.thumbnailUrl];
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             NSLog(@"downloading images");
             return image;

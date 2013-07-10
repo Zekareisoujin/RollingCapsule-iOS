@@ -27,6 +27,7 @@
 
 @property (nonatomic, strong) RCConnectionManager *connectionManager;
 @property (nonatomic, strong) NSMutableDictionary *postsByLandmark;
+@property (nonatomic, strong) NSMutableDictionary *landmarks;
 @property (nonatomic, assign) int currentLandmarkID;
 @property (nonatomic, strong) UIPinchGestureRecognizer *pinchGestureRecognizer;
 @property (nonatomic, strong) UILongPressGestureRecognizer *longPressGestureRecognizer;
@@ -54,6 +55,7 @@ BOOL        _haveScreenshot;
 @synthesize tapGestureRecognizer = _tapGestureRecognizer;
 @synthesize backgroundImage = _backgroundImage;
 @synthesize currentViewMode = _currentViewMode;
+@synthesize landmarks = _landmarks;
 
 + (NSString*) debugTag {
     return @"MainFeedView";
@@ -75,6 +77,7 @@ BOOL        _haveScreenshot;
         _connectionManager = [[RCConnectionManager alloc] init];
         _postsByLandmark = [[NSMutableDictionary alloc] init];
         _chosenPosts = [[NSMutableSet alloc] init];
+        _landmarks = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -87,20 +90,24 @@ BOOL        _haveScreenshot;
     if ([self.navigationController.viewControllers count] > 2)
         [self setupBackButton];
     
-    [_chosenPosts removeAllObjects];
-    
+    //miscellaneous helper preparation
     [_connectionManager reset];
+    
+    
+    //reset view data
+    [_chosenPosts removeAllObjects];
     _currentLandmarkID = -1;
     [_postsByLandmark removeAllObjects];
+    [_landmarks removeAllObjects];
     
     _userCache = [[NSMutableDictionary alloc] init];
     _postCache = [[NSMutableDictionary alloc] init];
     
     
     //customizing navigation bar
-    self.navigationItem.title = @" ";
+    self.navigationItem.title = @"";
     
-    //add post button
+    //add post button to navigation bar
     UIImage *postButtonImage = [UIImage imageNamed:@"mainNavbarPostButton.png"];
     UIButton *postButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [postButton setFrame:CGRectMake(0,0,postButtonImage.size.width, postButtonImage.size.height)];
@@ -122,11 +129,14 @@ BOOL        _haveScreenshot;
               forControlEvents:UIControlEventValueChanged  ];
     _firstRefresh = YES;
     
+    
+    //prepare collection view cell
     NSString* cellIdentifier = [RCMainFeedCell cellIdentifier];
     [self.collectionView registerClass:[RCMainFeedCell class] forCellWithReuseIdentifier:cellIdentifier];
     UINib *nib = [UINib nibWithNibName:cellIdentifier bundle: nil];
     [self.collectionView registerNib:nib forCellWithReuseIdentifier:cellIdentifier];
     
+    //initialize regonizer for geesture on map
     _pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
     _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     _longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
@@ -140,12 +150,9 @@ BOOL        _haveScreenshot;
     _nRows = 2; //the number of rows of images that are gonig to be displayed in the UICollectionView
     _willRefresh = YES; //indicate whether this view will refresh after returning from another view
     
-    /*this flag indicate if the screenshot of this view has been taken
-       this is used when opening light box view where a screenshot needs to be taken
-       since taking screenshot is slow it is run in background and this flag
-       will be set to true when it's done, after this flag is set to true, the code can open the view*/
-    _haveScreenshot = NO;
-    
+    //prepare user UI element
+    if (_user != nil)
+        _lblUsername.text = _user.name;
 }
 
 - (void) handleRefresh:(UIRefreshControl*) refreshControl {
@@ -226,11 +233,14 @@ BOOL        _haveScreenshot;
                 }
                 
                 [_mapView removeAnnotations:_mapView.annotations];
+                
+                //initializing landmarks
                 NSLog(@"current landmark Id %d",_currentLandmarkID);
                 _currentLandmarkID = -1;
                 for (NSDictionary *landmarkData in landmarkList) {
                     RCLandmark *landmark = [[RCLandmark alloc] initWithNSDictionary:landmarkData];
                     [_mapView addAnnotation:landmark];
+                    [_landmarks setObject:landmark forKey:[NSNumber numberWithInt:landmark.landmarkID]];
                     if (landmark.landmarkID == pastCurrentLandmark)
                         _currentLandmarkID = landmark.landmarkID;
                     NSLog(@"%@: landmark coordinates %f %f",[RCMainFeedViewController debugTag], landmark.coordinate.latitude, landmark.coordinate.longitude);
@@ -454,6 +464,10 @@ BOOL        _haveScreenshot;
             
             //[_collectionView removeGestureRecognizer:recognizer];
             RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user];
+            if (post.landmarkID == -1)
+                postDetailsViewController.landmark = nil;
+            else
+                postDetailsViewController.landmark = [_landmarks objectForKey:[NSNumber numberWithInt:post.landmarkID]];
             [self addChildViewController:postDetailsViewController];
             postDetailsViewController.view.frame = self.view.frame;
             [self.view addSubview:postDetailsViewController.view];

@@ -24,6 +24,7 @@
 @synthesize authorName = _authorName;
 @synthesize authorEmail = _authorEmail;
 @synthesize landmarkID = _landmarkID;
+@synthesize thumbnailUrl = _thumbnailUrl;
 
 - (id) initWithNSDictionary:(NSDictionary *)postData {
     self = [super init];
@@ -44,7 +45,7 @@
             _landmarkID = -1;
         _authorName = [postData objectForKey:@"author_name"];
         _authorEmail = [postData objectForKey:@"author_email"];
-        
+        _thumbnailUrl = [postData objectForKey:@"thumbnail_url"];
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
         _createdTime = [formatter dateFromString:(NSString*)[postData objectForKey:@"created_at"]];

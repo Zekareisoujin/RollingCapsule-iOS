@@ -16,6 +16,7 @@
 #import "RCLandmarkCell.h"
 #import <QuartzCore/QuartzCore.h>
 #import <MobileCoreServices/MobileCoreServices.h>
+#import <MediaPlayer/MediaPlayer.h>
 #import "SBJson.h"
 
 @interface RCNewPostViewController ()
@@ -55,10 +56,12 @@ BOOL _landmarkTableVisible = NO;
 BOOL _successfulPost = NO;
 BOOL _firstTimeEditPost = YES;
 BOOL _didFinishUploadingImage = NO;
+BOOL _isMovie = NO;
 S3PutObjectResponse *_putObjectResponse;
 AmazonClientException *_amazonException;
 RCConnectionManager *_connectionManager;
 NSData *_uploadData;
+NSData *_thumbnailData;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -114,6 +117,9 @@ NSData *_uploadData;
     
     //prepare text view placeholder
     _firstTimeEditPost = YES;
+    
+    //reset data type
+    _isMovie = NO;
     
     //init landmark button within
     UIButton *paddingView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
@@ -184,7 +190,7 @@ NSData *_uploadData;
         [self resetUploadStatus];
         dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
         dispatch_async(queue, ^{
-            [self uploadImageToS3:_uploadData];
+            [self uploadImageToS3:_uploadData withThumbnail:_thumbnailData dataBeingMovie:_isMovie];
             _didFinishUploadingImage = YES;
         });
         return;
@@ -197,7 +203,7 @@ NSData *_uploadData;
         [self resetUploadStatus];
         dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
         dispatch_async(queue, ^{
-            [self uploadImageToS3:_uploadData];
+            [self uploadImageToS3:_uploadData withThumbnail:_thumbnailData dataBeingMovie:_isMovie];
             _didFinishUploadingImage = YES;
         });
         return;
@@ -207,7 +213,7 @@ NSData *_uploadData;
 
 #pragma mark - upload method
 
-- (void)uploadImageToS3:(NSData *)imageData
+- (void)uploadImageToS3:(NSData *)imageData withThumbnail:thumbnailData dataBeingMovie:(BOOL) isMovie
 {
     AmazonS3Client *s3 = [RCAmazonS3Helper s3:_user.userID forResource:[NSString stringWithFormat:@"%@/*", RCAmazonS3UsersMediaBucket]];
     if (s3 != nil) {
@@ -218,11 +224,25 @@ NSData *_uploadData;
         // Upload image data.  Remember to set the content type.
         S3PutObjectRequest *por = [[S3PutObjectRequest alloc] initWithKey:_imageFileName
                                                                  inBucket:RCAmazonS3UsersMediaBucket];
-        por.contentType = @"image/jpeg";
+        por.contentType = isMovie ? @"movie/mov" : @"image/jpeg";
         por.data = imageData;
+        
+        S3PutObjectRequest *porThumbnail = [[S3PutObjectRequest alloc] initWithKey:[NSString stringWithFormat:@"%@-thumbnail",_imageFileName]
+                                                                 inBucket:RCAmazonS3UsersMediaBucket];
+        porThumbnail.contentType = @"image/jpeg";
+        porThumbnail.data = thumbnailData;
+
         
         @try {        
             _putObjectResponse = [s3 putObject:por];
+            if (_putObjectResponse.error != nil)
+            {
+                NSLog(@"Error: %@", _putObjectResponse.error);
+            }
+            if (thumbnailData != nil)
+            {
+                _putObjectResponse = [s3 putObject:porThumbnail];
+            }
             if (_putObjectResponse.error != nil)
             {
                 NSLog(@"Error: %@", _putObjectResponse.error);
@@ -263,13 +283,14 @@ NSData *_uploadData;
         CLLocationDegrees longitude = appDelegate.currentLocation.coordinate.longitude;
         NSString* latSt = [[NSString alloc] initWithFormat:@"%f",latitude];
         NSString* longSt = [[NSString alloc] initWithFormat:@"%f",longitude];
+        NSString* thumbnail = (_thumbnailData != nil) ? [NSString stringWithFormat:@"%@-thumbnail",_imageFileName] : _imageFileName ;
         NSMutableString *dataSt = initQueryString(@"post[content]", _postContent);
         addArgumentToQueryString(dataSt, @"post[rating]", @"5");
         addArgumentToQueryString(dataSt, @"post[latitude]", latSt);
         addArgumentToQueryString(dataSt, @"post[longitude]", longSt);
         addArgumentToQueryString(dataSt, @"post[file_url]", _imageFileName);
         addArgumentToQueryString(dataSt, @"post[privacy_option]", _privacyOption);
-        addArgumentToQueryString(dataSt, @"post[thumbnail_url]", _imageFileName);
+        addArgumentToQueryString(dataSt, @"post[thumbnail_url]", thumbnail);
         addArgumentToQueryString(dataSt, @"subject", postSubject);
         if (_currentLandmark != nil) {
             addArgumentToQueryString(dataSt, @"landmark_id", [NSString stringWithFormat:@"%d",_currentLandmark.landmarkID]);
@@ -418,7 +439,7 @@ NSData *_uploadData;
     if (CFStringCompare ((__bridge CFStringRef) mediaType, kUTTypeMovie, 0)
         == kCFCompareEqualTo)
     {
-        
+        _isMovie = YES;
         NSString *moviePath = [[info objectForKey:UIImagePickerControllerMediaURL] path];
         
         // NSLog(@"%@",moviePath);
@@ -429,9 +450,17 @@ NSData *_uploadData;
             UISaveVideoAtPathToSavedPhotosAlbum (moviePath, nil, nil, nil);
         }
         _uploadData = [NSData dataWithContentsOfURL:videoUrl];
+        MPMoviePlayerController *player = [[MPMoviePlayerController alloc] initWithContentURL:videoUrl];
+        
+        UIImage *thumbnail = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
+        UIImage *rescaledThumbnail = imageWithImage(thumbnail, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
+        _thumbnailData = UIImageJPEGRepresentation(rescaledThumbnail,1.0);
+        
+        //Player autoplays audio on init
+        [player stop];
     } else {
-    
-        // Get the selected image.
+        // Get the selected image
+        _isMovie = NO;
         _postImage = [info objectForKey:UIImagePickerControllerOriginalImage];
         [_imageViewPostPicture setImage:_postImage];
         if ([picker sourceType] == UIImagePickerControllerSourceTypeCamera)
@@ -442,7 +471,7 @@ NSData *_uploadData;
     }
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
-        [self uploadImageToS3:_uploadData];
+        [self uploadImageToS3:_uploadData withThumbnail:_thumbnailData dataBeingMovie:_isMovie];
         _didFinishUploadingImage = YES;
     });
     

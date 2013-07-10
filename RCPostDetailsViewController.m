@@ -27,6 +27,7 @@
 @synthesize loggedInUser = _loggedInUser;
 @synthesize comments = _comments;
 @synthesize tapGestureRecognizer = _tapGestureRecognizer;
+@synthesize landmark = _landmark;
 
 BOOL _isTapToCloseKeyboard;
 BOOL _firstTimeEditPost;
@@ -76,6 +77,8 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     [formatter setDateFormat:@"dd/M/yyyy"];
     _lblDatePosted.text = [formatter stringFromDate:_post.createdTime];
     _lblLandmark.text = @"";
+    if (_landmark != nil)
+        _lblLandmark.text = _landmark.name;
     
     _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     [self.view addGestureRecognizer:_tapGestureRecognizer];
