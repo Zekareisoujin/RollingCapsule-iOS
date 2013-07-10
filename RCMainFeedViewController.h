@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 #import "RCUser.h"
+#import "UIViewController+RCCustomBackButtonViewController.h"
 
 enum RCMainFeedViewMode {
     RCMainFeedViewModePublic,
@@ -18,6 +19,7 @@ enum RCMainFeedViewMode {
 typedef enum RCMainFeedViewMode RCMainFeedViewMode;
 
 @interface RCMainFeedViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDataSource, MKMapViewDelegate, UIGestureRecognizerDelegate>
+- (IBAction)btnUserAvatarTouchUpInside:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UITableView *tblFeedList;
 @property (weak, nonatomic) IBOutlet UIButton *btnViewModeFollow;
@@ -25,7 +27,7 @@ typedef enum RCMainFeedViewMode RCMainFeedViewMode;
 @property (weak, nonatomic) IBOutlet UIButton *btnViewModeFriends;
 - (IBAction)btnViewModeChosen:(UIButton *)sender;
 - (IBAction)btnCenterMapTouchUpInside:(id)sender;
-@property (weak, nonatomic) IBOutlet UIImageView *imgViewUserAvatar;
+@property (weak, nonatomic) IBOutlet UIButton *btnUserAvatar;
 @property (weak, nonatomic) IBOutlet UIButton *btnViewModePublic;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
 @property (nonatomic, strong) RCUser *user;

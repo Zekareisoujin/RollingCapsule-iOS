@@ -58,6 +58,10 @@ int       _friendshipID;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    if ([self.navigationController.viewControllers count] > 2)
+        [self setupBackButton];
+    
     self.navigationItem.title = @" ";
     _lblEmail.text = _profileUser.email;
     _lblName.text = _profileUser.name;

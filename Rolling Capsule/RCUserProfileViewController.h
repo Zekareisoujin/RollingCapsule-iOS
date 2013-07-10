@@ -10,6 +10,7 @@
 #import <AWSS3/AWSS3.h>
 #import "RCUser.h"
 #import "RCProfileViewCell.h"
+#import "UIViewController+RCCustomBackButtonViewController.h"
 
 @interface RCUserProfileViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, AmazonServiceRequestDelegate, UICollectionViewDelegate, UICollectionViewDataSource>
 

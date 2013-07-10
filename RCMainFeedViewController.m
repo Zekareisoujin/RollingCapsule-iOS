@@ -12,15 +12,16 @@
 #import "RCPost.h"
 #import "RCConstants.h"
 #import "RCUtilities.h"
-#import "SBJson.h"
 #import "RCNewPostViewController.h"
 #import "RCPostDetailsViewController.h"
+#import "RCUserProfileViewController.h"
 #import "RCAmazonS3Helper.h"
 #import "RCMainFeedCell.h"
 #import "RCMainMenuViewController.h"
 #import "RCConnectionManager.h"
 #import "RCNotification.h"
 #import <QuartzCore/QuartzCore.h>
+#import "SBJson.h"
 
 @interface RCMainFeedViewController ()
 
@@ -82,6 +83,10 @@ BOOL        _haveScreenshot;
 {
     [super viewDidLoad];
     
+    //setup custom back button when necessary
+    if ([self.navigationController.viewControllers count] > 2)
+        [self setupBackButton];
+    
     [_chosenPosts removeAllObjects];
     
     [_connectionManager reset];
@@ -91,15 +96,20 @@ BOOL        _haveScreenshot;
     _userCache = [[NSMutableDictionary alloc] init];
     _postCache = [[NSMutableDictionary alloc] init];
     
-    self.navigationItem.title = @"";
-
-    UIImage *buttonImage = [UIImage imageNamed:@"mainNavbarPostButton"];
+    
+    //customizing navigation bar
+    self.navigationItem.title = @" ";
+    
+    //add post button
+    UIImage *postButtonImage = [UIImage imageNamed:@"mainNavbarPostButton.png"];
     UIButton *postButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [postButton setFrame:CGRectMake(0,0,buttonImage.size.width, buttonImage.size.height)];
-    [postButton setBackgroundImage:buttonImage forState:UIControlStateNormal];
+    [postButton setFrame:CGRectMake(0,0,postButtonImage.size.width, postButtonImage.size.height)];
+    [postButton setBackgroundImage:postButtonImage forState:UIControlStateNormal];
     [postButton addTarget:self action:@selector(switchToNewPostScreen) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithCustomView:postButton] ;
     self.navigationItem.rightBarButtonItem = rightButton;
+    
+    
     
     //prepare collection view
     
@@ -195,7 +205,7 @@ BOOL        _haveScreenshot;
                 dispatch_async(queue, ^{
                     UIImage *image = [RCAmazonS3Helper getAvatarImage:_user withLoggedinUserID:_user.userID];
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [_imgViewUserAvatar setImage:image];
+                        [_btnUserAvatar setImage:image forState:UIControlStateNormal];
                     });
                 });
                 
@@ -477,5 +487,9 @@ BOOL        _haveScreenshot;
     NSLog(@"current location %f %f", zoomLocation.longitude, zoomLocation.latitude);
     MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(zoomLocation, 0.5*METERS_PER_MILE, 0.5*METERS_PER_MILE);
     [_mapView setRegion:viewRegion animated:YES];
+}
+- (IBAction)btnUserAvatarTouchUpInside:(id)sender {
+    RCUserProfileViewController *userProfileViewController = [[RCUserProfileViewController alloc] initWithUser:_user viewingUser:_user];
+    [self.navigationController pushViewController:userProfileViewController animated:YES];
 }
 @end
