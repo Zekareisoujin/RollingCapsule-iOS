@@ -131,6 +131,18 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
             [_connectionManager endConnection];
             return object;
         }];
+        UIImage *thumbnailImage;
+        //if returned object is a string, this means the post is a movie
+        if ([cachedObj isKindOfClass:[NSString class]]) {
+            NSString *thumbnailKey = [NSString stringWithFormat:@"%@-thumbnail",key];
+            thumbnailImage = [cache getResourceForKey:thumbnailKey usingQuery:^{
+                [_connectionManager startConnection];
+                NSObject *object = [RCAmazonS3Helper getUserMediaImage:_postOwner withLoggedinUserID:_loggedInUser.userID   withImageUrl:_post.thumbnailUrl];
+                [_connectionManager endConnection];
+                return object;
+            }];
+
+        }
         dispatch_async(dispatch_get_main_queue(), ^{
             if (cachedObj != nil && [cachedObj isKindOfClass:[UIImage class]])
                 [_imgViewPostImage setImage:(UIImage *)cachedObj];
@@ -140,6 +152,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
                 UIButton *playVideoButton = [[UIButton alloc] initWithFrame:_imgViewPostImage.frame];
                 [playVideoButton addTarget:self action:@selector(playVideo:) forControlEvents:UIControlEventTouchUpInside];
                 [playVideoButton setImage:[UIImage imageNamed:@"postVideoSourceButton-normal.png"] forState:UIControlStateNormal];
+                [_imgViewPostImage setImage:thumbnailImage ];
                 [self.view addSubview:playVideoButton];
                 //[_imgViewPostImage addGestureRecognizer:tapRecognizer];
             }

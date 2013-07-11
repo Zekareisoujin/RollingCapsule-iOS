@@ -26,7 +26,7 @@
 @property (strong, nonatomic) CLLocationManager *locationManager;
 @property (strong, nonatomic) CLLocation        *currentLocation;
 @property (strong, nonatomic) NSArray           *userNotifications;
-
+@property (assign, nonatomic) BOOL               didUpdateLocation;
 - (void) showSideMenu;
 - (void) hideSideMenu;
 - (void) setCurrentUser:(RCUser*)user;

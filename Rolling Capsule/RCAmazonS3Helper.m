@@ -85,6 +85,12 @@
     } else return nil;
 }
 
+/*!
+ * Download user's media from Amazon S3, the returned object depend on what kind of media is present 
+ * S3 bucket. If it is an image, an image is returned else download the video file to disk and return
+ * the path to the video file.
+ */
+
 + (NSObject *) getUserMediaImage:(RCUser *)user withLoggedinUserID:(int)loggedinUserID withImageUrl:(NSString*)url {
     //S3ResponseHeaderOverrides *override = [[S3ResponseHeaderOverrides alloc] init];
     //override.contentType = @"image/jpeg";

@@ -27,6 +27,9 @@
 @synthesize locationManager = _locationManager;
 @synthesize currentLocation = _currentLocation;
 @synthesize userNotifications = _userNotifications;
+@synthesize didUpdateLocation = _didUpdateLocation;
+
+BOOL _didQueueOpenMainFeedOption;
 
 + (NSString*) debugTag {
     return @"AppDelegate";
@@ -35,6 +38,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [TestFlight takeOff:@"9a1eac62-14de-493e-971e-bea0ff0cb99b"];
+    _didUpdateLocation = NO;
+    _didQueueOpenMainFeedOption = NO;
     RCUser *user = [[RCUser alloc] init];
     user.name = @"lolo";
     user.email = @"lolotp@hotmail.com";
@@ -52,6 +57,14 @@
     owner.name = @"lolo";
     owner.email = @"lolotp@hotmail.com";
     owner.userID = 1;
+    
+    //set up location listening
+    _locationManager = [[CLLocationManager alloc] init];
+    _locationManager.delegate = self;
+    _locationManager.distanceFilter = kCLDistanceFilterNone;
+    _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    [_locationManager startUpdatingLocation];
+
     
     //RCPostDetailsViewController *firstViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:user];
     RCLoginViewController *firstViewController = [[RCLoginViewController alloc] init];
@@ -72,12 +85,9 @@
     
     _menuViewController.btnUserProfileNav.enabled = NO;
     if ([[NSUserDefaults standardUserDefaults] boolForKey:RCLogStatusDefault]) {
-        RCUser *currentUser = [[RCUser alloc] initWithNSDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:RCLogUserDefault]];
-        
-        /*if (currentUser != nil)
-            alertStatus([[NSString alloc] initWithFormat:@"current user: %@", currentUser.email], @"Debug", nil);*/
-        [self setCurrentUser:currentUser];
-        [_menuViewController btnActionMainFeedNav:_mainViewController];
+        //queue main feed open action so that the main feed is opened automatically
+        //when location is updated
+        _didQueueOpenMainFeedOption = YES;
     }
     
     // Configure Window
@@ -86,13 +96,6 @@
     [self.window setBackgroundColor:[UIColor whiteColor]];
     [self.window makeKeyAndVisible];
     
-    _locationManager = [[CLLocationManager alloc] init];
-    _locationManager.delegate = self;
-    _locationManager.distanceFilter = kCLDistanceFilterNone;
-    _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
-    [_locationManager startUpdatingLocation];
-    
-
     return YES;
 }
 
@@ -135,6 +138,15 @@
 
 #pragma mark - CLLocationManager delegate
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations {
+    if (!_didUpdateLocation) {
+        _didUpdateLocation = YES;
+        if (_didQueueOpenMainFeedOption) {
+            _didQueueOpenMainFeedOption = NO;
+            RCUser *currentUser = [[RCUser alloc] initWithNSDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:RCLogUserDefault]];
+            [self setCurrentUser:currentUser];
+            [_menuViewController btnActionMainFeedNav:_mainViewController];
+        }
+    }
     _currentLocation = [locations lastObject];
     //NSLog(@"update current location %f,%f", _currentLocation.coordinate.latitude, _currentLocation.coordinate.longitude);
 }

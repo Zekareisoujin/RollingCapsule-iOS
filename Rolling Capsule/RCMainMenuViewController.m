@@ -54,6 +54,10 @@
 }
 
 - (IBAction)btnActionMainFeedNav:(id)sender {
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    while (!appDelegate.didUpdateLocation) {
+        
+    }
     RCMainFeedViewController *mainFeedViewController = [[RCMainFeedViewController alloc] init];
     [mainFeedViewController setCurrentUser:_user];
     [self navigateToViewControllerFromMenu:mainFeedViewController];
