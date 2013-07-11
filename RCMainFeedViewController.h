@@ -37,4 +37,5 @@ typedef enum RCMainFeedViewMode RCMainFeedViewMode;
 @property (nonatomic, strong) NSMutableDictionary *postCache;
 @property (nonatomic, strong) NSMutableSet *chosenPosts;
 
+- (void) setCurrentUser: (RCUser*) user;
 @end

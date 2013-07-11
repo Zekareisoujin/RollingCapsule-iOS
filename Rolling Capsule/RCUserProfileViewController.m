@@ -39,6 +39,14 @@ NSArray  *_postPreviewElements;
 NSString *_friendStatus;
 int       _friendshipID;
 
+// Test map scale:
+double  refLong;
+double  refLat;
+double  refX;
+double  refY;
+double  minimapScaleX;
+double  minimapScaleY;
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
@@ -85,20 +93,27 @@ int       _friendshipID;
     [_previewPostImage setClipsToBounds:YES];
     [self hidePostPreview];
     
-    /*UIImage *buttonImage = [UIImage imageNamed:@"mainNavbarPostButton"];
-    UIButton *postButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [postButton setFrame:CGRectMake(0,0,buttonImage.size.width, buttonImage.size.height)];
-    [postButton setBackgroundImage:buttonImage forState:UIControlStateNormal];
-    [postButton addTarget:self action:@selector(switchToNewPostScreen) forControlEvents:UIControlEventTouchUpInside];
-    [postButton addTarget:self action:@selector(postButtonTouchDown) forControlEvents:UIControlEventTouchDown];*/
+    if (_viewingUser.userID != _profileUser.userID) {
+        UIImage *buttonImage = [UIImage imageNamed:@"profileBtnFriendAction"];
+        UIButton *postButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        _btnFriendAction = postButton;
+        [postButton setFrame:CGRectMake(0,0,buttonImage.size.width, buttonImage.size.height)];
+        [postButton setBackgroundImage:buttonImage forState:UIControlStateNormal];
+        [postButton addTarget:self action:@selector(btnFriendActionClicked:) forControlEvents:UIControlEventTouchUpInside];
+        UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithCustomView:postButton] ;
+        self.navigationItem.rightBarButtonItem = rightButton;
+    }
     
     NSString* cellIdentifier = [RCProfileViewCell cellIdentifier];
     [self.collectionView registerClass:[RCProfileViewCell class] forCellWithReuseIdentifier:cellIdentifier];
     UINib *nib = [UINib nibWithNibName:cellIdentifier bundle: nil];
     [self.collectionView registerNib:nib forCellWithReuseIdentifier:cellIdentifier];
     
+    [self calculateReferenceCoordinate];
     [self asynchFetchFeeds];
     
+    /*CGPoint test = [self calculateCoordinateOnMinimapWithCoordinate:0.0 andLattitude:51.47];
+    NSLog(@"Map coordinates x is %.2f and y is %.2f", test.x, test.y);*/
 }
 
 - (void)didReceiveMemoryWarning {
@@ -112,7 +127,7 @@ int       _friendshipID;
     //Asynchronous Request
     [_postList removeAllObjects];
     @try {
-        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@?mobile=1", RCServiceURL]];
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d?mobile=1", RCServiceURL, RCUsersResource, _profileUser.userID]];
         NSURLRequest *request = CreateHttpGetRequest(url);
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
@@ -121,9 +136,23 @@ int       _friendshipID;
              NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
              
              SBJsonParser *jsonParser = [SBJsonParser new];
-             NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
+             NSArray *jsonData = (NSArray *) [jsonParser objectWithString:responseData error:nil];
              
-             if (jsonData != NULL) {
+             if ([jsonData count] > 0) {
+                 for (NSDictionary* elem in jsonData){
+                     [_postList addObject:[[RCPost alloc] initWithNSDictionary:elem]];
+                     
+                     RCPost *test = [[RCPost alloc] initWithNSDictionary:elem];
+                     CLLocationCoordinate2D coord = CLLocationCoordinate2DMake(test.latitude, test.longitude);
+                     MKMapPoint point = MKMapPointForCoordinate(coord);
+                     NSLog(@"Long & lat: %.2f and %.2f; producing: %.2f and %.2f", test.longitude, test.latitude, point.x, point.y);
+                 }
+                 
+                 [_collectionView reloadData];
+                 [self drawMinimap];
+             }
+             
+             /*if (jsonData != NULL) {
                  //NSLog(@"Profile View: fetched feeds: %@", jsonData);
                  NSArray *jsonDataArray = (NSArray *) [jsonData objectForKey:@"post_list"];
                  //NSLog(@"Profile View: post lists: %@", jsonDataArray);
@@ -134,7 +163,7 @@ int       _friendshipID;
                  [_collectionView reloadData];
              }else {
                  alertStatus([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetFeed, responseData], RCAlertMessageConnectionFailed, self);
-             }
+             }*/
          }];
     }
     @catch (NSException * e) {
@@ -494,6 +523,56 @@ int       _friendshipID;
         for (UIView *elem in _postPreviewElements)
             elem.layer.opacity = 1.0;
     }];
+}
+
+- (void) calculateReferenceCoordinate {
+    refLong = 103.77;
+    refLat = 1.32;
+    refX = 437;
+    refY = 157;
+    
+    double refLong2 = -122.41;
+    double refLat2 = 37.79;
+    double refX2 = 40;
+    double refY2 = 88;
+    
+    CLLocationCoordinate2D refCoord = CLLocationCoordinate2DMake(refLat, refLong);
+    MKMapPoint refPoint = MKMapPointForCoordinate(refCoord);
+    CLLocationCoordinate2D refCoord2 = CLLocationCoordinate2DMake(refLat2, refLong2);
+    MKMapPoint refPoint2 = MKMapPointForCoordinate(refCoord2);
+    
+    minimapScaleX = (refX - refX2) / (refPoint.x - refPoint2.x);
+    minimapScaleY = (refY - refY2) / (refPoint.y - refPoint2.y);
+}
+
+- (CGPoint) calculateCoordinateOnMinimapWithCoordinate: (double) longitude andLattitude: (double) lattitude {
+    CLLocationCoordinate2D refCoord = CLLocationCoordinate2DMake(refLat, refLong);
+    MKMapPoint refPoint = MKMapPointForCoordinate(refCoord);
+    CLLocationCoordinate2D coord = CLLocationCoordinate2DMake(lattitude, longitude);
+    MKMapPoint point = MKMapPointForCoordinate(coord);
+    
+    CGPoint ret = CGPointMake((point.x - refPoint.x)*minimapScaleX + refX, (point.y - refPoint.y)*minimapScaleY + refY);
+    return ret;
+}
+
+- (void) drawMinimap {
+    UIImage *minimapImage = _previewWorldMap.image;
+    UIGraphicsBeginImageContext(minimapImage.size);
+    
+    [minimapImage drawAtPoint:CGPointZero];
+	CGContextRef ctx = UIGraphicsGetCurrentContext();
+	[[UIColor redColor] setStroke];
+    [[UIColor redColor] setFill];
+    
+    for (RCPost* post in _postList){
+        CGPoint drawLoc = [self calculateCoordinateOnMinimapWithCoordinate:post.longitude andLattitude:post.latitude];
+        CGRect circleRect = CGRectMake(drawLoc.x, drawLoc.y, 10, 10);
+        CGContextFillEllipseInRect(ctx, circleRect);
+    }
+    
+    UIImage *finalImage = UIGraphicsGetImageFromCurrentImageContext();
+    [_previewWorldMap setImage:finalImage];
+	UIGraphicsEndImageContext();
 }
 
 @end

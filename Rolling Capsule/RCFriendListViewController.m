@@ -60,7 +60,7 @@ RCConnectionManager *_connectionManager;
     _requested_friends = [[NSMutableArray alloc] init];
     _tblViewFriendList.tableFooterView = [[UIView alloc] init];
     
-    UIImage *image = [UIImage imageNamed:@"navBarButtonBackground.png"];//resizableImageWithCapInsets:UIEdgeInsetsMake(0,20,0,10)];
+    UIImage *image = [UIImage imageNamed:@"profileBtnFriendAction.png"];//resizableImageWithCapInsets:UIEdgeInsetsMake(0,20,0,10)];
     UIButton *findFriendsButton = [[UIButton alloc] initWithFrame:CGRectMake(0,0,image.size.width, image.size.height)];
     [findFriendsButton setTitle:@"Find friends" forState:UIControlStateNormal];
     [findFriendsButton setBackgroundImage:image forState:UIControlStateNormal];

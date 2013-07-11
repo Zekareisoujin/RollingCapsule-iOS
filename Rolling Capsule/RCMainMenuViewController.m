@@ -55,6 +55,7 @@
 
 - (IBAction)btnActionMainFeedNav:(id)sender {
     RCMainFeedViewController *mainFeedViewController = [[RCMainFeedViewController alloc] init];
+    [mainFeedViewController setCurrentUser:_user];
     [self navigateToViewControllerFromMenu:mainFeedViewController];
 }
 
@@ -72,6 +73,7 @@
     [self asynchLogOutRequest];
     [self slideThenHide];
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:RCLogStatusDefault];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:RCLogUserDefault];
     [_navigationController popToRootViewControllerAnimated:YES];
 }
 
@@ -97,6 +99,10 @@
 - (void)initializeUserFromLogIn:(RCUser *)user {
     _user = user;
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:RCLogStatusDefault];
+    [[NSUserDefaults standardUserDefaults] setObject:[user getDictionaryObject] forKey:RCLogUserDefault];
+    /*NSLog(@"Setting the following user as current user: %@", user.email);
+    RCUser *test = (RCUser*) [[NSUserDefaults standardUserDefaults] objectForKey:RCLogUserDefault];
+    NSLog(@"Double check: current user from default is: %@", test.email);*/
     [self btnActionMainFeedNav:self];
 }
 

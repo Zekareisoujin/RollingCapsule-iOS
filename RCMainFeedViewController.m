@@ -505,8 +505,13 @@ BOOL        _haveScreenshot;
     MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(zoomLocation, 0.5*METERS_PER_MILE, 0.5*METERS_PER_MILE);
     [_mapView setRegion:viewRegion animated:YES];
 }
+
 - (IBAction)btnUserAvatarTouchUpInside:(id)sender {
     RCUserProfileViewController *userProfileViewController = [[RCUserProfileViewController alloc] initWithUser:_user viewingUser:_user];
     [self.navigationController pushViewController:userProfileViewController animated:YES];
+}
+
+- (void) setCurrentUser: (RCUser*) user {
+    _user = user;
 }
 @end

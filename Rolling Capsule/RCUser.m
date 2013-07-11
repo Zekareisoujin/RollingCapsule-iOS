@@ -28,4 +28,13 @@
     }
     return self;
 }
+
+- (NSDictionary*) getDictionaryObject {
+    NSMutableDictionary *retval = [[NSMutableDictionary alloc] init];
+    [retval setObject:_name forKey:@"name"];
+    [retval setObject:_email forKey:@"email"];
+    [retval setValue:[NSNumber numberWithInt:_userID] forKey:@"id"];
+    return retval;
+}
+
 @end

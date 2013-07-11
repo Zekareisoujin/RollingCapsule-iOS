@@ -70,7 +70,13 @@
     _mainViewController.menuViewController = _menuViewController;
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
+    _menuViewController.btnUserProfileNav.enabled = NO;
     if ([[NSUserDefaults standardUserDefaults] boolForKey:RCLogStatusDefault]) {
+        RCUser *currentUser = [[RCUser alloc] initWithNSDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:RCLogUserDefault]];
+        
+        /*if (currentUser != nil)
+            alertStatus([[NSString alloc] initWithFormat:@"current user: %@", currentUser.email], @"Debug", nil);*/
+        [self setCurrentUser:currentUser];
         [_menuViewController btnActionMainFeedNav:_mainViewController];
     }
     
@@ -86,7 +92,6 @@
     _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     [_locationManager startUpdatingLocation];
     
-    _menuViewController.btnUserProfileNav.enabled = NO;
 
     return YES;
 }
@@ -137,7 +142,7 @@
 - (void) setCurrentUser:(RCUser *)user {
     _menuViewController.user = user;
     _menuViewController.btnUserProfileNav.enabled = YES;
-    NSLog(@"%@ set current user %d:@",[AppDelegate debugTag], user.userID,user.email);
+    NSLog(@"%@ set current user %d:%@",[AppDelegate debugTag], user.userID,user.email);
 }
 
 - (void) setNotificationList:(NSArray*)notifications {

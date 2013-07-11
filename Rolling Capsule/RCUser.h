@@ -15,4 +15,5 @@
 @property  int      userID;
 
 - (id) initWithNSDictionary:(NSDictionary *)userData;
+- (NSDictionary*) getDictionaryObject;
 @end
