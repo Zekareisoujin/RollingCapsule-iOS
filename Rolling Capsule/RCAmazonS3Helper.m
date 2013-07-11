@@ -85,22 +85,31 @@
     } else return nil;
 }
 
-+ (UIImage *) getUserMediaImage:(RCUser *)user withLoggedinUserID:(int)loggedinUserID withImageUrl:(NSString*)url {
-    S3ResponseHeaderOverrides *override = [[S3ResponseHeaderOverrides alloc] init];
-    override.contentType = @"image/jpeg";
++ (NSObject *) getUserMediaImage:(RCUser *)user withLoggedinUserID:(int)loggedinUserID withImageUrl:(NSString*)url {
+    //S3ResponseHeaderOverrides *override = [[S3ResponseHeaderOverrides alloc] init];
+    //override.contentType = @"image/jpeg";
     AmazonS3Client *s3 = [RCAmazonS3Helper s3:loggedinUserID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3UsersMediaBucket]];
     if (s3 != nil) {
         @try {
             S3GetObjectRequest *getObjectRequest = [[S3GetObjectRequest alloc] initWithKey:url withBucket:RCAmazonS3UsersMediaBucket];
             S3GetObjectResponse *response = [s3 getObject:getObjectRequest];
-            UIImage *image = [UIImage imageWithData:response.body];
-            return image;
+            if ([response.contentType isEqualToString:@"image/jpeg"]) {
+                UIImage *image = [UIImage imageWithData:response.body];
+                return image;
+            } else {
+                S3GetObjectResponse *response = [s3 getObject:getObjectRequest];
+                NSData *yourMovieData = response.body;
+                NSString* completeFileName = [NSString stringWithFormat:@"%@.mov",url];
+                NSString* filename = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:completeFileName];
+                
+                [[NSFileManager defaultManager] createFileAtPath:filename contents:yourMovieData attributes:nil];
+                return filename;
+            }
         } @catch (AmazonServiceException * e) {
             NSLog(@"%@",e);
             return nil;
         }
     } else return nil;
 }
-
 
 @end

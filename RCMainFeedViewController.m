@@ -207,12 +207,15 @@ BOOL        _haveScreenshot;
                 AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                 _lblUsername.text = _user.name;
                 
-                //set user avataer image in background
+                //set user avatar image in background
                 dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
                 dispatch_async(queue, ^{
                     UIImage *image = [RCAmazonS3Helper getAvatarImage:_user withLoggedinUserID:_user.userID];
                     dispatch_async(dispatch_get_main_queue(), ^{
-                        [_btnUserAvatar setImage:image forState:UIControlStateNormal];
+                        if (image == nil)
+                            [_btnUserAvatar setImage:[UIImage imageNamed:@"default_avatar.jpg"] forState:UIControlStateNormal];
+                        else
+                            [_btnUserAvatar setImage:image forState:UIControlStateNormal];
                     });
                 });
                 

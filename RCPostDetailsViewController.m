@@ -14,10 +14,13 @@
 #import "RCConnectionManager.h"
 #import "RCKeyboardPushUpHandler.h"
 #import "RCResourceCache.h"
+#import <MediaPlayer/MediaPlayer.h>
 
 @interface RCPostDetailsViewController ()
 @property (nonatomic,strong) NSMutableArray* comments;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
+@property (nonatomic, strong) NSURL* videoUrl;
+@property(nonatomic, strong) MPMoviePlayerController *player;
 @end
 
 @implementation RCPostDetailsViewController
@@ -28,6 +31,8 @@
 @synthesize comments = _comments;
 @synthesize tapGestureRecognizer = _tapGestureRecognizer;
 @synthesize landmark = _landmark;
+@synthesize videoUrl = _videoUrl;
+@synthesize player = _player;
 
 BOOL _isTapToCloseKeyboard;
 BOOL _firstTimeEditPost;
@@ -120,16 +125,25 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     NSString *key = [NSString stringWithFormat:@"%@/%d", RCPostsResource, _post.postID];
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
-        UIImage* cachedImg = (UIImage*)[cache getResourceForKey:key usingQuery:^{
+        NSObject* cachedObj = [cache getResourceForKey:key usingQuery:^{
             [_connectionManager startConnection];
-            UIImage *image = [RCAmazonS3Helper getUserMediaImage:_postOwner withLoggedinUserID:_loggedInUser.userID   withImageUrl:_post.fileUrl];
+            NSObject *object = [RCAmazonS3Helper getUserMediaImage:_postOwner withLoggedinUserID:_loggedInUser.userID   withImageUrl:_post.fileUrl];
             [_connectionManager endConnection];
-            return image;
+            return object;
         }];
-        if (cachedImg != nil)
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [_imgViewPostImage setImage:cachedImg];
-            });
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (cachedObj != nil && [cachedObj isKindOfClass:[UIImage class]])
+                [_imgViewPostImage setImage:(UIImage *)cachedObj];
+            else if (cachedObj != nil && [cachedObj isKindOfClass:[NSString class]]) {
+                NSString *fileName = (NSString*) cachedObj;
+                _videoUrl = [NSURL fileURLWithPath:fileName];
+                UIButton *playVideoButton = [[UIButton alloc] initWithFrame:_imgViewPostImage.frame];
+                [playVideoButton addTarget:self action:@selector(playVideo:) forControlEvents:UIControlEventTouchUpInside];
+                [playVideoButton setImage:[UIImage imageNamed:@"postVideoSourceButton-normal.png"] forState:UIControlStateNormal];
+                [self.view addSubview:playVideoButton];
+                //[_imgViewPostImage addGestureRecognizer:tapRecognizer];
+            }
+        });
     });
 
 }
@@ -374,7 +388,48 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
         [self removeFromParentViewController];
     }];
 }
+
 - (IBAction)commentButtonTouchUpInside:(id)sender {
     [self asynchPostComment];
+}
+
+-(IBAction) playVideo:(id)sender
+{
+    
+    
+    //NSURL *url=[[NSURL alloc] initWithString:@"http://www.businessfactors.de/bfcms/images/stories/videos/defaultscreenvideos.mp4"];
+    
+    _player=[[MPMoviePlayerController alloc] initWithContentURL:_videoUrl];
+    
+    [_player setShouldAutoplay:NO];
+    
+    [_player setScalingMode:MPMovieScalingModeAspectFit];
+    
+    _player.controlStyle=MPMovieControlStyleDefault;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlayBackDidFinish:) name:MPMoviePlayerPlaybackDidFinishNotification object:_player];
+    
+    // Register that the load state changed (movie is ready)
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(moviePlayerLoadStateChanged:)
+     name:MPMoviePlayerLoadStateDidChangeNotification
+     object: _player];
+    
+    
+    [self.view addSubview:_player.view];
+    [_player setFullscreen:YES animated:YES];
+    
+    [_player prepareToPlay];
+    
+    
+}
+
+- (void) moviePlayBackDidFinish:(id) sender {
+    NSLog(@"movie playback done");
+}
+
+- (void) moviePlayerLoadStateChanged:(id) sender {
+    NSLog(@"movie player load state changed");
 }
 @end

@@ -60,14 +60,17 @@ RCConnectionManager *_connectionManager;
     _requested_friends = [[NSMutableArray alloc] init];
     _tblViewFriendList.tableFooterView = [[UIView alloc] init];
     
+    UIImage *image = [UIImage imageNamed:@"navBarButtonBackground.png"];//resizableImageWithCapInsets:UIEdgeInsetsMake(0,20,0,10)];
+    UIButton *findFriendsButton = [[UIButton alloc] initWithFrame:CGRectMake(0,0,image.size.width, image.size.height)];
+    [findFriendsButton setTitle:@"Find friends" forState:UIControlStateNormal];
+    [findFriendsButton setBackgroundImage:image forState:UIControlStateNormal];
+    [findFriendsButton addTarget:self action:@selector(openFindFriendsView) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc]
-                                    initWithTitle:@"Find Friends"
-                                    style:UIBarButtonItemStylePlain
-                                    target:self
-                                    action:@selector(openFindFriendsView)];
+                                    initWithCustomView:findFriendsButton];
+    
     self.navigationItem.rightBarButtonItem = rightButton;
     
-    self.navigationItem.title = @" ";
+    //self.navigationItem.title = @"Friends";
     UITableViewController *tableViewController = setUpRefreshControlWithTableViewController(self, _tblViewFriendList);
     _refreshControl = tableViewController.refreshControl;
     [_refreshControl addTarget:self

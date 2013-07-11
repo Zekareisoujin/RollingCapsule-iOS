@@ -171,8 +171,8 @@ NSData *_thumbnailData;
 }
 
 - (void) postNew {
-    if (_postImage == nil) {
-        [self showAlertMessage:@"Please choose an image!" withTitle:@"Incomplete post!"];
+    if (_uploadData == nil) {
+        [self showAlertMessage:@"Please choose an image or video!" withTitle:@"Incomplete post!"];
         return;
     }
     if (_privacyOption == nil) {
@@ -455,9 +455,12 @@ NSData *_thumbnailData;
         UIImage *thumbnail = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
         UIImage *rescaledThumbnail = imageWithImage(thumbnail, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
         _thumbnailData = UIImageJPEGRepresentation(rescaledThumbnail,1.0);
-        
+        [_imageViewPostPicture setImage:thumbnail];
         //Player autoplays audio on init
         [player stop];
+        
+        [picker dismissViewControllerAnimated:YES completion:nil];
+        
     } else {
         // Get the selected image
         _isMovie = NO;
@@ -465,9 +468,10 @@ NSData *_thumbnailData;
         [_imageViewPostPicture setImage:_postImage];
         if ([picker sourceType] == UIImagePickerControllerSourceTypeCamera)
             UIImageWriteToSavedPhotosAlbum(_postImage, self, nil, nil);
-        [picker dismissViewControllerAnimated:YES completion:nil];
         UIImage *rescaledImage = imageWithImage(_postImage, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
         _uploadData = UIImageJPEGRepresentation(rescaledImage, 1.0);
+        
+        [picker dismissViewControllerAnimated:YES completion:nil];
     }
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{

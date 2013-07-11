@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "RCUser.h"
+#import "UIViewController+RCCustomBackButtonViewController.h"
+
 @interface RCFindFriendsViewController : UIViewController <UISearchBarDelegate, UISearchDisplayDelegate, UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UISearchBar *searchBarFriends;
 @property (weak, nonatomic) IBOutlet UITableView *tblViewFoundUsers;

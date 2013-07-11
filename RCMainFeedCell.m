@@ -57,7 +57,7 @@
     
     if ([post.fileUrl isKindOfClass:[NSNull class]]) return;
     RCResourceCache *cache = [RCResourceCache centralCache];
-    NSString *key = [NSString stringWithFormat:@"%@/%d", RCPostsResource, post.postID];
+    NSString *key = [NSString stringWithFormat:@"%@/%d-thunmbnail", RCPostsResource, post.postID];
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
         RCUser *owner = [[RCUser alloc] init];

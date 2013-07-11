@@ -46,6 +46,10 @@ RCConnectionManager *_connectionManager;
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    //set up back button when necessary
+    if ([self.navigationController.viewControllers count] > 2)
+        [self setupBackButton];
+    
     [_connectionManager reset];
     
     self.navigationItem.title = @" ";
