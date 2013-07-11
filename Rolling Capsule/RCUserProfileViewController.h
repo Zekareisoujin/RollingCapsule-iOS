@@ -25,6 +25,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *previewLabelLocation;
 @property (weak, nonatomic) IBOutlet UILabel *previewLabelDate;
 @property (weak, nonatomic) IBOutlet UILabel *previewLabelDescription;
+@property (weak, nonatomic) IBOutlet UIImageView *previewWorldMap;
 
 @property (nonatomic, strong) RCUser *profileUser;
 @property (nonatomic, strong) RCUser *viewingUser;

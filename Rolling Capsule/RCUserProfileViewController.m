@@ -126,6 +126,11 @@ int       _friendshipID;
              if ([jsonData count] > 0) {
                  for (NSDictionary* elem in jsonData){
                      [_postList addObject:[[RCPost alloc] initWithNSDictionary:elem]];
+                     
+                     RCPost *test = [[RCPost alloc] initWithNSDictionary:elem];
+                     CLLocationCoordinate2D coord = CLLocationCoordinate2DMake(test.latitude, test.longitude);
+                     MKMapPoint point = MKMapPointForCoordinate(coord);
+                     NSLog(@"Long & lat: %.2f and %.2f; producing: %.2f and %.2f", test.longitude, test.latitude, point.x, point.y);
                  }
                  [_collectionView reloadData];
              }
