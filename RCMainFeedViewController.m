@@ -21,6 +21,7 @@
 #import "RCConnectionManager.h"
 #import "RCNotification.h"
 #import <QuartzCore/QuartzCore.h>
+#import <MediaPlayer/MediaPlayer.h>
 #import "SBJson.h"
 
 @interface RCMainFeedViewController ()
@@ -514,4 +515,5 @@ BOOL        _haveScreenshot;
 - (void) setCurrentUser: (RCUser*) user {
     _user = user;
 }
+
 @end

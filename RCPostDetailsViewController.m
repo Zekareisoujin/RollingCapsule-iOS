@@ -409,15 +409,9 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 -(IBAction) playVideo:(id)sender
 {
     
-    
-    //NSURL *url=[[NSURL alloc] initWithString:@"http://www.businessfactors.de/bfcms/images/stories/videos/defaultscreenvideos.mp4"];
-    
     _player=[[MPMoviePlayerController alloc] initWithContentURL:_videoUrl];
-    
     [_player setShouldAutoplay:NO];
-    
     [_player setScalingMode:MPMovieScalingModeAspectFit];
-    
     _player.controlStyle=MPMovieControlStyleDefault;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(moviePlayBackDidFinish:) name:MPMoviePlayerPlaybackDidFinishNotification object:_player];
@@ -425,6 +419,36 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     // Register that the load state changed (movie is ready)
     [[NSNotificationCenter defaultCenter]
      addObserver:self
+     selector:@selector(moviePlayerLoadStateChanged:)
+     name:MPMoviePlayerLoadStateDidChangeNotification
+     object: _player];
+    
+    
+    [self.view addSubview:_player.view];
+    [_player setFullscreen:YES animated:YES];
+    
+    [_player prepareToPlay];
+    
+    
+}
+
+-(IBAction) playVideoFromInternet:(id)sender
+{
+    NSURL *url=[[NSURL alloc] initWithString:@"http://d1ftqtsbckf6jv.cloudfront.net/using_glossaries.mp4"];
+    
+    _player=[[MPMoviePlayerController alloc] initWithContentURL:url];
+    
+    [_player setShouldAutoplay:NO];
+    
+    [_player setScalingMode:MPMovieScalingModeAspectFit];
+    
+    _player.controlStyle=MPMovieControlStyleDefault;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:nil selector:@selector(moviePlayBackDidFinish:) name:MPMoviePlayerPlaybackDidFinishNotification object:_player];
+    
+    // Register that the load state changed (movie is ready)
+    [[NSNotificationCenter defaultCenter]
+     addObserver:nil
      selector:@selector(moviePlayerLoadStateChanged:)
      name:MPMoviePlayerLoadStateDidChangeNotification
      object: _player];

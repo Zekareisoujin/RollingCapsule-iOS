@@ -596,7 +596,9 @@ NSData *_thumbnailData;
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
         UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
         imagePicker.delegate = self;
-        
+        NSMutableArray *currentMediaTypesArray = [[NSMutableArray alloc] initWithArray:imagePicker.mediaTypes];
+        [currentMediaTypesArray addObject:(NSString *) kUTTypeMovie];
+        imagePicker.mediaTypes =[[NSArray alloc] initWithArray:currentMediaTypesArray];
         [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
         [_txtViewPostContent resignFirstResponder];
         [self presentViewController:imagePicker animated:YES completion:nil];
