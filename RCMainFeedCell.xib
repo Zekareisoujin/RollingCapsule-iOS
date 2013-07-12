@@ -46,14 +46,20 @@
 								<string key="NSFrameSize">{126, 126}</string>
 								<reference key="NSSuperview" ref="631672076"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<bool key="IBUIUserInteractionEnabled">NO</bool>
 								<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+								<object class="NSCustomResource" key="IBUIImage">
+									<string key="NSClassName">NSImage</string>
+									<string key="NSResourceName">loading2.gif</string>
+								</object>
 							</object>
 						</array>
 						<string key="NSFrameSize">{126, 126}</string>
 						<reference key="NSSuperview" ref="1051998362"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView" ref="672127691"/>
 						<object class="NSColor" key="IBUIBackgroundColor" id="102074412">
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MCAwAA</bytes>
@@ -292,6 +298,10 @@
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
+		<object class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
+			<string key="NS.key.0">loading2.gif</string>
+			<string key="NS.object.0">{150, 150}</string>
+		</object>
 		<bool key="IBDocument.UseAutolayout">YES</bool>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
 	</data>
