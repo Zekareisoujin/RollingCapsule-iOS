@@ -35,6 +35,7 @@
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 @property (nonatomic, strong) UIImage *backgroundImage;
 @property (nonatomic, assign) RCMainFeedViewMode      currentViewMode;
+@property (nonatomic, strong) UIButton* postButton;
 @end
 
 @implementation RCMainFeedViewController
@@ -57,6 +58,7 @@ BOOL        _haveScreenshot;
 @synthesize backgroundImage = _backgroundImage;
 @synthesize currentViewMode = _currentViewMode;
 @synthesize landmarks = _landmarks;
+@synthesize postButton = _postButton;
 
 + (NSString*) debugTag {
     return @"MainFeedView";
@@ -110,11 +112,11 @@ BOOL        _haveScreenshot;
     
     //add post button to navigation bar
     UIImage *postButtonImage = [UIImage imageNamed:@"mainNavbarPostButton.png"];
-    UIButton *postButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [postButton setFrame:CGRectMake(0,0,postButtonImage.size.width, postButtonImage.size.height)];
-    [postButton setBackgroundImage:postButtonImage forState:UIControlStateNormal];
-    [postButton addTarget:self action:@selector(switchToNewPostScreen) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithCustomView:postButton] ;
+    _postButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_postButton setFrame:CGRectMake(0,0,postButtonImage.size.width, postButtonImage.size.height)];
+    [_postButton setBackgroundImage:postButtonImage forState:UIControlStateNormal];
+    [_postButton addTarget:self action:@selector(switchToNewPostScreen) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithCustomView:_postButton] ;
     self.navigationItem.rightBarButtonItem = rightButton;
     
     
@@ -291,10 +293,17 @@ BOOL        _haveScreenshot;
 }
 
 - (void) switchToNewPostScreen {
+    [_postButton setEnabled:NO];
     RCNewPostViewController *newPostController = [[RCNewPostViewController alloc] initWithUser:_user withBackgroundImage:nil];
     [self addChildViewController:newPostController];
     newPostController.view.frame = self.view.frame;
-    newPostController.postComplete = ^{ [self handleRefresh:_refreshControl]; };
+    newPostController.postComplete = ^{
+        [_postButton setEnabled:YES];
+        [self handleRefresh:_refreshControl];
+    };
+    newPostController.postCancel = ^{
+        [_postButton setEnabled:YES];
+    };
     [self.view addSubview:newPostController.view];
     [newPostController didMoveToParentViewController:self];
 }

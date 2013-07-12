@@ -41,6 +41,11 @@ static RCResourceCache *instance = 0;
     return ret;
 }
 
+- (void) invalidateKey:(id) key {
+    //[_cache setObject:nil forKey:key];
+    [_cache removeObjectForKey:key];
+}
+
 @end
 
 

@@ -133,7 +133,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
         }];
         UIImage *thumbnailImage;
         //if returned object is a string, this means the post is a movie
-        if ([cachedObj isKindOfClass:[NSString class]]) {
+        if (![cachedObj isKindOfClass:[UIImage class]]) {
             NSString *thumbnailKey = [NSString stringWithFormat:@"%@-thumbnail",key];
             thumbnailImage = [cache getResourceForKey:thumbnailKey usingQuery:^{
                 [_connectionManager startConnection];
@@ -155,6 +155,13 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
                 [_imgViewPostImage setImage:thumbnailImage ];
                 [self.view addSubview:playVideoButton];
                 //[_imgViewPostImage addGestureRecognizer:tapRecognizer];
+            } else if (cachedObj != nil && [cachedObj isKindOfClass:[NSURL class]]) {
+                _videoUrl = (NSURL*)cachedObj;
+                UIButton *playVideoButton = [[UIButton alloc] initWithFrame:_imgViewPostImage.frame];
+                [playVideoButton addTarget:self action:@selector(playVideo:) forControlEvents:UIControlEventTouchUpInside];
+                [playVideoButton setImage:[UIImage imageNamed:@"postVideoSourceButton-normal.png"] forState:UIControlStateNormal];
+                [_imgViewPostImage setImage:thumbnailImage ];
+                [self.view addSubview:playVideoButton];
             }
         });
     });
@@ -431,10 +438,12 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     
     
 }
-
+//https://rcusersmedia.s3.amazonaws.com/0FFDE01D57FD4452B737CD46DDE8DD91.mov?AWSAccessKeyId=AKIAJVYGWBMHL24XPXYA&Expires=1373727042&Signature=vEL0U9%2FF1rsoLaZjbYbYzVKMguk%3D
+//https://rcusersmedia.s3.amazonaws.com/0FFDE01D57FD4452B737CD46DDE8DD91?AWSAccessKeyId=AKIAJVYGWBMHL24XPXYA&Expires=1373726466&Signature=k5cQgBxd3rfetQaM2yme0UukT5Q%3D
+//http://d1ftqtsbckf6jv.cloudfront.net/using_glossaries.mp4
 -(IBAction) playVideoFromInternet:(id)sender
 {
-    NSURL *url=[[NSURL alloc] initWithString:@"http://d1ftqtsbckf6jv.cloudfront.net/using_glossaries.mp4"];
+    NSURL *url=[[NSURL alloc] initWithString:@"https://rcusersmedia.s3.amazonaws.com/0FFDE01D57FD4452B737CD46DDE8DD91.mov?AWSAccessKeyId=AKIAJVYGWBMHL24XPXYA&Expires=1373727042&Signature=vEL0U9%2FF1rsoLaZjbYbYzVKMguk%3D"];
     
     _player=[[MPMoviePlayerController alloc] initWithContentURL:url];
     
@@ -462,8 +471,29 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     
 }
 
-- (void) moviePlayBackDidFinish:(id) sender {
+- (void) moviePlayBackDidFinish:(NSNotification *) notification {
     NSLog(@"movie playback done");
+    //[notification.userInfo obj]
+    NSNumber *finishReason = (NSNumber *)[notification.userInfo objectForKey:MPMoviePlayerPlaybackDidFinishReasonUserInfoKey];
+    if ([finishReason integerValue] == MPMovieFinishReasonPlaybackError) {
+        RCResourceCache *cache = [RCResourceCache centralCache];
+        NSString *key = [NSString stringWithFormat:@"%@/%d", RCPostsResource, _post.postID];
+        dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
+        dispatch_async(queue, ^{
+            [cache invalidateKey:key];
+            _videoUrl = (NSURL*) [cache getResourceForKey:key usingQuery:^{
+                [_connectionManager startConnection];
+                NSObject *object = [RCAmazonS3Helper getUserMediaImage:_postOwner withLoggedinUserID:_loggedInUser.userID   withImageUrl:_post.fileUrl];
+                [_connectionManager endConnection];
+                return object;
+            }];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                _player.contentURL = _videoUrl;
+                [_player play];
+            });
+        });
+
+    }
 }
 
 - (void) moviePlayerLoadStateChanged:(id) sender {

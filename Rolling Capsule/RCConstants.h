@@ -60,8 +60,8 @@ static NSString* const RCLogStatusDefault = @"logStatus";
 static NSString* const RCLogUserDefault = @"loggedUser";
 
 //integer values
-#define RCUploadImageSizeWidth  300
-#define RCUploadImageSizeHeight 300
+#define RCUploadImageSizeWidth  225
+#define RCUploadImageSizeHeight 225
 #define RCIphone5Height         568
 
 //Displayed strings

@@ -15,5 +15,5 @@
 + (RCResourceCache*) centralCache;
 
 - (id) getResourceForKey:(id)key usingQuery:(id (^)(void))queryFunction;
-
+- (void) invalidateKey:(id) key;
 @end

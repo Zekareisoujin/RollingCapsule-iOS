@@ -519,17 +519,12 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
-				64EEBFC3178DDA4A00D2C968 /* MediaPlayer.framework */,
 				BFCA7821174DFD3F00666CBA /* Rolling Capsule */,
 				BFCA7845174DFD3F00666CBA /* Rolling CapsuleTests */,
 				BFCA781A174DFD3F00666CBA /* Frameworks */,
 				BFCA7819174DFD3F00666CBA /* Products */,
 				64FE84E4176BAAD800E561D8 /* libz.dylib */,
 				64FE8432176B9E0E00E561D8 /* libTestFlight.a */,
-				64FFD2CC17662D1B004337F8 /* MapKit.framework */,
-				BF4DCC44175C82280081B5AC /* AWSRuntime.framework */,
-				BF4DCC45175C82280081B5AC /* AWSS3.framework */,
-				643EACEF175C1B5C002761D9 /* CoreLocation.framework */,
 			);
 			sourceTree = "<group>";
 		};
@@ -545,6 +540,11 @@
 		BFCA781A174DFD3F00666CBA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				64EEBFC3178DDA4A00D2C968 /* MediaPlayer.framework */,
+				64FFD2CC17662D1B004337F8 /* MapKit.framework */,
+				BF4DCC44175C82280081B5AC /* AWSRuntime.framework */,
+				BF4DCC45175C82280081B5AC /* AWSS3.framework */,
+				643EACEF175C1B5C002761D9 /* CoreLocation.framework */,
 				6460E88E178C88FE0065D6BA /* MobileCoreServices.framework */,
 				643EACEF175C1B5C002761D9 /* CoreLocation.framework */,
 				64176AFD175A260900443B59 /* AWSRuntime.framework */,
@@ -568,7 +568,6 @@
 				649A869C175B0CC30016674F /* RCAmazonS3Helper.m */,
 				642E71FC17639D9400B3464E /* RCConnectionManager.h */,
 				642E71FD17639D9400B3464E /* RCConnectionManager.m */,
-				BF3AFF971750763400D46558 /* RCConstants.h */,
 				BF2CD6251754E60C00EF2E85 /* RCFeedPostPreview.h */,
 				BF2CD6261754E60C00EF2E85 /* RCFeedPostPreview.m */,
 				BF2CD6231754E12D00EF2E85 /* RCFeedPostPreview.xib */,
@@ -632,6 +631,7 @@
 				6407BBDF1754D81C000F29C5 /* RCUserTableCell.h */,
 				6407BBE01754D81C000F29C5 /* RCUserTableCell.m */,
 				6407BBDD1754D5EB000F29C5 /* RCUserTableCell.xib */,
+				BF3AFF971750763400D46558 /* RCConstants.h */,
 				BF2CD6201751C53900EF2E85 /* RCUtilities.h */,
 				BFCA7822174DFD3F00666CBA /* Supporting Files */,
 				64FE84E3176B9E4E00E561D8 /* TestFlight.h */,

@@ -22,10 +22,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @property (weak, nonatomic) IBOutlet UITextField *txtFieldPostSubject;
 @property (weak, nonatomic) IBOutlet UIButton *btnLandmark;
-- (IBAction)btnActionChooseCameraSource:(id)sender;
 @property (weak, nonatomic) IBOutlet UIImageView *imageViewPostFrame;
-- (IBAction)btnActionChoosePhotoLibrarySource:(id)sender;
-- (IBAction)btnActionChooseVideSource:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *btnVideoSource;
 @property (weak, nonatomic) IBOutlet UIButton *btnCameraSource;
 @property (weak, nonatomic) IBOutlet UIButton *btnPhotoLibrarySource;
@@ -36,8 +33,12 @@
 @property (nonatomic, strong) UICollectionView *tblViewLandmark;
 @property (nonatomic, strong) RCLandmark *currentLandmark;
 @property (nonatomic, copy)   VoidBlock   postComplete;
+@property (nonatomic, copy)   VoidBlock   postCancel;
 
 - (void)backgroundTouchUpInside;
+- (IBAction)btnActionChooseCameraSource:(id)sender;
+- (IBAction)btnActionChoosePhotoLibrarySource:(id)sender;
+- (IBAction)btnActionChooseVideSource:(id)sender;
 - (IBAction)btnPostImageTouchUpInside:(id)sender;
 - (IBAction)callLandmarkTable:(id)sender;
 - (id) initWithUser:(RCUser *)user;

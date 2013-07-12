@@ -50,6 +50,7 @@
 @synthesize privacyOption = _privacyOption;
 @synthesize viewLandmark = _viewLandmark;
 @synthesize postComplete = _postComplete;
+@synthesize postCancel = _postCancel;
 
 BOOL _isTapToCloseKeyboard = NO;
 BOOL _landmarkTableVisible = NO;
@@ -221,6 +222,9 @@ NSData *_thumbnailData;
         CFStringRef string = CFUUIDCreateString(NULL, theUUID);
         CFRelease(theUUID);
         _imageFileName = [(__bridge NSString*)string stringByReplacingOccurrencesOfString:@"-"withString:@""];
+        if (isMovie) {
+            _imageFileName = [NSString stringWithFormat:@"%@.mov",_imageFileName];
+        }
         // Upload image data.  Remember to set the content type.
         S3PutObjectRequest *por = [[S3PutObjectRequest alloc] initWithKey:_imageFileName
                                                                  inBucket:RCAmazonS3UsersMediaBucket];
@@ -727,6 +731,8 @@ NSData *_thumbnailData;
 }
 - (IBAction)closeBtnTouchUpInside:(id)sender {
     [self animateViewDisapperance:^ {
+        if (_postCancel != nil)
+            _postCancel();
         [self.view removeFromSuperview];
         [self removeFromParentViewController];
     }];
