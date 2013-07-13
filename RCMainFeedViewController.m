@@ -177,7 +177,7 @@ BOOL        _haveScreenshot;
 - (void) asynchFetchFeeds {
     //Asynchronous Request
     @try {
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+        [RCConnectionManager startConnection];
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
         CLLocationCoordinate2D zoomLocation = appDelegate.currentLocation.coordinate;
 
@@ -203,7 +203,7 @@ BOOL        _haveScreenshot;
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
         {
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [RCConnectionManager endConnection];
             [_refreshControl endRefreshing];
             
             NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
@@ -230,7 +230,7 @@ BOOL        _haveScreenshot;
                     UIImage *image = [RCAmazonS3Helper getAvatarImage:_user withLoggedinUserID:_user.userID];
                     dispatch_async(dispatch_get_main_queue(), ^{
                         if (image == nil)
-                            [_btnUserAvatar setImage:[UIImage imageNamed:@"default_avatar.jpg"] forState:UIControlStateNormal];
+                            [_btnUserAvatar setImage:[UIImage imageNamed:@"default_avatar.png"] forState:UIControlStateNormal];
                         else
                             [_btnUserAvatar setImage:image forState:UIControlStateNormal];
                     });
@@ -337,9 +337,10 @@ BOOL        _haveScreenshot;
     RCMainFeedCell *cell = [cv dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
     NSArray* items = [_postsByLandmark objectForKey:[[NSNumber alloc] initWithInteger:_currentLandmarkID]];
     RCPost *post = [items objectAtIndex:indexPath.row];
-    [_connectionManager startConnection];
+    [RCConnectionManager startConnection];
     [cell getPostContentImageFromInternet:_user withPostContent:post usingCollection:nil completion:^{
-        [_connectionManager endConnection];
+        [RCConnectionManager endConnection];
+        
     }];
     if ([_chosenPosts count] != 0) {
         if ([_chosenPosts containsObject:[[NSNumber alloc] initWithInt:post.postID]]) {

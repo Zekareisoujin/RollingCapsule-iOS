@@ -12,4 +12,6 @@
 - (void) startConnection;
 - (void) endConnection;
 - (void) reset;
++ (void) startConnection;
++ (void) endConnection;
 @end

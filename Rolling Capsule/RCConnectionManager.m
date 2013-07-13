@@ -9,7 +9,7 @@
 #import "RCConnectionManager.h"
 
 @implementation RCConnectionManager
-
+static int _staticOpenConnections = 0;
 int _nOpenConnections;
 
 -(id) init {
@@ -22,6 +22,19 @@ int _nOpenConnections;
 
 - (void) reset {
     _nOpenConnections = 0;
+}
+
++ (void) startConnection {
+    NSLog(@"start %d",_staticOpenConnections);
+    _staticOpenConnections++;
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+}
+
++ (void) endConnection {
+    NSLog(@"end %d",_staticOpenConnections);
+    _staticOpenConnections--;
+    if (_staticOpenConnections == 0)
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 }
 
 - (void) startConnection {
