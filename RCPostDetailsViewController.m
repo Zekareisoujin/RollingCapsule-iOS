@@ -33,6 +33,7 @@
 @synthesize landmark = _landmark;
 @synthesize videoUrl = _videoUrl;
 @synthesize player = _player;
+@synthesize landmarkID = _landmarkID;
 
 BOOL _isTapToCloseKeyboard;
 BOOL _firstTimeEditPost;
@@ -84,6 +85,18 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     _lblLandmark.text = @"";
     if (_landmark != nil)
         _lblLandmark.text = _landmark.name;
+    else {
+        if (_landmarkID != -1) {
+            dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
+            dispatch_async(queue, ^{
+                _landmark = [RCLandmark getLandmark:_landmarkID];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    if (_landmark != nil)
+                        _lblLandmark.text= _landmark.name;
+                });
+            });
+        }
+    }
     
     _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     [self.view addGestureRecognizer:_tapGestureRecognizer];

@@ -7,6 +7,10 @@
 //
 
 #import "RCLandmark.h"
+#import "RCResourceCache.h"
+#import "RCConstants.h"
+#import "RCUtilities.h"
+#import "SBJson.h"
 
 @implementation RCLandmark
 @synthesize description = _description;
@@ -48,6 +52,36 @@
     _theCoordinate.latitude = _latitude;
     _theCoordinate.longitude = _longitude;
     return _theCoordinate;
+}
+
++ (RCLandmark *) getLandmark:(int) landmark_id {
+    RCResourceCache *cache = [RCResourceCache centralCache];
+    NSString *key = [NSString stringWithFormat:@"%@%@/%d", RCServiceURL, RCLandmarksResource,landmark_id];
+    RCLandmark *landmark = (RCLandmark*)[cache getResourceForKey:key usingQuery:^{
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@?mobile=1", key]];
+        
+        NSURLRequest *request = CreateHttpGetRequest(url);
+        NSURLResponse *response;
+        NSError *error = nil;
+        NSData *landmarkData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+        RCLandmark *landmark = nil;
+        if (error == nil) {
+            NSString *responseData = [[NSString alloc]initWithData:landmarkData encoding:NSUTF8StringEncoding];
+            
+            SBJsonParser *jsonParser = [SBJsonParser new];
+            NSDictionary *landmarkJson = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
+            NSDictionary *landmarkDictionary = [landmarkJson objectForKey:@"landmark"];
+            if (landmarkDictionary != nil)
+                landmark = [[RCLandmark alloc] initWithNSDictionary:landmarkDictionary];
+            else {
+                NSLog(@"error in response can't find landmark object response:%@",responseData);
+            }
+            
+        } else NSLog(@"error getting landmark: %@",error);
+        return landmark;
+    }];
+
+    return landmark;
 }
 
 @end

@@ -27,6 +27,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnComment;
 @property (nonatomic, strong) RCUser *postOwner;
 @property (nonatomic, strong) RCUser *loggedInUser;
+@property (nonatomic, assign) int     landmarkID;
 @property (nonatomic, strong) RCLandmark *landmark;
 
 - (id) initWithPost:(RCPost *)post withOwner:(RCUser*)owner withLoggedInUser:(RCUser *) loggedInUser;

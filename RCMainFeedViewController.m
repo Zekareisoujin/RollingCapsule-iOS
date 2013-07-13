@@ -181,7 +181,21 @@ BOOL        _haveScreenshot;
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
         CLLocationCoordinate2D zoomLocation = appDelegate.currentLocation.coordinate;
 
-        NSString *address = [[NSString alloc] initWithFormat:@"%@?mobile=1&latitude=%f&longitude=%f&%@", RCServiceURL, zoomLocation.latitude, zoomLocation.longitude, RCLevelsQueryString];
+        NSString *address;
+        switch(_currentViewMode) {
+            case RCMainFeedViewModePublic:
+                address = [[NSString alloc] initWithFormat:@"%@?mobile=1&latitude=%f&longitude=%f&%@", RCServiceURL, zoomLocation.latitude, zoomLocation.longitude, RCLevelsQueryString];
+                break;
+            case RCMainFeedViewModeFollow:
+                address = [[NSString alloc] initWithFormat:@"%@?mobile=1&view_follow=1", RCServiceURL];
+                break;
+            case RCMainFeedViewModeFriends:
+                address = [[NSString alloc] initWithFormat:@"%@?mobile=1", RCServiceURL];
+                break;
+            default:
+                return;
+                break;
+        }
         NSLog(@"Main-Feed: get feed address:%@",address);
         NSURL *url=[NSURL URLWithString:address];
         NSURLRequest *request = CreateHttpGetRequest(url);
@@ -481,6 +495,7 @@ BOOL        _haveScreenshot;
                 postDetailsViewController.landmark = nil;
             else
                 postDetailsViewController.landmark = [_landmarks objectForKey:[NSNumber numberWithInt:post.landmarkID]];
+            postDetailsViewController.landmarkID = post.landmarkID;
             [self addChildViewController:postDetailsViewController];
             postDetailsViewController.view.frame = self.view.frame;
             [self.view addSubview:postDetailsViewController.view];
@@ -505,7 +520,7 @@ BOOL        _haveScreenshot;
         _btnViewModePublic.enabled = YES;
     }
     sender.enabled = NO;
-    
+    [self handleRefresh:_refreshControl];
 }
 
 - (IBAction)btnCenterMapTouchUpInside:(id)sender {

@@ -25,4 +25,5 @@
 @property   int     landmarkID;
 @property   int     userID;
 - (id) initWithNSDictionary:(NSDictionary *)postData;
++ (RCLandmark *) getLandmark:(int) landmark_id;
 @end
