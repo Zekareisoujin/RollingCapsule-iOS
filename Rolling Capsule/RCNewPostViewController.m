@@ -17,6 +17,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <MediaPlayer/MediaPlayer.h>
+#import <AVFoundation/AVFoundation.h>
 #import "SBJson.h"
 
 @interface RCNewPostViewController ()
@@ -31,11 +32,14 @@
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 @property (nonatomic, strong) NSString* privacyOption;
 @property (nonatomic, strong) UIView *viewLandmark;
+@property (nonatomic, strong) NSURL *videoUrl;
+
 @end
 
 @implementation RCNewPostViewController
 
 @synthesize postImage = _postImage;
+@synthesize videoUrl = _videoUrl;
 @synthesize postContent = _postContent;
 @synthesize imageFileName = _imageFileName;
 @synthesize user = _user;
@@ -58,6 +62,7 @@ BOOL _successfulPost = NO;
 BOOL _firstTimeEditPost = YES;
 BOOL _didFinishUploadingImage = NO;
 BOOL _isMovie = NO;
+BOOL _isPosting = NO;
 S3PutObjectResponse *_putObjectResponse;
 AmazonClientException *_amazonException;
 RCConnectionManager *_connectionManager;
@@ -163,6 +168,7 @@ NSData *_thumbnailData;
 - (void) resetUploadStatus {
     _didFinishUploadingImage = NO;
     _amazonException = nil;
+    _isPosting = NO;
 }
 
 - (void)didReceiveMemoryWarning
@@ -172,6 +178,7 @@ NSData *_thumbnailData;
 }
 
 - (void) postNew {
+    _isPosting = YES;
     if (_uploadData == nil) {
         [self showAlertMessage:@"Please choose an image or video!" withTitle:@"Incomplete post!"];
         return;
@@ -182,8 +189,18 @@ NSData *_thumbnailData;
     }
     [_connectionManager startConnection];
     _postButton.enabled = NO;
-    while (!_didFinishUploadingImage) {
-    }
+    dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
+    dispatch_async(queue, ^{
+        NSLog(@"infinite loop waiting for upload to finish");
+        if (_didFinishUploadingImage) {
+            [self uploadPostMetadata];
+            //NSLog(@"waiting for upload finish");
+        }
+        
+    });
+}
+
+- (void) uploadPostMetadata {
     if (_amazonException != nil) {
         [_connectionManager endConnection];
         _postButton.enabled = YES;
@@ -192,7 +209,7 @@ NSData *_thumbnailData;
         dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
         dispatch_async(queue, ^{
             [self uploadImageToS3:_uploadData withThumbnail:_thumbnailData dataBeingMovie:_isMovie];
-            _didFinishUploadingImage = YES;
+            [self processCompletionOfDataUpload];
         });
         return;
     }
@@ -205,11 +222,21 @@ NSData *_thumbnailData;
         dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
         dispatch_async(queue, ^{
             [self uploadImageToS3:_uploadData withThumbnail:_thumbnailData dataBeingMovie:_isMovie];
-            _didFinishUploadingImage = YES;
+            [self processCompletionOfDataUpload];
+           
         });
         return;
     }
     [self performSelectorOnMainThread:@selector(asynchPostNewResuest) withObject:nil waitUntilDone:YES];
+}
+
+- (void) processCompletionOfDataUpload {
+     NSLog(@"finished uploading image/video data");
+    _didFinishUploadingImage = YES;
+    if (_isPosting) {
+        [self uploadPostMetadata];
+    }
+    
 }
 
 #pragma mark - upload method
@@ -237,15 +264,19 @@ NSData *_thumbnailData;
         porThumbnail.data = thumbnailData;
 
         
-        @try {        
+        @try {
+            NSLog(@"before calling data s3 putObject");
             _putObjectResponse = [s3 putObject:por];
+            NSLog(@"done uploading data to s3 result %@",_putObjectResponse);
             if (_putObjectResponse.error != nil)
             {
                 NSLog(@"Error: %@", _putObjectResponse.error);
             }
             if (thumbnailData != nil)
             {
+                NSLog(@"before calling thumbnail s3 putObject");
                 _putObjectResponse = [s3 putObject:porThumbnail];
+                NSLog(@"done uploading thumbnail to s3 result %@",_putObjectResponse);
             }
             if (_putObjectResponse.error != nil)
             {
@@ -437,50 +468,58 @@ NSData *_thumbnailData;
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     
-    NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
-    
+    [picker dismissViewControllerAnimated:YES completion:nil];
     //check if media is a video
+    UIImage *thumbnail;
+    NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
     if (CFStringCompare ((__bridge CFStringRef) mediaType, kUTTypeMovie, 0)
         == kCFCompareEqualTo)
     {
         _isMovie = YES;
-        NSString *moviePath = [[info objectForKey:UIImagePickerControllerMediaURL] path];
+        _videoUrl=(NSURL*)[info objectForKey:UIImagePickerControllerMediaURL];
         
-        // NSLog(@"%@",moviePath);
-        
-        NSURL *videoUrl=(NSURL*)[info objectForKey:UIImagePickerControllerMediaURL];
-        
-        if (UIVideoAtPathIsCompatibleWithSavedPhotosAlbum (moviePath)) {
-            UISaveVideoAtPathToSavedPhotosAlbum (moviePath, nil, nil, nil);
-        }
-        _uploadData = [NSData dataWithContentsOfURL:videoUrl];
-        MPMoviePlayerController *player = [[MPMoviePlayerController alloc] initWithContentURL:videoUrl];
-        
-        UIImage *thumbnail = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
-        UIImage *rescaledThumbnail = imageWithImage(thumbnail, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
-        _thumbnailData = UIImageJPEGRepresentation(rescaledThumbnail,1.0);
-        [_imageViewPostPicture setImage:thumbnail];
+        MPMoviePlayerController *player = [[MPMoviePlayerController alloc] initWithContentURL:_videoUrl];
+        thumbnail = [player thumbnailImageAtTime:1.0 timeOption:MPMovieTimeOptionNearestKeyFrame];
         //Player autoplays audio on init
         [player stop];
-        
-        [picker dismissViewControllerAnimated:YES completion:nil];
-        
     } else {
         // Get the selected image
         _isMovie = NO;
         _postImage = [info objectForKey:UIImagePickerControllerOriginalImage];
-        [_imageViewPostPicture setImage:_postImage];
-        if ([picker sourceType] == UIImagePickerControllerSourceTypeCamera)
-            UIImageWriteToSavedPhotosAlbum(_postImage, self, nil, nil);
-        UIImage *rescaledImage = imageWithImage(_postImage, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
-        _uploadData = UIImageJPEGRepresentation(rescaledImage, 1.0);
-        
-        [picker dismissViewControllerAnimated:YES completion:nil];
+        thumbnail = _postImage;
     }
+    [_imageViewPostPicture setImage:thumbnail];
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
+        NSLog(@"inside data upload");
+        if (CFStringCompare ((__bridge CFStringRef) mediaType, kUTTypeMovie, 0)
+            == kCFCompareEqualTo)
+        {
+            NSString *moviePath = [[info objectForKey:UIImagePickerControllerMediaURL] path];
+            if ([picker sourceType] == UIImagePickerControllerSourceTypeCamera)
+                UISaveVideoAtPathToSavedPhotosAlbum (moviePath, nil, nil, nil);
+            UIImage *rescaledThumbnail = imageWithImage(thumbnail, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
+            _thumbnailData = UIImageJPEGRepresentation(rescaledThumbnail,0.7);
+            _uploadData = [NSData dataWithContentsOfURL:_videoUrl];
+            NSLog(@"obtained thumbnail and upload data");
+        } else {
+            if ([picker sourceType] == UIImagePickerControllerSourceTypeCamera)
+                UIImageWriteToSavedPhotosAlbum(_postImage, self, nil, nil);
+            UIImage *rescaledImage = imageWithImage(_postImage, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
+            NSLog(@"image size %f %f",_postImage.size.width, _postImage.size.height);
+            if (_postImage.size.width > 800 && _postImage.size.height > 800) {
+                float division = MIN(_postImage.size.width/(800.0-1.0), _postImage.size.height/(800-1.0));
+                UIImage *rescaledPostImage = imageWithImage(_postImage, CGSizeMake(_postImage.size.width/division,_postImage.size.height/division));
+                _uploadData = UIImageJPEGRepresentation(rescaledPostImage, 1.0);
+            } else {
+                _uploadData = UIImageJPEGRepresentation(_postImage, 1.0);
+            }
+            NSLog(@"number of bytes %d",[_uploadData length]);
+            _thumbnailData = UIImageJPEGRepresentation(rescaledImage, 0.7);
+        }
+        NSLog(@"before uploading image");
         [self uploadImageToS3:_uploadData withThumbnail:_thumbnailData dataBeingMovie:_isMovie];
-        _didFinishUploadingImage = YES;
+        [self processCompletionOfDataUpload];
     });
     
     [UIView animateWithDuration:0.6
@@ -495,6 +534,10 @@ NSData *_thumbnailData;
                          [self removePhotoSourceControlAndAddPrivacyControl];
 					 }];
 
+}
+
+- (void) prepareUploadData {
+    ;
 }
 
 -(void) imagePickerControllerDidCancel:(UIImagePickerController *)picker
@@ -600,6 +643,7 @@ NSData *_thumbnailData;
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
         UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
         imagePicker.delegate = self;
+        imagePicker.videoQuality = UIImagePickerControllerQualityTypeMedium;
         NSMutableArray *currentMediaTypesArray = [[NSMutableArray alloc] initWithArray:imagePicker.mediaTypes];
         [currentMediaTypesArray addObject:(NSString *) kUTTypeMovie];
         imagePicker.mediaTypes =[[NSArray alloc] initWithArray:currentMediaTypesArray];
@@ -616,12 +660,13 @@ NSData *_thumbnailData;
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
         imagePicker.delegate = self;
+        imagePicker.videoQuality = UIImagePickerControllerQualityTypeMedium;
         imagePicker.mediaTypes =[[NSArray alloc] initWithObjects: (NSString *) kUTTypeMovie, nil];
         [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
         [_txtViewPostContent resignFirstResponder];
         [self presentViewController:imagePicker animated:YES completion:nil];
     } else {
-        alertStatus(@"Photo library not available", @"Error!",nil);
+        alertStatus(@"Camera not available", @"Error!",nil);
     }
 }
 
@@ -730,12 +775,18 @@ NSData *_thumbnailData;
     _isTapToCloseKeyboard = YES;
 }
 - (IBAction)closeBtnTouchUpInside:(id)sender {
-    [self animateViewDisapperance:^ {
-        if (_postCancel != nil)
-            _postCancel();
-        [self.view removeFromSuperview];
-        [self removeFromParentViewController];
-    }];
+    if (!_isPosting) {
+        [self animateViewDisapperance:^ {
+            if (_postCancel != nil)
+                _postCancel();
+            [self.view removeFromSuperview];
+            [self removeFromParentViewController];
+        }];
+    } else {
+        [self animateViewDisapperance:^ {
+            [self.view removeFromSuperview];
+        }];
+    }
 }
 
 #pragma mark - post privacy options
@@ -838,4 +889,21 @@ NSData *_thumbnailData;
 (UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
     return UIEdgeInsetsMake(30,10,10,10);
 }
+
+- (void)convertVideoToLowQuailtyWithInputURL:(NSURL*)inputURL
+outputURL:(NSURL*)outputURL
+handler:(void (^)(AVAssetExportSession*))handler
+{
+    [[NSFileManager defaultManager] removeItemAtURL:outputURL error:nil];
+    AVURLAsset *asset = [AVURLAsset URLAssetWithURL:inputURL options:nil];
+    AVAssetExportSession *exportSession = [[AVAssetExportSession alloc] initWithAsset:asset presetName:AVAssetExportPresetMediumQuality];
+    exportSession.outputURL = outputURL;
+    exportSession.outputFileType = AVFileTypeQuickTimeMovie;
+    [exportSession exportAsynchronouslyWithCompletionHandler:^(void)
+     {
+         handler(exportSession);
+     }];
+}
 @end
+
+
