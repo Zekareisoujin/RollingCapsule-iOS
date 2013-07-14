@@ -20,7 +20,9 @@
 @property (nonatomic,strong) NSMutableArray* comments;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 @property (nonatomic, strong) NSURL* videoUrl;
-@property(nonatomic, strong) MPMoviePlayerController *player;
+@property (nonatomic, strong) MPMoviePlayerController *player;
+@property (nonatomic, strong) UIImageView* imageViewFullPost;
+@property (nonatomic,strong)  UIImage*     postImage;
 @end
 
 @implementation RCPostDetailsViewController
@@ -34,6 +36,8 @@
 @synthesize videoUrl = _videoUrl;
 @synthesize player = _player;
 @synthesize landmarkID = _landmarkID;
+@synthesize imageViewFullPost = _imageViewFullPost;
+@synthesize postImage = _postImage;
 
 BOOL _isTapToCloseKeyboard;
 BOOL _firstTimeEditPost;
@@ -157,8 +161,15 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 
         }
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (cachedObj != nil && [cachedObj isKindOfClass:[UIImage class]])
-                [_imgViewPostImage setImage:(UIImage *)cachedObj];
+            if (cachedObj != nil && [cachedObj isKindOfClass:[UIImage class]]) {
+                _postImage = (UIImage *)cachedObj;
+                [_imgViewPostImage setImage:_postImage];
+                UIButton *magnifyingGlassButton = [[UIButton alloc] initWithFrame:CGRectMake(0,0,37,34)];
+                [magnifyingGlassButton setBackgroundImage:[UIImage imageNamed:@"magnifyingGlass.png"] forState:UIControlStateNormal];
+                [magnifyingGlassButton addTarget:self action:@selector(setupImageFullScreenView) forControlEvents:UIControlEventTouchUpInside];
+                [self.view addSubview:magnifyingGlassButton];
+                magnifyingGlassButton.frame = CGRectMake(_imgViewPostImage.frame.origin.x,_imgViewPostImage.frame.origin.y,34,34);
+            }
             else if (cachedObj != nil && [cachedObj isKindOfClass:[NSString class]]) {
                 NSString *fileName = (NSString*) cachedObj;
                 _videoUrl = [NSURL fileURLWithPath:fileName];
@@ -181,6 +192,39 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 
 }
 
+- (void) setupImageFullScreenView {
+    UIImage *image = _postImage;
+    _scrollViewImage = [[UIScrollView alloc] initWithFrame:self.navigationController.view.frame];
+    _scrollViewImage.delegate = self;
+    [_scrollViewImage setBackgroundColor:[UIColor blackColor]];
+    _imageViewFullPost = [[UIImageView alloc] initWithImage:image];
+    _scrollViewImage.contentSize = _imageViewFullPost.frame.size;
+    [_scrollViewImage addSubview:_imageViewFullPost];
+    _scrollViewImage.minimumZoomScale = MIN(1.0,_scrollViewImage.frame.size.width/image.size.width);
+    _scrollViewImage.zoomScale = _scrollViewImage.minimumZoomScale;
+    [self.navigationController.view addSubview:_scrollViewImage];
+    //[self.view addSubview:_scrollViewImage];
+    _scrollViewImage.frame = self.navigationController.view.frame;
+    UIButton *closeButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    //[closeButton setBackgroundImage:[UIImage imageNamed:@"magnifyingGlass.png"] forState:UIControlStateNormal];
+    [closeButton setBackgroundImage:[UIImage imageNamed:@"btnTransparent-normal"] forState:UIControlStateNormal];
+    [closeButton setTitle:@"Done" forState:UIControlStateNormal];
+    [closeButton setBackgroundColor:[UIColor clearColor]];
+    [closeButton addTarget:self action:@selector(closeImageFullScreen:) forControlEvents:UIControlEventTouchUpInside];
+    [self.navigationController.view addSubview:closeButton];
+    closeButton.frame = CGRectMake(10, 10, 60, 25);
+}
+
+- (void) closeImageFullScreen: (UIButton*) closeButton {
+    [closeButton removeFromSuperview];
+    [_scrollViewImage removeFromSuperview];
+}
+
+#pragma mark - UIScrollView delegate
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
+{
+    return self.imageViewFullPost;
+}
 
 #pragma mark - delete post
 - (void) deletePost {

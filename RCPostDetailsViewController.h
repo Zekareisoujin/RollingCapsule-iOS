@@ -13,6 +13,7 @@
 #import "RCLightboxViewController.h"
 
 @interface RCPostDetailsViewController : RCLightboxViewController<UITableViewDataSource, UITableViewDataSource, UITextFieldDelegate, UITextViewDelegate>
+@property (strong, nonatomic) UIScrollView *scrollViewImage;
 @property (weak, nonatomic) IBOutlet UIImageView *imgViewMainFrame;
 @property (weak, nonatomic) IBOutlet UITextView *txtViewPostComment;
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;

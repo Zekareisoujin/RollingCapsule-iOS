@@ -19,7 +19,7 @@
     return self;
 }
 - (void) prepareTextField {
-    [self setBackground:[UIImage imageNamed:@"text_field.png"]];
+    [self setBackground:[UIImage imageNamed:@"textField.png"]];
     [self setBorderStyle:UITextBorderStyleNone];
     self.layer.shadowColor = [UIColor whiteColor].CGColor;
     self.layer.shadowOffset = CGSizeMake(0.0, 0.0);
