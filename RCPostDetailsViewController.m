@@ -194,7 +194,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 
 - (void) setupImageFullScreenView {
     AppDelegate *appDelegate = (AppDelegate*) [[UIApplication sharedApplication] delegate];
-    [appDelegate disableMenuPanning];
+    [appDelegate disableSideMenu];
     UIImage *image = _postImage;
     _scrollViewImage = [[UIScrollView alloc] initWithFrame:self.navigationController.view.frame];
     _scrollViewImage.delegate = self;
@@ -219,7 +219,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 
 - (void) closeImageFullScreen: (UIButton*) closeButton {
     AppDelegate *appDelegate = (AppDelegate*) [[UIApplication sharedApplication] delegate];
-    [appDelegate enableMenuPanning];
+    [appDelegate enableSideMenu];
     [closeButton removeFromSuperview];
     [_scrollViewImage removeFromSuperview];
 }

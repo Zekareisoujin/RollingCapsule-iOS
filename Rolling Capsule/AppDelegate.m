@@ -126,14 +126,24 @@ BOOL _didQueueOpenMainFeedOption;
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
--(void)showSideMenu
+- (void) showSideMenu
 {
     [_mainViewController showSideMenu];
 }
 
--(void)hideSideMenu
+- (void) hideSideMenu
 {
     [_mainViewController hideSideMenu];
+}
+
+- (void) enableSideMenu
+{
+    [_mainViewController enablePanning];
+}
+
+- (void) disableSideMenu
+{
+    [_mainViewController disablePanning];
 }
 
 #pragma mark - CLLocationManager delegate
@@ -145,6 +155,7 @@ BOOL _didQueueOpenMainFeedOption;
             RCUser *currentUser = [[RCUser alloc] initWithNSDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:RCLogUserDefault]];
             [self setCurrentUser:currentUser];
             [_menuViewController btnActionMainFeedNav:_mainViewController];
+            [self enableSideMenu];
         }
     }
     _currentLocation = [locations lastObject];
@@ -159,13 +170,5 @@ BOOL _didQueueOpenMainFeedOption;
 
 - (void) setNotificationList:(NSArray*)notifications {
     _userNotifications = notifications;
-}
-
-- (void) disableMenuPanning {
-    [self.mainViewController disablePanning];
-    
-}
-- (void) enableMenuPanning {
-    [self.mainViewController enablePanning];
 }
 @end

@@ -71,7 +71,7 @@ BOOL _menuVisible;
 	self.panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
 	[self.panGesture setMaximumNumberOfTouches:2];
 	[self.panGesture setDelegate:self];
-	[self enablePanning];
+	//[self enablePanning];
 }
 
 - (void) disablePanning {

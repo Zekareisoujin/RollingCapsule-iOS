@@ -29,8 +29,8 @@
 @property (assign, nonatomic) BOOL               didUpdateLocation;
 - (void) showSideMenu;
 - (void) hideSideMenu;
-- (void) disableMenuPanning;
-- (void) enableMenuPanning;
+- (void) enableSideMenu;
+- (void) disableSideMenu;
 - (void) setCurrentUser:(RCUser*)user;
 - (void) setNotificationList:(NSArray*)notifications;
 @end

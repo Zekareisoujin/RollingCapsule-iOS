@@ -74,7 +74,10 @@
     [self slideThenHide];
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:RCLogStatusDefault];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:RCLogUserDefault];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     [_navigationController popToRootViewControllerAnimated:YES];
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate disableSideMenu];
 }
 
 - (void)slideThenHide
@@ -100,9 +103,10 @@
     _user = user;
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:RCLogStatusDefault];
     [[NSUserDefaults standardUserDefaults] setObject:[user getDictionaryObject] forKey:RCLogUserDefault];
-    /*NSLog(@"Setting the following user as current user: %@", user.email);
-    RCUser *test = (RCUser*) [[NSUserDefaults standardUserDefaults] objectForKey:RCLogUserDefault];
-    NSLog(@"Double check: current user from default is: %@", test.email);*/
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate enableSideMenu];
+
     [self btnActionMainFeedNav:self];
 }
 
