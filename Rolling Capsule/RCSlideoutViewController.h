@@ -16,4 +16,6 @@ FOUNDATION_EXPORT NSString *const RCSlideOutOptionsSlideValue;
 @property (strong, nonatomic)   UIViewController* menuViewController;
 - (void) showSideMenu;
 - (void) hideSideMenu;
+- (void) disablePanning;
+- (void) enablePanning;
 @end

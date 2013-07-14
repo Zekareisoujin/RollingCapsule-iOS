@@ -160,4 +160,12 @@ BOOL _didQueueOpenMainFeedOption;
 - (void) setNotificationList:(NSArray*)notifications {
     _userNotifications = notifications;
 }
+
+- (void) disableMenuPanning {
+    [self.mainViewController disablePanning];
+    
+}
+- (void) enableMenuPanning {
+    [self.mainViewController enablePanning];
+}
 @end
