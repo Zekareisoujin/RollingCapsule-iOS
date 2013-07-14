@@ -92,8 +92,6 @@
 		64E293C117856F43009496FF /* loginBtnLoginPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293B817856F43009496FF /* loginBtnLoginPressed.png */; };
 		64E293C217856F43009496FF /* loginBtnRegister.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293B917856F43009496FF /* loginBtnRegister.png */; };
 		64E293C317856F43009496FF /* loginBtnRegisterPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293BA17856F43009496FF /* loginBtnRegisterPressed.png */; };
-		64E293C417856F43009496FF /* loginLblLogin.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293BB17856F43009496FF /* loginLblLogin.png */; };
-		64E293C517856F43009496FF /* loginLblRegister.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293BC17856F43009496FF /* loginLblRegister.png */; };
 		64E293C617856F43009496FF /* loginTextfield.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293BD17856F43009496FF /* loginTextfield.png */; };
 		64E293C817857C25009496FF /* mainTopBanner.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293C717857C25009496FF /* mainTopBanner.png */; };
 		64E293CA17857E4C009496FF /* mainNavbarPostButton@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293C917857E4C009496FF /* mainNavbarPostButton@2x.png */; };
@@ -254,7 +252,7 @@
 		6460E88E178C88FE0065D6BA /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		6461033E176E5F8A008DD131 /* RCLandmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCLandmark.h; path = ../RCLandmark.h; sourceTree = "<group>"; };
 		6461033F176E5F8A008DD131 /* RCLandmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCLandmark.m; path = ../RCLandmark.m; sourceTree = "<group>"; };
-		647E2FCE1791F2E600AA6B9A /* default_avatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = default_avatar.png; sourceTree = "<group>"; };
+		647E2FCE1791F2E600AA6B9A /* default_avatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = default_avatar.png; path = ../default_avatar.png; sourceTree = "<group>"; };
 		647E2FD017929BFC00AA6B9A /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		6490A9091757C07000E5048F /* RCMainMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMainMenuViewController.h; sourceTree = "<group>"; };
 		6490A90A1757C07100E5048F /* RCMainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMainMenuViewController.m; sourceTree = "<group>"; };
@@ -286,8 +284,6 @@
 		64E293B817856F43009496FF /* loginBtnLoginPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginBtnLoginPressed.png; sourceTree = "<group>"; };
 		64E293B917856F43009496FF /* loginBtnRegister.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginBtnRegister.png; sourceTree = "<group>"; };
 		64E293BA17856F43009496FF /* loginBtnRegisterPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginBtnRegisterPressed.png; sourceTree = "<group>"; };
-		64E293BB17856F43009496FF /* loginLblLogin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginLblLogin.png; sourceTree = "<group>"; };
-		64E293BC17856F43009496FF /* loginLblRegister.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginLblRegister.png; sourceTree = "<group>"; };
 		64E293BD17856F43009496FF /* loginTextfield.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = loginTextfield.png; sourceTree = "<group>"; };
 		64E293C717857C25009496FF /* mainTopBanner.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mainTopBanner.png; path = ../mainTopBanner.png; sourceTree = "<group>"; };
 		64E293C917857E4C009496FF /* mainNavbarPostButton@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "mainNavbarPostButton@2x.png"; path = "../mainNavbarPostButton@2x.png"; sourceTree = "<group>"; };
@@ -433,6 +429,7 @@
 		643EACE9175BBE0D002761D9 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				647E2FCE1791F2E600AA6B9A /* default_avatar.png */,
 				6460E869178AE3EA0065D6BA /* appIcon.png */,
 				6460E86A178AE3EA0065D6BA /* appIcon@2x.png */,
 				643EACE7175BACC0002761D9 /* back_button.png */,
@@ -467,8 +464,6 @@
 				64E293B817856F43009496FF /* loginBtnLoginPressed.png */,
 				64E293B917856F43009496FF /* loginBtnRegister.png */,
 				64E293BA17856F43009496FF /* loginBtnRegisterPressed.png */,
-				64E293BB17856F43009496FF /* loginLblLogin.png */,
-				64E293BC17856F43009496FF /* loginLblRegister.png */,
 				64E293BD17856F43009496FF /* loginTextfield.png */,
 				64EA880317796D9F00011F3E /* mainBackground.png */,
 				64E293CB178587BE009496FF /* mainMapViewBackground.png */,
@@ -525,7 +520,6 @@
 			isa = PBXGroup;
 			children = (
 				647E2FD017929BFC00AA6B9A /* AVFoundation.framework */,
-				647E2FCE1791F2E600AA6B9A /* default_avatar.png */,
 				BFCA7821174DFD3F00666CBA /* Rolling Capsule */,
 				BFCA7845174DFD3F00666CBA /* Rolling CapsuleTests */,
 				BFCA781A174DFD3F00666CBA /* Frameworks */,
@@ -838,8 +832,6 @@
 				64E293C117856F43009496FF /* loginBtnLoginPressed.png in Resources */,
 				64E293C217856F43009496FF /* loginBtnRegister.png in Resources */,
 				64E293C317856F43009496FF /* loginBtnRegisterPressed.png in Resources */,
-				64E293C417856F43009496FF /* loginLblLogin.png in Resources */,
-				64E293C517856F43009496FF /* loginLblRegister.png in Resources */,
 				64E293C617856F43009496FF /* loginTextfield.png in Resources */,
 				BFA53F511785B4FD007686F1 /* profileAvatarBar.png in Resources */,
 				64E293C817857C25009496FF /* mainTopBanner.png in Resources */,
@@ -1069,8 +1061,8 @@
 		BFCA7851174DFD3F00666CBA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Downloads/aws-ios-sdk-1.6.0\"",
@@ -1084,8 +1076,8 @@
 					"\"$(SRCROOT)\"",
 				);
 				PRODUCT_NAME = memcap;
-				PROVISIONING_PROFILE = "E30D16D1-E6A6-4748-BBA8-411F5E255399";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E30D16D1-E6A6-4748-BBA8-411F5E255399";
+				PROVISIONING_PROFILE = "4A228280-B9AD-483F-A3BC-340AE51523ED";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4A228280-B9AD-483F-A3BC-340AE51523ED";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1094,8 +1086,8 @@
 		BFCA7852174DFD3F00666CBA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Downloads/aws-ios-sdk-1.6.0\"",
@@ -1109,8 +1101,8 @@
 					"\"$(SRCROOT)\"",
 				);
 				PRODUCT_NAME = memcap;
-				PROVISIONING_PROFILE = "E30D16D1-E6A6-4748-BBA8-411F5E255399";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E30D16D1-E6A6-4748-BBA8-411F5E255399";
+				PROVISIONING_PROFILE = "4A228280-B9AD-483F-A3BC-340AE51523ED";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4A228280-B9AD-483F-A3BC-340AE51523ED";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
