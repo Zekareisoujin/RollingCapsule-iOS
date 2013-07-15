@@ -10,12 +10,18 @@
 #import "RCConstants.h"
 #import "SBJson.h"
 #import "RCUserProfileViewController.h"
+#import "RCConnectionManager.h"
 #import "RCAmazonS3Helper.h"
 #import "RCResourceCache.h"
 #import <AWSRuntime/AWSRuntime.h>
 
 @interface RCUserProfileViewController ()
 
+@property (nonatomic, strong) UITextField* txtFieldEditName;
+@property (nonatomic, assign) BOOL editingProfile;
+@property (nonatomic, assign) BOOL pickedNewAvatarImage;
+@property (nonatomic, strong) UIImage *userAvatarImage;
+@property (nonatomic, strong) UILabel *lblAvatarEdit;
 @end
 
 @implementation RCUserProfileViewController
@@ -32,8 +38,12 @@
 @synthesize previewLabelLocation = _previewLabelLocation;
 @synthesize previewLabelDate = _previewLabelDate;
 @synthesize previewLabelDescription = _previewLabelDescription;
-
 @synthesize selectedCell = _selectedCell;
+@synthesize txtFieldEditName = _txtFieldEditName;
+@synthesize editingProfile = _editingProfile;
+@synthesize pickedNewAvatarImage = _pickedNewAvatarImage;
+@synthesize userAvatarImage = _userAvatarImage;
+@synthesize lblAvatarEdit = _lblAvatarEdit;
 
 NSArray  *_postPreviewElements;
 NSString *_friendStatus;
@@ -79,11 +89,6 @@ double  minimapScaleY;
     _btnAvatarImg.enabled = NO;
     [_btnFriendAction setTitle:RCLoadingRelation forState:UIControlStateNormal];
     [self getAvatarImageFromInternet];
-    if (_profileUser.userID != _viewingUser.userID)
-        [self asynchGetUserRelationRequest];
-    else {
-        [_btnFriendAction removeFromSuperview];
-    }
     
     UICollectionViewFlowLayout *flow =  (UICollectionViewFlowLayout *)_collectionView.collectionViewLayout;
     flow.minimumInteritemSpacing = 0.0;
@@ -105,6 +110,8 @@ double  minimapScaleY;
     [self hidePostPreview];
     
     if (_viewingUser.userID != _profileUser.userID) {
+        [_btnEditProfile removeFromSuperview];
+        [self asynchGetUserRelationRequest];
         UIImage *buttonImage = [UIImage imageNamed:@"profileBtnFriendAction"];
         UIButton *postButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _btnFriendAction = postButton;
@@ -113,6 +120,10 @@ double  minimapScaleY;
         [postButton addTarget:self action:@selector(btnFriendActionClicked:) forControlEvents:UIControlEventTouchUpInside];
         UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithCustomView:postButton] ;
         self.navigationItem.rightBarButtonItem = rightButton;
+    } else {
+        [_btnFriendAction removeFromSuperview];
+        _pickedNewAvatarImage = NO;
+        _editingProfile = NO;
     }
     
     NSString* cellIdentifier = [RCProfileViewCell cellIdentifier];
@@ -358,7 +369,7 @@ double  minimapScaleY;
     });
 }
 
-- (void)showCheckErrorMessage:(NSString *)error image:(UIImage *)_image
+- (void)showCheckErrorMessage:(NSString *)error image:(UIImage *)image
 {
     if(error != nil)
     {
@@ -367,11 +378,11 @@ double  minimapScaleY;
     }
     else
     {
+        _userAvatarImage = image;
         alertStatus(RCInfoStringPostSuccess, RCAlertMessageUploadSuccess,self);
-        [_btnAvatarImg setBackgroundImage:_image forState:UIControlStateNormal];
+        [_btnAvatarImg setBackgroundImage:_userAvatarImage forState:UIControlStateDisabled];
     }
-    _btnAvatarImg.enabled = YES;
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    [RCConnectionManager endConnection];
 }
 
 
@@ -385,10 +396,10 @@ double  minimapScaleY;
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     UIImage *resizedImage = imageWithImage(image, CGSizeMake(80,80));
     
-    [self processBackgroundThreadUpload:resizedImage];
-    
-    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    
+    [_btnAvatarImg setBackgroundImage:resizedImage forState:UIControlStateNormal];
+    [_btnAvatarImg setBackgroundImage:nil forState:UIControlStateDisabled];
+    _userAvatarImage = resizedImage;
+    _pickedNewAvatarImage = YES;
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
@@ -413,32 +424,16 @@ double  minimapScaleY;
         }];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            UIControlState controlState = UIControlStateNormal;
+            /*UIControlState controlState = UIControlStateNormal;
             if (_profileUser.userID != _viewingUserID)
                 controlState = UIControlStateDisabled;
             else
-                _btnAvatarImg.enabled = YES;
+                _btnAvatarImg.enabled = YES;*/
+            _userAvatarImage = cachedImg;
             if (cachedImg != nil)
-                [_btnAvatarImg setBackgroundImage:cachedImg forState:controlState];
+                [_btnAvatarImg setBackgroundImage:_userAvatarImage forState:UIControlStateDisabled];
         });
     });
-    
-    /*dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
-    dispatch_async(queue, ^{
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-        UIImage *image = [RCAmazonS3Helper getAvatarImage:_profileUser withLoggedinUserID:_viewingUserID];
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            UIControlState controlState = UIControlStateNormal;
-            if (_profileUser.userID != _viewingUserID)
-                controlState = UIControlStateDisabled;
-            else
-                _btnAvatarImg.enabled = YES;
-            if (image != nil)
-                [_btnAvatarImg setBackgroundImage:image forState:controlState];
-        });
-        
-    });*/
 }
 
 #pragma mark - UICollectionView Datasource
@@ -586,4 +581,65 @@ double  minimapScaleY;
 	UIGraphicsEndImageContext();
 }
 
+- (IBAction)btnEditProfileTouchUpInside:(id)sender {
+    if (_editingProfile) {
+        _editingProfile = NO;
+        [_btnEditProfile setTitle:@"Edit" forState:UIControlStateNormal];
+        _btnAvatarImg.enabled = NO;
+        [self doneEditProfile];
+        [_lblAvatarEdit removeFromSuperview];
+    } else {
+        _editingProfile = YES;
+        [_btnEditProfile setTitle:@"Apply" forState:UIControlStateNormal];
+        [_btnAvatarImg setBackgroundImage:_userAvatarImage forState:UIControlStateNormal];
+        _btnAvatarImg.enabled = YES;
+        CGRect lblFrame = _btnAvatarImg.frame;
+        int incr = 8;
+        lblFrame.origin.x += incr;
+        lblFrame.origin.y += 4;
+        lblFrame.size.width -= incr*2;
+        lblFrame.size.height = 20;
+        _lblAvatarEdit = [[UILabel alloc] initWithFrame:lblFrame];
+        [_lblAvatarEdit setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.2]];
+        [self.view addSubview:_lblAvatarEdit];
+        [_lblAvatarEdit setText:@"Edit"];
+        _lblAvatarEdit.textAlignment = NSTextAlignmentCenter;
+        [_lblAvatarEdit setTextColor:[UIColor whiteColor]];
+        CGRect frame = _lblName.frame;
+        frame.size.height += 5;
+        _txtFieldEditName = [[UITextField alloc] initWithFrame:frame];
+        _txtFieldEditName.delegate = self;
+        _txtFieldEditName.borderStyle = UITextBorderStyleRoundedRect;
+        _txtFieldEditName.text = _lblName.text;
+        _txtFieldEditName.textAlignment = NSTextAlignmentRight;
+        [self.view addSubview:_txtFieldEditName];
+    }
+}
+
+- (void) doneEditProfile {
+    [_txtFieldEditName removeFromSuperview];
+    [RCConnectionManager startConnection];
+    if (_pickedNewAvatarImage) {
+        [RCConnectionManager startConnection];
+        [self processBackgroundThreadUpload:_userAvatarImage];
+    }
+    dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
+    dispatch_async(queue, ^{
+        [self.viewingUser updateNewName:_txtFieldEditName.text];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            _lblName.text = _viewingUser.name;
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            [RCConnectionManager endConnection];
+        });
+    });
+}
+
+#pragma mark - UITextFieldDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    if ([textField isEqual:_txtFieldEditName]) {
+        [textField resignFirstResponder];
+    }
+    return NO;
+}
 @end

@@ -16,4 +16,5 @@
 
 - (id) initWithNSDictionary:(NSDictionary *)userData;
 - (NSDictionary*) getDictionaryObject;
+- (void) updateNewName : (NSString*) newName;
 @end

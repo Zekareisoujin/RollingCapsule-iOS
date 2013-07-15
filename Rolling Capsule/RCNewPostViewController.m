@@ -34,7 +34,8 @@
 @property (nonatomic, strong) NSString* privacyOption;
 @property (nonatomic, strong) UIView *viewLandmark;
 @property (nonatomic, strong) NSURL *videoUrl;
-
+@property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, assign) BOOL viewFirstLoad;
 @end
 
 @implementation RCNewPostViewController
@@ -56,6 +57,8 @@
 @synthesize viewLandmark = _viewLandmark;
 @synthesize postComplete = _postComplete;
 @synthesize postCancel = _postCancel;
+@synthesize viewFirstLoad = _viewFirstLoad;
+@synthesize activityIndicator = _activityIndicator;
 
 BOOL _isTapToCloseKeyboard = NO;
 BOOL _landmarkTableVisible = NO;
@@ -64,6 +67,7 @@ BOOL _firstTimeEditPost = YES;
 BOOL _didFinishUploadingImage = NO;
 BOOL _isMovie = NO;
 BOOL _isPosting = NO;
+
 S3PutObjectResponse *_putObjectResponse;
 AmazonClientException *_amazonException;
 RCConnectionManager *_connectionManager;
@@ -125,6 +129,8 @@ NSData *_thumbnailData;
     //prepare text view placeholder
     _firstTimeEditPost = YES;
     
+    //indicate when view was loaded to move down screen
+    _viewFirstLoad = YES;
     //reset data type
     _isMovie = NO;
     
@@ -158,6 +164,9 @@ NSData *_thumbnailData;
     _landmarks = [[NSMutableArray alloc] init];
     _landmarkTableVisible = NO;
     _currentLandmark = nil;
+    
+    //init activity indicator
+    _activityIndicator = nil;
     
     //the view upload image in background and remember the status of the upload (fail, successful etc.)
     //this method helps reset the status to initial state (have not uploaded)
@@ -470,35 +479,62 @@ NSData *_thumbnailData;
 {
     
     [picker dismissViewControllerAnimated:YES completion:nil];
-    //check if media is a video
-    UIImage *thumbnail;
-    NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
-    if (CFStringCompare ((__bridge CFStringRef) mediaType, kUTTypeMovie, 0)
-        == kCFCompareEqualTo)
-    {
-        _isMovie = YES;
-        _videoUrl=(NSURL*)[info objectForKey:UIImagePickerControllerMediaURL];
         
-        AVURLAsset *sourceAsset = [AVURLAsset URLAssetWithURL:_videoUrl options:nil];
-        CMTime duration = sourceAsset.duration;
-        AVAssetImageGenerator* generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:sourceAsset];
-        //Get the 1st frame 3 seconds in
-        int frameTimeStart = (int)(CMTimeGetSeconds(duration) / 2.0);
-        int frameLocation = 1;
-        
-        //Snatch a frame
-        CGImageRef frameRef = [generator copyCGImageAtTime:CMTimeMake(frameTimeStart,frameLocation) actualTime:nil error:nil];
-        thumbnail = [self generateSquareImageThumbnail:[UIImage imageWithCGImage:frameRef]];
-    } else {
-        // Get the selected image
-        _isMovie = NO;
-        _postImage = [info objectForKey:UIImagePickerControllerOriginalImage];
-        thumbnail = [self generateSquareImageThumbnail:_postImage];
-    }
-    [_imageViewPostPicture setImage:thumbnail];
+    [UIView animateWithDuration:0.6
+						  delay:0
+						options:UIViewAnimationOptionCurveEaseInOut
+					 animations:^{
+                         _btnCameraSource.alpha = 0.0;
+                         _btnPhotoLibrarySource.alpha = 0.0;
+                         _btnVideoSource.alpha = 0.0;
+					 }
+                     completion:^(BOOL finished) {
+                         [self removePhotoSourceControlAndAddPrivacyControl];
+					 }];
+    if (_activityIndicator == nil)
+        _activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:_imageViewPostPicture.frame];
+    [self.view addSubview:_activityIndicator];
+    [_activityIndicator startAnimating];
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
         NSLog(@"inside data upload");
+        NSLog(@"generating thumbnail");
+        
+        UIImage *thumbnail;
+
+        NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
+        //check if media is a video
+        if (CFStringCompare ((__bridge CFStringRef) mediaType, kUTTypeMovie, 0)
+            == kCFCompareEqualTo)
+        {
+            _isMovie = YES;
+            _videoUrl=(NSURL*)[info objectForKey:UIImagePickerControllerMediaURL];
+            
+            AVURLAsset *sourceAsset = [AVURLAsset URLAssetWithURL:_videoUrl options:nil];
+            CMTime duration = sourceAsset.duration;
+            AVAssetImageGenerator* generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:sourceAsset];
+            //Get the 1st frame 3 seconds in
+            int frameTimeStart = (int)(CMTimeGetSeconds(duration) / 2.0);
+            int frameLocation = 1;
+            
+            //Snatch a frame
+            CGImageRef frameRef = [generator copyCGImageAtTime:CMTimeMake(frameTimeStart,frameLocation) actualTime:nil error:nil];
+            thumbnail = [self generateSquareImageThumbnail:[UIImage imageWithCGImage:frameRef]];
+        } else {
+            // Get the selected image
+            _isMovie = NO;
+            _postImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+            thumbnail = [self generateSquareImageThumbnail:_postImage];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_imageViewPostPicture setImage:thumbnail];
+            NSLog(@"remove activity indicator");
+            [_activityIndicator stopAnimating];
+            [_activityIndicator removeFromSuperview];
+        });
+        
+        //after succesful thumbnail generation start uploading data
+        NSLog(@"begin uploading data");
         if (CFStringCompare ((__bridge CFStringRef) mediaType, kUTTypeMovie, 0)
             == kCFCompareEqualTo)
         {
@@ -534,18 +570,6 @@ NSData *_thumbnailData;
         [self uploadImageToS3:_uploadData withThumbnail:_thumbnailData dataBeingMovie:_isMovie];
         [self processCompletionOfDataUpload];
     });
-    
-    [UIView animateWithDuration:0.6
-						  delay:0
-						options:UIViewAnimationOptionCurveEaseInOut
-					 animations:^{
-                         _btnCameraSource.alpha = 0.0;
-                         _btnPhotoLibrarySource.alpha = 0.0;
-                         _btnVideoSource.alpha = 0.0;
-					 }
-                     completion:^(BOOL finished) {
-                         [self removePhotoSourceControlAndAddPrivacyControl];
-					 }];
 
 }
 
@@ -565,7 +589,9 @@ NSData *_thumbnailData;
     _keyboardPushHandler.view = self.view;
     [_keyboardPushHandler reset];
     NSLog(@"screen size: %d",[[UIScreen mainScreen] bounds].size.height );
-    if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height) {
+    
+    if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height && _viewFirstLoad) {
+        _viewFirstLoad = NO;
         [_closeButton setHidden:YES];
         [_closeButton setEnabled:NO];
         CGRect closeFrame = _closeButton.frame;

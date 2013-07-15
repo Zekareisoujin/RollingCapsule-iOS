@@ -23,8 +23,8 @@ static NSString* const RCFriendStatusAccepted = @"accepted";
 static NSString* const RCFriendStatusPending = @"pending";
 static NSString* const RCFriendStatusRequested = @"requested";
 static NSString* const RCFriendStatusNull = @"null";
-static NSString* const RCAmazonS3AvatarPictureBucket = @"rcavatarimages";
-static NSString* const RCAmazonS3UsersMediaBucket = @"rcusersmedia";
+static NSString* const RCAmazonS3AvatarPictureBucket = @"memcap-avatar-images";
+static NSString* const RCAmazonS3UsersMediaBucket = @"memcap-users-media";
 static int       const RCHttpOkStatusCode = 200;
 #define RCCStringAppDomain "com.foxtwo.rollingcapsules"
 
