@@ -29,6 +29,7 @@
 @property (nonatomic, strong) RCConnectionManager *connectionManager;
 @property (nonatomic, strong) NSMutableDictionary *postsByLandmark;
 @property (nonatomic, strong) NSMutableDictionary *landmarks;
+@property (nonatomic, strong) NSMutableArray *posts;
 @property (nonatomic, assign) int currentLandmarkID;
 @property (nonatomic, strong) UIPinchGestureRecognizer *pinchGestureRecognizer;
 @property (nonatomic, strong) UILongPressGestureRecognizer *longPressGestureRecognizer;
@@ -59,6 +60,7 @@ BOOL        _haveScreenshot;
 @synthesize currentViewMode = _currentViewMode;
 @synthesize landmarks = _landmarks;
 @synthesize postButton = _postButton;
+@synthesize posts = _posts;
 
 + (NSString*) debugTag {
     return @"MainFeedView";
@@ -81,6 +83,7 @@ BOOL        _haveScreenshot;
         _postsByLandmark = [[NSMutableDictionary alloc] init];
         _chosenPosts = [[NSMutableSet alloc] init];
         _landmarks = [[NSMutableDictionary alloc] init];
+        _posts = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -237,9 +240,10 @@ BOOL        _haveScreenshot;
                 });
                 
                 [appDelegate setCurrentUser:_user];
-                
+                [_posts removeAllObjects];
                 for (NSDictionary *postData in postList) {
                     RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
+                    [_posts addObject:post];
                     id key = [[NSNumber alloc] initWithInteger:post.landmarkID];
                     NSMutableArray *postList = (NSMutableArray *)[_postsByLandmark objectForKey:key];
                     if (postList != nil) {
@@ -325,7 +329,16 @@ BOOL        _haveScreenshot;
 #pragma mark - UICollectionView Datasource
 // 1
 - (NSInteger)collectionView:(UICollectionView *)view numberOfItemsInSection:(NSInteger)section {
-    return section == 0 ? [[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInteger:_currentLandmarkID]] count] : 0;
+    int nPosts;
+    switch (_currentViewMode) {
+        case RCMainFeedViewModePublic:
+            nPosts = section == 0 ? [[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInteger:_currentLandmarkID]] count] : 0;
+            break;
+        default:
+            nPosts = [_posts count];
+            break;
+    };
+    return nPosts;
 }
 // 2
 - (NSInteger)numberOfSectionsInCollectionView: (UICollectionView *)collectionView {
@@ -335,8 +348,12 @@ BOOL        _haveScreenshot;
 - (UICollectionViewCell *)collectionView:(UICollectionView *)cv cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     NSString* cellIdentifier = [RCMainFeedCell cellIdentifier];
     RCMainFeedCell *cell = [cv dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
-    NSArray* items = [_postsByLandmark objectForKey:[[NSNumber alloc] initWithInteger:_currentLandmarkID]];
-    RCPost *post = [items objectAtIndex:indexPath.row];
+    RCPost *post;
+    if (_currentViewMode == RCMainFeedViewModePublic) {
+        NSArray* items = [_postsByLandmark objectForKey:[[NSNumber alloc] initWithInteger:_currentLandmarkID]];
+        post = [items objectAtIndex:indexPath.row];
+    } else
+        post = [_posts objectAtIndex:indexPath.row];
     [RCConnectionManager startConnection];
     [cell getPostContentImageFromInternet:_user withPostContent:post usingCollection:nil completion:^{
         [RCConnectionManager endConnection];
@@ -483,10 +500,12 @@ BOOL        _haveScreenshot;
         
         //if index path for cell not found
         if (indexPath != nil ) {
-            int idx = [indexPath row];
-            NSArray* items = (NSArray*)[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInt:_currentLandmarkID]];
-            
-            RCPost *post = [items objectAtIndex:idx];
+            RCPost *post;
+            if (_currentViewMode == RCMainFeedViewModePublic) {
+                NSArray* items = [_postsByLandmark objectForKey:[[NSNumber alloc] initWithInteger:_currentLandmarkID]];
+                post = [items objectAtIndex:indexPath.row];
+            } else
+                post = [_posts objectAtIndex:indexPath.row];
             RCUser *owner = [[RCUser alloc] init];
             owner.userID = post.userID;
             
