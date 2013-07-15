@@ -529,8 +529,9 @@ NSData *_thumbnailData;
         dispatch_async(dispatch_get_main_queue(), ^{
             [_imageViewPostPicture setImage:thumbnail];
             NSLog(@"remove activity indicator");
-            [_activityIndicator stopAnimating];
             [_activityIndicator removeFromSuperview];
+            [_activityIndicator stopAnimating];
+            
         });
         
         //after succesful thumbnail generation start uploading data
