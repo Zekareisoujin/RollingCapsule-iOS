@@ -125,6 +125,7 @@
 		64FE8433176B9E0E00E561D8 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FE8432176B9E0E00E561D8 /* libTestFlight.a */; };
 		64FE84E5176BAAD800E561D8 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FE84E4176BAAD800E561D8 /* libz.dylib */; };
 		64FFD2CD17662D1B004337F8 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FFD2CC17662D1B004337F8 /* MapKit.framework */; };
+		BF0B2E531794123600A1B8E0 /* RCLoginViewController4.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF0B2E521794123600A1B8E0 /* RCLoginViewController4.xib */; };
 		BF1AF31B1766231B000824CC /* RCResourceCache.m in Sources */ = {isa = PBXBuildFile; fileRef = BF1AF31A1766231B000824CC /* RCResourceCache.m */; };
 		BF2CD6241754E12D00EF2E85 /* RCFeedPostPreview.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF2CD6231754E12D00EF2E85 /* RCFeedPostPreview.xib */; };
 		BF2CD6271754E60C00EF2E85 /* RCFeedPostPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = BF2CD6261754E60C00EF2E85 /* RCFeedPostPreview.m */; };
@@ -324,6 +325,7 @@
 		64FE84E3176B9E4E00E561D8 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = SOURCE_ROOT; };
 		64FE84E4176BAAD800E561D8 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		64FFD2CC17662D1B004337F8 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		BF0B2E521794123600A1B8E0 /* RCLoginViewController4.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCLoginViewController4.xib; sourceTree = "<group>"; };
 		BF1AF3191766231B000824CC /* RCResourceCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCResourceCache.h; sourceTree = "<group>"; };
 		BF1AF31A1766231B000824CC /* RCResourceCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCResourceCache.m; sourceTree = "<group>"; };
 		BF2CD6201751C53900EF2E85 /* RCUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCUtilities.h; sourceTree = "<group>"; };
@@ -606,6 +608,7 @@
 				BFCA7833174DFD3F00666CBA /* RCLoginViewController.h */,
 				BFCA7834174DFD3F00666CBA /* RCLoginViewController.m */,
 				BFCA7836174DFD3F00666CBA /* RCLoginViewController.xib */,
+				BF0B2E521794123600A1B8E0 /* RCLoginViewController4.xib */,
 				64194AD41770AAF100822F9B /* RCMainFeedCell.h */,
 				64194AD51770AAF100822F9B /* RCMainFeedCell.m */,
 				64014915177966F5009B69DF /* RCMainFeedCell.xib */,
@@ -893,6 +896,7 @@
 				647E2FD31793123F00AA6B9A /* magnifyingGlass@2x.png in Resources */,
 				6417B22E17933C47007777E5 /* textField.png in Resources */,
 				6417B23017933DA4007777E5 /* btnTransparent-normal.png in Resources */,
+				BF0B2E531794123600A1B8E0 /* RCLoginViewController4.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

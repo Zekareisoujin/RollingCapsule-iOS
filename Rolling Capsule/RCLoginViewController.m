@@ -23,6 +23,7 @@
 @implementation RCLoginViewController
 
 @synthesize delegate;
+@synthesize keyboardHandler = _keyboardHandler;
 
 - (void)viewDidLoad
 {
@@ -32,25 +33,12 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    // Programmatically customize UIButton:
-    /*UIFont *btnFont =[UIFont fontWithName:@"Copperplate" size:18.0];
-    [_btnLogIn.titleLabel setFont:btnFont];
-    [_btnRegister.titleLabel setFont:btnFont];
-    _txtFieldUsername.font = btnFont;
-    _txtFieldPassword.font = btnFont;
-    
-    UIImage *btnBackgroundImageActive = [UIImage imageNamed:@"btnStandard-normal.png"];
-    UIImage *btnStretchedImageActive = [btnBackgroundImageActive stretchableImageWithLeftCapWidth:30 topCapHeight:0];
-    UIImage *btnBackgroundImageDepressed = [UIImage imageNamed:@"btnStandard-depressed.png"];
-    UIImage *btnStretchedImageDepressed = [btnBackgroundImageDepressed stretchableImageWithLeftCapWidth:30 topCapHeight:0];
-    
-    [_btnLogIn setBackgroundImage:btnStretchedImageActive forState:UIControlStateNormal];
-    [_btnRegister setBackgroundImage:btnStretchedImageActive forState:UIControlStateNormal];
-    [_btnLogIn setBackgroundImage:btnStretchedImageDepressed forState:UIControlStateHighlighted];
-    [_btnRegister setBackgroundImage:btnStretchedImageDepressed forState:UIControlStateHighlighted];*/
     [_btnLogIn setBackgroundImage:[UIImage imageNamed:@"loginBtnLoginPressed"] forState:UIControlStateHighlighted];
     [_btnRegister setBackgroundImage:[UIImage imageNamed:@"loginBtnRegisterPressed"] forState:UIControlStateHighlighted];
     
+    _keyboardHandler = [[RCKeyboardPushUpHandler alloc] init];
+    _keyboardHandler.view = self.view;
+    _keyboardHandler.bottomScreenGap = self.view.frame.size.height - _txtFieldPassword.frame.origin.y - _txtFieldPassword.frame.size.height - 30;
 }
 
 - (void)didReceiveMemoryWarning
@@ -130,12 +118,30 @@
 {
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     [super viewWillAppear:animated];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:_keyboardHandler
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:_keyboardHandler
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:_keyboardHandler
+                                                    name:UIKeyboardWillShowNotification
+                                                  object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:_keyboardHandler
+                                                    name:UIKeyboardWillHideNotification
+                                                  object:nil];
 }
 
 - (void)switchToFeedView:(RCUser *)user {

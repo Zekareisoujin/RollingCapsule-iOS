@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "RCUser.h"
+#import "RCKeyboardPushUpHandler.h"
 
 @protocol RCLoginViewControllerDelegate
 
@@ -20,6 +21,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtFieldPassword;
 @property (weak, nonatomic) IBOutlet UIButton *btnLogIn;
 @property (weak, nonatomic) IBOutlet UIButton *btnRegister;
+
+@property (strong, nonatomic) RCKeyboardPushUpHandler *keyboardHandler;
 @property (nonatomic, assign) id delegate;
 
 - (IBAction)btnActionLogIn:(id)sender;
