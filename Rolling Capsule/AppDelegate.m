@@ -65,9 +65,12 @@ BOOL _didQueueOpenMainFeedOption;
     _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     [_locationManager startUpdatingLocation];
 
-    
-    //RCPostDetailsViewController *firstViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:user];
-    RCLoginViewController *firstViewController = [[RCLoginViewController alloc] init];
+    RCLoginViewController *firstViewController;
+    if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height) {
+        firstViewController = [[RCLoginViewController alloc] initWithNibName:@"RCLoginViewController4" bundle:nil];
+    }else {
+        firstViewController = [[RCLoginViewController alloc] init];
+    }
     
     
     _navigationController = [[UINavigationController alloc] initWithRootViewController:firstViewController];
