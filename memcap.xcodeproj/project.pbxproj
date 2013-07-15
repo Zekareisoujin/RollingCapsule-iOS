@@ -35,6 +35,7 @@
 		64176B00175A260900443B59 /* AWSS3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64176AFE175A260900443B59 /* AWSS3.framework */; };
 		6417B22E17933C47007777E5 /* textField.png in Resources */ = {isa = PBXBuildFile; fileRef = 6417B22D17933C47007777E5 /* textField.png */; };
 		6417B23017933DA4007777E5 /* btnTransparent-normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 6417B22F17933DA3007777E5 /* btnTransparent-normal.png */; };
+		6417B232179415C6007777E5 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6417B231179415C6007777E5 /* CoreMedia.framework */; };
 		64194AD61770AAF200822F9B /* RCMainFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 64194AD51770AAF100822F9B /* RCMainFeedCell.m */; };
 		642E71FE17639D9400B3464E /* RCConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 642E71FD17639D9400B3464E /* RCConnectionManager.m */; };
 		642E72011763A7F600B3464E /* RCKeyboardPushUpHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 642E72001763A7F500B3464E /* RCKeyboardPushUpHandler.m */; };
@@ -215,6 +216,7 @@
 		64176AFE175A260900443B59 /* AWSS3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSS3.framework; path = "../../Downloads/aws-ios-sdk-1.6.0/AWSS3.framework"; sourceTree = "<group>"; };
 		6417B22D17933C47007777E5 /* textField.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = textField.png; sourceTree = "<group>"; };
 		6417B22F17933DA3007777E5 /* btnTransparent-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btnTransparent-normal.png"; sourceTree = "<group>"; };
+		6417B231179415C6007777E5 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		64194AD41770AAF100822F9B /* RCMainFeedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCMainFeedCell.h; path = ../RCMainFeedCell.h; sourceTree = "<group>"; };
 		64194AD51770AAF100822F9B /* RCMainFeedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCMainFeedCell.m; path = ../RCMainFeedCell.m; sourceTree = "<group>"; };
 		642E71FC17639D9400B3464E /* RCConnectionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCConnectionManager.h; sourceTree = "<group>"; };
@@ -402,6 +404,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6417B232179415C6007777E5 /* CoreMedia.framework in Frameworks */,
 				647E2FD117929BFC00AA6B9A /* AVFoundation.framework in Frameworks */,
 				64EEBFC4178DDA4B00D2C968 /* MediaPlayer.framework in Frameworks */,
 				6460E88F178C88FE0065D6BA /* MobileCoreServices.framework in Frameworks */,
@@ -525,6 +528,7 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
+				6417B231179415C6007777E5 /* CoreMedia.framework */,
 				6417B22F17933DA3007777E5 /* btnTransparent-normal.png */,
 				6417B22D17933C47007777E5 /* textField.png */,
 				647E2FD21793123F00AA6B9A /* magnifyingGlass@2x.png */,
@@ -1073,8 +1077,8 @@
 		BFCA7851174DFD3F00666CBA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Downloads/aws-ios-sdk-1.6.0\"",
@@ -1088,8 +1092,8 @@
 					"\"$(SRCROOT)\"",
 				);
 				PRODUCT_NAME = memcap;
-				PROVISIONING_PROFILE = "4A228280-B9AD-483F-A3BC-340AE51523ED";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4A228280-B9AD-483F-A3BC-340AE51523ED";
+				PROVISIONING_PROFILE = "B885D422-3252-464F-962C-6FDF6FF4530A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E30D16D1-E6A6-4748-BBA8-411F5E255399";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1098,8 +1102,8 @@
 		BFCA7852174DFD3F00666CBA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Downloads/aws-ios-sdk-1.6.0\"",
@@ -1113,8 +1117,8 @@
 					"\"$(SRCROOT)\"",
 				);
 				PRODUCT_NAME = memcap;
-				PROVISIONING_PROFILE = "4A228280-B9AD-483F-A3BC-340AE51523ED";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4A228280-B9AD-483F-A3BC-340AE51523ED";
+				PROVISIONING_PROFILE = "B885D422-3252-464F-962C-6FDF6FF4530A";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E30D16D1-E6A6-4748-BBA8-411F5E255399";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

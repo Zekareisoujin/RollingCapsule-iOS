@@ -55,6 +55,7 @@
     if ([post.fileUrl isKindOfClass:[NSNull class]]) return;
     RCResourceCache *cache = [RCResourceCache centralCache];
     NSString *key = [NSString stringWithFormat:@"%@/%d", RCPostsResource, post.postID];
+    [_imgPostContent setImage:[UIImage imageNamed:@"loading.gif"]];
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
         UIImage* cachedImg = (UIImage*)[cache getResourceForKey:key usingQuery:^{
