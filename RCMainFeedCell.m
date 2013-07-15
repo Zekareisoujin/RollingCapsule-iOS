@@ -53,7 +53,7 @@
     [self.layer setShadowOpacity:0.5];
     [self.layer setShadowPath:[[UIBezierPath
                                   bezierPathWithRect:self.bounds] CGPath]];
-    [self.imageView setImage:nil];
+    [_imageView setImage:[UIImage imageNamed:@"loading.gif"]];
     
     if ([post.fileUrl isKindOfClass:[NSNull class]]) return;
     RCResourceCache *cache = [RCResourceCache centralCache];

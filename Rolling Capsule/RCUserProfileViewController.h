@@ -12,8 +12,10 @@
 #import "RCProfileViewCell.h"
 #import "UIViewController+RCCustomBackButtonViewController.h"
 
-@interface RCUserProfileViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, AmazonServiceRequestDelegate, UICollectionViewDelegate, UICollectionViewDataSource>
+@interface RCUserProfileViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, AmazonServiceRequestDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UITextFieldDelegate>
 
+@property (weak, nonatomic) IBOutlet UIButton *btnEditProfile;
+- (IBAction)btnEditProfileTouchUpInside:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *btnAvatarImg;
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
 @property (weak, nonatomic) IBOutlet UILabel *lblEmail;

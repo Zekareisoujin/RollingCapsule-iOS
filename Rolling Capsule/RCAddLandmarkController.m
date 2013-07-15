@@ -168,7 +168,7 @@ BOOL    didPickedCategory;
             addArgumentToQueryString(dataStr, @"landmark[description]", [_txtFieldDescription text]);
             addArgumentToQueryString(dataStr, @"landmark[latitude]", latSt);
             addArgumentToQueryString(dataStr, @"landmark[longitude]", longSt);
-            addArgumentToQueryString(dataStr, @"landmark[category]", _btnCategory.titleLabel);
+            addArgumentToQueryString(dataStr, @"landmark[category]", _btnCategory.titleLabel.text);
             //NSString *post =[[NSString alloc] initWithFormat:@"landmmark[name]=%@&description=%@&latitude=%@&longitude=%@&category=%@&mobile=1",[_txtFieldName text],[_txtFieldDescription text], latSt, longSt, _btnCategory.titleLabel];
             
             NSData *postData = [dataStr dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
