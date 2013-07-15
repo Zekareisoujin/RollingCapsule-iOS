@@ -107,7 +107,8 @@ double  minimapScaleY;
     [self hidePostPreview];
     
     if (_viewingUser.userID != _profileUser.userID) {
-        [_btnEditProfile removeFromSuperview];
+        [_btnEditProfile setHidden:YES];
+        [_btnEditProfile setEnabled:NO];
         [self asynchGetUserRelationRequest];
         UIImage *buttonImage = [UIImage imageNamed:@"profileBtnFriendAction"];
         UIButton *postButton = [UIButton buttonWithType:UIButtonTypeCustom];
