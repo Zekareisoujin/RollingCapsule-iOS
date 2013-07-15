@@ -39,6 +39,8 @@ NSArray  *_postPreviewElements;
 NSString *_friendStatus;
 int       _friendshipID;
 
+int     nRows;
+
 // Test map scale:
 double  refLong;
 double  refLat;
@@ -85,6 +87,15 @@ double  minimapScaleY;
     
     UICollectionViewFlowLayout *flow =  (UICollectionViewFlowLayout *)_collectionView.collectionViewLayout;
     flow.minimumInteritemSpacing = 0.0;
+    
+    if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height) {
+        /*CGRect newSize = _collectionView.frame;
+        newSize.size.height = 120;
+        [_collectionView setFrame:newSize];*/
+        nRows = 2;
+    }else {
+        nRows = 3;
+    }
     
     _postList = [[NSMutableArray alloc] init];
     
@@ -465,7 +476,7 @@ double  minimapScaleY;
 
 // 1
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
-    float width = (collectionView.frame.size.height-24) / 3; // hard coding the number of rows to be 3 atm
+    float width = (collectionView.frame.size.height-24) / nRows;
     CGSize retval = CGSizeMake(width,width);
     return retval;
 }
