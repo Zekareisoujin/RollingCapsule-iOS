@@ -36,7 +36,7 @@
         //NSLog(@"%@",credsJson);
         AmazonCredentials *creds = [[AmazonCredentials alloc] initWithAccessKey:accessKey withSecretKey:secretKey withSecurityToken:sessionToken];
         s3Client = [[AmazonS3Client alloc] initWithCredentials:creds];
-        s3Client.endpoint = [AmazonEndpoints s3Endpoint:US_WEST_2];
+        s3Client.endpoint = [AmazonEndpoints s3Endpoint:AP_SOUTHEAST_1];
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);

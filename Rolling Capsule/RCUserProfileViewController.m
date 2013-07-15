@@ -89,9 +89,6 @@ double  minimapScaleY;
     flow.minimumInteritemSpacing = 0.0;
     
     if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height) {
-        /*CGRect newSize = _collectionView.frame;
-        newSize.size.height = 120;
-        [_collectionView setFrame:newSize];*/
         nRows = 2;
     }else {
         nRows = 3;

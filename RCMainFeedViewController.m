@@ -20,6 +20,7 @@
 #import "RCMainMenuViewController.h"
 #import "RCConnectionManager.h"
 #import "RCNotification.h"
+#import "RCAddLandmarkController.h"
 #import <QuartzCore/QuartzCore.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import "SBJson.h"
@@ -156,6 +157,8 @@ BOOL        _haveScreenshot;
     //prepare user UI element
     if (_user != nil)
         _lblUsername.text = _user.name;
+    
+    _mapView.showsUserLocation = YES;
 }
 
 - (void) handleRefresh:(UIRefreshControl*) refreshControl {
@@ -380,9 +383,11 @@ BOOL        _haveScreenshot;
 
 #pragma mark - MKMapViewDelegate
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
-    RCLandmark *landmark = (RCLandmark *)view.annotation;
-    _currentLandmarkID = landmark.landmarkID;
-    [_collectionView reloadData];
+    if ([view.annotation isKindOfClass:[RCLandmark class]]){
+        RCLandmark *landmark = (RCLandmark *)view.annotation;
+        _currentLandmarkID = landmark.landmarkID;
+        [_collectionView reloadData];
+    }
 }
 
 - (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
@@ -535,6 +540,11 @@ BOOL        _haveScreenshot;
 - (IBAction)btnUserAvatarTouchUpInside:(id)sender {
     RCUserProfileViewController *userProfileViewController = [[RCUserProfileViewController alloc] initWithUser:_user viewingUser:_user];
     [self.navigationController pushViewController:userProfileViewController animated:YES];
+}
+
+- (IBAction)actionAddLandmark:(id)sender {
+    RCAddLandmarkController *addLandmarkController = [[RCAddLandmarkController alloc] init];
+    [self.navigationController pushViewController:addLandmarkController animated:YES];
 }
 
 - (void) setCurrentUser: (RCUser*) user {

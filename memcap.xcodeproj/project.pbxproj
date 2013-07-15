@@ -125,6 +125,8 @@
 		64FE84E5176BAAD800E561D8 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FE84E4176BAAD800E561D8 /* libz.dylib */; };
 		64FFD2CD17662D1B004337F8 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FFD2CC17662D1B004337F8 /* MapKit.framework */; };
 		BF0B2E531794123600A1B8E0 /* RCLoginViewController4.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF0B2E521794123600A1B8E0 /* RCLoginViewController4.xib */; };
+		BF0B2E571794329800A1B8E0 /* RCAddLandmarkController.m in Sources */ = {isa = PBXBuildFile; fileRef = BF0B2E551794329800A1B8E0 /* RCAddLandmarkController.m */; };
+		BF0B2E581794329800A1B8E0 /* RCAddLandmarkController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF0B2E561794329800A1B8E0 /* RCAddLandmarkController.xib */; };
 		BF1AF31B1766231B000824CC /* RCResourceCache.m in Sources */ = {isa = PBXBuildFile; fileRef = BF1AF31A1766231B000824CC /* RCResourceCache.m */; };
 		BF2CD6241754E12D00EF2E85 /* RCFeedPostPreview.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF2CD6231754E12D00EF2E85 /* RCFeedPostPreview.xib */; };
 		BF2CD6271754E60C00EF2E85 /* RCFeedPostPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = BF2CD6261754E60C00EF2E85 /* RCFeedPostPreview.m */; };
@@ -324,6 +326,9 @@
 		64FE84E4176BAAD800E561D8 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		64FFD2CC17662D1B004337F8 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		BF0B2E521794123600A1B8E0 /* RCLoginViewController4.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCLoginViewController4.xib; sourceTree = "<group>"; };
+		BF0B2E541794329700A1B8E0 /* RCAddLandmarkController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAddLandmarkController.h; sourceTree = "<group>"; };
+		BF0B2E551794329800A1B8E0 /* RCAddLandmarkController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAddLandmarkController.m; sourceTree = "<group>"; };
+		BF0B2E561794329800A1B8E0 /* RCAddLandmarkController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCAddLandmarkController.xib; sourceTree = "<group>"; };
 		BF1AF3191766231B000824CC /* RCResourceCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCResourceCache.h; sourceTree = "<group>"; };
 		BF1AF31A1766231B000824CC /* RCResourceCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCResourceCache.m; sourceTree = "<group>"; };
 		BF2CD6201751C53900EF2E85 /* RCUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCUtilities.h; sourceTree = "<group>"; };
@@ -576,10 +581,14 @@
 				BFCA782B174DFD3F00666CBA /* AppDelegate.m */,
 				643EACE9175BBE0D002761D9 /* Images */,
 				BFCA7856174E1AD200666CBA /* Json */,
+				BF0B2E541794329700A1B8E0 /* RCAddLandmarkController.h */,
+				BF0B2E551794329800A1B8E0 /* RCAddLandmarkController.m */,
+				BF0B2E561794329800A1B8E0 /* RCAddLandmarkController.xib */,
 				649A869B175B0CC30016674F /* RCAmazonS3Helper.h */,
 				649A869C175B0CC30016674F /* RCAmazonS3Helper.m */,
 				642E71FC17639D9400B3464E /* RCConnectionManager.h */,
 				642E71FD17639D9400B3464E /* RCConnectionManager.m */,
+				BF3AFF971750763400D46558 /* RCConstants.h */,
 				BF2CD6251754E60C00EF2E85 /* RCFeedPostPreview.h */,
 				BF2CD6261754E60C00EF2E85 /* RCFeedPostPreview.m */,
 				BF2CD6231754E12D00EF2E85 /* RCFeedPostPreview.xib */,
@@ -644,7 +653,6 @@
 				6407BBDF1754D81C000F29C5 /* RCUserTableCell.h */,
 				6407BBE01754D81C000F29C5 /* RCUserTableCell.m */,
 				6407BBDD1754D5EB000F29C5 /* RCUserTableCell.xib */,
-				BF3AFF971750763400D46558 /* RCConstants.h */,
 				BF2CD6201751C53900EF2E85 /* RCUtilities.h */,
 				BFCA7822174DFD3F00666CBA /* Supporting Files */,
 				64FE84E3176B9E4E00E561D8 /* TestFlight.h */,
@@ -893,6 +901,7 @@
 				6417B22E17933C47007777E5 /* textField.png in Resources */,
 				6417B23017933DA4007777E5 /* btnTransparent-normal.png in Resources */,
 				BF0B2E531794123600A1B8E0 /* RCLoginViewController4.xib in Resources */,
+				BF0B2E581794329800A1B8E0 /* RCAddLandmarkController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -968,6 +977,7 @@
 				64EA9B4F178894DB0022FA67 /* RCLandmarkCell.m in Sources */,
 				6460E87A178AE4070065D6BA /* RCProfileViewCell.m in Sources */,
 				64EEBFC2178DC10500D2C968 /* UIViewController+RCCustomBackButtonViewController.m in Sources */,
+				BF0B2E571794329800A1B8E0 /* RCAddLandmarkController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
