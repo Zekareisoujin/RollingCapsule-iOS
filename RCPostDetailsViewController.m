@@ -150,8 +150,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     //initialize comments box
     UIImage *image = [[UIImage imageNamed:@"viewPostCommentFrame.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(70,5,30,5)];
     [_imgViewCommentFrame setImage:image];
-    _didMoveCommentsBox = NO;
-    _commentsBoxMovedBy = 0;
+    [self resetUIViewsState];
     
     _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     [self.view addGestureRecognizer:_tapGestureRecognizer];
@@ -215,30 +214,19 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
             if (cachedObj != nil && [cachedObj isKindOfClass:[UIImage class]]) {
                 _postImage = (UIImage *)cachedObj;
                 [self setupImageScrollView];
-            }
-            else if (cachedObj != nil && [cachedObj isKindOfClass:[NSString class]]) {
-                NSString *fileName = (NSString*) cachedObj;
-                _videoUrl = [NSURL fileURLWithPath:fileName];
-                UIButton *playVideoButton = [[UIButton alloc] initWithFrame:_scrollViewImage.frame];
-                [playVideoButton addTarget:self action:@selector(playVideo:) forControlEvents:UIControlEventTouchUpInside];
-                [playVideoButton setImage:[UIImage imageNamed:@"postVideoSourceButton-normal.png"] forState:UIControlStateNormal];
-                _postImage = thumbnailImage;
-                [self setupImageScrollView];
-                //[self.view addSubview:playVideoButton];
-                //[_imgViewPostImage addGestureRecognizer:tapRecognizer];
             } else if (cachedObj != nil && [cachedObj isKindOfClass:[NSURL class]]) {
                 _videoUrl = (NSURL*)cachedObj;
                 CGRect frame =  _scrollViewImage.frame;
-                frame.origin.x += frame.size.width / 4;
+                frame.origin.x = frame.size.width / 4;
                 frame.size.width /= 2;
-                frame.origin.y += (frame.size.height - frame.size.width) / 2;
+                frame.origin.y = (frame.size.height - frame.size.width) / 2;
                 frame.size.height = frame.size.width;
                 UIButton *playVideoButton = [[UIButton alloc] initWithFrame:frame];
                 [playVideoButton addTarget:self action:@selector(playVideo:) forControlEvents:UIControlEventTouchUpInside];
                 [playVideoButton setImage:[UIImage imageNamed:@"buttonPlay.png"] forState:UIControlStateNormal];
                 _postImage = thumbnailImage;
                 [self setupImageScrollView];
-                [self.view addSubview:playVideoButton];
+                [self.scrollViewImage addSubview:playVideoButton];
             }
         });
     });
@@ -646,9 +634,14 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 					 }];
     //[self asynchPostComment];
 }
+- (void) resetUIViewsState {
+    _didMoveCommentsBox = NO;
+    _commentsBoxMovedBy = 0;
+}
 
 -(IBAction) playVideo:(id)sender
 {
+    [self resetUIViewsState];
     
     _player=[[MPMoviePlayerController alloc] initWithContentURL:_videoUrl];
     [_player setShouldAutoplay:NO];
