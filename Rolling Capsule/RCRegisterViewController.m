@@ -43,7 +43,7 @@ BOOL        _willMoveKeyboardUp;
             addArgumentToQueryString(dataSt, @"user[password]", [_txtFieldPassword text]);
             addArgumentToQueryString(dataSt, @"user[name]", [_txtFieldName text]);
             addArgumentToQueryString(dataSt, @"user[password_confirmation]", [_txtFieldPasswordConfirmation text]);
-            NSData *postData = [dataSt dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+            NSData *postData = [dataSt dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
             NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCUsersResource]];
             NSURLRequest *request = CreateHttpPostRequest(url, postData);
             

@@ -48,10 +48,12 @@
 NSArray  *_postPreviewElements;
 NSString *_friendStatus;
 int       _friendshipID;
+int       _followID;
+BOOL      _isFollowing;
 
-int     nRows;
+int       nRows;
 
-// Test map scale:
+// Map reference data:
 double  refLong;
 double  refLat;
 double  refX;
@@ -108,7 +110,10 @@ double  minimapScaleY;
     
     if (_viewingUser.userID != _profileUser.userID) {
         [_btnEditProfile removeFromSuperview];
+        
         [self asynchGetUserRelationRequest];
+        [self asynchCheckUserFollowRequest];
+        
         UIImage *buttonImage = [UIImage imageNamed:@"profileBtnFriendAction"];
         UIButton *postButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _btnFriendAction = postButton;
@@ -119,6 +124,8 @@ double  minimapScaleY;
         self.navigationItem.rightBarButtonItem = rightButton;
     } else {
         [_btnFriendAction removeFromSuperview];
+        [_btnFollow removeFromSuperview];
+        
         _pickedNewAvatarImage = NO;
         _editingProfile = NO;
     }
@@ -130,9 +137,6 @@ double  minimapScaleY;
     
     [self calculateReferenceCoordinate];
     [self asynchFetchFeeds];
-    
-    /*CGPoint test = [self calculateCoordinateOnMinimapWithCoordinate:0.0 andLattitude:51.47];
-    NSLog(@"Map coordinates x is %.2f and y is %.2f", test.x, test.y);*/
 }
 
 - (void)didReceiveMemoryWarning {
@@ -142,6 +146,7 @@ double  minimapScaleY;
 
 #pragma mark - web requests
 
+// Feed requests
 - (void)asynchFetchFeeds {
     //Asynchronous Request
     [_postList removeAllObjects];
@@ -191,6 +196,7 @@ double  minimapScaleY;
     }
 }
 
+// Friend relation requests
 - (void)asynchGetUserRelationRequest{
     //Asynchronous Request
     @try {
@@ -200,7 +206,7 @@ double  minimapScaleY;
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
          {
-             [self connectionDidFinishLoading:data];
+             [self completeFriendshipRequest:data];
          }];
     }
     @catch (NSException * e) {
@@ -215,13 +221,13 @@ double  minimapScaleY;
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCFriendshipsResource]];
         NSMutableString* dataSt = initQueryString(@"friendship[friend_id]",
                                                   [[NSString alloc] initWithFormat:@"%d",_profileUser.userID]);
-        NSData *postData = [dataSt dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+        NSData *postData = [dataSt dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
         NSURLRequest *request = CreateHttpPostRequest(url, postData);
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
          {
-             [self connectionDidFinishLoading:data];
+             [self completeFriendshipRequest:data];
          }];
     }
     @catch (NSException * e) {
@@ -235,13 +241,13 @@ double  minimapScaleY;
     @try {
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d", RCServiceURL, RCFriendshipsResource, _friendshipID]];
         NSMutableString* dataSt = initEmptyQueryString();
-        NSData *putData = [dataSt dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+        NSData *putData = [dataSt dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
         NSURLRequest *request = CreateHttpPutRequest(url, putData);
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
          {
-             [self connectionDidFinishLoading:data];
+             [self completeFriendshipRequest:data];
          }];
     }
     @catch (NSException * e) {
@@ -259,7 +265,7 @@ double  minimapScaleY;
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
         {
-            [self connectionDidFinishLoading:data];
+            [self completeFriendshipRequest:data];
         }];
     }
     @catch (NSException * e) {
@@ -268,7 +274,7 @@ double  minimapScaleY;
     }
 }
 
-- (void)connectionDidFinishLoading:(NSData *)data {
+- (void)completeFriendshipRequest:(NSData *)data {
     NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
     
     SBJsonParser *jsonParser = [SBJsonParser new];
@@ -311,7 +317,88 @@ double  minimapScaleY;
         }
             
     }else {
-        alertStatus([NSString stringWithFormat:@"Failed to obtain friend status, please try again! %@", responseData], @"Connection Failed!", self);
+        alertStatus([NSString stringWithFormat:@"Failed to obtain friend status, please try again! %@", responseData], @"Connection Failed!", nil);
+    }
+}
+
+// Follow relation requests
+- (void) asynchCheckUserFollowRequest {
+    //Asynchronous Request
+    @try {
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/relation_follow?mobile=1&other_user=%d", RCServiceURL, RCUsersResource, self.viewingUserID, _profileUser.userID]];
+        NSURLRequest *request = CreateHttpGetRequest(url);
+        
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+         {
+             [self completeFollowRequest:data];
+         }];
+    }
+    @catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+        alertStatus(RCErrorMessageFailedToGetUsersRelation, RCAlertMessageConnectionFailed,self);
+    }
+}
+
+- (void) asynchCreateFollowRequest {
+    //Asynchronous Request
+    @try {
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@?mobile=1", RCServiceURL, RCFollowResource]];
+        NSMutableString* dataSt = initQueryString(@"follow[followee_id]",
+                                                  [[NSString alloc] initWithFormat:@"%d",_profileUser.userID]);
+        NSData *postData = [dataSt dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+        NSURLRequest *request = CreateHttpPostRequest(url, postData);
+        
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+         {
+             [self completeFollowRequest:data];
+         }];
+    }
+    @catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+        alertStatus(RCErrorMessageFailedToEditFriendStatus,RCAlertMessageConnectionFailed,self);
+    }
+}
+
+- (void)asynchDeleteFollowRequest{
+    //Asynchronous Request
+    @try {
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/?mobile=1", RCServiceURL, RCFollowResource, _followID]];
+        NSURLRequest *request = CreateHttpDeleteRequest(url);
+        
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+         {
+             [self completeFollowRequest:data];
+         }];
+    }
+    @catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+        alertStatus(RCErrorMessageFailedToEditFriendStatus,RCAlertMessageConnectionFailed,self);
+    }
+}
+
+- (void) completeFollowRequest: (NSData*) data {
+    NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+    
+    SBJsonParser *jsonParser = [SBJsonParser new];
+    NSDictionary *followJson = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
+    NSLog(@"%@",followJson);
+    
+    if (followJson != NULL) {
+        NSDictionary *followObj = [followJson objectForKey:@"follow"];
+        if ((NSNull*) followObj == [NSNull null]) {
+            _isFollowing = NO;
+            [_btnFollow setTitle:@"Follow" forState:UIControlStateNormal];
+        }else {
+            NSNumber *num = [followObj objectForKey:@"id"];
+            _followID = [num intValue];
+            _isFollowing = YES;
+            [_btnFollow setTitle:@"Unfollow" forState:UIControlStateNormal];
+        }
+    }else {
+        alertStatus(@"Failed to obtain follow status, please try again!", @"Connection Failed", nil);
     }
 }
 
@@ -330,6 +417,14 @@ double  minimapScaleY;
     UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
     imagePicker.delegate = self;
     [self presentViewController:imagePicker animated:YES completion:nil];
+}
+
+- (IBAction)btnFollowClicked:(id)sender {
+    if (_isFollowing) {
+        [self asynchDeleteFollowRequest];
+    }else {
+        [self asynchCreateFollowRequest];
+    }
 }
 
 #pragma mark - upload in background thread
@@ -531,30 +626,40 @@ double  minimapScaleY;
 - (void) calculateReferenceCoordinate {
     refLong = 103.77;
     refLat = 1.32;
-    refX = 437;
-    refY = 157;
+    refX = 887;
+    refY = 409;
     
-    double refLong2 = -122.41;
-    double refLat2 = 37.79;
-    double refX2 = 40;
-    double refY2 = 88;
+    double refLong2 = 0.0;
+    double refLat2 = 51.51;
+    double refX2 = 556;
+    double refY2 = 223;
     
-    CLLocationCoordinate2D refCoord = CLLocationCoordinate2DMake(refLat, refLong);
+    // Method 1:
+    /*CLLocationCoordinate2D refCoord = CLLocationCoordinate2DMake(refLat, refLong);
     MKMapPoint refPoint = MKMapPointForCoordinate(refCoord);
     CLLocationCoordinate2D refCoord2 = CLLocationCoordinate2DMake(refLat2, refLong2);
     MKMapPoint refPoint2 = MKMapPointForCoordinate(refCoord2);
     
     minimapScaleX = (refX - refX2) / (refPoint.x - refPoint2.x);
-    minimapScaleY = (refY - refY2) / (refPoint.y - refPoint2.y);
+    minimapScaleY = (refY - refY2) / (refPoint.y - refPoint2.y);*/
+    
+    // Method 2:
+    minimapScaleX = (refX - refX2) / (refLong - refLong2);
+    minimapScaleY = (refY - refY2) / (refLat - refLat2);
 }
 
 - (CGPoint) calculateCoordinateOnMinimapWithCoordinate: (double) longitude andLattitude: (double) lattitude {
-    CLLocationCoordinate2D refCoord = CLLocationCoordinate2DMake(refLat, refLong);
+    // Method 1:
+    /*CLLocationCoordinate2D refCoord = CLLocationCoordinate2DMake(refLat, refLong);
     MKMapPoint refPoint = MKMapPointForCoordinate(refCoord);
     CLLocationCoordinate2D coord = CLLocationCoordinate2DMake(lattitude, longitude);
     MKMapPoint point = MKMapPointForCoordinate(coord);
     
-    CGPoint ret = CGPointMake((point.x - refPoint.x)*minimapScaleX + refX, (point.y - refPoint.y)*minimapScaleY + refY);
+    CGPoint ret = CGPointMake((point.x - refPoint.x)*minimapScaleX + refX, (point.y - refPoint.y)*minimapScaleY + refY);*/
+    
+    // Method 2:
+    CGPoint ret = CGPointMake((longitude - refLong)*minimapScaleX + refX, (lattitude - refLat)*minimapScaleY + refY);
+    
     return ret;
 }
 
@@ -563,14 +668,17 @@ double  minimapScaleY;
     UIGraphicsBeginImageContext(minimapImage.size);
     
     [minimapImage drawAtPoint:CGPointZero];
-	CGContextRef ctx = UIGraphicsGetCurrentContext();
+	/*CGContextRef ctx = UIGraphicsGetCurrentContext();
 	[[UIColor redColor] setStroke];
-    [[UIColor redColor] setFill];
+    [[UIColor redColor] setFill];*/
+    
+    UIImage *mapDot = [UIImage imageNamed:@"profileWorldMapSpot"];
     
     for (RCPost* post in _postList){
         CGPoint drawLoc = [self calculateCoordinateOnMinimapWithCoordinate:post.longitude andLattitude:post.latitude];
-        CGRect circleRect = CGRectMake(drawLoc.x, drawLoc.y, 10, 10);
-        CGContextFillEllipseInRect(ctx, circleRect);
+        /*CGRect circleRect = CGRectMake(drawLoc.x, drawLoc.y, 10, 10);
+        CGContextFillEllipseInRect(ctx, circleRect);*/
+        [mapDot drawAtPoint:drawLoc];
     }
     
     UIImage *finalImage = UIGraphicsGetImageFromCurrentImageContext();

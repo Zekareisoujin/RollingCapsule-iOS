@@ -26,12 +26,14 @@
 BOOL        _firstRefresh;
 @synthesize friends = _friends;
 @synthesize requested_friends = _requested_friends;
+@synthesize followees = _followees;
 @synthesize items = _items;
 @synthesize user = _user;
 @synthesize refreshControl = _refreshControl;
-BOOL _viewingFriends;
 
-RCConnectionManager *_connectionManager;
+RCFriendListViewMode    _viewingMode;
+RCConnectionManager     *_connectionManager;
+NSArray                 *controlButtonArray;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -58,6 +60,7 @@ RCConnectionManager *_connectionManager;
     
     _friends = [[NSMutableArray alloc] init];
     _requested_friends = [[NSMutableArray alloc] init];
+    _followees = [[NSMutableArray alloc] init];
     _tblViewFriendList.tableFooterView = [[UIView alloc] init];
     
     UIImage *image = [UIImage imageNamed:@"profileBtnFriendAction.png"];//resizableImageWithCapInsets:UIEdgeInsetsMake(0,20,0,10)];
@@ -70,16 +73,18 @@ RCConnectionManager *_connectionManager;
     
     self.navigationItem.rightBarButtonItem = rightButton;
     
+    controlButtonArray = [[NSArray alloc] initWithObjects:_btnFriends, _btnRequests, _btnFollowees, nil];
+    
     //self.navigationItem.title = @"Friends";
     UITableViewController *tableViewController = setUpRefreshControlWithTableViewController(self, _tblViewFriendList);
     _refreshControl = tableViewController.refreshControl;
     [_refreshControl addTarget:self
                         action:@selector(handleRefresh:)
               forControlEvents:UIControlEventValueChanged  ];
+    
     _firstRefresh = YES;
-    _viewingFriends = YES;
-    _btnFriends.enabled = NO;
-    _btnFriends.backgroundColor = [UIColor yellowColor];
+    _viewingMode = RCFriendListViewModeFriends;
+
     _items = _friends;
     [self handleRefresh:_refreshControl];
 }
@@ -89,10 +94,19 @@ RCConnectionManager *_connectionManager;
     [formatter setDateFormat:RCInfoStringDateFormat];
     NSString *lastUpdated = [NSString stringWithFormat:RCInfoStringLastUpdatedOnFormat, [formatter  stringFromDate:[NSDate date] ] ];
     [_refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:lastUpdated]];
-    if (_viewingFriends)
-        [self asynchGetFriendsRequest];
-    else
-        [self asynchGetRequestedFriendsRequest];
+    switch (_viewingMode) {
+        case RCFriendListViewModeFriends:
+            [self asynchGetFriendsRequest];
+            break;
+        case RCFriendListViewModePendingFriends:
+            [self asynchGetRequestedFriendsRequest];
+            break;
+        case RCFriendListViewModeFollowees:
+            [self asynchGetFolloweesRequest];
+            break;
+        default:
+            break;
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -160,8 +174,10 @@ RCConnectionManager *_connectionManager;
                         RCUser *user = [[RCUser alloc] initWithNSDictionary:userData];
                         [_friends addObject:user];
                     }
-                    if (_viewingFriends)
+                    
+                    if (_viewingMode == RCFriendListViewModeFriends)
                         [_tblViewFriendList reloadData];
+                    
                     if (_firstRefresh) {
                         [_tblViewFriendList setContentOffset:CGPointMake(0, 0) animated:YES];
                         _firstRefresh = NO;
@@ -203,8 +219,53 @@ RCConnectionManager *_connectionManager;
                      RCUser *user = [[RCUser alloc] initWithNSDictionary:userData];
                      [_requested_friends addObject:user];
                  }
-                 if (!_viewingFriends)
+                 
+                 if (_viewingMode == RCFriendListViewModePendingFriends)
                     [_tblViewFriendList reloadData];
+                 
+                 if (_firstRefresh) {
+                     [_tblViewFriendList setContentOffset:CGPointMake(0, 0) animated:YES];
+                     _firstRefresh = NO;
+                 }
+             }else {
+                 alertStatus([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetFriends, responseData], RCAlertMessageConnectionFailed, self);
+                 
+             }
+             [_refreshControl endRefreshing];
+         }];
+    }
+    @catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+        alertStatus(RCErrorMessageFailedToGetFriends,RCAlertMessageConnectionFailed,self);
+    }
+}
+
+- (void)asynchGetFolloweesRequest {
+    //Asynchronous Request
+    [_connectionManager startConnection];
+    @try {
+        
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/followees?mobile=1", RCServiceURL, RCUsersResource, _user.userID]];
+        NSURLRequest *request = CreateHttpGetRequest(url);
+        
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+         {
+             [_connectionManager endConnection];
+             NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+             
+             SBJsonParser *jsonParser = [SBJsonParser new];
+             NSArray *usersJson = (NSArray *) [jsonParser objectWithString:responseData error:nil];
+             NSLog(@"%@",usersJson);
+             
+             if (usersJson != NULL) {
+                 [_followees removeAllObjects];
+                 for (NSDictionary *userData in usersJson) {
+                     RCUser *user = [[RCUser alloc] initWithNSDictionary:userData];
+                     [_followees addObject:user];
+                 }
+                 if (_viewingMode == RCFriendListViewModeFollowees)
+                     [_tblViewFriendList reloadData];
                  if (_firstRefresh) {
                      [_tblViewFriendList setContentOffset:CGPointMake(0, 0) animated:YES];
                      _firstRefresh = NO;
@@ -230,18 +291,35 @@ RCConnectionManager *_connectionManager;
 }
 
 - (IBAction)btnFriendTouchUpInside:(id)sender {
-    _viewingFriends = YES;
+    _viewingMode = RCFriendListViewModeFriends;
     _items = _friends;
+    
+    for (UIButton *btn in controlButtonArray)
+        btn.enabled = YES;
     _btnFriends.enabled = NO;
-    _btnRequests.enabled = YES;
+    
     [self handleRefresh:_refreshControl];
 }
 
 - (IBAction)btnRequestsTouchUpInside:(id)sender {
-    _viewingFriends = NO;
+    _viewingMode = RCFriendListViewModePendingFriends;
     _items = _requested_friends;
-    _btnFriends.enabled = YES;
+
+    for (UIButton *btn in controlButtonArray)
+        btn.enabled = YES;
     _btnRequests.enabled = NO;
+    
+    [self handleRefresh:_refreshControl];
+}
+
+- (IBAction)btnFolloweeTouchUpInside:(id)sender {
+    _viewingMode = RCFriendListViewModeFollowees;
+    _items = _followees;
+
+    for (UIButton *btn in controlButtonArray)
+        btn.enabled = YES;
+    _btnFollowees.enabled = NO;
+    
     [self handleRefresh:_refreshControl];
 }
 @end

@@ -19,6 +19,7 @@ static NSString* const RCPostsResource = @"/posts";
 static NSString* const RCCommentsResource = @"/comments";
 static NSString* const RCLandmarksResource = @"/landmarks";
 static NSString* const RCFriendshipsResource = @"/friendships";
+static NSString* const RCFollowResource = @"/follows";
 static NSString* const RCFriendStatusAccepted = @"accepted";
 static NSString* const RCFriendStatusPending = @"pending";
 static NSString* const RCFriendStatusRequested = @"requested";

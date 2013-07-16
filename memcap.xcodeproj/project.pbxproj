@@ -173,6 +173,11 @@
 		BFCA787B174E1B1200666CBA /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = BFCA786F174E1B1200666CBA /* SBJsonWriter.m */; };
 		BFCCEFCE178C9B9700D2434C /* profileBtnFriendAction@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFCCEFCD178C9B9700D2434C /* profileBtnFriendAction@2x.png */; };
 		BFCCEFD0178CA38A00D2434C /* profileWorldMap.png in Resources */ = {isa = PBXBuildFile; fileRef = BFCCEFCF178CA38A00D2434C /* profileWorldMap.png */; };
+		BFE3073117953EE7000C9C58 /* profileWorldMapSpot.png in Resources */ = {isa = PBXBuildFile; fileRef = BFE3073017953EE7000C9C58 /* profileWorldMapSpot.png */; };
+		BFE3073317957D05000C9C58 /* mapViewAddLandmark.png in Resources */ = {isa = PBXBuildFile; fileRef = BFE3073217957D04000C9C58 /* mapViewAddLandmark.png */; };
+		BFE307371795961C000C9C58 /* friendListFollow.png in Resources */ = {isa = PBXBuildFile; fileRef = BFE3073417959619000C9C58 /* friendListFollow.png */; };
+		BFE307381795961C000C9C58 /* friendListFriend.png in Resources */ = {isa = PBXBuildFile; fileRef = BFE307351795961A000C9C58 /* friendListFriend.png */; };
+		BFE307391795961C000C9C58 /* friendListPending.png in Resources */ = {isa = PBXBuildFile; fileRef = BFE307361795961B000C9C58 /* friendListPending.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -217,8 +222,8 @@
 		64119A1717849DBB00BF0B05 /* viewPostMainFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostMainFrame.png; path = ../viewPostMainFrame.png; sourceTree = "<group>"; };
 		64176AFD175A260900443B59 /* AWSRuntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSRuntime.framework; path = "../../Downloads/aws-ios-sdk-1.6.0/AWSRuntime.framework"; sourceTree = "<group>"; };
 		64176AFE175A260900443B59 /* AWSS3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSS3.framework; path = "../../Downloads/aws-ios-sdk-1.6.0/AWSS3.framework"; sourceTree = "<group>"; };
-		6417B22D17933C47007777E5 /* textField.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = textField.png; sourceTree = "<group>"; };
-		6417B22F17933DA3007777E5 /* btnTransparent-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btnTransparent-normal.png"; sourceTree = "<group>"; };
+		6417B22D17933C47007777E5 /* textField.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = textField.png; path = ../textField.png; sourceTree = "<group>"; };
+		6417B22F17933DA3007777E5 /* btnTransparent-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "btnTransparent-normal.png"; path = "../btnTransparent-normal.png"; sourceTree = "<group>"; };
 		6417B231179415C6007777E5 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		64194AD41770AAF100822F9B /* RCMainFeedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCMainFeedCell.h; path = ../RCMainFeedCell.h; sourceTree = "<group>"; };
 		64194AD51770AAF100822F9B /* RCMainFeedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCMainFeedCell.m; path = ../RCMainFeedCell.m; sourceTree = "<group>"; };
@@ -264,7 +269,7 @@
 		6461033F176E5F8A008DD131 /* RCLandmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCLandmark.m; sourceTree = "<group>"; };
 		647E2FCE1791F2E600AA6B9A /* default_avatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = default_avatar.png; path = ../default_avatar.png; sourceTree = "<group>"; };
 		647E2FD017929BFC00AA6B9A /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		647E2FD21793123F00AA6B9A /* magnifyingGlass@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "magnifyingGlass@2x.png"; sourceTree = "<group>"; };
+		647E2FD21793123F00AA6B9A /* magnifyingGlass@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "magnifyingGlass@2x.png"; path = "../magnifyingGlass@2x.png"; sourceTree = "<group>"; };
 		6490A9091757C07000E5048F /* RCMainMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMainMenuViewController.h; sourceTree = "<group>"; };
 		6490A90A1757C07100E5048F /* RCMainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMainMenuViewController.m; sourceTree = "<group>"; };
 		6490A90B1757C07100E5048F /* RCMainMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCMainMenuViewController.xib; sourceTree = "<group>"; };
@@ -404,6 +409,11 @@
 		BFCA786F174E1B1200666CBA /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
 		BFCCEFCD178C9B9700D2434C /* profileBtnFriendAction@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "profileBtnFriendAction@2x.png"; sourceTree = "<group>"; };
 		BFCCEFCF178CA38A00D2434C /* profileWorldMap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profileWorldMap.png; sourceTree = "<group>"; };
+		BFE3073017953EE7000C9C58 /* profileWorldMapSpot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profileWorldMapSpot.png; sourceTree = "<group>"; };
+		BFE3073217957D04000C9C58 /* mapViewAddLandmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapViewAddLandmark.png; sourceTree = "<group>"; };
+		BFE3073417959619000C9C58 /* friendListFollow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = friendListFollow.png; sourceTree = "<group>"; };
+		BFE307351795961A000C9C58 /* friendListFriend.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = friendListFriend.png; sourceTree = "<group>"; };
+		BFE307361795961B000C9C58 /* friendListPending.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = friendListPending.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -461,19 +471,23 @@
 		643EACE9175BBE0D002761D9 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				647E2FCE1791F2E600AA6B9A /* default_avatar.png */,
 				6460E869178AE3EA0065D6BA /* appIcon.png */,
 				6460E86A178AE3EA0065D6BA /* appIcon@2x.png */,
 				643EACE7175BACC0002761D9 /* back_button.png */,
 				64EEBFBE178C9CD700D2C968 /* backButton@2x.png */,
 				BF46ECB41778476C00F26A05 /* btnStandard-depressed.png */,
 				BF46ECB51778476C00F26A05 /* btnStandard-normal.png */,
+				6417B22F17933DA3007777E5 /* btnTransparent-normal.png */,
 				64119A12178460A500BF0B05 /* closeButton.png */,
 				6460E888178B2D800065D6BA /* closeButton@2x.png */,
 				BF728EEC176768000050699C /* Default-568h@2x.png */,
 				BF728EEE1767680F0050699C /* Default.png */,
 				BF728EEA176767CD0050699C /* Default@2x.png */,
 				643EACE5175BA0B6002761D9 /* default_avatar.jpg */,
+				647E2FCE1791F2E600AA6B9A /* default_avatar.png */,
+				BFE3073417959619000C9C58 /* friendListFollow.png */,
+				BFE307351795961A000C9C58 /* friendListFriend.png */,
+				BFE307361795961B000C9C58 /* friendListPending.png */,
 				64EEBFC5178DFE2800D2C968 /* friendListTableBackground.png */,
 				BF8925EB1767697000F1978F /* icon114.png */,
 				BF8925ED1767698600F1978F /* icon57.png */,
@@ -497,6 +511,7 @@
 				64E293B917856F43009496FF /* loginBtnRegister.png */,
 				64E293BA17856F43009496FF /* loginBtnRegisterPressed.png */,
 				64E293BD17856F43009496FF /* loginTextfield.png */,
+				647E2FD21793123F00AA6B9A /* magnifyingGlass@2x.png */,
 				64EA880317796D9F00011F3E /* mainBackground.png */,
 				64E293CB178587BE009496FF /* mainMapViewBackground.png */,
 				64E293C917857E4C009496FF /* mainNavbarPostButton@2x.png */,
@@ -504,6 +519,7 @@
 				64E293CD178638AB009496FF /* mainViewOptionFollow.png */,
 				64E293CE178638AB009496FF /* mainViewOptionFriends.png */,
 				64E293CF178638AB009496FF /* mainViewOptionPublic.png */,
+				BFE3073217957D04000C9C58 /* mapViewAddLandmark.png */,
 				64D2442A177F123D00C1206F /* menu.png */,
 				641199E4177F5CB300BF0B05 /* menu@2x.png */,
 				64361E33178E9ABB0041B5C2 /* navBarButtonBackground@2x.png */,
@@ -527,6 +543,7 @@
 				BFCCEFCD178C9B9700D2434C /* profileBtnFriendAction@2x.png */,
 				6460E86D178AE4070065D6BA /* profileViewPostPreview.png */,
 				BFCCEFCF178CA38A00D2434C /* profileWorldMap.png */,
+				BFE3073017953EE7000C9C58 /* profileWorldMapSpot.png */,
 				6460E882178B274A0065D6BA /* registerMainFrame.png */,
 				6460E886178B2D3E0065D6BA /* registerMainFrame@2x.png */,
 				6460E883178B274A0065D6BA /* registerRegisterButton.png */,
@@ -536,6 +553,7 @@
 				6460E875178AE4070065D6BA /* slideMenuMainFeed.png */,
 				6460E876178AE4070065D6BA /* slideMenuProfile.png */,
 				6460E877178AE4070065D6BA /* slideMenuSettings.png */,
+				6417B22D17933C47007777E5 /* textField.png */,
 				64EA880517796DAB00011F3E /* textField@2x.png */,
 				64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */,
 				64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */,
@@ -552,9 +570,6 @@
 			isa = PBXGroup;
 			children = (
 				6417B231179415C6007777E5 /* CoreMedia.framework */,
-				6417B22F17933DA3007777E5 /* btnTransparent-normal.png */,
-				6417B22D17933C47007777E5 /* textField.png */,
-				647E2FD21793123F00AA6B9A /* magnifyingGlass@2x.png */,
 				647E2FD017929BFC00AA6B9A /* AVFoundation.framework */,
 				BFCA7821174DFD3F00666CBA /* Rolling Capsule */,
 				BFCA7845174DFD3F00666CBA /* Rolling CapsuleTests */,
@@ -915,6 +930,11 @@
 				6417B23017933DA4007777E5 /* btnTransparent-normal.png in Resources */,
 				BF0B2E531794123600A1B8E0 /* RCLoginViewController4.xib in Resources */,
 				BF0B2E581794329800A1B8E0 /* RCAddLandmarkController.xib in Resources */,
+				BFE3073117953EE7000C9C58 /* profileWorldMapSpot.png in Resources */,
+				BFE3073317957D05000C9C58 /* mapViewAddLandmark.png in Resources */,
+				BFE307371795961C000C9C58 /* friendListFollow.png in Resources */,
+				BFE307381795961C000C9C58 /* friendListFriend.png in Resources */,
+				BFE307391795961C000C9C58 /* friendListPending.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1100,8 +1120,8 @@
 		BFCA7851174DFD3F00666CBA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Downloads/aws-ios-sdk-1.6.0\"",
@@ -1115,8 +1135,8 @@
 					"\"$(SRCROOT)\"",
 				);
 				PRODUCT_NAME = memcap;
-				PROVISIONING_PROFILE = "B885D422-3252-464F-962C-6FDF6FF4530A";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E30D16D1-E6A6-4748-BBA8-411F5E255399";
+				PROVISIONING_PROFILE = "4A228280-B9AD-483F-A3BC-340AE51523ED";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4A228280-B9AD-483F-A3BC-340AE51523ED";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1125,8 +1145,8 @@
 		BFCA7852174DFD3F00666CBA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Downloads/aws-ios-sdk-1.6.0\"",
@@ -1140,8 +1160,8 @@
 					"\"$(SRCROOT)\"",
 				);
 				PRODUCT_NAME = memcap;
-				PROVISIONING_PROFILE = "B885D422-3252-464F-962C-6FDF6FF4530A";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "E30D16D1-E6A6-4748-BBA8-411F5E255399";
+				PROVISIONING_PROFILE = "4A228280-B9AD-483F-A3BC-340AE51523ED";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4A228280-B9AD-483F-A3BC-340AE51523ED";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

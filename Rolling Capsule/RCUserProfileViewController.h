@@ -22,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnFriendAction;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic) UIButton *btnDeclineRequest;
+@property (weak, nonatomic) IBOutlet UIButton *btnFollow;
 
 @property (weak, nonatomic) IBOutlet UIImageView *previewBackground;
 @property (weak, nonatomic) IBOutlet UIImageView *previewPostImage;
@@ -38,5 +39,7 @@
 
 - (IBAction)btnFriendActionClicked:(id)sender;
 - (IBAction)btnAvatarClicked:(id)sender;
+- (IBAction)btnFollowClicked:(id)sender;
+
 - (id) initWithUser:(RCUser *) profileUser  viewingUser:(RCUser *) viewingUser;
 @end
