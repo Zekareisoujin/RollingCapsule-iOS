@@ -376,6 +376,9 @@ double  minimapScaleY;
     }
     else
     {
+        RCResourceCache *cache = [RCResourceCache centralCache];
+        NSString *key = [[NSString alloc] initWithFormat:@"%@/%d-avatar", RCUsersResource, _profileUser.userID];
+        [cache invalidateKey:key];
         _userAvatarImage = image;
         alertStatus(RCInfoStringPostSuccess, RCAlertMessageUploadSuccess,self);
         [_btnAvatarImg setBackgroundImage:_userAvatarImage forState:UIControlStateDisabled];
@@ -410,7 +413,7 @@ double  minimapScaleY;
 
 -(void) getAvatarImageFromInternet {
     RCResourceCache *cache = [RCResourceCache centralCache];
-    NSString *key = [[NSString alloc] initWithFormat:@"%@/%d", RCUsersResource, _profileUser.userID];
+    NSString *key = [[NSString alloc] initWithFormat:@"%@/%d-avatar", RCUsersResource, _profileUser.userID];
     
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
@@ -427,9 +430,12 @@ double  minimapScaleY;
                 controlState = UIControlStateDisabled;
             else
                 _btnAvatarImg.enabled = YES;*/
-            _userAvatarImage = cachedImg;
-            if (cachedImg != nil)
-                [_btnAvatarImg setBackgroundImage:_userAvatarImage forState:UIControlStateDisabled];
+            if (cachedImg == nil)
+                _userAvatarImage = [UIImage imageNamed:@"default_avatar.png"];
+            else
+                _userAvatarImage = cachedImg;
+            [_btnAvatarImg setBackgroundImage:_userAvatarImage forState:UIControlStateDisabled];
+            
         });
     });
 }

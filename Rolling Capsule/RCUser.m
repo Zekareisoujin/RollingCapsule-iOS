@@ -46,7 +46,7 @@
     NSMutableString* dataSt = initEmptyQueryString();
     addArgumentToQueryString(dataSt, @"user[name]", newName);
     addArgumentToQueryString(dataSt, @"user[email]", _email);
-    NSData *putData = [dataSt dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+    NSData *putData = [dataSt dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     NSURLRequest *request = CreateHttpPutRequest(url, putData);
     NSURLResponse *response;
     NSError *error = nil;
