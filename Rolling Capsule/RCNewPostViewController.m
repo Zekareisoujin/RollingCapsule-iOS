@@ -340,7 +340,7 @@ NSData *_thumbnailData;
         if (_currentLandmark != nil) {
             addArgumentToQueryString(dataSt, @"landmark_id", [NSString stringWithFormat:@"%d",_currentLandmark.landmarkID]);
         }
-        NSData *postData = [dataSt dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
+        NSData *postData = [dataSt dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:NO];
         
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCPostsResource]];
         
@@ -372,6 +372,7 @@ NSData *_thumbnailData;
                 }];
             }else {
                 alertStatus([NSString stringWithFormat:@"Please try again! %@", responseData], @"Post Failed!", self);
+                _isPosting = NO;
             }
         }];
     }
@@ -380,6 +381,7 @@ NSData *_thumbnailData;
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         self.navigationItem.rightBarButtonItem.enabled = YES;
         alertStatus(@"Post Failed.",@"Post Failed!",self);
+        _isPosting = NO;
     }
 }
 

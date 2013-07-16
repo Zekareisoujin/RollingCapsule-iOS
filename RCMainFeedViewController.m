@@ -7,7 +7,7 @@
 //
 
 #import "RCMainFeedViewController.h"
-#import "RCFeedPostPreview.h"
+#import "RCPostCommentCell.h"
 #import "RCUser.h"
 #import "RCPost.h"
 #import "RCConstants.h"
@@ -521,10 +521,7 @@ BOOL        _haveScreenshot;
             else
                 postDetailsViewController.landmark = [_landmarks objectForKey:[NSNumber numberWithInt:post.landmarkID]];
             postDetailsViewController.landmarkID = post.landmarkID;
-            [self addChildViewController:postDetailsViewController];
-            postDetailsViewController.view.frame = self.view.frame;
-            [self.view addSubview:postDetailsViewController.view];
-            [postDetailsViewController didMoveToParentViewController:self];
+            [self.navigationController presentViewController:postDetailsViewController animated:YES completion:nil];
             
         }
     }
