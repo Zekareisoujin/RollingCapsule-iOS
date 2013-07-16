@@ -10,7 +10,7 @@
 #import "RCUser.h"
 #import "RCPost.h"
 
-@interface RCFeedPostPreview : UITableViewCell
+@interface RCPostCommentCell : UITableViewCell
 @property (weak, nonatomic) IBOutlet UILabel *lblPostContent;
 @property (weak, nonatomic) IBOutlet UILabel *lblUserProfileName;
 @property (weak, nonatomic) IBOutlet UIImageView *imgUserAvatar;

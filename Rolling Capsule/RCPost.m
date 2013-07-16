@@ -24,19 +24,22 @@
 @synthesize authorName = _authorName;
 @synthesize authorEmail = _authorEmail;
 @synthesize landmarkID = _landmarkID;
+@synthesize subject = _subject;
 @synthesize thumbnailUrl = _thumbnailUrl;
 
 - (id) initWithNSDictionary:(NSDictionary *)postData {
     self = [super init];
     if (self) {
+        _postID = [[postData objectForKey:@"id"] intValue];
         _content = (NSString*)[postData objectForKey:@"content"];
+        _subject = (NSString*)[postData objectForKey:@"subject"];
         _fileUrl = (NSString*)[postData objectForKey:@"file_url"];
         _privacyOption = (NSString*)[postData objectForKey:@"privacy_option"];
         _likeCount = [[postData objectForKey:@"like_count"] intValue];
         _viewCount = [[postData objectForKey:@"view_count"] intValue];
         _longitude = [[postData objectForKey:@"longitude"] doubleValue];
         _latitude = [[postData objectForKey:@"latitude"] doubleValue];
-        _postID = [[postData objectForKey:@"id"] intValue];
+        
         _userID = [[postData objectForKey:@"user_id"] intValue];
         id landmarkObj = [postData objectForKey:@"landmark_id"];
         if ([landmarkObj isKindOfClass:[NSNumber class]]) {

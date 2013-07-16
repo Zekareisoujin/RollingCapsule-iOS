@@ -82,6 +82,17 @@
 		649A869D175B0CC30016674F /* RCAmazonS3Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 649A869C175B0CC30016674F /* RCAmazonS3Helper.m */; };
 		64A917081751E554007D629D /* RCRegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64A917071751E554007D629D /* RCRegisterViewController.xib */; };
 		64A9170B1751F6C9007D629D /* RCRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64A9170A1751F6C9007D629D /* RCRegisterViewController.m */; };
+		64B81CA217954FC800B5A825 /* viewPostImageFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 64B81CA117954FC800B5A825 /* viewPostImageFrame.png */; };
+		64B81CA61795551E00B5A825 /* viewPostCommentButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 64B81CA31795551E00B5A825 /* viewPostCommentButton.png */; };
+		64B81CA71795551E00B5A825 /* viewPostFollowButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 64B81CA41795551E00B5A825 /* viewPostFollowButton.png */; };
+		64B81CA81795551E00B5A825 /* viewPostFriendWithButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 64B81CA51795551E00B5A825 /* viewPostFriendWithButton.png */; };
+		64B81CAA179556A900B5A825 /* viewPostCommentFrame@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64B81CA9179556A900B5A825 /* viewPostCommentFrame@2x.png */; };
+		64B81CAD1795BD4C00B5A825 /* RCComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 64B81CAC1795BD4C00B5A825 /* RCComment.m */; };
+		64B81CB11795CCA600B5A825 /* RCCommentPostingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64B81CAF1795CCA500B5A825 /* RCCommentPostingViewController.m */; };
+		64B81CB21795CCA600B5A825 /* RCCommentPostingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64B81CB01795CCA500B5A825 /* RCCommentPostingViewController.xib */; };
+		64B81CB51795DE5600B5A825 /* postCommentCancelButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 64B81CB31795DE5500B5A825 /* postCommentCancelButton.png */; };
+		64B81CB61795DE5600B5A825 /* postCommentPostButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 64B81CB41795DE5500B5A825 /* postCommentPostButton.png */; };
+		64B81CB81795E21C00B5A825 /* buttonPlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 64B81CB71795E21C00B5A825 /* buttonPlay.png */; };
 		64CA28451789ED1C0018D626 /* postLandmarkChosenBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 64CA28441789ED1C0018D626 /* postLandmarkChosenBackground.png */; };
 		64D2442B177F123D00C1206F /* menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D2442A177F123D00C1206F /* menu.png */; };
 		64E293101784A84B009496FF /* viewPostCommentButton-normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */; };
@@ -129,8 +140,8 @@
 		BF0B2E571794329800A1B8E0 /* RCAddLandmarkController.m in Sources */ = {isa = PBXBuildFile; fileRef = BF0B2E551794329800A1B8E0 /* RCAddLandmarkController.m */; };
 		BF0B2E581794329800A1B8E0 /* RCAddLandmarkController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF0B2E561794329800A1B8E0 /* RCAddLandmarkController.xib */; };
 		BF1AF31B1766231B000824CC /* RCResourceCache.m in Sources */ = {isa = PBXBuildFile; fileRef = BF1AF31A1766231B000824CC /* RCResourceCache.m */; };
-		BF2CD6241754E12D00EF2E85 /* RCFeedPostPreview.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF2CD6231754E12D00EF2E85 /* RCFeedPostPreview.xib */; };
-		BF2CD6271754E60C00EF2E85 /* RCFeedPostPreview.m in Sources */ = {isa = PBXBuildFile; fileRef = BF2CD6261754E60C00EF2E85 /* RCFeedPostPreview.m */; };
+		BF2CD6241754E12D00EF2E85 /* RCPostCommentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF2CD6231754E12D00EF2E85 /* RCPostCommentCell.xib */; };
+		BF2CD6271754E60C00EF2E85 /* RCPostCommentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BF2CD6261754E60C00EF2E85 /* RCPostCommentCell.m */; };
 		BF46ECB61778476C00F26A05 /* btnStandard-depressed.png in Resources */ = {isa = PBXBuildFile; fileRef = BF46ECB41778476C00F26A05 /* btnStandard-depressed.png */; };
 		BF46ECB71778476C00F26A05 /* btnStandard-normal.png in Resources */ = {isa = PBXBuildFile; fileRef = BF46ECB51778476C00F26A05 /* btnStandard-normal.png */; };
 		BF4DCC46175C82280081B5AC /* AWSRuntime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF4DCC44175C82280081B5AC /* AWSRuntime.framework */; };
@@ -286,6 +297,19 @@
 		64A917071751E554007D629D /* RCRegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCRegisterViewController.xib; sourceTree = "<group>"; };
 		64A917091751F6C9007D629D /* RCRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCRegisterViewController.h; sourceTree = "<group>"; };
 		64A9170A1751F6C9007D629D /* RCRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCRegisterViewController.m; sourceTree = "<group>"; };
+		64B81CA117954FC800B5A825 /* viewPostImageFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = viewPostImageFrame.png; sourceTree = "<group>"; };
+		64B81CA31795551E00B5A825 /* viewPostCommentButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = viewPostCommentButton.png; sourceTree = "<group>"; };
+		64B81CA41795551E00B5A825 /* viewPostFollowButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = viewPostFollowButton.png; sourceTree = "<group>"; };
+		64B81CA51795551E00B5A825 /* viewPostFriendWithButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = viewPostFriendWithButton.png; sourceTree = "<group>"; };
+		64B81CA9179556A900B5A825 /* viewPostCommentFrame@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "viewPostCommentFrame@2x.png"; sourceTree = "<group>"; };
+		64B81CAB1795BD4C00B5A825 /* RCComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCComment.h; sourceTree = "<group>"; };
+		64B81CAC1795BD4C00B5A825 /* RCComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCComment.m; sourceTree = "<group>"; };
+		64B81CAE1795CCA500B5A825 /* RCCommentPostingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCommentPostingViewController.h; sourceTree = "<group>"; };
+		64B81CAF1795CCA500B5A825 /* RCCommentPostingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCommentPostingViewController.m; sourceTree = "<group>"; };
+		64B81CB01795CCA500B5A825 /* RCCommentPostingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCCommentPostingViewController.xib; sourceTree = "<group>"; };
+		64B81CB31795DE5500B5A825 /* postCommentCancelButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = postCommentCancelButton.png; sourceTree = "<group>"; };
+		64B81CB41795DE5500B5A825 /* postCommentPostButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = postCommentPostButton.png; sourceTree = "<group>"; };
+		64B81CB71795E21C00B5A825 /* buttonPlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttonPlay.png; sourceTree = "<group>"; };
 		64CA28441789ED1C0018D626 /* postLandmarkChosenBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = postLandmarkChosenBackground.png; path = ../postLandmarkChosenBackground.png; sourceTree = "<group>"; };
 		64D2442A177F123D00C1206F /* menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = menu.png; path = ../menu.png; sourceTree = "<group>"; };
 		64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "viewPostCommentButton-normal.png"; path = "../viewPostCommentButton-normal.png"; sourceTree = "<group>"; };
@@ -339,9 +363,9 @@
 		BF1AF3191766231B000824CC /* RCResourceCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCResourceCache.h; sourceTree = "<group>"; };
 		BF1AF31A1766231B000824CC /* RCResourceCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCResourceCache.m; sourceTree = "<group>"; };
 		BF2CD6201751C53900EF2E85 /* RCUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCUtilities.h; sourceTree = "<group>"; };
-		BF2CD6231754E12D00EF2E85 /* RCFeedPostPreview.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCFeedPostPreview.xib; sourceTree = "<group>"; };
-		BF2CD6251754E60C00EF2E85 /* RCFeedPostPreview.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCFeedPostPreview.h; sourceTree = "<group>"; };
-		BF2CD6261754E60C00EF2E85 /* RCFeedPostPreview.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCFeedPostPreview.m; sourceTree = "<group>"; };
+		BF2CD6231754E12D00EF2E85 /* RCPostCommentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCPostCommentCell.xib; sourceTree = "<group>"; };
+		BF2CD6251754E60C00EF2E85 /* RCPostCommentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCPostCommentCell.h; sourceTree = "<group>"; };
+		BF2CD6261754E60C00EF2E85 /* RCPostCommentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCPostCommentCell.m; sourceTree = "<group>"; };
 		BF3AFF971750763400D46558 /* RCConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RCConstants.h; sourceTree = "<group>"; };
 		BF46ECB41778476C00F26A05 /* btnStandard-depressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btnStandard-depressed.png"; sourceTree = "<group>"; };
 		BF46ECB51778476C00F26A05 /* btnStandard-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "btnStandard-normal.png"; sourceTree = "<group>"; };
@@ -463,6 +487,8 @@
 				BFC8414617586BFB00E52FE2 /* RCPost.m */,
 				6407BBD717545579000F29C5 /* RCUser.h */,
 				6407BBD817545579000F29C5 /* RCUser.m */,
+				64B81CAB1795BD4C00B5A825 /* RCComment.h */,
+				64B81CAC1795BD4C00B5A825 /* RCComment.m */,
 			);
 			name = Models;
 			path = ..;
@@ -569,8 +595,20 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
-				6417B231179415C6007777E5 /* CoreMedia.framework */,
-				647E2FD017929BFC00AA6B9A /* AVFoundation.framework */,
+				64B81CB71795E21C00B5A825 /* buttonPlay.png */,
+				64B81CB31795DE5500B5A825 /* postCommentCancelButton.png */,
+				64B81CB41795DE5500B5A825 /* postCommentPostButton.png */,
+				64B81CAE1795CCA500B5A825 /* RCCommentPostingViewController.h */,
+				64B81CAF1795CCA500B5A825 /* RCCommentPostingViewController.m */,
+				64B81CB01795CCA500B5A825 /* RCCommentPostingViewController.xib */,
+				64B81CA9179556A900B5A825 /* viewPostCommentFrame@2x.png */,
+				64B81CA31795551E00B5A825 /* viewPostCommentButton.png */,
+				64B81CA41795551E00B5A825 /* viewPostFollowButton.png */,
+				64B81CA51795551E00B5A825 /* viewPostFriendWithButton.png */,
+				64B81CA117954FC800B5A825 /* viewPostImageFrame.png */,
+				6417B22F17933DA3007777E5 /* btnTransparent-normal.png */,
+				6417B22D17933C47007777E5 /* textField.png */,
+				647E2FD21793123F00AA6B9A /* magnifyingGlass@2x.png */,
 				BFCA7821174DFD3F00666CBA /* Rolling Capsule */,
 				BFCA7845174DFD3F00666CBA /* Rolling CapsuleTests */,
 				BFCA781A174DFD3F00666CBA /* Frameworks */,
@@ -592,6 +630,8 @@
 		BFCA781A174DFD3F00666CBA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6417B231179415C6007777E5 /* CoreMedia.framework */,
+				647E2FD017929BFC00AA6B9A /* AVFoundation.framework */,
 				64EEBFC3178DDA4A00D2C968 /* MediaPlayer.framework */,
 				64FFD2CC17662D1B004337F8 /* MapKit.framework */,
 				BF4DCC44175C82280081B5AC /* AWSRuntime.framework */,
@@ -625,9 +665,9 @@
 				642E71FC17639D9400B3464E /* RCConnectionManager.h */,
 				642E71FD17639D9400B3464E /* RCConnectionManager.m */,
 				BF3AFF971750763400D46558 /* RCConstants.h */,
-				BF2CD6251754E60C00EF2E85 /* RCFeedPostPreview.h */,
-				BF2CD6261754E60C00EF2E85 /* RCFeedPostPreview.m */,
-				BF2CD6231754E12D00EF2E85 /* RCFeedPostPreview.xib */,
+				BF2CD6251754E60C00EF2E85 /* RCPostCommentCell.h */,
+				BF2CD6261754E60C00EF2E85 /* RCPostCommentCell.m */,
+				BF2CD6231754E12D00EF2E85 /* RCPostCommentCell.xib */,
 				6491DCEA1755CF8D006FBCD8 /* RCFindFriendsViewController.h */,
 				6491DCEB1755CF8D006FBCD8 /* RCFindFriendsViewController.m */,
 				6491DCEC1755CF8D006FBCD8 /* RCFindFriendsViewController.xib */,
@@ -833,7 +873,7 @@
 				BFCA7838174DFD3F00666CBA /* RCLoginViewController.xib in Resources */,
 				64A917081751E554007D629D /* RCRegisterViewController.xib in Resources */,
 				6407BBD61753B719000F29C5 /* RCFriendListViewController.xib in Resources */,
-				BF2CD6241754E12D00EF2E85 /* RCFeedPostPreview.xib in Resources */,
+				BF2CD6241754E12D00EF2E85 /* RCPostCommentCell.xib in Resources */,
 				BF68E7041756090200E5C1F4 /* RCMainFeedViewController.xib in Resources */,
 				6407BBDE1754D5EB000F29C5 /* RCUserTableCell.xib in Resources */,
 				6491DCEE1755CF8D006FBCD8 /* RCFindFriendsViewController.xib in Resources */,
@@ -935,6 +975,15 @@
 				BFE307371795961C000C9C58 /* friendListFollow.png in Resources */,
 				BFE307381795961C000C9C58 /* friendListFriend.png in Resources */,
 				BFE307391795961C000C9C58 /* friendListPending.png in Resources */,
+				64B81CA217954FC800B5A825 /* viewPostImageFrame.png in Resources */,
+				64B81CA61795551E00B5A825 /* viewPostCommentButton.png in Resources */,
+				64B81CA71795551E00B5A825 /* viewPostFollowButton.png in Resources */,
+				64B81CA81795551E00B5A825 /* viewPostFriendWithButton.png in Resources */,
+				64B81CAA179556A900B5A825 /* viewPostCommentFrame@2x.png in Resources */,
+				64B81CB21795CCA600B5A825 /* RCCommentPostingViewController.xib in Resources */,
+				64B81CB51795DE5600B5A825 /* postCommentCancelButton.png in Resources */,
+				64B81CB61795DE5600B5A825 /* postCommentPostButton.png in Resources */,
+				64B81CB81795E21C00B5A825 /* buttonPlay.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -987,7 +1036,7 @@
 				64A9170B1751F6C9007D629D /* RCRegisterViewController.m in Sources */,
 				6407BBD917545579000F29C5 /* RCUser.m in Sources */,
 				6407BBDC17545A87000F29C5 /* RCFriendListViewController.m in Sources */,
-				BF2CD6271754E60C00EF2E85 /* RCFeedPostPreview.m in Sources */,
+				BF2CD6271754E60C00EF2E85 /* RCPostCommentCell.m in Sources */,
 				BF68E7031756090200E5C1F4 /* RCMainFeedViewController.m in Sources */,
 				6407BBE11754D81C000F29C5 /* RCUserTableCell.m in Sources */,
 				6491DCED1755CF8D006FBCD8 /* RCFindFriendsViewController.m in Sources */,
@@ -1011,6 +1060,8 @@
 				6460E87A178AE4070065D6BA /* RCProfileViewCell.m in Sources */,
 				64EEBFC2178DC10500D2C968 /* UIViewController+RCCustomBackButtonViewController.m in Sources */,
 				BF0B2E571794329800A1B8E0 /* RCAddLandmarkController.m in Sources */,
+				64B81CAD1795BD4C00B5A825 /* RCComment.m in Sources */,
+				64B81CB11795CCA600B5A825 /* RCCommentPostingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

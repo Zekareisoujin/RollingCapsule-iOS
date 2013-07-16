@@ -6,14 +6,14 @@
 //  Copyright (c) 2013 Fox Cradle. All rights reserved.
 //
 
-#import "RCFeedPostPreview.h"
+#import "RCPostCommentCell.h"
 #import "RCConstants.h"
 #import "RCUtilities.h"
 #import "RCAmazonS3Helper.h"
 #import "RCPost.h"
 #import "RCResourceCache.h"
 
-@implementation RCFeedPostPreview
+@implementation RCPostCommentCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {

@@ -24,6 +24,7 @@
 @property (nonatomic, assign) int     postID;
 @property (nonatomic, assign) int     userID;
 @property (nonatomic, assign) int     landmarkID;
+@property (nonatomic, strong) NSString* subject;
 
 @property (nonatomic,retain) NSString *authorName;
 @property (nonatomic,retain) NSString *authorEmail;
