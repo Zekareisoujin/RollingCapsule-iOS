@@ -9,8 +9,12 @@
 #import "RCUser.h"
 #import "RCConstants.h"
 #import "RCUtilities.h"
-#import "SBJson.h"
+#import "RCResourceCache.h"
+#import "RCAmazonS3Helper.h"
+#import "RCConstants.h"
+#import "RCUtilities.h"
 #import "RCConnectionManager.h"
+#import "SBJson.h"
 
 @interface RCUser ()
 
@@ -21,6 +25,7 @@
 @synthesize name = _name;
 @synthesize email = _email;
 @synthesize userID = _userID;
+@synthesize displayAvatar = _displayAvatar;
 
 - (id) initWithNSDictionary:(NSDictionary *)userData {
     self = [super init];
@@ -39,6 +44,42 @@
     [retval setObject:_email forKey:@"email"];
     [retval setValue:[NSNumber numberWithInt:_userID] forKey:@"id"];
     return retval;
+}
+
+- (UIImage*) getUserAvatar: (int)viewingUserID {
+    if (_displayAvatar == nil) {
+        RCResourceCache *cache = [RCResourceCache centralCache];
+        NSString *key = [[NSString alloc] initWithFormat:@"%@/%d-avatar", RCUsersResource, _userID];
+        
+        UIImage *cachedImg = [cache getResourceForKey:key usingQuery:^{
+            UIImage *image = [RCAmazonS3Helper getAvatarImage:self withLoggedinUserID:viewingUserID];
+            return image;
+        }];
+        
+        if (cachedImg == nil)
+            _displayAvatar = [UIImage imageNamed:@"default_avatar.png"];
+        else
+            _displayAvatar = cachedImg;
+    }
+    return _displayAvatar;
+}
+
+- (void) getUserAvatarAsync: (int)viewingUserID completionHandler:(void (^)(UIImage*)) completionFunc {
+    if (_displayAvatar == nil) {
+        RCResourceCache *cache = [RCResourceCache centralCache];
+        NSString *key = [[NSString alloc] initWithFormat:@"%@/%d/avatar", RCUsersResource, _userID];
+        
+        UIImage *cachedImg = [cache getResourceForKey:key usingQuery:^{
+            UIImage *image = [RCAmazonS3Helper getAvatarImage:self withLoggedinUserID:viewingUserID];
+            return image;
+        }];
+        
+        if (cachedImg == nil)
+            _displayAvatar = [UIImage imageNamed:@"default_avatar.png"];
+        else
+            _displayAvatar = cachedImg;
+    }
+    completionFunc(_displayAvatar);
 }
 
 - (void) updateNewName : (NSString*) newName {
@@ -245,5 +286,30 @@
     }
 }
 
-
++ (void) getUserWithIDAsync: (int)userID completionHandler:(void (^)(RCUser*))completionFunc {
+    RCResourceCache *cache = [RCResourceCache centralCache];
+    NSString *key = [NSString stringWithFormat:@"%@/%d", RCUsersResource, userID];
+    
+    RCUser* retUser = [cache getResourceForKey:key usingQuery:^{
+        NSURL *url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%d/details", RCServiceURL, RCUsersResource, userID]];
+        NSURLRequest *request = CreateHttpGetRequest(url);
+        NSURLResponse* response;
+        NSError* error = nil;
+        NSData* data = [NSURLConnection sendSynchronousRequest:request  returningResponse:&response error:&error];
+        NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+        
+        SBJsonParser *jsonParser = [SBJsonParser new];
+        NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
+        
+        RCUser *newUser;
+        if (jsonData != NULL) {
+            newUser = [[RCUser alloc] initWithNSDictionary:jsonData];
+        }else {
+            alertStatus(@"Failed to retrieve user info", @"Error", nil);
+        }
+        return newUser;
+    }];
+    
+    completionFunc(retUser);
+}
 @end

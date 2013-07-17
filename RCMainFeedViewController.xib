@@ -535,22 +535,6 @@
 								<float key="scoringTypeFloat">40</float>
 								<int key="contentType">3</int>
 							</object>
-							<object class="IBNSLayoutConstraint" id="696161492">
-								<reference key="firstItem" ref="557520516"/>
-								<int key="firstAttribute">6</int>
-								<int key="relation">0</int>
-								<reference key="secondItem" ref="802314420"/>
-								<int key="secondAttribute">6</int>
-								<float key="multiplier">1</float>
-								<object class="IBLayoutConstant" key="constant">
-									<double key="value">0.0</double>
-								</object>
-								<float key="priority">1000</float>
-								<reference key="containingView" ref="191373211"/>
-								<int key="scoringType">6</int>
-								<float key="scoringTypeFloat">24</float>
-								<int key="contentType">2</int>
-							</object>
 							<object class="IBNSLayoutConstraint" id="763119720">
 								<reference key="firstItem" ref="557520516"/>
 								<int key="firstAttribute">5</int>
@@ -1539,11 +1523,6 @@
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">482</int>
-						<reference key="object" ref="696161492"/>
-						<reference key="parent" ref="191373211"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">483</int>
 						<reference key="object" ref="341771112"/>
 						<reference key="parent" ref="191373211"/>
@@ -1562,7 +1541,7 @@
 				<string key="-2.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="1.CustomClassName">UIControl</string>
 				<string key="1.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<array key="1.IBViewMetadataConstraints">
+				<array class="NSMutableArray" key="1.IBViewMetadataConstraints">
 					<reference ref="28859792"/>
 					<reference ref="959500555"/>
 					<reference ref="307327372"/>
@@ -1591,7 +1570,6 @@
 					<reference ref="400039776"/>
 					<reference ref="706724175"/>
 					<reference ref="763119720"/>
-					<reference ref="696161492"/>
 					<reference ref="341771112"/>
 					<reference ref="416440067"/>
 				</array>
@@ -1679,7 +1657,6 @@
 				<string key="475.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="477.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="478.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="482.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="483.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="484.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="73.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -1706,14 +1683,14 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="loading2.gif">{150, 150}</string>
-			<string key="locate.png">{133, 154}</string>
-			<string key="mainBackground.png">{640, 1135}</string>
-			<string key="mainTopBanner.png">{653, 81}</string>
-			<string key="mainViewOptionFollow.png">{63, 61}</string>
-			<string key="mainViewOptionFriends.png">{63, 61}</string>
-			<string key="mainViewOptionPublic.png">{62, 61}</string>
-			<string key="mapViewAddLandmark.png">{133, 154}</string>
+			<string key="loading2.gif">{16, 16}</string>
+			<string key="locate.png">{16, 16}</string>
+			<string key="mainBackground.png">{16, 16}</string>
+			<string key="mainTopBanner.png">{16, 16}</string>
+			<string key="mainViewOptionFollow.png">{16, 16}</string>
+			<string key="mainViewOptionFriends.png">{16, 16}</string>
+			<string key="mainViewOptionPublic.png">{16, 16}</string>
+			<string key="mapViewAddLandmark.png">{16, 16}</string>
 		</dictionary>
 		<bool key="IBDocument.UseAutolayout">YES</bool>
 		<string key="IBCocoaTouchPluginVersion">2083</string>

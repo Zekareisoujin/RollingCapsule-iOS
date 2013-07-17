@@ -10,10 +10,14 @@
 #import "RCUser.h"
 
 
-@interface RCMainMenuViewController : UIViewController
+@interface RCMainMenuViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) UINavigationController *navigationController;
 @property (nonatomic, strong) RCUser* user;
+
+@property (weak, nonatomic) IBOutlet UIImageView *imgUserAvatar;
+@property (weak, nonatomic) IBOutlet UILabel *lblUserName;
+@property (weak, nonatomic) IBOutlet UITableView *menuTable;
 
 @property (weak, nonatomic) IBOutlet UIButton *btnMainFeedNav;
 @property (weak, nonatomic) IBOutlet UIButton *btnUserProfileNav;
@@ -27,6 +31,6 @@
 - (IBAction)btnActionMainFeedNav:(id)sender;
 - (IBAction)btnActionUserProfileNav:(id)sender;
 - (IBAction)btnActionFriendViewNav:(id)sender;
-- (IBAction)btnActionLogOut:(id)sender;
--(void) setNavigationBarMenuBttonForViewController:(UIViewController *) viewController;
+- (IBAction)btnActionSetting:(id)sender;
+- (void)setNavigationBarMenuBttonForViewController:(UIViewController *) viewController;
 @end

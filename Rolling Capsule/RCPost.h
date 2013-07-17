@@ -26,9 +26,12 @@
 @property (nonatomic, assign) int     landmarkID;
 @property (nonatomic, strong) NSString* subject;
 
-@property (nonatomic,retain) NSString *authorName;
-@property (nonatomic,retain) NSString *authorEmail;
+@property (nonatomic,strong) NSString *authorName;
+@property (nonatomic,strong) NSString *authorEmail;
+@property (nonatomic,strong) UIImage *thumbnailImage;
 
 - (MKMapItem*)mapItem;
 - (id) initWithNSDictionary:(NSDictionary *)userData;
+
+- (void) getThumbnailImageAsync: (int)viewingUserID completion:(void (^)(UIImage*)) completionFunc;
 @end
