@@ -103,7 +103,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [_connectionManager reset];
+    //[_connectionManager reset];
     
     //[_keyboardPushHandler reset];
     //_keyboardPushHandler.view = self.view;
@@ -160,7 +160,20 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     
     [self getPostImageFromInternet];
     [self asynchGetCommentsRequest];
-    //[self animateViewAppearance];
+    
+    //prepare follow and friend button
+    _btnFollow.enabled = NO;
+    _btnFriendsWith.enabled = NO;
+    if (_loggedInUser.userID != _postOwner.userID) {
+        [_loggedInUser getUserFollowRelationAsync:_postOwner completion:^(BOOL isFollowing) {
+            if (!isFollowing)
+                _btnFollow.enabled = YES;
+        } withFailureFunction:nil];
+        [_loggedInUser getUserFriendRelationAsync:_postOwner completion:^(BOOL isFriend) {
+            if (!isFriend)
+                _btnFriendsWith.enabled = YES;
+        } withFailureFunction:nil];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -194,9 +207,9 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
         NSObject* cachedObj = [cache getResourceForKey:key usingQuery:^{
-            [_connectionManager startConnection];
+            [RCConnectionManager startConnection];
             NSObject *object = [RCAmazonS3Helper getUserMediaImage:_postOwner withLoggedinUserID:_loggedInUser.userID   withImageUrl:_post.fileUrl];
-            [_connectionManager endConnection];
+            [RCConnectionManager endConnection];
             return object;
         }];
         UIImage *thumbnailImage;
@@ -204,9 +217,9 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
         if (![cachedObj isKindOfClass:[UIImage class]]) {
             NSString *thumbnailKey = [NSString stringWithFormat:@"%@-thumbnail",key];
             thumbnailImage = [cache getResourceForKey:thumbnailKey usingQuery:^{
-                [_connectionManager startConnection];
+                [RCConnectionManager startConnection];
                 NSObject *object = [RCAmazonS3Helper getUserMediaImage:_postOwner withLoggedinUserID:_loggedInUser.userID   withImageUrl:_post.thumbnailUrl];
-                [_connectionManager endConnection];
+                [RCConnectionManager endConnection];
                 return object;
             }];
 
@@ -238,7 +251,6 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 
 - (void) setupImageScrollView {
     UIImage *image = _postImage;
-    _scrollViewImage.delegate = self;
     _imageViewFullPost = [[UIImageView alloc] initWithImage:image];
     CGSize size = _imageViewFullPost.frame.size;
     _scrollViewImage.contentSize = size;
@@ -282,7 +294,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     [_scrollViewImage removeFromSuperview];
 }
 
-#pragma mark - UIScrollView delegate
+#pragma mark - UIScrollViewDelegate
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
     return self.imageViewFullPost;
@@ -426,14 +438,14 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCCommentsResource]];
         
         NSURLRequest *request = CreateHttpPostRequest(url, postData);
-        [_connectionManager startConnection];
+        [RCConnectionManager startConnection];
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
          {
              bool _successfulPost;
              NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
              int responseStatusCode = [httpResponse statusCode];
-             [_connectionManager endConnection];
+             [RCConnectionManager endConnection];
              if (responseStatusCode != RCHttpOkStatusCode) {
                  _successfulPost = NO;
              } else _successfulPost = YES;
@@ -468,11 +480,11 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     @try {
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/comments?mobile=1", RCServiceURL, RCPostsResource, _post.postID]];
         NSURLRequest *request = CreateHttpGetRequest(url);
-        [_connectionManager startConnection];
+        [RCConnectionManager startConnection];
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
          {
-             [_connectionManager endConnection];
+             [RCConnectionManager endConnection];
              [_comments removeAllObjects];
              NSString *responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
              SBJsonParser *jsonParser = [[SBJsonParser alloc] init];
@@ -503,12 +515,12 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     @try {
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d?mobile=1", RCServiceURL, RCPostsResource, _post.postID]];
         NSURLRequest *request = CreateHttpDeleteRequest(url);
-        [_connectionManager startConnection];
+        [RCConnectionManager startConnection];
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
          {
-             [_connectionManager endConnection];
+             [RCConnectionManager endConnection];
              NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
              NSLog(@"Post deletion status string: %@", responseData);
              
@@ -712,9 +724,9 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
         dispatch_async(queue, ^{
             [cache invalidateKey:key];
             _videoUrl = (NSURL*) [cache getResourceForKey:key usingQuery:^{
-                [_connectionManager startConnection];
+                [RCConnectionManager startConnection];
                 NSObject *object = [RCAmazonS3Helper getUserMediaImage:_postOwner withLoggedinUserID:_loggedInUser.userID   withImageUrl:_post.fileUrl];
-                [_connectionManager endConnection];
+                [RCConnectionManager endConnection];
                 return object;
             }];
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -730,20 +742,19 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     NSLog(@"movie player load state changed");
 }
 
-- (IBAction)btnFriensWithTouchUpInside:(id)sender {
-    NSLog(@"%@ %@",self.presentingViewController, self.presentingViewController.navigationController);
-    UINavigationController *navigationController;
-    if ([self.presentingViewController isKindOfClass:[UINavigationController class]])
-        navigationController = (UINavigationController*)self.presentingViewController;
-    else
-        navigationController = self.presentingViewController.navigationController;
-    [self dismissViewControllerAnimated:YES completion:^{
-        RCFriendListViewController *friendListViewController = [[RCFriendListViewController alloc] initWithUser:_postOwner withLoggedinUser:_loggedInUser];
-        [navigationController pushViewController:friendListViewController animated:YES];
+- (IBAction)btnFriendsWithTouchUpInside:(id)sender {
+    [RCUser addFriendAsync:_postOwner withSuccessfulFunction:^(int friendID) {
+        _btnFriendsWith.enabled = NO;
+    } withFailureFunction:^(NSString *errorMessage) {
+        alertStatus(errorMessage, @"Error adding user as friend", nil);
     }];
-    
 }
 
 - (IBAction)btnFollowTouchUpInside:(id)sender {
+    [RCUser followUserAsync:_postOwner withSuccessfulFunction:^(int followID) {
+        _btnFollow.enabled = NO;
+    } withFailureFunction:^(NSString *errorMessage) {
+        alertStatus(errorMessage, @"Error following user", nil);
+    }];
 }
 @end

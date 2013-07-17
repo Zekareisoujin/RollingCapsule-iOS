@@ -9,6 +9,8 @@
 #import "RCUser.h"
 #import "RCConstants.h"
 #import "RCUtilities.h"
+#import "SBJson.h"
+#import "RCConnectionManager.h"
 
 @interface RCUser ()
 
@@ -51,7 +53,9 @@
     NSURLRequest *request = CreateHttpPutRequest(url, putData);
     NSURLResponse *response;
     NSError *error = nil;
+    [RCConnectionManager startConnection];
     NSData *userData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    [RCConnectionManager endConnection];
     if (error == nil) {
         NSString *responseData = [[NSString alloc]initWithData:userData encoding:NSUTF8StringEncoding];
         if (![responseData isEqualToString:@"ok"]) {
@@ -59,4 +63,187 @@
         }
     } else alertStatus(@"Could not connect to server to upload user info, please try again", RCAlertMessageConnectionFailed, nil);
 }
+
++ (void) followUserAsync:(RCUser*) otherUser withSuccessfulFunction:(void (^)(int)) successFunction withFailureFunction:(void (^)(NSString*)) failureFunction {
+    @try {
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@?mobile=1", RCServiceURL, RCFollowResource]];
+        NSMutableString* dataSt = initQueryString(@"follow[followee_id]",
+                                                  [[NSString alloc] initWithFormat:@"%d",otherUser.userID]);
+        NSData *postData = [dataSt dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+        NSURLRequest *request = CreateHttpPostRequest(url, postData);
+        [RCConnectionManager startConnection];
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+         {
+             [RCConnectionManager endConnection];
+             if (error == nil) {
+                 NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+                 
+                 SBJsonParser *jsonParser = [SBJsonParser new];
+                 NSDictionary *followJson = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
+                 NSLog(@"%@",followJson);
+                 
+                 if (followJson != NULL) {
+                     NSDictionary *followObj = [followJson objectForKey:@"follow"];
+                     if ((NSNull*) followObj == [NSNull null]) {
+                         if (failureFunction != nil)
+                             failureFunction(@"Server error, please try again later");
+                     }else {
+                         int followID = [[followObj objectForKey:@"id"] intValue];
+                         successFunction(followID);
+                     }
+
+                 } else {
+                     if (failureFunction != nil)
+                         failureFunction(@"Server error, please try again later");
+                 }
+                 
+             } else {
+                 if (failureFunction != nil)
+                     failureFunction(RCAlertMessageConnectionFailed);
+             }
+         }];
+    }
+    @catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+        if (failureFunction != nil)
+            failureFunction(RCAlertMessageConnectionFailed);
+    }
+}
+
+- (void) getUserFollowRelationAsync:(RCUser*) otherUser completion:(void (^)(BOOL))processFunction withFailureFunction:(void (^)(NSString*)) failureFunction {
+    //Asynchronous Request
+    @try {
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/relation_follow?mobile=1&other_user=%d", RCServiceURL, RCUsersResource, _userID, otherUser.userID ]];
+        NSURLRequest *request = CreateHttpGetRequest(url);
+        [RCConnectionManager startConnection];
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+         {
+             [RCConnectionManager endConnection];
+             if (error == nil) {
+                 NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+                 
+                 SBJsonParser *jsonParser = [SBJsonParser new];
+                 NSDictionary *followJson = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
+                 NSLog(@"%@",followJson);
+                 BOOL isFollowing;
+                 if (followJson != NULL) {
+                     NSDictionary *followObj = [followJson objectForKey:@"follow"];
+                     if ((NSNull*) followObj == [NSNull null]) {
+                         isFollowing = NO;
+                     }else {
+                         isFollowing = YES;
+                     }
+                     processFunction(isFollowing);
+                 }else {
+                     if (failureFunction != nil)
+                         failureFunction(@"Server error, please try again later");
+                 }
+             } else {
+                 NSLog(@"connection error: %@", error);
+                 if (failureFunction != nil)
+                     failureFunction(RCAlertMessageConnectionFailed);
+             }
+         }];
+    }
+    @catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+        if (failureFunction != nil)
+            failureFunction(RCAlertMessageConnectionFailed);
+    }
+}
+
+- (void) getUserFriendRelationAsync:(RCUser*) otherUser completion:(void (^)(BOOL))processFunction withFailureFunction:(void (^)(NSString*)) failureFunction {
+    //Asynchronous Request
+    @try {
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/relation?mobile=1&other_user=%d", RCServiceURL, RCUsersResource, _userID, otherUser.userID]];
+        NSURLRequest *request = CreateHttpGetRequest(url);
+        
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+         {
+             [RCConnectionManager endConnection];
+             if (error == nil) {
+                 NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+                 
+                 SBJsonParser *jsonParser = [SBJsonParser new];
+                 NSDictionary *friendJson = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
+                 NSLog(@"%@",friendJson);
+                 BOOL isFriend;
+                 if (friendJson != NULL) {
+                     NSDictionary *statusObj = [friendJson objectForKey:@"status"];
+                     if ((NSNull*) statusObj == [NSNull null]) {
+                         isFriend = NO;
+                     }else {
+                         isFriend = YES;
+                     }
+                     processFunction(isFriend);
+                 } else {
+                     if (failureFunction != nil)
+                         failureFunction(@"Server error, please try again later");
+                 }
+             } else {
+                 NSLog(@"connection error: %@", error);
+                 if (failureFunction != nil)
+                     failureFunction(RCAlertMessageConnectionFailed);
+             }
+
+         }];
+    }
+    @catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+        if (failureFunction != nil)
+            failureFunction(RCAlertMessageConnectionFailed);
+    }
+}
+
++ (void) addFriendAsync:(RCUser*) otherUser withSuccessfulFunction:(void (^)(int)) successFunction withFailureFunction:(void (^)(NSString*)) failureFunction {
+    @try {
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCFriendshipsResource]];
+        NSMutableString* dataSt = initQueryString(@"friendship[friend_id]",
+                                                  [[NSString alloc] initWithFormat:@"%d",otherUser.userID]);
+        NSData *postData = [dataSt dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+        NSURLRequest *request = CreateHttpPostRequest(url, postData);
+        [RCConnectionManager startConnection];
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+         {
+             [RCConnectionManager endConnection];
+             if (error == nil) {
+                 NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+                 
+                 SBJsonParser *jsonParser = [SBJsonParser new];
+                 NSDictionary *friendJson = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
+                 NSLog(@"%@",friendJson);
+                 BOOL successfulAdd;
+                 if (friendJson != NULL) {
+                     NSDictionary *statusObj = [friendJson objectForKey:@"status"];
+                     if ((NSNull*) statusObj == [NSNull null]) {
+                         successfulAdd = NO;
+                         failureFunction(@"Server error, please try again later");
+                     }else {
+                         successfulAdd = YES;
+                         int friendshipID = [[friendJson objectForKey:@"id"] intValue];
+                         successFunction(friendshipID);
+                     }
+                 } else {
+                     if (failureFunction != nil)
+                         failureFunction(@"Server error, please try again later");
+                 }
+             } else {
+                 NSLog(@"connection error: %@", error);
+                 if (failureFunction != nil)
+                     failureFunction(RCAlertMessageConnectionFailed);
+             }
+         }];
+    }
+    @catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+        if (failureFunction != nil)
+            failureFunction(RCAlertMessageConnectionFailed);
+    }
+}
+
+
 @end

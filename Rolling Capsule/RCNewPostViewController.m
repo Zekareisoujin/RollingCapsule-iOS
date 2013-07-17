@@ -87,7 +87,7 @@ NSData *_thumbnailData;
     if (_landmarkTableVisible) {
         _landmarkTableVisible = NO;
         [_viewLandmark removeFromSuperview];
-        [self.view addGestureRecognizer:_tapGestureRecognizer];
+        //[self.view addGestureRecognizer:_tapGestureRecognizer];
     } else {
         [self asynchGetLandmarkRequest];
         [self.view addSubview:_viewLandmark];
@@ -123,7 +123,7 @@ NSData *_thumbnailData;
     //initialize tap gesture that would be used either by background image or by
     //the whole view to handle keyboard pushing up/down
     _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
-    [self.view addGestureRecognizer:_tapGestureRecognizer];
+    //[self.view addGestureRecognizer:_tapGestureRecognizer];
     _isTapToCloseKeyboard = NO;
     
     //prepare text view placeholder
@@ -172,7 +172,37 @@ NSData *_thumbnailData;
     //this method helps reset the status to initial state (have not uploaded)
     [self resetUploadStatus];
     _uploadData = nil;
-    [self animateViewAppearance];
+    
+    //initialize label and text
+    //initalize name text
+    _lblLandmarkName.text = _user.name;
+    //
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"dd/M/yyyy"];
+    _lblDate.text = [formatter  stringFromDate:[NSDate date]];
+    
+    //initialize text field with user name as speaker
+    NSString *textContent = [NSString stringWithFormat:@"%@ ",_user.name];
+    UIFont *boldFont = [UIFont fontWithName:@"Helvetica-Bold" size:17.0];
+    UIFont *regularFont = [UIFont fontWithName:@"Helvetica" size:17.0];
+    UIColor *foregroundColor = [UIColor whiteColor];
+    
+    // Create the attributes
+    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys:
+                           regularFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName,nil];
+    NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:
+                              boldFont, NSFontAttributeName,
+                              foregroundColor, NSForegroundColorAttributeName, nil];
+    NSRange range = NSMakeRange(0,[_user.name length]);
+    // Create the attributed string (text + attributes)
+    NSMutableAttributedString *attributedText =
+    [[NSMutableAttributedString alloc] initWithString:textContent
+                                           attributes:attrs];
+    [attributedText setAttributes:subAttrs range:range];
+
+    [_txtViewPostContent setAttributedText:attributedText];
+    
+    //[_txtViewPostContent setText:_user.name];
 }
 
 - (void) resetUploadStatus {
@@ -321,7 +351,8 @@ NSData *_thumbnailData;
 - (void) asynchPostNewResuest {
     //Asynchronous Request
     @try {
-        _postContent = [_txtViewPostContent text];
+        NSString* prefix = [NSString stringWithFormat:@"%@ ",_user.name];
+        _postContent = [[_txtViewPostContent text] substringFromIndex:[prefix length]];
         NSString *postSubject = [_txtFieldPostSubject text];
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
         CLLocationDegrees latitude = appDelegate.currentLocation.coordinate.latitude;
@@ -364,12 +395,16 @@ NSData *_thumbnailData;
             if (_successfulPost) {
                 //TODO open main news feed page
                 [self showAlertMessage:@"Image posted successfully!" withTitle:@"Success!"];
-                [self animateViewDisapperance:^ {
+                [self dismissViewControllerAnimated:YES completion:^{
+                    if (_postComplete != nil)
+                        _postComplete();
+                }];
+                /*[self animateViewDisapperance:^ {
                     if (_postComplete != nil)
                         _postComplete();
                     [self.view removeFromSuperview];
                     [self removeFromParentViewController];
-                }];
+                }];*/
             }else {
                 alertStatus([NSString stringWithFormat:@"Please try again! %@", responseData], @"Post Failed!", self);
                 _isPosting = NO;
@@ -424,27 +459,9 @@ NSData *_thumbnailData;
 
 }
 
-#pragma mark - UIActionSheetDelegate
-
-- (void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
-{
-    if ([actionSheet cancelButtonIndex] == buttonIndex)
-        return;
-    UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
-    imagePicker.delegate = self;
-    NSString* buttonLabel = [actionSheet buttonTitleAtIndex:buttonIndex];
-    if ([buttonLabel isEqualToString:RCImageSourcePhotoLibrary])
-        [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
-    //else if ([buttonLabel isEqualToString:RCImageSourcePhotoAlbum])
-    //    [imagePicker setSourceType:UIImagePickerControllerSourceTypeSavedPhotosAlbum];
-    else if ([buttonLabel isEqualToString:RCImageSourceCamera])
-        [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
-    [self presentViewController:imagePicker animated:YES completion:nil];
-}
-
 #pragma mark - UI events
 
-- (void)backgroundTouchUpInside {
+- (IBAction)backgroundTouchUpInside:(id)sender {
     if ([_txtFieldPostSubject isEditing])
         [_txtFieldPostSubject resignFirstResponder];
     else
@@ -452,11 +469,43 @@ NSData *_thumbnailData;
 }
 
 - (IBAction) openLandmarkView:(id) sender {
-    [self.view removeGestureRecognizer:_tapGestureRecognizer];
+    //[self.view removeGestureRecognizer:_tapGestureRecognizer];
     [self callLandmarkTable:sender];
+}
+#pragma mark - UIScrollViewDelegate
+- (void) setupImageScrollView {
+    UIImage *image = _postImage;
+    _scrollViewImage.delegate = self;
+    _imageViewPostPicture = [[UIImageView alloc] initWithImage:image];
+    CGSize size = _imageViewPostPicture.frame.size;
+    _scrollViewImage.contentSize = size;
+    [_scrollViewImage addSubview:_imageViewPostPicture];
+    _scrollViewImage.minimumZoomScale = MIN(1.0,_scrollViewImage.frame.size.height/image.size.height);
+    _scrollViewImage.zoomScale = _scrollViewImage.frame.size.height/image.size.height;
+    if (abs(_scrollViewImage.zoomScale - 1.0) < 1e-9) {
+        [self scrollViewDidZoom:_scrollViewImage];
+    }
+}
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
+{
+    return self.imageViewPostPicture;
+}
+- (void)scrollViewDidZoom:(UIScrollView *)scrollView
+{
+    UIView *subView = _imageViewPostPicture;
+    
+    CGFloat offsetX = (scrollView.bounds.size.width > scrollView.contentSize.width)?
+    (scrollView.bounds.size.width - scrollView.contentSize.width) * 0.5 : 0.0;
+    
+    CGFloat offsetY = (scrollView.bounds.size.height > scrollView.contentSize.height)?
+    (scrollView.bounds.size.height - scrollView.contentSize.height) * 0.5 : 0.0;
+    
+    subView.center = CGPointMake(scrollView.contentSize.width * 0.5 + offsetX,
+                                 scrollView.contentSize.height * 0.5 + offsetY);
 }
 
 #pragma mark - UIImagePickerControllerDelegate methods
+
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     
@@ -474,7 +523,7 @@ NSData *_thumbnailData;
                          [self removePhotoSourceControlAndAddPrivacyControl];
 					 }];
     if (_activityIndicator == nil)
-        _activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:_imageViewPostPicture.frame];
+        _activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:_scrollViewImage.frame];
     [self.view addSubview:_activityIndicator];
     [_activityIndicator startAnimating];
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
@@ -501,7 +550,8 @@ NSData *_thumbnailData;
             
             //Snatch a frame
             CGImageRef frameRef = [generator copyCGImageAtTime:CMTimeMake(frameTimeStart,frameLocation) actualTime:nil error:nil];
-            thumbnail = [self generateSquareImageThumbnail:[UIImage imageWithCGImage:frameRef]];
+            _postImage = [UIImage imageWithCGImage:frameRef];
+            thumbnail = [self generateSquareImageThumbnail:_postImage];
         } else {
             // Get the selected image
             _isMovie = NO;
@@ -509,7 +559,10 @@ NSData *_thumbnailData;
             thumbnail = [self generateSquareImageThumbnail:_postImage];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
-            [_imageViewPostPicture setImage:thumbnail];
+            [self setupImageScrollView];
+            /*_imageViewPostPicture = [[UIImageView alloc] initWithImage:_postImage];
+            [_imageViewPostPicture setImage:_postImage];
+            [_scrollViewImage addSubview:_imageViewPostPicture];*/
             NSLog(@"remove activity indicator");
             [_activityIndicator removeFromSuperview];
             [_activityIndicator stopAnimating];
@@ -556,10 +609,6 @@ NSData *_thumbnailData;
 
 }
 
-- (void) prepareUploadData {
-    ;
-}
-
 -(void) imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
     [picker dismissViewControllerAnimated:YES completion:nil];
@@ -569,11 +618,35 @@ NSData *_thumbnailData;
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    _keyboardPushHandler.view = self.view;
-    [_keyboardPushHandler reset];
-    NSLog(@"screen size: %d",[[UIScreen mainScreen] bounds].size.height );
+    if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height) {
+        [_keyboardPushHandler reset];
+        _keyboardPushHandler.enabled = YES;
+        _keyboardPushHandler.bottomScreenGap = self.view.frame.size.height - ( _imgViewControlFrame.frame.origin.y + _imgViewControlFrame.frame.size.height);
+        _keyboardPushHandler.view = self.view;
+        [[NSNotificationCenter defaultCenter] addObserver:_keyboardPushHandler
+                                                 selector:@selector(keyboardWillShow:)
+                                                     name:UIKeyboardWillShowNotification
+                                                   object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:_keyboardPushHandler
+                                                 selector:@selector(keyboardWillHide:)
+                                                     name:UIKeyboardWillHideNotification
+                                                   object:nil];
+    }
+    else
+        _keyboardPushHandler.enabled = NO;
     
-    if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height && _viewFirstLoad) {
+    
+    NSLog(@"screen size: %d",[[UIScreen mainScreen] bounds].size.height );
+    UIImage *closeImage = [UIImage imageNamed:@"postCommentCancelButton.png"];
+    CGFloat buttonWidth = closeImage.size.width/3.3;
+    CGFloat buttonHeight = closeImage.size.height/3.3;
+    UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(0,0,buttonWidth,buttonHeight)];
+    [closeButton setBackgroundImage:closeImage forState:UIControlStateNormal];
+    closeButton.frame = CGRectMake(_imgViewMainFrame.frame.origin.x + _imgViewMainFrame.frame.size.width - buttonWidth - 3,_imgViewMainFrame.frame.origin.y + 3,buttonWidth,buttonHeight);
+    [self.view addSubview:closeButton];
+    [closeButton addTarget:self action:@selector(closeBtnTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
+    /*if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height && _viewFirstLoad) {
         _viewFirstLoad = NO;
         [_closeButton setHidden:YES];
         [_closeButton setEnabled:NO];
@@ -592,13 +665,22 @@ NSData *_thumbnailData;
         frame.size.height +=  _imageViewPostFrame.frame.origin.y - 2;
         self.view.frame = frame;
         
-    }
+    }*/
     [super viewWillAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:_keyboardPushHandler
+                                                    name:UIKeyboardWillShowNotification
+                                                  object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:_keyboardPushHandler
+                                                    name:UIKeyboardWillHideNotification
+                                                  object:nil];
     [super viewWillDisappear:animated];
+    
 }
 #pragma mark - animate in the view
 /*- (void)viewDidAppear:(BOOL)animated {
@@ -657,22 +739,27 @@ NSData *_thumbnailData;
 }
 
 - (void) removePhotoSourceControlAndAddPrivacyControl {
-    
-    CGRect frame1 = CGRectMake(_imageViewPostFrame.frame.origin.x + 10,_btnVideoSource.frame.origin.y,54,59);
+    int buttonSize = 41;
+    int distance = 13;
+    CGRect frame1 = CGRectMake(_imgViewControlFrame.frame.origin.x + 20,_btnVideoSource.frame.origin.y,buttonSize,buttonSize);
     CGRect frame2 = frame1, frame3 = frame1;
-    frame2.origin.x = frame1.origin.x+54;
-    frame3.origin.x = frame2.origin.x+54;
+    frame2.origin.x = frame1.origin.x+buttonSize+distance;
+    frame3.origin.x = frame2.origin.x+buttonSize+distance;
     _publicPrivacyButton = [[UIButton alloc] initWithFrame:frame1];
-    [_publicPrivacyButton setImage:[UIImage imageNamed:@"postPublicPrivacyButton.png"] forState:UIControlStateNormal];
+    [_publicPrivacyButton setImage:[UIImage imageNamed:@"postPublicPrivacyButton-2.png"] forState:UIControlStateNormal];
     _friendPrivacyButton = [[UIButton alloc] initWithFrame:frame2];
-    [_friendPrivacyButton setImage:[UIImage imageNamed:@"postFriendPrivacyButton.png"] forState:UIControlStateNormal];
+    [_friendPrivacyButton setImage:[UIImage imageNamed:@"postFriendPrivacyButton-2.png"] forState:UIControlStateNormal];
     _personalPrivacyButton = [[UIButton alloc] initWithFrame:frame3];
-    [_personalPrivacyButton setImage:[UIImage imageNamed:@"postPersonalPrivacyButton.png"] forState:UIControlStateNormal];
-    _postButton = [[UIButton alloc] initWithFrame:_btnVideoSource.frame];
-    [_postButton setImage:[UIImage imageNamed:@"postPostButton-normal.png"] forState:UIControlStateNormal];
-    [_btnCameraSource removeFromSuperview];
-    [_btnPhotoLibrarySource removeFromSuperview];
-    [_btnVideoSource removeFromSuperview];
+    [_personalPrivacyButton setImage:[UIImage imageNamed:@"postPersonalPrivacyButton-2.png"] forState:UIControlStateNormal];
+    CGRect frame4 = _btnVideoSource.frame;
+    frame4.size.width = buttonSize;
+    frame4.size.height = buttonSize;
+    frame4.origin.x = _imgViewControlFrame.frame.origin.x + _imgViewControlFrame.frame.size.width - 10 - buttonSize;
+    _postButton = [[UIButton alloc] initWithFrame:frame4];
+    [_postButton setImage:[UIImage imageNamed:@"postPostButton-2.png"] forState:UIControlStateNormal];
+    [_btnCameraSource setHidden:YES];
+    [_btnPhotoLibrarySource setHidden:YES];
+    [_btnVideoSource setHidden:YES];
     
     
     [_postButton addTarget:self action:@selector(postNew) forControlEvents:UIControlEventTouchUpInside];
@@ -683,10 +770,15 @@ NSData *_thumbnailData;
     _publicPrivacyButton.alpha = 0.0;
     _personalPrivacyButton.alpha = 0.0;
     _friendPrivacyButton.alpha = 0.0;
+    UIImage *separatorImage = [UIImage imageNamed:@"postVerticalSeparator.png"];
+    UIImageView* separator = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,separatorImage.size.width/2.0,separatorImage.size.height/2.0)];
+    [separator setImage:separatorImage];
+    separator.frame = CGRectMake(frame3.origin.x + 54, frame3.origin.y,separatorImage.size.width/2.0,separatorImage.size.height/2.0);
     [self.view addSubview:_postButton];
     [self.view addSubview:_publicPrivacyButton];
     [self.view addSubview:_friendPrivacyButton];
     [self.view addSubview:_personalPrivacyButton];
+    [self.view addSubview:separator];
     [UIView animateWithDuration:0.3
 						  delay:0
 						options:UIViewAnimationOptionCurveEaseInOut
@@ -704,8 +796,9 @@ NSData *_thumbnailData;
 #pragma mark - tap gesture handler
 -(void) handleTap:(UITapGestureRecognizer *)tapGestureRecognizer {
     if (_isTapToCloseKeyboard){
-        [self backgroundTouchUpInside];
+        [self backgroundTouchUpInside:nil];
         _isTapToCloseKeyboard = NO;
+        [self.view removeGestureRecognizer:_tapGestureRecognizer];
     }
     else {
         CGPoint point = [tapGestureRecognizer locationInView:_imageViewPostFrame];
@@ -717,7 +810,7 @@ NSData *_thumbnailData;
 
 #pragma mark - UITextView delegate
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
-    if ([textView isEqual:_txtViewPostContent]) {
+    /*if ([textView isEqual:_txtViewPostContent]) {
         // register for keyboard notifications
         [[NSNotificationCenter defaultCenter] addObserver:_keyboardPushHandler
                                                  selector:@selector(keyboardWillShow:)
@@ -728,50 +821,97 @@ NSData *_thumbnailData;
                                                  selector:@selector(keyboardWillHide:)
                                                      name:UIKeyboardWillHideNotification
                                                    object:nil];
-    }
+    }*/
     return YES;
 }
 - (void)textViewDidEndEditing:(UITextView *)textView {
     if ([textView isEqual:_txtViewPostContent]) {
-        [[NSNotificationCenter defaultCenter] removeObserver:_keyboardPushHandler
+       /* [[NSNotificationCenter defaultCenter] removeObserver:_keyboardPushHandler
                                                         name:UIKeyboardWillShowNotification
                                                       object:nil];
         
         [[NSNotificationCenter defaultCenter] removeObserver:_keyboardPushHandler
                                                         name:UIKeyboardWillHideNotification
-                                                      object:nil];
+                                                      object:nil];*/
     }
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
     _isTapToCloseKeyboard = YES;
+    [self.view addGestureRecognizer:_tapGestureRecognizer];
     if ([textView isEqual:_txtViewPostContent]) {
         // register for keyboard notifications
 
-        if (_firstTimeEditPost )   {
-            [textView setText:@""];
+        /*if (_firstTimeEditPost )   {
+            //[textView setText:@""];
             _firstTimeEditPost = NO;
-        }
+        }*/
     }
+}
+
+- (BOOL)textView:(UITextField *)textField shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)string
+{
+    NSString *resultString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    NSLog(@"resulting string would be: %@", resultString);
+    //TODO optimize
+    NSString *prefixString = [NSString stringWithFormat:@"%@ ",_user.name];
+    NSRange prefixStringRange = [resultString rangeOfString:prefixString];
+    if (prefixStringRange.location == 0) {
+        // prefix found at the beginning of result string
+        return YES;
+    }
+    return NO;
 }
 
 #pragma mark - UITextField delegate
 
-- (void)textFieldDidBeginEditing:(UITextView *)textView {
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     _isTapToCloseKeyboard = YES;
+    [self.view addGestureRecognizer:_tapGestureRecognizer];
+    // register for keyboard notifications
+    /*[[NSNotificationCenter defaultCenter] addObserver:_keyboardPushHandler
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:_keyboardPushHandler
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];*/
+    return YES;
+}
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    /*[[NSNotificationCenter defaultCenter] removeObserver:_keyboardPushHandler
+                                                    name:UIKeyboardWillShowNotification
+                                                  object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:_keyboardPushHandler
+                                                    name:UIKeyboardWillHideNotification
+                                                  object:nil];*/
+}
+- (BOOL)textFieldShouldReturn :(UITextField*) textField {
+    [self.view removeGestureRecognizer:_tapGestureRecognizer];
+    [textField resignFirstResponder];
+    return NO;
 }
 - (IBAction)closeBtnTouchUpInside:(id)sender {
     if (!_isPosting) {
-        [self animateViewDisapperance:^ {
+        [self dismissViewControllerAnimated:YES completion:^{
+            if (_postCancel != nil)
+                _postCancel();
+        }];
+        /*[self animateViewDisapperance:^ {
             if (_postCancel != nil)
                 _postCancel();
             [self.view removeFromSuperview];
             [self removeFromParentViewController];
-        }];
+        }];*/
     } else {
-        [self animateViewDisapperance:^ {
+        [self dismissViewControllerAnimated:YES completion:nil];
+        /*[self animateViewDisapperance:^ {
             [self.view removeFromSuperview];
-        }];
+        }];*/
     }
 }
 
@@ -793,10 +933,11 @@ NSData *_thumbnailData;
     [buttonFileNames addObject:@"postPersonalPrivacyButton"];
     int i = 0;
     for (UIButton *button in buttons) {
-        if([button isEqual:sender]) {
-            [button setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-highlighted.png",[buttonFileNames objectAtIndex:i]]] forState:UIControlStateNormal];
-        } else 
-            [button setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@.png",[buttonFileNames objectAtIndex:i]]] forState:UIControlStateNormal];
+        if([button isEqual:sender])
+            /*[button setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-highlighted.png",[buttonFileNames objectAtIndex:i]]] forState:UIControlStateNormal];*/
+            button.enabled = NO;
+        else
+            button.enabled = YES;//[button setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@.png",[buttonFileNames objectAtIndex:i]]] forState:UIControlStateNormal];
         i++;
     }
 }
@@ -856,14 +997,14 @@ NSData *_thumbnailData;
         _currentLandmark = landmark;
         NSString *imageName = [NSString stringWithFormat:@"landmarkCategory%@.png", landmark.category];
         [button setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
-        _lblLandmarkName.text = landmark.name;
+        _lblLandmarkName.text = [NSString stringWithFormat:@"%@ @ %@",_user.name,landmark.name];
     } else {
         _currentLandmark = nil;
         [button setImage:[UIImage imageNamed:@"locate.png"] forState:UIControlStateNormal];
-        _lblLandmarkName.text = @"";
+        _lblLandmarkName.text = _user.name;
     }
     [_viewLandmark removeFromSuperview];
-    [self.view addGestureRecognizer:_tapGestureRecognizer];
+    //[self.view addGestureRecognizer:_tapGestureRecognizer];
     _landmarkTableVisible = NO;
 }
 

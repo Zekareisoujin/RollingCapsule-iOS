@@ -23,13 +23,15 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imageViewCommentTextViewBackground;
 @property (weak, nonatomic) IBOutlet UIImageView *imgViewCommentFrame;
 @property (weak, nonatomic) IBOutlet UIImageView *imgViewLandmarkCategory;
+@property (weak, nonatomic) IBOutlet UIButton *btnFollow;
+@property (weak, nonatomic) IBOutlet UIButton *btnFriendsWith;
 @property (weak, nonatomic) IBOutlet UILabel *lblPostSubject;
 @property (weak, nonatomic) IBOutlet UITableView *tblViewPostDiscussion;
 @property (weak, nonatomic) IBOutlet UIImageView *imgViewPostImage;
 @property (nonatomic, strong) RCPost *post;
 @property (weak, nonatomic) IBOutlet UIButton *btnComment;
 @property (nonatomic, strong) RCUser *postOwner;
-- (IBAction)btnFriensWithTouchUpInside:(id)sender;
+- (IBAction)btnFriendsWithTouchUpInside:(id)sender;
 - (IBAction)btnFollowTouchUpInside:(id)sender;
 @property (nonatomic, strong) RCUser *loggedInUser;
 @property (nonatomic, assign) int     landmarkID;

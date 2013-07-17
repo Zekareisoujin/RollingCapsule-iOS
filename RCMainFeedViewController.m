@@ -316,8 +316,6 @@ BOOL        _haveScreenshot;
 - (void) switchToNewPostScreen {
     [_postButton setEnabled:NO];
     RCNewPostViewController *newPostController = [[RCNewPostViewController alloc] initWithUser:_user withBackgroundImage:nil];
-    [self addChildViewController:newPostController];
-    newPostController.view.frame = self.view.frame;
     newPostController.postComplete = ^{
         [_postButton setEnabled:YES];
         [self handleRefresh:_refreshControl];
@@ -325,8 +323,12 @@ BOOL        _haveScreenshot;
     newPostController.postCancel = ^{
         [_postButton setEnabled:YES];
     };
-    [self.view addSubview:newPostController.view];
-    [newPostController didMoveToParentViewController:self];
+
+    [self presentViewController:newPostController animated:YES completion:nil];
+    /*[self addChildViewController:newPostController];
+    newPostController.view.frame = self.view.frame;
+        [self.view addSubview:newPostController.view];
+    [newPostController didMoveToParentViewController:self];*/
 }
 
 #pragma mark - UICollectionView Datasource
