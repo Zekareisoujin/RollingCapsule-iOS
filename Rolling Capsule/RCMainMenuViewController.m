@@ -53,9 +53,9 @@ int     activeMenuIndex = 0;
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     
-    menuItemLabel = [[NSArray alloc] initWithObjects:@"Profile", @"Main Feeds", @"Friends", @"Settings", nil];
-    menuItemIcon = [[NSArray alloc] initWithObjects:[UIImage imageNamed:@"menuIconProfile"],
-                                                    [UIImage imageNamed:@"menuIconMainFeeds"],
+    menuItemLabel = [[NSArray alloc] initWithObjects:@"Main Feeds", @"Profile", @"Friends", @"Settings", nil];
+    menuItemIcon = [[NSArray alloc] initWithObjects:[UIImage imageNamed:@"menuIconMainFeeds"],
+                                                    [UIImage imageNamed:@"menuIconProfile"],
                                                     [UIImage imageNamed:@"menuIconFriends"],
                                                     [UIImage imageNamed:@"menuIconSettings"], nil];
     
@@ -102,10 +102,10 @@ int     activeMenuIndex = 0;
     // Not sure of a better way to do this at the moment
     switch (indexPath.row) {
         case 0:
-            [self btnActionUserProfileNav:self];
+            [self btnActionMainFeedNav:self];
             break;
         case 1:
-            [self btnActionMainFeedNav:self];
+            [self btnActionUserProfileNav:self];
             break;
         case 2:
             [self btnActionFriendViewNav:self];
@@ -161,6 +161,8 @@ int     activeMenuIndex = 0;
 - (void) showSelfAsSideMenu {
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate showSideMenu];
+    
+    [self refreshUserAvatar];
 }
 
 - (void)initializeUserFromLogIn:(RCUser *)user {
@@ -187,11 +189,28 @@ int     activeMenuIndex = 0;
     return backButton;
 }
 
--(void) setNavigationBarMenuBttonForViewController:(UIViewController *) viewController {
+- (void)setNavigationBarMenuBttonForViewController:(UIViewController *) viewController {
     UIBarButtonItem *backButton = [self menuBarButton];
 
     UINavigationItem *navigationItem = viewController.navigationItem;
     navigationItem.leftBarButtonItem = backButton;
+}
+
+- (void) refreshUserAvatar {
+    [_lblUserName setText:_user.name];
+    
+    // retrieve user avatar
+    /*dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
+    dispatch_async(queue, ^{
+        UIImage *img = [_user getUserAvatar:_user.userID];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_imgUserAvatar setImage:img];
+        });
+    });*/
+    [_user getUserAvatarAsync:_user.userID completionHandler:^(UIImage* img){
+        [_imgUserAvatar setImage:img];
+    }];
 }
 
 @end

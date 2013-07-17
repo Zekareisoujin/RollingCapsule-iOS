@@ -516,7 +516,7 @@ double  minimapScaleY;
 #pragma mark - Helper Methods
 
 -(void) getAvatarImageFromInternet {
-    RCResourceCache *cache = [RCResourceCache centralCache];
+    /*RCResourceCache *cache = [RCResourceCache centralCache];
     NSString *key = [[NSString alloc] initWithFormat:@"%@/%d-avatar", RCUsersResource, _profileUser.userID];
     
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
@@ -529,11 +529,6 @@ double  minimapScaleY;
         }];
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            /*UIControlState controlState = UIControlStateNormal;
-            if (_profileUser.userID != _viewingUserID)
-                controlState = UIControlStateDisabled;
-            else
-                _btnAvatarImg.enabled = YES;*/
             if (cachedImg == nil)
                 _userAvatarImage = [UIImage imageNamed:@"default_avatar.png"];
             else
@@ -541,7 +536,11 @@ double  minimapScaleY;
             [_btnAvatarImg setBackgroundImage:_userAvatarImage forState:UIControlStateDisabled];
             
         });
-    });
+    });*/
+    
+    [_profileUser getUserAvatarAsync:_viewingUserID completionHandler:^(UIImage* img){
+        [_btnAvatarImg setBackgroundImage:img forState:UIControlStateDisabled];
+    }];
 }
 
 #pragma mark - UICollectionView Datasource

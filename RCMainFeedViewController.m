@@ -231,7 +231,7 @@ BOOL        _haveScreenshot;
                 _lblUsername.text = _user.name;
                 
                 //set user avatar image in background
-                dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
+                /*dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
                 dispatch_async(queue, ^{
                     UIImage *image = [RCAmazonS3Helper getAvatarImage:_user withLoggedinUserID:_user.userID];
                     dispatch_async(dispatch_get_main_queue(), ^{
@@ -240,7 +240,10 @@ BOOL        _haveScreenshot;
                         else
                             [_btnUserAvatar setImage:image forState:UIControlStateNormal];
                     });
-                });
+                });*/
+                [_user getUserAvatarAsync:_user.userID completionHandler:^(UIImage* img){
+                    [_btnUserAvatar setImage:img forState:UIControlStateNormal];
+                }];
                 
                 [appDelegate setCurrentUser:_user];
                 [_posts removeAllObjects];

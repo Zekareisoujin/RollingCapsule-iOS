@@ -30,10 +30,10 @@
 }
 
 -(void) populateCellData:(RCUser *) user withLoggedInUserID:(int)loggedInUserID completion:(void (^)(void))callback {
-    _lblEmail.text = user.email;
-    _lblName.text = user.name;
+    [_lblEmail setText:user.email];
+    [_lblName setText:user.name];
     
-    RCResourceCache *cache = [RCResourceCache centralCache];
+    /*RCResourceCache *cache = [RCResourceCache centralCache];
     NSString *key = [NSString stringWithFormat:@"%@/%d", RCUsersResource, user.userID];
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
@@ -49,7 +49,11 @@
                 [_imgViewAvatar setImage:[UIImage imageNamed:@"default_avatar"]];
             callback();
         });
-    });
+    });*/
+    
+    [user getUserAvatarAsync:loggedInUserID completionHandler:^(UIImage* img){
+        [_imgViewAvatar setImage:img];
+    }];
 }
 
 + (RCUserTableCell *) getFriendListTableCell:(UITableView *)tableView {

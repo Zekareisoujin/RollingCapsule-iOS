@@ -7,6 +7,10 @@
 //
 
 #import "RCPost.h"
+#import "RCConstants.h"
+#import "RCUtilities.h"
+#import "RCAmazonS3Helper.h"
+#import "RCResourceCache.h"
 
 @implementation RCPost
 
@@ -55,6 +59,31 @@
         _updatedTime = [formatter dateFromString:(NSString*)[postData objectForKey:@"updated_at"]];
     }
     return self;
+}
+
+- (void) getThumbnailImageAsync:(int)viewingUserID completion:(void (^)(UIImage *))completionFunc {
+    /*RCResourceCache *cache = [RCResourceCache centralCache];
+    NSString *key = [NSString stringWithFormat:@"%@/%d-thumbnail", RCPostsResource, _postID];
+    dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
+    dispatch_async(queue, ^{
+        RCUser *owner = [[RCUser alloc] init];
+        owner.userID = post.userID;
+        owner.email = post.authorEmail;
+        owner.name = post.authorName;
+        UIImage* cachedImg = (UIImage*)[cache getResourceForKey:key usingQuery:^{
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+            UIImage *image = [RCAmazonS3Helper getUserMediaImage:owner withLoggedinUserID:user.userID withImageUrl:post.thumbnailUrl];
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            NSLog(@"downloading images");
+
+            return image;
+        }];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (cachedImg != nil)
+                [_imageView setImage:cachedImg];
+            callback();
+        });
+    });*/
 }
 
 - (NSString *)title {
