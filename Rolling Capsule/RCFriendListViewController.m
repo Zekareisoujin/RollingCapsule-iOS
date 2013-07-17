@@ -30,6 +30,7 @@ BOOL        _firstRefresh;
 @synthesize items = _items;
 @synthesize user = _user;
 @synthesize refreshControl = _refreshControl;
+@synthesize loggedinUser = _loggedinUser;
 
 RCFriendListViewMode    _viewingMode;
 RCConnectionManager     *_connectionManager;
@@ -44,17 +45,22 @@ NSArray                 *controlButtonArray;
     return self;
 }
 
-- (id)initWithUser:(RCUser *) user {
+- (id)initWithUser:(RCUser *) user withLoggedinUser:(RCUser *)loggedinUser {
     self = [super init];
     if (self) {
         _user = user;
         _connectionManager = [[RCConnectionManager alloc] init];
+        _loggedinUser = loggedinUser;
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    //set up custom back button
+    if ([self.navigationController.viewControllers count] > 2)
+        [self setupBackButton];
     
     [_connectionManager reset];
     
@@ -131,7 +137,7 @@ NSArray                 *controlButtonArray;
     RCUser *user = [_items objectAtIndex:indexPath.row];
     [_connectionManager startConnection];
     [cell populateCellData:user
-                  withLoggedInUserID:_user.userID
+                  withLoggedInUserID:_loggedinUser.userID
                           completion:^ { [_connectionManager endConnection]; }];
     
     return cell;
@@ -145,7 +151,7 @@ NSArray                 *controlButtonArray;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     RCUser *user = [_items objectAtIndex:indexPath.row];
-    RCUserProfileViewController *detailViewController = [[RCUserProfileViewController alloc] initWithUser:user viewingUser:_user];
+    RCUserProfileViewController *detailViewController = [[RCUserProfileViewController alloc] initWithUser:user viewingUser:_loggedinUser];
     [self.navigationController pushViewController:detailViewController animated:YES];
 }
 

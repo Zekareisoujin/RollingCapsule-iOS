@@ -41,7 +41,6 @@
 - (IBAction)btnActionChooseCameraSource:(id)sender;
 - (IBAction)btnActionChoosePhotoLibrarySource:(id)sender;
 - (IBAction)btnActionChooseVideSource:(id)sender;
-- (IBAction)btnPostImageTouchUpInside:(id)sender;
 - (IBAction)openLandmarkView:(id)sender;
 - (id) initWithUser:(RCUser *)user;
 - (id) initWithUser:(RCUser *)user withBackgroundImage:(UIImage*) image;

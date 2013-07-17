@@ -521,7 +521,7 @@ BOOL        _haveScreenshot;
             else
                 postDetailsViewController.landmark = [_landmarks objectForKey:[NSNumber numberWithInt:post.landmarkID]];
             postDetailsViewController.landmarkID = post.landmarkID;
-            [self.navigationController presentViewController:postDetailsViewController animated:YES completion:nil];
+            [self presentViewController:postDetailsViewController animated:YES completion:nil];
             
         }
     }

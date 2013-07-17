@@ -444,26 +444,6 @@ NSData *_thumbnailData;
 
 #pragma mark - UI events
 
-- (IBAction)btnPostImageTouchUpInside:(id)sender {
-    if ([_txtViewPostContent isFirstResponder]) {
-        [_txtViewPostContent endEditing:YES];
-    }
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Select where image is from"
-                                                             delegate:self
-                                                    cancelButtonTitle:nil
-                                               destructiveButtonTitle:nil
-                                                    otherButtonTitles:nil];
-    
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
-        [actionSheet addButtonWithTitle:RCImageSourcePhotoLibrary];
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-        [actionSheet addButtonWithTitle:RCImageSourceCamera];
-    
-    actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:@"Cancel"];
-    [actionSheet showInView:self.view];
-    
-}
-
 - (void)backgroundTouchUpInside {
     if ([_txtFieldPostSubject isEditing])
         [_txtFieldPostSubject resignFirstResponder];

@@ -29,6 +29,8 @@
 @property (nonatomic, strong) RCPost *post;
 @property (weak, nonatomic) IBOutlet UIButton *btnComment;
 @property (nonatomic, strong) RCUser *postOwner;
+- (IBAction)btnFriensWithTouchUpInside:(id)sender;
+- (IBAction)btnFollowTouchUpInside:(id)sender;
 @property (nonatomic, strong) RCUser *loggedInUser;
 @property (nonatomic, assign) int     landmarkID;
 @property (nonatomic, strong) RCLandmark *landmark;

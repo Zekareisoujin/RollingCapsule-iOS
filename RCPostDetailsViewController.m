@@ -15,6 +15,7 @@
 #import "RCKeyboardPushUpHandler.h"
 #import "RCResourceCache.h"
 #import "RCCommentPostingViewController.h"
+#import "RCFriendListViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import "SBJson.h"
 
@@ -727,5 +728,22 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 
 - (void) moviePlayerLoadStateChanged:(id) sender {
     NSLog(@"movie player load state changed");
+}
+
+- (IBAction)btnFriensWithTouchUpInside:(id)sender {
+    NSLog(@"%@ %@",self.presentingViewController, self.presentingViewController.navigationController);
+    UINavigationController *navigationController;
+    if ([self.presentingViewController isKindOfClass:[UINavigationController class]])
+        navigationController = (UINavigationController*)self.presentingViewController;
+    else
+        navigationController = self.presentingViewController.navigationController;
+    [self dismissViewControllerAnimated:YES completion:^{
+        RCFriendListViewController *friendListViewController = [[RCFriendListViewController alloc] initWithUser:_postOwner withLoggedinUser:_loggedInUser];
+        [navigationController pushViewController:friendListViewController animated:YES];
+    }];
+    
+}
+
+- (IBAction)btnFollowTouchUpInside:(id)sender {
 }
 @end
