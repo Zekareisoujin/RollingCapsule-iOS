@@ -38,7 +38,6 @@
 		642E71FE17639D9400B3464E /* RCConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 642E71FD17639D9400B3464E /* RCConnectionManager.m */; };
 		642E72011763A7F600B3464E /* RCKeyboardPushUpHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 642E72001763A7F500B3464E /* RCKeyboardPushUpHandler.m */; };
 		64361E34178E9ABB0041B5C2 /* navBarButtonBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64361E33178E9ABB0041B5C2 /* navBarButtonBackground@2x.png */; };
-		643EACE6175BA0B6002761D9 /* default_avatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 643EACE5175BA0B6002761D9 /* default_avatar.jpg */; };
 		643EACE8175BACC0002761D9 /* back_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 643EACE7175BACC0002761D9 /* back_button.png */; };
 		643EACED175BBE51002761D9 /* RCNewPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 643EACEB175BBE51002761D9 /* RCNewPostViewController.m */; };
 		643EACEE175BBE51002761D9 /* RCNewPostViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 643EACEC175BBE51002761D9 /* RCNewPostViewController.xib */; };
@@ -238,7 +237,6 @@
 		642E71FF1763A7F500B3464E /* RCKeyboardPushUpHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCKeyboardPushUpHandler.h; sourceTree = "<group>"; };
 		642E72001763A7F500B3464E /* RCKeyboardPushUpHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCKeyboardPushUpHandler.m; sourceTree = "<group>"; };
 		64361E33178E9ABB0041B5C2 /* navBarButtonBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "navBarButtonBackground@2x.png"; path = "../navBarButtonBackground@2x.png"; sourceTree = "<group>"; };
-		643EACE5175BA0B6002761D9 /* default_avatar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = default_avatar.jpg; sourceTree = "<group>"; };
 		643EACE7175BACC0002761D9 /* back_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back_button.png; sourceTree = "<group>"; };
 		643EACEA175BBE51002761D9 /* RCNewPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCNewPostViewController.h; sourceTree = "<group>"; };
 		643EACEB175BBE51002761D9 /* RCNewPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNewPostViewController.m; sourceTree = "<group>"; };
@@ -291,19 +289,19 @@
 		64A917071751E554007D629D /* RCRegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCRegisterViewController.xib; sourceTree = "<group>"; };
 		64A917091751F6C9007D629D /* RCRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCRegisterViewController.h; sourceTree = "<group>"; };
 		64A9170A1751F6C9007D629D /* RCRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCRegisterViewController.m; sourceTree = "<group>"; };
-		64B81CA117954FC800B5A825 /* viewPostImageFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = viewPostImageFrame.png; sourceTree = "<group>"; };
-		64B81CA31795551E00B5A825 /* viewPostCommentButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = viewPostCommentButton.png; sourceTree = "<group>"; };
-		64B81CA41795551E00B5A825 /* viewPostFollowButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = viewPostFollowButton.png; sourceTree = "<group>"; };
-		64B81CA51795551E00B5A825 /* viewPostFriendWithButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = viewPostFriendWithButton.png; sourceTree = "<group>"; };
-		64B81CA9179556A900B5A825 /* viewPostCommentFrame@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "viewPostCommentFrame@2x.png"; sourceTree = "<group>"; };
+		64B81CA117954FC800B5A825 /* viewPostImageFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostImageFrame.png; path = ../viewPostImageFrame.png; sourceTree = "<group>"; };
+		64B81CA31795551E00B5A825 /* viewPostCommentButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostCommentButton.png; path = ../viewPostCommentButton.png; sourceTree = "<group>"; };
+		64B81CA41795551E00B5A825 /* viewPostFollowButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostFollowButton.png; path = ../viewPostFollowButton.png; sourceTree = "<group>"; };
+		64B81CA51795551E00B5A825 /* viewPostFriendWithButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostFriendWithButton.png; path = ../viewPostFriendWithButton.png; sourceTree = "<group>"; };
+		64B81CA9179556A900B5A825 /* viewPostCommentFrame@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "viewPostCommentFrame@2x.png"; path = "../viewPostCommentFrame@2x.png"; sourceTree = "<group>"; };
 		64B81CAB1795BD4C00B5A825 /* RCComment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCComment.h; sourceTree = "<group>"; };
 		64B81CAC1795BD4C00B5A825 /* RCComment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCComment.m; sourceTree = "<group>"; };
-		64B81CAE1795CCA500B5A825 /* RCCommentPostingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCommentPostingViewController.h; sourceTree = "<group>"; };
-		64B81CAF1795CCA500B5A825 /* RCCommentPostingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCommentPostingViewController.m; sourceTree = "<group>"; };
-		64B81CB01795CCA500B5A825 /* RCCommentPostingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCCommentPostingViewController.xib; sourceTree = "<group>"; };
-		64B81CB31795DE5500B5A825 /* postCommentCancelButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = postCommentCancelButton.png; sourceTree = "<group>"; };
-		64B81CB41795DE5500B5A825 /* postCommentPostButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = postCommentPostButton.png; sourceTree = "<group>"; };
-		64B81CB71795E21C00B5A825 /* buttonPlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttonPlay.png; sourceTree = "<group>"; };
+		64B81CAE1795CCA500B5A825 /* RCCommentPostingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCCommentPostingViewController.h; path = ../RCCommentPostingViewController.h; sourceTree = "<group>"; };
+		64B81CAF1795CCA500B5A825 /* RCCommentPostingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCCommentPostingViewController.m; path = ../RCCommentPostingViewController.m; sourceTree = "<group>"; };
+		64B81CB01795CCA500B5A825 /* RCCommentPostingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RCCommentPostingViewController.xib; path = ../RCCommentPostingViewController.xib; sourceTree = "<group>"; };
+		64B81CB31795DE5500B5A825 /* postCommentCancelButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = postCommentCancelButton.png; path = ../postCommentCancelButton.png; sourceTree = "<group>"; };
+		64B81CB41795DE5500B5A825 /* postCommentPostButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = postCommentPostButton.png; path = ../postCommentPostButton.png; sourceTree = "<group>"; };
+		64B81CB71795E21C00B5A825 /* buttonPlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = buttonPlay.png; path = ../buttonPlay.png; sourceTree = "<group>"; };
 		64CA28441789ED1C0018D626 /* postLandmarkChosenBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = postLandmarkChosenBackground.png; path = ../postLandmarkChosenBackground.png; sourceTree = "<group>"; };
 		64D2442A177F123D00C1206F /* menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = menu.png; path = ../menu.png; sourceTree = "<group>"; };
 		64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "viewPostCommentButton-normal.png"; path = "../viewPostCommentButton-normal.png"; sourceTree = "<group>"; };
@@ -497,12 +495,12 @@
 				64EEBFBE178C9CD700D2C968 /* backButton@2x.png */,
 				BF46ECB41778476C00F26A05 /* btnStandard-depressed.png */,
 				BF46ECB51778476C00F26A05 /* btnStandard-normal.png */,
+				64B81CB71795E21C00B5A825 /* buttonPlay.png */,
 				64119A12178460A500BF0B05 /* closeButton.png */,
 				6460E888178B2D800065D6BA /* closeButton@2x.png */,
 				BF728EEC176768000050699C /* Default-568h@2x.png */,
 				BF728EEE1767680F0050699C /* Default.png */,
 				BF728EEA176767CD0050699C /* Default@2x.png */,
-				643EACE5175BA0B6002761D9 /* default_avatar.jpg */,
 				647E2FCE1791F2E600AA6B9A /* default_avatar.png */,
 				BFE3073417959619000C9C58 /* friendListFollow.png */,
 				BFE307351795961A000C9C58 /* friendListFriend.png */,
@@ -544,6 +542,8 @@
 				64EA9B4717887B5A0022FA67 /* navigationBarBackground@2x.png */,
 				641199EE178088FE00BF0B05 /* postBackground.png */,
 				641199EF178088FE00BF0B05 /* postCameraSourceButton-normal.png */,
+				64B81CB31795DE5500B5A825 /* postCommentCancelButton.png */,
+				64B81CB41795DE5500B5A825 /* postCommentPostButton.png */,
 				64119A0C17834E9700BF0B05 /* postFriendPrivacyButton-highlighted.png */,
 				64119A0617833A8A00BF0B05 /* postFriendPrivacyButton.png */,
 				641199F0178088FF00BF0B05 /* postImageFrame.png */,
@@ -574,9 +574,14 @@
 				64EA880517796DAB00011F3E /* textField@2x.png */,
 				64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */,
 				64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */,
+				64B81CA31795551E00B5A825 /* viewPostCommentButton.png */,
+				64B81CA9179556A900B5A825 /* viewPostCommentFrame@2x.png */,
 				64E293191784AE14009496FF /* viewPostCommentTextView.png */,
+				64B81CA41795551E00B5A825 /* viewPostFollowButton.png */,
 				64E293131784ABEE009496FF /* viewPostFollowLabel.png */,
+				64B81CA51795551E00B5A825 /* viewPostFriendWithButton.png */,
 				64E293141784ABEE009496FF /* viewPostFriendWithLabel.png */,
+				64B81CA117954FC800B5A825 /* viewPostImageFrame.png */,
 				64119A1717849DBB00BF0B05 /* viewPostMainFrame.png */,
 				64E293151784ABEE009496FF /* viewPostViewSeedLabel.png */,
 			);
@@ -586,17 +591,6 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
-				64B81CB71795E21C00B5A825 /* buttonPlay.png */,
-				64B81CB31795DE5500B5A825 /* postCommentCancelButton.png */,
-				64B81CB41795DE5500B5A825 /* postCommentPostButton.png */,
-				64B81CAE1795CCA500B5A825 /* RCCommentPostingViewController.h */,
-				64B81CAF1795CCA500B5A825 /* RCCommentPostingViewController.m */,
-				64B81CB01795CCA500B5A825 /* RCCommentPostingViewController.xib */,
-				64B81CA9179556A900B5A825 /* viewPostCommentFrame@2x.png */,
-				64B81CA31795551E00B5A825 /* viewPostCommentButton.png */,
-				64B81CA41795551E00B5A825 /* viewPostFollowButton.png */,
-				64B81CA51795551E00B5A825 /* viewPostFriendWithButton.png */,
-				64B81CA117954FC800B5A825 /* viewPostImageFrame.png */,
 				BFCA7821174DFD3F00666CBA /* Rolling Capsule */,
 				BFCA7845174DFD3F00666CBA /* Rolling CapsuleTests */,
 				BFCA781A174DFD3F00666CBA /* Frameworks */,
@@ -642,20 +636,20 @@
 			children = (
 				BFCA782A174DFD3F00666CBA /* AppDelegate.h */,
 				BFCA782B174DFD3F00666CBA /* AppDelegate.m */,
-				6417B23317946A8C007777E5 /* Models */,
 				643EACE9175BBE0D002761D9 /* Images */,
 				BFCA7856174E1AD200666CBA /* Json */,
+				6417B23317946A8C007777E5 /* Models */,
 				BF0B2E541794329700A1B8E0 /* RCAddLandmarkController.h */,
 				BF0B2E551794329800A1B8E0 /* RCAddLandmarkController.m */,
 				BF0B2E561794329800A1B8E0 /* RCAddLandmarkController.xib */,
 				649A869B175B0CC30016674F /* RCAmazonS3Helper.h */,
 				649A869C175B0CC30016674F /* RCAmazonS3Helper.m */,
+				64B81CAE1795CCA500B5A825 /* RCCommentPostingViewController.h */,
+				64B81CAF1795CCA500B5A825 /* RCCommentPostingViewController.m */,
+				64B81CB01795CCA500B5A825 /* RCCommentPostingViewController.xib */,
 				642E71FC17639D9400B3464E /* RCConnectionManager.h */,
 				642E71FD17639D9400B3464E /* RCConnectionManager.m */,
 				BF3AFF971750763400D46558 /* RCConstants.h */,
-				BF2CD6251754E60C00EF2E85 /* RCPostCommentCell.h */,
-				BF2CD6261754E60C00EF2E85 /* RCPostCommentCell.m */,
-				BF2CD6231754E12D00EF2E85 /* RCPostCommentCell.xib */,
 				6491DCEA1755CF8D006FBCD8 /* RCFindFriendsViewController.h */,
 				6491DCEB1755CF8D006FBCD8 /* RCFindFriendsViewController.m */,
 				6491DCEC1755CF8D006FBCD8 /* RCFindFriendsViewController.xib */,
@@ -688,6 +682,9 @@
 				643EACEA175BBE51002761D9 /* RCNewPostViewController.h */,
 				643EACEB175BBE51002761D9 /* RCNewPostViewController.m */,
 				643EACEC175BBE51002761D9 /* RCNewPostViewController.xib */,
+				BF2CD6251754E60C00EF2E85 /* RCPostCommentCell.h */,
+				BF2CD6261754E60C00EF2E85 /* RCPostCommentCell.m */,
+				BF2CD6231754E12D00EF2E85 /* RCPostCommentCell.xib */,
 				64549D85175F264600BA8164 /* RCPostDetailsViewController.h */,
 				64549D86175F264600BA8164 /* RCPostDetailsViewController.m */,
 				64549D87175F264600BA8164 /* RCPostDetailsViewController.xib */,
@@ -867,7 +864,6 @@
 				6491DCEE1755CF8D006FBCD8 /* RCFindFriendsViewController.xib in Resources */,
 				6491DCF31755E096006FBCD8 /* RCUserProfileViewController.xib in Resources */,
 				6490A90D1757C07100E5048F /* RCMainMenuViewController.xib in Resources */,
-				643EACE6175BA0B6002761D9 /* default_avatar.jpg in Resources */,
 				643EACE8175BACC0002761D9 /* back_button.png in Resources */,
 				643EACEE175BBE51002761D9 /* RCNewPostViewController.xib in Resources */,
 				64549D89175F264600BA8164 /* RCPostDetailsViewController.xib in Resources */,

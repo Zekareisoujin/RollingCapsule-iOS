@@ -13,6 +13,7 @@
 #import "RCConnectionManager.h"
 #import "RCAmazonS3Helper.h"
 #import "RCResourceCache.h"
+#import "RCFriendListViewController.h"
 #import <AWSRuntime/AWSRuntime.h>
 
 @interface RCUserProfileViewController ()
@@ -127,6 +128,8 @@ double  minimapScaleY;
         [_btnFriendAction removeFromSuperview];
         [_btnFollow setHidden:YES];
         [_btnFollow setEnabled:NO];
+        [_btnViewFriends setHidden:YES];
+        [_btnViewFriends setEnabled:NO];
         
         _pickedNewAvatarImage = NO;
         _editingProfile = NO;
@@ -427,6 +430,11 @@ double  minimapScaleY;
     }else {
         [self asynchCreateFollowRequest];
     }
+}
+
+- (IBAction)btnViewFriendsClicked:(id)sender {
+    RCFriendListViewController *friendListViewController = [[RCFriendListViewController alloc] initWithUser:_profileUser viewedBy:_viewingUser];
+    [self.navigationController pushViewController:friendListViewController animated:YES];
 }
 
 #pragma mark - upload in background thread

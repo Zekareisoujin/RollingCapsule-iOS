@@ -45,6 +45,8 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             if (cachedImg != nil)
                 [_imgViewAvatar setImage:cachedImg];
+            else
+                [_imgViewAvatar setImage:[UIImage imageNamed:@"default_avatar"]];
             callback();
         });
     });

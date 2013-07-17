@@ -65,7 +65,7 @@
 }
 
 - (IBAction)btnActionFriendViewNav:(id)sender {
-    RCFriendListViewController *friendListViewController = [[RCFriendListViewController alloc] initWithUser:_user];
+    RCFriendListViewController *friendListViewController = [[RCFriendListViewController alloc] initWithUser:_user viewedBy:_user];
     [self navigateToViewControllerFromMenu:friendListViewController];
 }
 
