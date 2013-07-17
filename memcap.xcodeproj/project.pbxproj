@@ -230,8 +230,6 @@
 		64119A1717849DBB00BF0B05 /* viewPostMainFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostMainFrame.png; path = ../viewPostMainFrame.png; sourceTree = "<group>"; };
 		64176AFD175A260900443B59 /* AWSRuntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSRuntime.framework; path = "../../Downloads/aws-ios-sdk-1.6.0/AWSRuntime.framework"; sourceTree = "<group>"; };
 		64176AFE175A260900443B59 /* AWSS3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSS3.framework; path = "../../Downloads/aws-ios-sdk-1.6.0/AWSS3.framework"; sourceTree = "<group>"; };
-		6417B22D17933C47007777E5 /* textField.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = textField.png; path = /Users/phuong/FoxTwo/textField.png; sourceTree = "<absolute>"; };
-		6417B22F17933DA3007777E5 /* btnTransparent-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "btnTransparent-normal.png"; path = "/Users/phuong/FoxTwo/btnTransparent-normal.png"; sourceTree = "<absolute>"; };
 		6417B231179415C6007777E5 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		64194AD41770AAF100822F9B /* RCMainFeedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCMainFeedCell.h; path = ../RCMainFeedCell.h; sourceTree = "<group>"; };
 		64194AD51770AAF100822F9B /* RCMainFeedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCMainFeedCell.m; path = ../RCMainFeedCell.m; sourceTree = "<group>"; };
@@ -277,7 +275,6 @@
 		6461033F176E5F8A008DD131 /* RCLandmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCLandmark.m; sourceTree = "<group>"; };
 		647E2FCE1791F2E600AA6B9A /* default_avatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = default_avatar.png; path = ../default_avatar.png; sourceTree = "<group>"; };
 		647E2FD017929BFC00AA6B9A /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		647E2FD21793123F00AA6B9A /* magnifyingGlass@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "magnifyingGlass@2x.png"; path = "/Users/phuong/FoxTwo/magnifyingGlass@2x.png"; sourceTree = "<absolute>"; };
 		6490A9091757C07000E5048F /* RCMainMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMainMenuViewController.h; sourceTree = "<group>"; };
 		6490A90A1757C07100E5048F /* RCMainMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMainMenuViewController.m; sourceTree = "<group>"; };
 		6490A90B1757C07100E5048F /* RCMainMenuViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCMainMenuViewController.xib; sourceTree = "<group>"; };
@@ -500,7 +497,6 @@
 				64EEBFBE178C9CD700D2C968 /* backButton@2x.png */,
 				BF46ECB41778476C00F26A05 /* btnStandard-depressed.png */,
 				BF46ECB51778476C00F26A05 /* btnStandard-normal.png */,
-				6417B22F17933DA3007777E5 /* btnTransparent-normal.png */,
 				64119A12178460A500BF0B05 /* closeButton.png */,
 				6460E888178B2D800065D6BA /* closeButton@2x.png */,
 				BF728EEC176768000050699C /* Default-568h@2x.png */,
@@ -534,7 +530,6 @@
 				64E293B917856F43009496FF /* loginBtnRegister.png */,
 				64E293BA17856F43009496FF /* loginBtnRegisterPressed.png */,
 				64E293BD17856F43009496FF /* loginTextfield.png */,
-				647E2FD21793123F00AA6B9A /* magnifyingGlass@2x.png */,
 				64EA880317796D9F00011F3E /* mainBackground.png */,
 				64E293CB178587BE009496FF /* mainMapViewBackground.png */,
 				64E293C917857E4C009496FF /* mainNavbarPostButton@2x.png */,
@@ -576,7 +571,6 @@
 				6460E875178AE4070065D6BA /* slideMenuMainFeed.png */,
 				6460E876178AE4070065D6BA /* slideMenuProfile.png */,
 				6460E877178AE4070065D6BA /* slideMenuSettings.png */,
-				6417B22D17933C47007777E5 /* textField.png */,
 				64EA880517796DAB00011F3E /* textField@2x.png */,
 				64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */,
 				64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */,
@@ -1177,8 +1171,8 @@
 					"\"$(SRCROOT)\"",
 				);
 				PRODUCT_NAME = memcap;
-				PROVISIONING_PROFILE = "4820D5CB-8F86-43E6-A73D-92282D7BF445";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4820D5CB-8F86-43E6-A73D-92282D7BF445";
+				PROVISIONING_PROFILE = "736F0BB1-2353-4E70-B6E7-12E2C7FAB327";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "736F0BB1-2353-4E70-B6E7-12E2C7FAB327";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1202,8 +1196,8 @@
 					"\"$(SRCROOT)\"",
 				);
 				PRODUCT_NAME = memcap;
-				PROVISIONING_PROFILE = "4820D5CB-8F86-43E6-A73D-92282D7BF445";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "4820D5CB-8F86-43E6-A73D-92282D7BF445";
+				PROVISIONING_PROFILE = "3FA673B5-77DC-46B5-A994-59548EF2EDDC";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "736F0BB1-2353-4E70-B6E7-12E2C7FAB327";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
