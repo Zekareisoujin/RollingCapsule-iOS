@@ -226,7 +226,9 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
                 [playVideoButton setImage:[UIImage imageNamed:@"buttonPlay.png"] forState:UIControlStateNormal];
                 _postImage = thumbnailImage;
                 [self setupImageScrollView];
-                [self.scrollViewImage addSubview:playVideoButton];
+                [self.view addSubview:playVideoButton];
+                [self.view bringSubviewToFront:_imgViewCommentFrame];
+                [self.view bringSubviewToFront:_tblViewPostDiscussion];
             }
         });
     });
