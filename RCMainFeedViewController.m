@@ -513,6 +513,7 @@ BOOL        _haveScreenshot;
                 post = [_posts objectAtIndex:indexPath.row];
             RCUser *owner = [[RCUser alloc] init];
             owner.userID = post.userID;
+            owner.name = post.authorName;
             
             //[_collectionView removeGestureRecognizer:recognizer];
             RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user];

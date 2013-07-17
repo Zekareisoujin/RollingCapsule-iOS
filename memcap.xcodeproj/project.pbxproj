@@ -147,6 +147,16 @@
 		BF68E7041756090200E5C1F4 /* RCMainFeedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF68E7021756090200E5C1F4 /* RCMainFeedViewController.xib */; };
 		BF8925EC1767697000F1978F /* icon114.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8925EB1767697000F1978F /* icon114.png */; };
 		BF8925EE1767698600F1978F /* icon57.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8925ED1767698600F1978F /* icon57.png */; };
+		BF8DDD471796E8E600803CE1 /* RCMenuTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF8DDD461796E8E600803CE1 /* RCMenuTableCell.xib */; };
+		BF8DDD4A1796E91000803CE1 /* RCMenuTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BF8DDD491796E91000803CE1 /* RCMenuTableCell.m */; };
+		BF8DDD4D1796EAEC00803CE1 /* menuButtonNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8DDD4B1796EAEC00803CE1 /* menuButtonNormal.png */; };
+		BF8DDD4E1796EAEC00803CE1 /* menuButtonPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8DDD4C1796EAEC00803CE1 /* menuButtonPressed.png */; };
+		BF8DDD531796EDC400803CE1 /* menuIconFriends.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8DDD4F1796EDC400803CE1 /* menuIconFriends.png */; };
+		BF8DDD541796EDC400803CE1 /* menuIconMainFeeds.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8DDD501796EDC400803CE1 /* menuIconMainFeeds.png */; };
+		BF8DDD551796EDC400803CE1 /* menuIconProfile.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8DDD511796EDC400803CE1 /* menuIconProfile.png */; };
+		BF8DDD561796EDC400803CE1 /* menuIconSettings.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8DDD521796EDC400803CE1 /* menuIconSettings.png */; };
+		BF8DDD5A1797068100803CE1 /* RCSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BF8DDD581797068000803CE1 /* RCSettingViewController.m */; };
+		BF8DDD5B1797068100803CE1 /* RCSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF8DDD591797068100803CE1 /* RCSettingViewController.xib */; };
 		BFA53F511785B4FD007686F1 /* profileAvatarBar.png in Resources */ = {isa = PBXBuildFile; fileRef = BFA53F501785B4FD007686F1 /* profileAvatarBar.png */; };
 		BFB728F5178F541B00DE01CA /* loading.gif in Resources */ = {isa = PBXBuildFile; fileRef = BFB728F4178F541B00DE01CA /* loading.gif */; };
 		BFB728F7178F5B0C00DE01CA /* loading2.gif in Resources */ = {isa = PBXBuildFile; fileRef = BFB728F6178F5B0C00DE01CA /* loading2.gif */; };
@@ -373,6 +383,18 @@
 		BF728EEE1767680F0050699C /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = ../Default.png; sourceTree = "<group>"; };
 		BF8925EB1767697000F1978F /* icon114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon114.png; path = ../icon114.png; sourceTree = "<group>"; };
 		BF8925ED1767698600F1978F /* icon57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon57.png; path = ../icon57.png; sourceTree = "<group>"; };
+		BF8DDD461796E8E600803CE1 /* RCMenuTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCMenuTableCell.xib; sourceTree = "<group>"; };
+		BF8DDD481796E91000803CE1 /* RCMenuTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMenuTableCell.h; sourceTree = "<group>"; };
+		BF8DDD491796E91000803CE1 /* RCMenuTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMenuTableCell.m; sourceTree = "<group>"; };
+		BF8DDD4B1796EAEC00803CE1 /* menuButtonNormal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menuButtonNormal.png; sourceTree = "<group>"; };
+		BF8DDD4C1796EAEC00803CE1 /* menuButtonPressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menuButtonPressed.png; sourceTree = "<group>"; };
+		BF8DDD4F1796EDC400803CE1 /* menuIconFriends.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menuIconFriends.png; sourceTree = "<group>"; };
+		BF8DDD501796EDC400803CE1 /* menuIconMainFeeds.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menuIconMainFeeds.png; sourceTree = "<group>"; };
+		BF8DDD511796EDC400803CE1 /* menuIconProfile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menuIconProfile.png; sourceTree = "<group>"; };
+		BF8DDD521796EDC400803CE1 /* menuIconSettings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menuIconSettings.png; sourceTree = "<group>"; };
+		BF8DDD571797068000803CE1 /* RCSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSettingViewController.h; sourceTree = "<group>"; };
+		BF8DDD581797068000803CE1 /* RCSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSettingViewController.m; sourceTree = "<group>"; };
+		BF8DDD591797068100803CE1 /* RCSettingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCSettingViewController.xib; sourceTree = "<group>"; };
 		BFA53F501785B4FD007686F1 /* profileAvatarBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profileAvatarBar.png; sourceTree = "<group>"; };
 		BFB728F4178F541B00DE01CA /* loading.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loading.gif; sourceTree = "<group>"; };
 		BFB728F6178F5B0C00DE01CA /* loading2.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loading2.gif; sourceTree = "<group>"; };
@@ -491,6 +513,12 @@
 		643EACE9175BBE0D002761D9 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				BF8DDD4F1796EDC400803CE1 /* menuIconFriends.png */,
+				BF8DDD501796EDC400803CE1 /* menuIconMainFeeds.png */,
+				BF8DDD511796EDC400803CE1 /* menuIconProfile.png */,
+				BF8DDD521796EDC400803CE1 /* menuIconSettings.png */,
+				BF8DDD4B1796EAEC00803CE1 /* menuButtonNormal.png */,
+				BF8DDD4C1796EAEC00803CE1 /* menuButtonPressed.png */,
 				6460E869178AE3EA0065D6BA /* appIcon.png */,
 				6460E86A178AE3EA0065D6BA /* appIcon@2x.png */,
 				643EACE7175BACC0002761D9 /* back_button.png */,
@@ -681,6 +709,9 @@
 				6490A9091757C07000E5048F /* RCMainMenuViewController.h */,
 				6490A90A1757C07100E5048F /* RCMainMenuViewController.m */,
 				6490A90B1757C07100E5048F /* RCMainMenuViewController.xib */,
+				BF8DDD461796E8E600803CE1 /* RCMenuTableCell.xib */,
+				BF8DDD481796E91000803CE1 /* RCMenuTableCell.h */,
+				BF8DDD491796E91000803CE1 /* RCMenuTableCell.m */,
 				643EACEA175BBE51002761D9 /* RCNewPostViewController.h */,
 				643EACEB175BBE51002761D9 /* RCNewPostViewController.m */,
 				643EACEC175BBE51002761D9 /* RCNewPostViewController.xib */,
@@ -698,6 +729,9 @@
 				64A917071751E554007D629D /* RCRegisterViewController.xib */,
 				BF1AF3191766231B000824CC /* RCResourceCache.h */,
 				BF1AF31A1766231B000824CC /* RCResourceCache.m */,
+				BF8DDD571797068000803CE1 /* RCSettingViewController.h */,
+				BF8DDD581797068000803CE1 /* RCSettingViewController.m */,
+				BF8DDD591797068100803CE1 /* RCSettingViewController.xib */,
 				6490A90E1758E2D000E5048F /* RCSlideoutViewController.h */,
 				6490A90F1758E2D000E5048F /* RCSlideoutViewController.m */,
 				64011D2E17781DA400816D93 /* RCTextField.h */,
@@ -968,6 +1002,14 @@
 				64B81CB61795DE5600B5A825 /* postCommentPostButton.png in Resources */,
 				64B81CB81795E21C00B5A825 /* buttonPlay.png in Resources */,
 				64D0298D17969EF800E4AC7B /* btnTransparent-normal.png in Resources */,
+				BF8DDD471796E8E600803CE1 /* RCMenuTableCell.xib in Resources */,
+				BF8DDD4D1796EAEC00803CE1 /* menuButtonNormal.png in Resources */,
+				BF8DDD4E1796EAEC00803CE1 /* menuButtonPressed.png in Resources */,
+				BF8DDD531796EDC400803CE1 /* menuIconFriends.png in Resources */,
+				BF8DDD541796EDC400803CE1 /* menuIconMainFeeds.png in Resources */,
+				BF8DDD551796EDC400803CE1 /* menuIconProfile.png in Resources */,
+				BF8DDD561796EDC400803CE1 /* menuIconSettings.png in Resources */,
+				BF8DDD5B1797068100803CE1 /* RCSettingViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1046,6 +1088,8 @@
 				BF0B2E571794329800A1B8E0 /* RCAddLandmarkController.m in Sources */,
 				64B81CAD1795BD4C00B5A825 /* RCComment.m in Sources */,
 				64B81CB11795CCA600B5A825 /* RCCommentPostingViewController.m in Sources */,
+				BF8DDD4A1796E91000803CE1 /* RCMenuTableCell.m in Sources */,
+				BF8DDD5A1797068100803CE1 /* RCSettingViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
