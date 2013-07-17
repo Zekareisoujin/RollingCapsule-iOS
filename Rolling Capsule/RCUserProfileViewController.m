@@ -433,7 +433,7 @@ double  minimapScaleY;
 }
 
 - (IBAction)btnViewFriendsClicked:(id)sender {
-    RCFriendListViewController *friendListViewController = [[RCFriendListViewController alloc] initWithUser:_profileUser viewedBy:_viewingUser];
+    RCFriendListViewController *friendListViewController = [[RCFriendListViewController alloc] initWithUser:_profileUser withLoggedinUser:_viewingUser];
     [self.navigationController pushViewController:friendListViewController animated:YES];
 }
 

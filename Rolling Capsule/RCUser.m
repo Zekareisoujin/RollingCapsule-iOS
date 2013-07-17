@@ -38,6 +38,7 @@
     [retval setValue:[NSNumber numberWithInt:_userID] forKey:@"id"];
     return retval;
 }
+
 - (void) updateNewName : (NSString*) newName {
     if ([newName isEqualToString:_name])
         return;

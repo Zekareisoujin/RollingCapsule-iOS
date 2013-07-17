@@ -28,8 +28,8 @@ BOOL        _firstRefresh;
 @synthesize requested_friends = _requested_friends;
 @synthesize followees = _followees;
 @synthesize items = _items;
-@synthesize profileUser = _profileUser;
-@synthesize viewingUser = _viewingUser;
+@synthesize user = _user;
+@synthesize loggedinUser = _loggedinUser;
 @synthesize refreshControl = _refreshControl;
 
 RCFriendListViewMode    _viewingMode;
@@ -40,27 +40,30 @@ NSArray                 *controlButtonArray;
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         //default value for userID, this is for experimental purpose only
-        _profileUser.userID = 1;
+        _user.userID = 1;
     }
     return self;
 }
 
-- (id)initWithUser: (RCUser*) profileUser viewedBy: (RCUser*) viewingUser {
+- (id)initWithUser:(RCUser *) user withLoggedinUser:(RCUser *)loggedinUser {
     self = [super init];
     if (self) {
-        _profileUser = profileUser;
-        _viewingUser = viewingUser;
+        _user = user;
+        _loggedinUser = loggedinUser;
         _connectionManager = [[RCConnectionManager alloc] init];
+
     }
     return self;
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [_connectionManager reset];
     
+    //set up custom back button
     if ([self.navigationController.viewControllers count] > 2)
         [self setupBackButton];
+    
+    [_connectionManager reset];
     
     _friends = [[NSMutableArray alloc] init];
     _requested_friends = [[NSMutableArray alloc] init];
@@ -101,15 +104,15 @@ NSArray                 *controlButtonArray;
     switch (_viewingMode) {
         case RCFriendListViewModeFriends:
             [self asynchGetFriendsRequest];
-            [_lblTableTitle setText:[[NSString alloc] initWithFormat:@"%@'s friends", _profileUser.name]];
+            [_lblTableTitle setText:[[NSString alloc] initWithFormat:@"%@'s friends", _user.name]];
             break;
         case RCFriendListViewModePendingFriends:
             [self asynchGetRequestedFriendsRequest];
-            [_lblTableTitle setText:[[NSString alloc] initWithFormat:@"People who want to be %@'s friends", _profileUser.name]];
+            [_lblTableTitle setText:[[NSString alloc] initWithFormat:@"People who want to be %@'s friends", _user.name]];
             break;
         case RCFriendListViewModeFollowees:
             [self asynchGetFolloweesRequest];
-            [_lblTableTitle setText:[[NSString alloc] initWithFormat:@"People who %@ is following", _profileUser.name]];
+            [_lblTableTitle setText:[[NSString alloc] initWithFormat:@"People who %@ is following", _user.name]];
             break;
         default:
             break;
@@ -138,7 +141,7 @@ NSArray                 *controlButtonArray;
     RCUser *user = [_items objectAtIndex:indexPath.row];
     [_connectionManager startConnection];
     [cell populateCellData:user
-                  withLoggedInUserID:_profileUser.userID
+                  withLoggedInUserID:_loggedinUser.userID
                           completion:^ { [_connectionManager endConnection]; }];
     
     return cell;
@@ -152,7 +155,7 @@ NSArray                 *controlButtonArray;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     RCUser *user = [_items objectAtIndex:indexPath.row];
-    RCUserProfileViewController *detailViewController = [[RCUserProfileViewController alloc] initWithUser:user viewingUser:_profileUser];
+    RCUserProfileViewController *detailViewController = [[RCUserProfileViewController alloc] initWithUser:user viewingUser:_loggedinUser];
     [self.navigationController pushViewController:detailViewController animated:YES];
 }
 
@@ -162,7 +165,7 @@ NSArray                 *controlButtonArray;
     [_connectionManager startConnection];
     @try {
             
-            NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/friends?mobile=1", RCServiceURL, RCUsersResource, _profileUser.userID]];
+            NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/friends?mobile=1", RCServiceURL, RCUsersResource, _user.userID]];
             NSURLRequest *request = CreateHttpGetRequest(url);
             
             [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
@@ -207,7 +210,7 @@ NSArray                 *controlButtonArray;
     [_connectionManager startConnection];
     @try {
         
-        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/requested_friends?mobile=1", RCServiceURL, RCUsersResource, _profileUser.userID]];
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/requested_friends?mobile=1", RCServiceURL, RCUsersResource, _user.userID]];
         NSURLRequest *request = CreateHttpGetRequest(url);
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
@@ -252,7 +255,7 @@ NSArray                 *controlButtonArray;
     [_connectionManager startConnection];
     @try {
         
-        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/followees?mobile=1", RCServiceURL, RCUsersResource, _profileUser.userID]];
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/followees?mobile=1", RCServiceURL, RCUsersResource, _user.userID]];
         NSURLRequest *request = CreateHttpGetRequest(url);
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
@@ -293,7 +296,7 @@ NSArray                 *controlButtonArray;
 #pragma mark - open new view
 
 - (void) openFindFriendsView {
-    RCFindFriendsViewController *findFriendsViewController = [[RCFindFriendsViewController alloc] initWithUser:_profileUser];
+    RCFindFriendsViewController *findFriendsViewController = [[RCFindFriendsViewController alloc] initWithUser:_user];
     [self.navigationController pushViewController:findFriendsViewController animated:YES];
 }
 

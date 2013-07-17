@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "RCUser.h"
+#import "UIViewController+RCCustomBackButtonViewController.h"
 
 enum RCFriendListViewMode {
     RCFriendListViewModeFriends,
@@ -18,7 +19,7 @@ typedef enum RCFriendListViewMode RCFriendListViewMode;
 
 @interface RCFriendListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
-- (id)initWithUser: (RCUser *)user viewedBy: (RCUser*)user;
+- (id)initWithUser:(RCUser *)user withLoggedinUser:(RCUser*)loggedinUser;
 
 @property (weak, nonatomic) IBOutlet UILabel *lblTableTitle;
 @property (weak, nonatomic) IBOutlet UITableView *tblViewFriendList;
@@ -28,8 +29,8 @@ typedef enum RCFriendListViewMode RCFriendListViewMode;
 @property (weak, nonatomic) IBOutlet UIButton *btnRequests;
 @property (weak, nonatomic) IBOutlet UIButton *btnFriends;
 @property (weak, nonatomic) IBOutlet UIButton *btnFollowees;
-@property (nonatomic, strong) RCUser *profileUser;
-@property (nonatomic, strong) RCUser *viewingUser;
+@property (nonatomic,strong) RCUser *user;
+@property (nonatomic,strong) RCUser *loggedinUser;
 
 - (IBAction)btnFriendTouchUpInside:(id)sender;
 - (IBAction)btnRequestsTouchUpInside:(id)sender;

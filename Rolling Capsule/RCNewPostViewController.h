@@ -14,7 +14,7 @@
 #import "RCLightboxViewController.h"
 #import "RCUtilities.h"
 
-@interface RCNewPostViewController : RCLightboxViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, AmazonServiceRequestDelegate, UIActionSheetDelegate, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
+@interface RCNewPostViewController : RCLightboxViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, AmazonServiceRequestDelegate, UITextViewDelegate, UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout>
 @property (weak, nonatomic) IBOutlet UILabel *lblLandmarkName;
 
 @property (weak, nonatomic) IBOutlet UIButton *btnChooseLandmark;
@@ -41,7 +41,6 @@
 - (IBAction)btnActionChooseCameraSource:(id)sender;
 - (IBAction)btnActionChoosePhotoLibrarySource:(id)sender;
 - (IBAction)btnActionChooseVideSource:(id)sender;
-- (IBAction)btnPostImageTouchUpInside:(id)sender;
 - (IBAction)openLandmarkView:(id)sender;
 - (id) initWithUser:(RCUser *)user;
 - (id) initWithUser:(RCUser *)user withBackgroundImage:(UIImage*) image;

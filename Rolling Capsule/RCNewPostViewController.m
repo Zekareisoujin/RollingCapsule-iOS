@@ -444,26 +444,6 @@ NSData *_thumbnailData;
 
 #pragma mark - UI events
 
-- (IBAction)btnPostImageTouchUpInside:(id)sender {
-    if ([_txtViewPostContent isFirstResponder]) {
-        [_txtViewPostContent endEditing:YES];
-    }
-    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Select where image is from"
-                                                             delegate:self
-                                                    cancelButtonTitle:nil
-                                               destructiveButtonTitle:nil
-                                                    otherButtonTitles:nil];
-    
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
-        [actionSheet addButtonWithTitle:RCImageSourcePhotoLibrary];
-    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
-        [actionSheet addButtonWithTitle:RCImageSourceCamera];
-    
-    actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:@"Cancel"];
-    [actionSheet showInView:self.view];
-    
-}
-
 - (void)backgroundTouchUpInside {
     if ([_txtFieldPostSubject isEditing])
         [_txtFieldPostSubject resignFirstResponder];
@@ -629,42 +609,6 @@ NSData *_thumbnailData;
 }*/
 
 
-
-#pragma mark - Table view data source
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [_landmarks count];
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *simpleTableIdentifier = @"SimpleTableItem";
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:simpleTableIdentifier];
-    
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:simpleTableIdentifier];
-    }
-    RCLandmark *landmark = [_landmarks objectAtIndex:indexPath.row];
-    cell.textLabel.text = landmark.description;
-    return cell;
-}
-
-/*- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [RCUserTableCell cellHeight];
-}*/
-
-#pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    RCLandmark *landmark = [_landmarks objectAtIndex:indexPath.row];
-    _currentLandmark = landmark;
-    [_btnLandmark setTitle:landmark.description forState:UIControlStateNormal];
-    [_viewLandmark removeFromSuperview];
-    _landmarkTableVisible = NO;
-}
 
 #pragma mark - UI actions
 
@@ -882,11 +826,16 @@ NSData *_thumbnailData;
         RCLandmark *landmark = [_landmarks objectAtIndex:idx];
         NSString *imageName = [NSString stringWithFormat:@"landmarkCategory%@.png", landmark.category];
         [cell.imgViewCategory setImage:[UIImage imageNamed:imageName]];
-        cell.lblLandmarkTitle.text = landmark.name;
+        
         if (landmark.landmarkID == _currentLandmark.landmarkID)
             [cell.imgViewChosenMark setImage:[UIImage imageNamed:@"postLandmarkChosenBackground.png"]];
         else
             [cell.imgViewChosenMark setImage:nil];
+        cell.lblLandmarkTitle.lineBreakMode = NSLineBreakByWordWrapping;
+        cell.lblLandmarkTitle.numberOfLines = 0;
+        cell.lblLandmarkTitle.text = landmark.name;
+        NSLog(@"width of text label %f", cell.lblLandmarkTitle.frame.size.width);
+        NSLog(@"width of cell %f", cell.frame.size.width);
     }
     return cell;
 }
@@ -923,7 +872,7 @@ NSData *_thumbnailData;
 // 1
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
     float height = (collectionView.frame.size.height-42);
-    float width = collectionView.frame.size.width - 22;
+    float width = (collectionView.frame.size.width - 22) / 3;
     CGSize retval = CGSizeMake(width,height);
     return retval;
 }

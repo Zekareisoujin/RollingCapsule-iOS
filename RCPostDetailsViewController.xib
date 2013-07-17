@@ -334,7 +334,6 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{229, 511}, {62, 30}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -468,6 +467,24 @@
 						<int key="IBEventType">7</int>
 					</object>
 					<int key="connectionID">129</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">btnFriensWithTouchUpInside:</string>
+						<reference key="source" ref="351546946"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">3012</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">btnFollowTouchUpInside:</string>
+						<reference key="source" ref="483921878"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">3013</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
@@ -1405,16 +1422,6 @@
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">2574</int>
-						<reference key="object" ref="60900611"/>
-						<reference key="parent" ref="718456266"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">2575</int>
-						<reference key="object" ref="509870416"/>
-						<reference key="parent" ref="718456266"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">2580</int>
 						<reference key="object" ref="518453418"/>
 						<reference key="parent" ref="191373211"/>
@@ -1845,6 +1852,16 @@
 						<reference key="object" ref="983495435"/>
 						<reference key="parent" ref="118953290"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">2575</int>
+						<reference key="object" ref="509870416"/>
+						<reference key="parent" ref="718456266"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">2574</int>
+						<reference key="object" ref="60900611"/>
+						<reference key="parent" ref="718456266"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -2027,7 +2044,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">3011</int>
+			<int key="maxID">3013</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
