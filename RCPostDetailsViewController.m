@@ -177,10 +177,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     
     //prepare comment button for drag
     _didStartDraggingCommentBox = NO;
-    _originalCommentBoxPosition = [_btnComment center].y;
     [_btnComment addTarget:self action:@selector(imageTouch:withEvent:) forControlEvents:UIControlEventTouchDown];
-    //[_btnComment addTarget:self action:@selector(imageTouchUp:withEvent:) forControlEvents:UIControlEventTouchUpInside];
-    //[_btnComment addTarget:self action:@selector(imageTouchUp:withEvent:) forControlEvents:UIControlEventTouchUpOutside];
     UIPanGestureRecognizer *rec = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
     [rec setMaximumNumberOfTouches:2];
     [self.view addGestureRecognizer:rec];
@@ -222,6 +219,19 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
         }
     }
 }
+#pragma mark - code to move views up/down appropriately when keyboard is going to cover text field
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    //prepare comment button for drag
+    _originalCommentBoxPosition = [_btnComment center].y;
+    [super viewDidAppear:animated];
+}
+
 
 - (void)didReceiveMemoryWarning
 {
@@ -587,55 +597,6 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
         alertStatus(@"Failure deleting post.", @"Connection Failed!", nil);
     }
 
-}
-
-#pragma mark - code to move views up/down appropriately when keyboard is going to cover text field
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    // register for keyboard notifications
-    [[NSNotificationCenter defaultCenter] addObserver:_keyboardPushHandler
-                                             selector:@selector(keyboardWillShow:)
-                                                 name:UIKeyboardWillShowNotification
-                                               object:nil];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:_keyboardPushHandler
-                                             selector:@selector(keyboardWillHide:)
-                                                 name:UIKeyboardWillHideNotification
-                                               object:nil];
-    /*if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height) {
-        [_closeButton setHidden:YES];
-        [_closeButton setEnabled:NO];
-        CGRect closeFrame = _closeButton.frame;
-        closeFrame.origin.y += 20;
-        UIButton *newCloseButton = [[UIButton alloc] initWithFrame:closeFrame];
-        [newCloseButton setImage:[UIImage imageNamed:@"closeButton.png"] forState:UIControlStateNormal];
-        [newCloseButton addTarget:self action:@selector(btnCloseTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:newCloseButton];
-        CGRect frame = self.view.frame;
-        //move view up so that the whole post frame fits in iphone 4 screen
-        //here we basically move the y coordinate back by exactly the amount
-        //with which the post frame is away from screen top edge
-        //leaving some gap in between
-        frame.origin.y = -_imgViewMainFrame.frame.origin.y + 2;
-        frame.size.height +=  _imgViewMainFrame.frame.origin.y - 2;
-        self.view.frame = frame;
-        
-    }*/
-    [super viewWillAppear:animated];
-}
-
-- (void)viewWillDisappear:(BOOL)animated
-{
-    // unregister for keyboard notifications while not visible.
-    [[NSNotificationCenter defaultCenter] removeObserver:_keyboardPushHandler
-                                                    name:UIKeyboardWillShowNotification
-                                                  object:nil];
-    
-    [[NSNotificationCenter defaultCenter] removeObserver:_keyboardPushHandler
-                                                    name:UIKeyboardWillHideNotification
-                                                  object:nil];
-    [super viewWillDisappear:animated];
 }
 
 #pragma mark - ui events

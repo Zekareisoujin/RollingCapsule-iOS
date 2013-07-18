@@ -78,19 +78,21 @@
                 [_imageView setImage:cachedImg];
             callback();
         });
-    });/*
+    });
     
-    [RCUser getUserWithIDAsync:post.userID completionHandler:^(RCUser* owner){
+    /*[RCUser getUserWithIDAsync:post.userID completionHandler:^(RCUser* owner){
         UIImage* cachedImg = (UIImage*)[cache getResourceForKey:key usingQuery:^{
             UIImage *image = [RCAmazonS3Helper getUserMediaImage:owner withLoggedinUserID:user.userID withImageUrl:post.thumbnailUrl];
             NSLog(@"downloading images");
             return image;
         }];
-        dispatch_async(dispatch_get_main_queue(), ^{
+        //dispatch_async(dispatch_get_main_queue(), ^{
             if (cachedImg != nil)
                 [_imageView setImage:cachedImg];
+            else
+                NSLog(@"nil image");
             callback();
-        });
+        //});
     }];*/
 }
 

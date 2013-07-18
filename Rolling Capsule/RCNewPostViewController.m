@@ -182,25 +182,7 @@ NSData *_thumbnailData;
     _lblDate.text = [formatter  stringFromDate:[NSDate date]];
     
     //initialize text field with user name as speaker
-    NSString *textContent = [NSString stringWithFormat:@"%@ ",_user.name];
-    UIFont *boldFont = [UIFont fontWithName:@"Helvetica-Bold" size:17.0];
-    UIFont *regularFont = [UIFont fontWithName:@"Helvetica" size:17.0];
-    UIColor *foregroundColor = [UIColor whiteColor];
     
-    // Create the attributes
-    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys:
-                           regularFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName,nil];
-    NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:
-                              boldFont, NSFontAttributeName,
-                              foregroundColor, NSForegroundColorAttributeName, nil];
-    NSRange range = NSMakeRange(0,[_user.name length]);
-    // Create the attributed string (text + attributes)
-    NSMutableAttributedString *attributedText =
-    [[NSMutableAttributedString alloc] initWithString:textContent
-                                           attributes:attrs];
-    [attributedText setAttributes:subAttrs range:range];
-
-    [_txtViewPostContent setAttributedText:attributedText];
     
     //[_txtViewPostContent setText:_user.name];
 }
@@ -615,14 +597,40 @@ NSData *_thumbnailData;
 }
 
 #pragma mark - code to move views up/down appropriately when keyboard is going to cover text field
-
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewDidAppear:(BOOL)animated {
     if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height) {
-        [_keyboardPushHandler reset];
+        /*[_keyboardPushHandler reset];
         _keyboardPushHandler.enabled = YES;
         _keyboardPushHandler.bottomScreenGap = self.view.frame.size.height - ( _imgViewControlFrame.frame.origin.y + _imgViewControlFrame.frame.size.height);
-        _keyboardPushHandler.view = self.view;
+        _keyboardPushHandler.view = self.view;*/
+    }
+    [super viewDidAppear:animated];
+}
+- (void)viewWillAppear:(BOOL)animated
+{
+    CGFloat fontSize = 17.0;
+    if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height) fontSize = 15.0;
+    NSString *textContent = [NSString stringWithFormat:@"%@ ",_user.name];
+    UIFont *boldFont = [UIFont fontWithName:@"Helvetica-Bold" size:fontSize];
+    UIFont *regularFont = [UIFont fontWithName:@"Helvetica" size:fontSize];
+    UIColor *foregroundColor = [UIColor whiteColor];
+    
+    // Create the attributes
+    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys:
+                           regularFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName,nil];
+    NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:
+                              boldFont, NSFontAttributeName,
+                              foregroundColor, NSForegroundColorAttributeName, nil];
+    NSRange range = NSMakeRange(0,[_user.name length]);
+    // Create the attributed string (text + attributes)
+    NSMutableAttributedString *attributedText =
+    [[NSMutableAttributedString alloc] initWithString:textContent
+                                           attributes:attrs];
+    [attributedText setAttributes:subAttrs range:range];
+    
+    [_txtViewPostContent setAttributedText:attributedText];
+    
+    if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height) {
         [[NSNotificationCenter defaultCenter] addObserver:_keyboardPushHandler
                                                  selector:@selector(keyboardWillShow:)
                                                      name:UIKeyboardWillShowNotification
@@ -633,8 +641,6 @@ NSData *_thumbnailData;
                                                      name:UIKeyboardWillHideNotification
                                                    object:nil];
     }
-    else
-        _keyboardPushHandler.enabled = NO;
     
     
     NSLog(@"screen size: %d",[[UIScreen mainScreen] bounds].size.height );
@@ -741,7 +747,9 @@ NSData *_thumbnailData;
 - (void) removePhotoSourceControlAndAddPrivacyControl {
     int buttonSize = 41;
     int distance = 13;
-    CGRect frame1 = CGRectMake(_imgViewControlFrame.frame.origin.x + 20,_btnVideoSource.frame.origin.y,buttonSize,buttonSize);
+    if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height) buttonSize = 35;
+
+    CGRect frame1 = CGRectMake(_imgViewControlFrame.frame.origin.x + 20,_btnVideoSource.frame.origin.y-3,buttonSize,buttonSize);
     CGRect frame2 = frame1, frame3 = frame1;
     frame2.origin.x = frame1.origin.x+buttonSize+distance;
     frame3.origin.x = frame2.origin.x+buttonSize+distance;

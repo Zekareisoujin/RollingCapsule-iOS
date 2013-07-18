@@ -30,6 +30,14 @@ static RCResourceCache *instance = 0;
     }
 }
 
+- (void) putResourceInCache:(id)object forKey:(id)key {
+    [_cache setObject:object forKey:key];
+}
+
+- (id) getResourceForKey:(id)key {
+    return [_cache objectForKey:key];
+}
+
 - (id) getResourceForKey:(id)key usingQuery:(id (^)(void))queryFunction {
     NSObject *ret = [_cache objectForKey:key];
     if (ret == nil) {
