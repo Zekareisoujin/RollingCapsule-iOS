@@ -539,7 +539,8 @@ double  minimapScaleY;
     });*/
     
     [_profileUser getUserAvatarAsync:_viewingUserID completionHandler:^(UIImage* img){
-        [_btnAvatarImg setBackgroundImage:img forState:UIControlStateDisabled];
+        _userAvatarImage = img;
+        [_btnAvatarImg setBackgroundImage:_userAvatarImage forState:UIControlStateDisabled];
     }];
 }
 

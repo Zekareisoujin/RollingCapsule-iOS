@@ -38,5 +38,6 @@ typedef enum RCMainFeedViewMode RCMainFeedViewMode;
 @property (nonatomic, strong) NSMutableSet *chosenPosts;
 - (IBAction)actionAddLandmark:(id)sender;
 
+- (IBAction)btnRefreshTouchUpInside:(id)sender;
 - (void) setCurrentUser: (RCUser*) user;
 @end

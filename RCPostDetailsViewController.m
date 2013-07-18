@@ -193,9 +193,8 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     if (_didStartDraggingCommentBox) {
         if ([rec state] == UIGestureRecognizerStateEnded) {
             _didStartDraggingCommentBox = NO;
-            if (abs(_commentsBoxMovedBy) < eps) {
-                _commentsBoxMovedBy = 0;
-                _didMoveCommentsBox = NO;
+            if (abs(_commentsBoxMovedBy) < 40) {
+                [self commentButtonTouchUpInside:nil];
             }
         }
         if ([rec state] == UIGestureRecognizerStateBegan || [rec state] == UIGestureRecognizerStateChanged) {

@@ -115,7 +115,7 @@ BOOL        _haveScreenshot;
     self.navigationItem.title = @"";
     
     //add post button to navigation bar
-    UIImage *postButtonImage = [UIImage imageNamed:@"mainNavbarPostButton.png"];
+    UIImage *postButtonImage = [UIImage imageNamed:@"buttonPost.png"];
     _postButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [_postButton setFrame:CGRectMake(0,0,postButtonImage.size.width, postButtonImage.size.height)];
     [_postButton setBackgroundImage:postButtonImage forState:UIControlStateNormal];
@@ -259,7 +259,7 @@ BOOL        _haveScreenshot;
                         [postList addObject:post];
                         [_postsByLandmark setObject:postList forKey:key];
                     }
-                    NSLog(@"%@ post coordinates %f %f",[RCMainFeedViewController debugTag], post.coordinate.latitude, post.coordinate.longitude);
+                    //NSLog(@"%@ post coordinates %f %f",[RCMainFeedViewController debugTag], post.coordinate.latitude, post.coordinate.longitude);
                 }
                 
                 [_mapView removeAnnotations:_mapView.annotations];
@@ -273,27 +273,10 @@ BOOL        _haveScreenshot;
                     [_landmarks setObject:landmark forKey:[NSNumber numberWithInt:landmark.landmarkID]];
                     if (landmark.landmarkID == pastCurrentLandmark)
                         _currentLandmarkID = landmark.landmarkID;
-                    NSLog(@"%@: landmark coordinates %f %f",[RCMainFeedViewController debugTag], landmark.coordinate.latitude, landmark.coordinate.longitude);
+                    //NSLog(@"%@: landmark coordinates %f %f",[RCMainFeedViewController debugTag], landmark.coordinate.latitude, landmark.coordinate.longitude);
                 }
-                NSLog(@"current landmark Id %d",_currentLandmarkID);
-                NSArray *notificationList = (NSArray*) [jsonData objectForKey:@"notifications"]
-                ;
-                if (notificationList != nil) {
-                    NSMutableArray* notifications = [[NSMutableArray alloc] init];
-                    for (NSDictionary *notificationData in notificationList) {
-                        RCNotification *notification = [[RCNotification alloc] initWithNSDictionary:notificationData];
-                        [notifications addObject:notification];
-                    }
-                    
-                    [appDelegate setNotificationList:notifications];
-                }
-                NSLog(@"before reload currentlandmark %d",_currentLandmarkID);
-                [_tblFeedList reloadData];
+                //NSLog(@"current landmark Id %d",_currentLandmarkID);
                 [_collectionView reloadData];
-                if (_firstRefresh){
-                    [_tblFeedList setContentOffset:CGPointMake(0, 0) animated:YES];
-                    _firstRefresh = NO;
-                }
             }else {
                 alertStatus([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetFeed, responseData], RCAlertMessageConnectionFailed, self);
             }
@@ -318,7 +301,11 @@ BOOL        _haveScreenshot;
 
 - (void) switchToNewPostScreen {
     [_postButton setEnabled:NO];
-    RCNewPostViewController *newPostController = [[RCNewPostViewController alloc] initWithUser:_user withBackgroundImage:nil];
+    RCNewPostViewController *newPostController;
+    if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height)
+        newPostController = [[RCNewPostViewController alloc] initWithUser:_user withNibName:@"RCNewPostViewController4" bundle:nil];
+    else
+        newPostController = [[RCNewPostViewController alloc] initWithUser:_user withNibName:@"RCNewPostViewController" bundle:nil];
     newPostController.postComplete = ^{
         [_postButton setEnabled:YES];
         [self handleRefresh:_refreshControl];
@@ -548,6 +535,7 @@ BOOL        _haveScreenshot;
         _btnViewModePublic.enabled = YES;
     }
     sender.enabled = NO;
+    [_chosenPosts removeAllObjects];
     [self handleRefresh:_refreshControl];
 }
 
@@ -567,6 +555,10 @@ BOOL        _haveScreenshot;
 - (IBAction)actionAddLandmark:(id)sender {
     RCAddLandmarkController *addLandmarkController = [[RCAddLandmarkController alloc] init];
     [self.navigationController pushViewController:addLandmarkController animated:YES];
+}
+
+- (IBAction)btnRefreshTouchUpInside:(id)sender {
+    [self handleRefresh:_refreshControl];
 }
 
 - (void) setCurrentUser: (RCUser*) user {

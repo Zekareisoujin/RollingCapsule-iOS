@@ -68,7 +68,7 @@
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
             UIImage *image = [RCAmazonS3Helper getUserMediaImage:owner withLoggedinUserID:user.userID withImageUrl:post.thumbnailUrl];
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-            NSLog(@"downloading images");
+            //NSLog(@"downloading images");
             return image;
         }];
         dispatch_async(dispatch_get_main_queue(), ^{

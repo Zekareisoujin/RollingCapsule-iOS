@@ -63,7 +63,7 @@ NSArray                 *controlButtonArray;
     if ([self.navigationController.viewControllers count] > 2)
         [self setupBackButton];
     
-    [_connectionManager reset];
+    //[_connectionManager reset];
     
     _friends = [[NSMutableArray alloc] init];
     _requested_friends = [[NSMutableArray alloc] init];
@@ -139,10 +139,11 @@ NSArray                 *controlButtonArray;
     RCUserTableCell *cell = [RCUserTableCell getFriendListTableCell:tableView];
     
     RCUser *user = [_items objectAtIndex:indexPath.row];
-    [_connectionManager startConnection];
+    //[RCConnectionManager startConnection];
     [cell populateCellData:user
                   withLoggedInUserID:_loggedinUser.userID
-                          completion:^ { [_connectionManager endConnection]; }];
+                completion:^ { ;//[RCConnectionManager endConnection];
+                }];
     
     return cell;
 }
@@ -162,7 +163,7 @@ NSArray                 *controlButtonArray;
 #pragma mark - web request
 - (void)asynchGetFriendsRequest {
     //Asynchronous Request
-    [_connectionManager startConnection];
+    [RCConnectionManager startConnection];
     @try {
             
             NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/friends?mobile=1", RCServiceURL, RCUsersResource, _user.userID]];
@@ -171,7 +172,7 @@ NSArray                 *controlButtonArray;
             [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                                    completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
             {
-                [_connectionManager endConnection];
+                [RCConnectionManager endConnection];
                 NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
                 
                 SBJsonParser *jsonParser = [SBJsonParser new];
@@ -207,7 +208,7 @@ NSArray                 *controlButtonArray;
 
 - (void)asynchGetRequestedFriendsRequest {
     //Asynchronous Request
-    [_connectionManager startConnection];
+    [RCConnectionManager startConnection];
     @try {
         
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/requested_friends?mobile=1", RCServiceURL, RCUsersResource, _user.userID]];
@@ -216,7 +217,7 @@ NSArray                 *controlButtonArray;
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
          {
-             [_connectionManager endConnection];
+             [RCConnectionManager endConnection];
              NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
              
              SBJsonParser *jsonParser = [SBJsonParser new];
@@ -252,7 +253,7 @@ NSArray                 *controlButtonArray;
 
 - (void)asynchGetFolloweesRequest {
     //Asynchronous Request
-    [_connectionManager startConnection];
+    [RCConnectionManager startConnection];
     @try {
         
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/followees?mobile=1", RCServiceURL, RCUsersResource, _user.userID]];
@@ -261,7 +262,7 @@ NSArray                 *controlButtonArray;
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
          {
-             [_connectionManager endConnection];
+             [RCConnectionManager endConnection];
              NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
              
              SBJsonParser *jsonParser = [SBJsonParser new];

@@ -94,6 +94,15 @@ NSData *_thumbnailData;
         _landmarkTableVisible = YES;
     }
 }
+- (id) initWithUser:(RCUser *)user withNibName:(NSString *)nibNameOrNil bundle:(NSBundle*)nibBundleOrNil {
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        _user = user;
+        _keyboardPushHandler = [[RCKeyboardPushUpHandler alloc] init];
+        _connectionManager = [[RCConnectionManager alloc] init];
+    }
+    return self;
+}
 
 - (id) initWithUser:(RCUser *)user {
     self = [super init];
@@ -598,16 +607,13 @@ NSData *_thumbnailData;
 
 #pragma mark - code to move views up/down appropriately when keyboard is going to cover text field
 - (void)viewDidAppear:(BOOL)animated {
-    if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height) {
-        /*[_keyboardPushHandler reset];
-        _keyboardPushHandler.enabled = YES;
-        _keyboardPushHandler.bottomScreenGap = self.view.frame.size.height - ( _imgViewControlFrame.frame.origin.y + _imgViewControlFrame.frame.size.height);
-        _keyboardPushHandler.view = self.view;*/
-    }
     [super viewDidAppear:animated];
 }
 - (void)viewWillAppear:(BOOL)animated
 {
+    [_txtFieldPostSubject becomeFirstResponder];
+    
+    _txtViewPostContent.contentInset = UIEdgeInsetsMake(-8,0,0,0);
     CGFloat fontSize = 17.0;
     if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height) fontSize = 15.0;
     NSString *textContent = [NSString stringWithFormat:@"%@ ",_user.name];
@@ -765,6 +771,13 @@ NSData *_thumbnailData;
     frame4.origin.x = _imgViewControlFrame.frame.origin.x + _imgViewControlFrame.frame.size.width - 10 - buttonSize;
     _postButton = [[UIButton alloc] initWithFrame:frame4];
     [_postButton setImage:[UIImage imageNamed:@"postPostButton-2.png"] forState:UIControlStateNormal];
+    CGRect frame5 = frame4;
+    frame5.origin.x -= frame4.size.width - distance;
+    UIButton *timeCapsule = [[UIButton alloc] initWithFrame:frame5];
+    [timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsule.png"] forState:UIControlStateNormal];
+    [timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsule-highlighted.png"] forState:UIControlStateHighlighted];
+    [timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsule-highlighted.png"] forState:UIControlStateDisabled];
+    [self.view addSubview:timeCapsule];
     [_btnCameraSource setHidden:YES];
     [_btnPhotoLibrarySource setHidden:YES];
     [_btnVideoSource setHidden:YES];
@@ -787,6 +800,9 @@ NSData *_thumbnailData;
     [self.view addSubview:_friendPrivacyButton];
     [self.view addSubview:_personalPrivacyButton];
     [self.view addSubview:separator];
+    
+    
+    
     [UIView animateWithDuration:0.3
 						  delay:0
 						options:UIViewAnimationOptionCurveEaseInOut
