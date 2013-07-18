@@ -124,7 +124,7 @@ NSArray                 *controlButtonArray;
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Table view data source
+#pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
@@ -152,7 +152,7 @@ NSArray                 *controlButtonArray;
     return [RCUserTableCell cellHeight];
 }
 
-#pragma mark - Table view delegate
+#pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     RCUser *user = [_items objectAtIndex:indexPath.row];

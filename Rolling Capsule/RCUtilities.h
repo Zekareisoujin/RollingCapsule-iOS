@@ -87,9 +87,19 @@ static void confirmationDialog(NSString *msg, NSString *title, id delegate){
     [alertView show];
 }
 
+static NSString * urlEncodeValue(NSString * string)
+{
+    return (NSString*)CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL,
+                                                                                (CFStringRef) string,
+                                                                                NULL,
+                                                                                (CFStringRef) @"!*'();:@&=+$,/?%#[]",
+                                                                                kCFStringEncodingUTF8));
+    
+}
+
 static NSMutableString* initQueryString(NSString* key, NSString* value) {
     NSMutableString *ret = [[NSMutableString alloc]
-                            initWithString:[[NSString alloc] initWithFormat:@"mobile=1&%@=%@",key,value]];
+                            initWithString:[[NSString alloc] initWithFormat:@"mobile=1&%@=%@",key,urlEncodeValue(value)]];
     return ret;
 }
 
@@ -100,7 +110,8 @@ static NSMutableString* initEmptyQueryString() {
 }
 
 static void addArgumentToQueryString(NSMutableString *currentQueryString, NSString* key, NSString* value) {
-    [currentQueryString appendString:[[NSString alloc] initWithFormat:@"&%@=%@",key,value]];
+    
+    [currentQueryString appendString:[[NSString alloc] initWithFormat:@"&%@=%@",key,urlEncodeValue(value)]];
 }
 
 static UITableViewController* setUpRefreshControlWithTableViewController(

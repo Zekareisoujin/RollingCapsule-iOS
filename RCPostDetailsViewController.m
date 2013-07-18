@@ -156,7 +156,6 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     //initialize comments box
     UIImage *image = [[UIImage imageNamed:@"viewPostCommentFrame.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(70,5,30,5)];
     [_imgViewCommentFrame setImage:image];
-    [self resetUIViewsState];
     
     [self getPostImageFromInternet];
     [self asynchGetCommentsRequest];
@@ -222,6 +221,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [self resetUIViewsState];
     [super viewWillAppear:animated];
 }
 
@@ -657,12 +657,11 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 - (void) resetUIViewsState {
     _didMoveCommentsBox = NO;
     _commentsBoxMovedBy = 0;
+    _didStartDraggingCommentBox = NO;
 }
 
 -(IBAction) playVideo:(id)sender
 {
-    [self resetUIViewsState];
-    
     _player=[[MPMoviePlayerController alloc] initWithContentURL:_videoUrl];
     [_player setShouldAutoplay:NO];
     [_player setScalingMode:MPMovieScalingModeAspectFit];

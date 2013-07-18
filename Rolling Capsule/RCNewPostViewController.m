@@ -14,6 +14,7 @@
 #import "RCKeyboardPushUpHandler.h"
 #import "RCConnectionManager.h"
 #import "RCLandmarkCell.h"
+#import "RCDatePickerView.h"
 #import <QuartzCore/QuartzCore.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <MediaPlayer/MediaPlayer.h>
@@ -35,7 +36,9 @@
 @property (nonatomic, strong) UIView *viewLandmark;
 @property (nonatomic, strong) NSURL *videoUrl;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
+@property (nonatomic, strong) RCDatePickerView* datePickerView;
 @property (nonatomic, assign) BOOL viewFirstLoad;
+
 @end
 
 @implementation RCNewPostViewController
@@ -342,6 +345,7 @@ NSData *_thumbnailData;
 - (void) asynchPostNewResuest {
     //Asynchronous Request
     @try {
+        
         NSString* prefix = [NSString stringWithFormat:@"%@ ",_user.name];
         _postContent = [[_txtViewPostContent text] substringFromIndex:[prefix length]];
         NSString *postSubject = [_txtFieldPostSubject text];
@@ -359,6 +363,12 @@ NSData *_thumbnailData;
         addArgumentToQueryString(dataSt, @"post[privacy_option]", _privacyOption);
         addArgumentToQueryString(dataSt, @"post[thumbnail_url]", thumbnail);
         addArgumentToQueryString(dataSt, @"subject", postSubject);
+        if (_datePickerView != nil) {
+            NSString* releaseDate = [_datePickerView dateTimeString];
+            if (releaseDate != nil) {
+                addArgumentToQueryString(dataSt, @"post[release]", releaseDate);
+            }
+        }
         if (_currentLandmark != nil) {
             addArgumentToQueryString(dataSt, @"landmark_id", [NSString stringWithFormat:@"%d",_currentLandmark.landmarkID]);
         }
@@ -613,28 +623,31 @@ NSData *_thumbnailData;
 {
     [_txtFieldPostSubject becomeFirstResponder];
     
-    _txtViewPostContent.contentInset = UIEdgeInsetsMake(-8,0,0,0);
-    CGFloat fontSize = 17.0;
-    if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height) fontSize = 15.0;
-    NSString *textContent = [NSString stringWithFormat:@"%@ ",_user.name];
-    UIFont *boldFont = [UIFont fontWithName:@"Helvetica-Bold" size:fontSize];
-    UIFont *regularFont = [UIFont fontWithName:@"Helvetica" size:fontSize];
-    UIColor *foregroundColor = [UIColor whiteColor];
-    
-    // Create the attributes
-    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys:
-                           regularFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName,nil];
-    NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:
-                              boldFont, NSFontAttributeName,
-                              foregroundColor, NSForegroundColorAttributeName, nil];
-    NSRange range = NSMakeRange(0,[_user.name length]);
-    // Create the attributed string (text + attributes)
-    NSMutableAttributedString *attributedText =
-    [[NSMutableAttributedString alloc] initWithString:textContent
-                                           attributes:attrs];
-    [attributedText setAttributes:subAttrs range:range];
-    
-    [_txtViewPostContent setAttributedText:attributedText];
+    if (_viewFirstLoad) {
+        _viewFirstLoad = NO;
+        _txtViewPostContent.contentInset = UIEdgeInsetsMake(-8,0,0,0);
+        CGFloat fontSize = 17.0;
+        if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height) fontSize = 15.0;
+        NSString *textContent = [NSString stringWithFormat:@"%@ ",_user.name];
+        UIFont *boldFont = [UIFont fontWithName:@"Helvetica-Bold" size:fontSize];
+        UIFont *regularFont = [UIFont fontWithName:@"Helvetica" size:fontSize];
+        UIColor *foregroundColor = [UIColor whiteColor];
+        
+        // Create the attributes
+        NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys:
+                               regularFont, NSFontAttributeName, foregroundColor, NSForegroundColorAttributeName,nil];
+        NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:
+                                  boldFont, NSFontAttributeName,
+                                  foregroundColor, NSForegroundColorAttributeName, nil];
+        NSRange range = NSMakeRange(0,[_user.name length]);
+        // Create the attributed string (text + attributes)
+        NSMutableAttributedString *attributedText =
+        [[NSMutableAttributedString alloc] initWithString:textContent
+                                               attributes:attrs];
+        [attributedText setAttributes:subAttrs range:range];
+        
+        [_txtViewPostContent setAttributedText:attributedText];
+    }
     
     if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height) {
         [[NSNotificationCenter defaultCenter] addObserver:_keyboardPushHandler
@@ -750,10 +763,49 @@ NSData *_thumbnailData;
     }
 }
 
+- (void) openDatePickerView:(UIButton*) sender {
+    
+    BOOL open = YES;
+    if (_datePickerView == nil) {
+        NSArray *nibContents = [[NSBundle mainBundle] loadNibNamed:@"RCDatePickerView" owner:self options:nil];
+        _datePickerView = (RCDatePickerView*)nibContents[0];        [_datePickerView prepareView];
+        [self.view addSubview:_datePickerView];
+        CGRect frame = _datePickerView.frame;
+        frame.origin.x = (self.view.frame.size.width - frame.size.width) / 2.0;
+        frame.origin.y = sender.frame.origin.y - frame.size.height - 5;
+        _datePickerView.frame = frame;
+        _datePickerView.alpha = 0.0;
+        
+        
+    } else {
+        if (!_datePickerView.hidden)
+            open = NO;
+        else
+            [_datePickerView setHidden:NO];
+    }
+    [UIView animateWithDuration:0.5
+                          delay:0
+                        options:UIViewAnimationOptionCurveEaseInOut
+                     animations:^{
+                         if (open)
+                             _datePickerView.alpha = 1.0;
+                         else {
+                             _datePickerView.alpha= 0.0;
+                                                      }
+                     }
+                     completion:^(BOOL finished) {
+                         if (!open)
+                             [_datePickerView setHidden:YES];
+                     }];
+}
+
 - (void) removePhotoSourceControlAndAddPrivacyControl {
     int buttonSize = 41;
     int distance = 13;
-    if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height) buttonSize = 35;
+    if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height) {
+        buttonSize = 35;
+        distance += 41-35;
+    }
 
     CGRect frame1 = CGRectMake(_imgViewControlFrame.frame.origin.x + 20,_btnVideoSource.frame.origin.y-3,buttonSize,buttonSize);
     CGRect frame2 = frame1, frame3 = frame1;
@@ -765,6 +817,13 @@ NSData *_thumbnailData;
     [_friendPrivacyButton setImage:[UIImage imageNamed:@"postFriendPrivacyButton-2.png"] forState:UIControlStateNormal];
     _personalPrivacyButton = [[UIButton alloc] initWithFrame:frame3];
     [_personalPrivacyButton setImage:[UIImage imageNamed:@"postPersonalPrivacyButton-2.png"] forState:UIControlStateNormal];
+    
+    UIImage *separatorImage = [UIImage imageNamed:@"postVerticalSeparator.png"];
+    UIImageView* separator = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,separatorImage.size.width/2.0,separatorImage.size.height/2.0)];
+    [separator setImage:separatorImage];
+    separator.frame = CGRectMake(frame3.origin.x + 54, frame3.origin.y,separatorImage.size.width/2.0,separatorImage.size.height/2.0);
+    [self.view addSubview:separator];
+    
     CGRect frame4 = _btnVideoSource.frame;
     frame4.size.width = buttonSize;
     frame4.size.height = buttonSize;
@@ -772,11 +831,12 @@ NSData *_thumbnailData;
     _postButton = [[UIButton alloc] initWithFrame:frame4];
     [_postButton setImage:[UIImage imageNamed:@"postPostButton-2.png"] forState:UIControlStateNormal];
     CGRect frame5 = frame4;
-    frame5.origin.x -= frame4.size.width - distance;
+    frame5.origin.x = separator.frame.origin.x + separator.frame.size.width;
     UIButton *timeCapsule = [[UIButton alloc] initWithFrame:frame5];
     [timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsule.png"] forState:UIControlStateNormal];
     [timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsule-highlighted.png"] forState:UIControlStateHighlighted];
     [timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsule-highlighted.png"] forState:UIControlStateDisabled];
+    [timeCapsule addTarget:self action:@selector(openDatePickerView:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:timeCapsule];
     [_btnCameraSource setHidden:YES];
     [_btnPhotoLibrarySource setHidden:YES];
@@ -791,15 +851,12 @@ NSData *_thumbnailData;
     _publicPrivacyButton.alpha = 0.0;
     _personalPrivacyButton.alpha = 0.0;
     _friendPrivacyButton.alpha = 0.0;
-    UIImage *separatorImage = [UIImage imageNamed:@"postVerticalSeparator.png"];
-    UIImageView* separator = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,separatorImage.size.width/2.0,separatorImage.size.height/2.0)];
-    [separator setImage:separatorImage];
-    separator.frame = CGRectMake(frame3.origin.x + 54, frame3.origin.y,separatorImage.size.width/2.0,separatorImage.size.height/2.0);
+    
     [self.view addSubview:_postButton];
     [self.view addSubview:_publicPrivacyButton];
     [self.view addSubview:_friendPrivacyButton];
     [self.view addSubview:_personalPrivacyButton];
-    [self.view addSubview:separator];
+    
     
     
     
@@ -862,7 +919,7 @@ NSData *_thumbnailData;
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
     _isTapToCloseKeyboard = YES;
-    [self.view addGestureRecognizer:_tapGestureRecognizer];
+    //[self.view addGestureRecognizer:_tapGestureRecognizer];
     if ([textView isEqual:_txtViewPostContent]) {
         // register for keyboard notifications
 
@@ -891,7 +948,7 @@ NSData *_thumbnailData;
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
     _isTapToCloseKeyboard = YES;
-    [self.view addGestureRecognizer:_tapGestureRecognizer];
+    //[self.view addGestureRecognizer:_tapGestureRecognizer];
     // register for keyboard notifications
     /*[[NSNotificationCenter defaultCenter] addObserver:_keyboardPushHandler
                                              selector:@selector(keyboardWillShow:)
