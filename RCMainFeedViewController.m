@@ -326,9 +326,9 @@ BOOL        _haveScreenshot;
              if (jsonData != NULL) {
                  NSLog(@"current annotations:%@",_mapView.annotations);
                  NSLog(@"currentlandmark %d",_currentLandmarkID);
-                 int pastCurrentLandmark = _currentLandmarkID;
+                 //int pastCurrentLandmark = _currentLandmarkID;
                  NSArray *postList = (NSArray *) [jsonData objectForKey:@"post_list"];
-                 NSArray *landmarkList = (NSArray*) [jsonData objectForKey:@"landmark_list"];
+                 //NSArray *landmarkList = (NSArray*) [jsonData objectForKey:@"landmark_list"];
                  
                  //set user avatar image in background
                  /*dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
@@ -604,6 +604,9 @@ BOOL        _haveScreenshot;
                 postDetailsViewController.landmark = nil;
             else
                 postDetailsViewController.landmark = [_landmarks objectForKey:[NSNumber numberWithInt:post.landmarkID]];
+            postDetailsViewController.deleteFunction = ^{
+                [self handleRefresh:_refreshControl];
+            };
             postDetailsViewController.landmarkID = post.landmarkID;
             [self presentViewController:postDetailsViewController animated:YES completion:nil];
             

@@ -25,19 +25,19 @@ typedef enum RCMainFeedViewMode RCMainFeedViewMode;
 @property (weak, nonatomic) IBOutlet UIButton *btnViewModeFollow;
 @property (weak, nonatomic) IBOutlet UILabel *lblUsername;
 @property (weak, nonatomic) IBOutlet UIButton *btnViewModeFriends;
-- (IBAction)btnViewModeChosen:(UIButton *)sender;
-- (IBAction)btnCenterMapTouchUpInside:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *btnUserAvatar;
 @property (weak, nonatomic) IBOutlet UIButton *btnViewModePublic;
-@property (nonatomic, strong) UIRefreshControl *refreshControl;
-@property (nonatomic, strong) RCUser *user;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
+
 @property (nonatomic, strong) NSMutableDictionary *userCache;
 @property (nonatomic, strong) NSMutableDictionary *postCache;
 @property (nonatomic, strong) NSMutableSet *chosenPosts;
+@property (nonatomic, strong) RCUser *user;
+@property (nonatomic, strong) UIRefreshControl *refreshControl;
 - (IBAction)actionAddLandmark:(id)sender;
-
+- (IBAction)btnViewModeChosen:(UIButton *)sender;
+- (IBAction)btnCenterMapTouchUpInside:(id)sender;
 - (IBAction)btnRefreshTouchUpInside:(id)sender;
 - (void) setCurrentUser: (RCUser*) user;
 @end

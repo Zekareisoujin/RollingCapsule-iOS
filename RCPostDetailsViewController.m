@@ -52,6 +52,7 @@
 @synthesize currentCommentID = _currentCommentID;
 @synthesize didStartDraggingCommentBox = _didStartDraggingCommentBox;
 @synthesize originalCommentBoxPosition = _originalCommentBoxPosition;
+@synthesize deleteFunction = _deleteFunction;
 
 BOOL _isTapToCloseKeyboard;
 BOOL _firstTimeEditPost;
@@ -122,7 +123,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     _currentCommentID = -1;
     _comments = [[NSMutableArray alloc] init];
     
-    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Delete Post" style:UIBarButtonItemStylePlain target:self action:@selector(deletePost)];
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Delete Post" style:UIBarButtonItemStylePlain target:self action:@selector(deletePost:)];
     self.navigationItem.rightBarButtonItem = rightButton;
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -180,6 +181,11 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     UIPanGestureRecognizer *rec = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
     [rec setMaximumNumberOfTouches:2];
     [self.view addGestureRecognizer:rec];
+    
+    //remove delete button if not correct user
+    if (_postOwner.userID != _loggedInUser.userID) {
+        [_btnDelete setHidden:YES];
+    }
 }
 
 - (IBAction) imageTouchUp:(id) sender withEvent:(UIEvent *) event {
@@ -370,7 +376,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
                                  scrollView.contentSize.height * 0.5 + offsetY);
 }
 #pragma mark - delete post
-- (void) deletePost {
+- (IBAction)deletePost:(id)sender {
     confirmationDialog(@"Are you sure you want to delete this post?", @"Confirmation", self);
 }
 
@@ -579,8 +585,10 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
              
              if ([responseData isEqualToString:@"ok"]){
                  alertStatus(@"Post deleted successfully!", @"Success!", nil);
-                 [self.view removeFromSuperview];
-                 [self removeFromParentViewController];
+                 [self dismissViewControllerAnimated:YES completion:^{
+                     if (_deleteFunction != nil)
+                         _deleteFunction();
+                 }];
              }else if ([responseData isEqualToString:@"error"]){
                  alertStatus(@"Please try again!", @"Deletion Failed", nil);
              }
