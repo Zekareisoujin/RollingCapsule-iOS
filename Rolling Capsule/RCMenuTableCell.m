@@ -14,6 +14,10 @@
 @synthesize imgCellBackground = _imgCellBackground;
 @synthesize imgCellLabel = _imgCellLabel;
 
+static NSString *cellStateHighlight = @"menuButtonPressed";
+static NSString *cellStateSelected = @"menuButtonPressed";
+static NSString *cellStateNormal = @"menuButtonNormal";
+
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -28,6 +32,21 @@
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
+    if (selected) {
+        [_imgCellBackground setImage:[UIImage imageNamed:cellStateSelected]];
+    }else {
+        [_imgCellBackground setImage:[UIImage imageNamed:cellStateNormal]];
+    }
+}
+
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
+{
+    //[super setHighlighted:highlighted animated:animated];
+    if (highlighted) {
+        [_imgCellBackground setImage:[UIImage imageNamed:cellStateHighlight]];
+    }else {
+        [_imgCellBackground setImage:[UIImage imageNamed:cellStateNormal]];
+    }
 }
 
 + (NSString*) cellIdentifier {
@@ -55,11 +74,11 @@
     [_imgCellLabel setText:label];
 }
 
-- (void) setStatePressed: (BOOL)pressed {
+- (void) setCellStateNormal: (BOOL)pressed {
     if (pressed) {
-        [_imgCellBackground setImage:[UIImage imageNamed:@"menuButtonPressed"]];
+        cellStateNormal = @"menuButtonPressed";
     }else {
-        [_imgCellBackground setImage:[UIImage imageNamed:@"menuButtonNormal"]];
+        cellStateNormal = @"menuButtonNormal";
     }
 }
 

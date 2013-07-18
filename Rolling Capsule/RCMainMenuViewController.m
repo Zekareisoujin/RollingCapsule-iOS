@@ -39,9 +39,6 @@ int     activeMenuIndex = 0;
     return self;
 }
 
-- (IBAction)openFriendRequestsView:(id)sender {
-}
-
 - (id)initWithContentView:(UINavigationController *) mainNavigationController
 {
     _navigationController = mainNavigationController;
@@ -61,10 +58,10 @@ int     activeMenuIndex = 0;
     
     // Set table view background image
     UIImageView *backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"slideMenuBackground"]];
-    [backgroundView setFrame:self.menuTable.frame];
-    self.menuTable.backgroundView = backgroundView;
-    
+    [backgroundView setFrame:_menuTable.frame];
+    [_menuTable setBackgroundView: backgroundView];
     [_menuTable reloadData];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -87,7 +84,7 @@ int     activeMenuIndex = 0;
     RCMenuTableCell *cell = [RCMenuTableCell createMenuTableCell:_menuTable];
     
     [cell setIcon:[menuItemIcon objectAtIndex:indexPath.row] label:[menuItemLabel objectAtIndex:indexPath.row]];
-    [cell setStatePressed: (indexPath.row == activeMenuIndex)];
+    [cell setCellStateNormal: (indexPath.row == activeMenuIndex)];
     
     return cell;
 }
@@ -211,6 +208,52 @@ int     activeMenuIndex = 0;
     [_user getUserAvatarAsync:_user.userID completionHandler:^(UIImage* img){
         [_imgUserAvatar setImage:img];
     }];
+}
+
+- (IBAction)btnActionLogOut:(id)sender {
+    [self asynchLogOutRequest];
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:RCLogStatusDefault];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:RCLogUserDefault];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate disableSideMenu];
+}
+
+- (IBAction)btnActionLogOutDropDown:(id)sender {
+    static BOOL show;
+    float offset;
+    offset = (!show?40:-40);
+    show = !show;
+    
+    [UIView animateWithDuration:0.5 animations:^{
+        CGRect rect = _btnLogOut.frame;
+        rect.origin.y += offset;
+        [_btnLogOut setFrame:rect];
+        rect = _btnLogOutIcon.frame;
+        rect.origin.y += offset;
+        [_btnLogOutIcon setFrame:rect];
+    }];
+}
+
+- (void)asynchLogOutRequest
+{
+    //Asynchronous Request
+    @try {
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCSessionsResource]];
+        NSURLRequest *request = CreateHttpDeleteRequest(url);
+        
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+         {
+             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+         }];
+    }
+    @catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+        alertStatus(@"Log Out Failed.", @"Log Out Failed!", self);
+    }
 }
 
 @end

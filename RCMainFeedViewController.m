@@ -42,6 +42,7 @@
 
 @implementation RCMainFeedViewController
 
+// Feed page control:
 NSString    *address;
 int         currentPageNumber;
 int         currentMaxPostNumber;

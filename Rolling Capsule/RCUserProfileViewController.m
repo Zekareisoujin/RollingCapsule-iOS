@@ -54,6 +54,10 @@ BOOL      _isFollowing;
 
 int       nRows;
 
+// Feed page control:
+int     currentPageNumber;
+int     currentMaxPostNumber;
+
 // Map reference data:
 double  refLong;
 double  refLat;
@@ -102,6 +106,7 @@ double  minimapScaleY;
         nRows = 3;
     }
     
+    currentPageNumber = 0;
     _postList = [[NSMutableArray alloc] init];
     
     _postPreviewElements = [[NSArray alloc] initWithObjects:_previewBackground, _previewPostImage, _previewLabelDate, _previewLabelDescription, _previewLabelLocation, nil];
@@ -154,9 +159,15 @@ double  minimapScaleY;
 // Feed requests
 - (void)asynchFetchFeeds {
     //Asynchronous Request
-    [_postList removeAllObjects];
+    //[_postList removeAllObjects];
     @try {
-        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d?mobile=1", RCServiceURL, RCUsersResource, _profileUser.userID]];
+        currentPageNumber++;
+        currentMaxPostNumber = currentPageNumber * RCPostPerPage;
+        
+        NSMutableString *address = [[NSMutableString alloc] initWithFormat:@"%@%@/%d?mobile=1", RCServiceURL, RCUsersResource, _profileUser.userID];
+        addArgumentToQueryString(address, @"page", [NSString stringWithFormat:@"%d",currentPageNumber]);
+        
+        NSURL *url=[NSURL URLWithString:address];
         NSURLRequest *request = CreateHttpGetRequest(url);
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
@@ -171,10 +182,10 @@ double  minimapScaleY;
                  for (NSDictionary* elem in jsonData){
                      [_postList addObject:[[RCPost alloc] initWithNSDictionary:elem]];
                      
-                     RCPost *test = [[RCPost alloc] initWithNSDictionary:elem];
+                     /*RCPost *test = [[RCPost alloc] initWithNSDictionary:elem];
                      CLLocationCoordinate2D coord = CLLocationCoordinate2DMake(test.latitude, test.longitude);
                      MKMapPoint point = MKMapPointForCoordinate(coord);
-                     NSLog(@"Long & lat: %.2f and %.2f; producing: %.2f and %.2f", test.longitude, test.latitude, point.x, point.y);
+                     NSLog(@"Long & lat: %.2f and %.2f; producing: %.2f and %.2f", test.longitude, test.latitude, point.x, point.y);*/
                  }
                  
                  [_collectionView reloadData];
@@ -562,16 +573,13 @@ double  minimapScaleY;
     //RCPost *post = [[RCPost alloc] initWithNSDictionary:[_postList objectAtIndex:indexPath.row]];
     RCPost *post = [_postList objectAtIndex:indexPath.row];
 
-    [cell getPostContentImageFromInternet:_viewingUser withPostContent:post usingCollection:nil completion:^{
-    }];
+    [cell getPostContentImageFromInternet:_viewingUser withPostContent:post usingCollection:nil completion:^{}];
     
-    /*if ([_chosenPosts count] != 0) {
-        if ([_chosenPosts containsObject:[[NSNumber alloc] initWithInt:post.postID]]) {
-            [cell changeCellState:RCCellStateFloat];
-        } else {
-            [cell changeCellState:RCCellStateDimmed];
-        }
-    }*/
+    // Pulling next page if necessary:
+    if (indexPath.row == (currentMaxPostNumber - 1)) {
+        [self asynchFetchFeeds];
+    }
+    
     return cell;
 }
 

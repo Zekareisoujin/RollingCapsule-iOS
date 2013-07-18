@@ -18,6 +18,6 @@
 + (CGFloat) cellHeight;
 + (RCMenuTableCell*) createMenuTableCell: (UITableView*) tableView;
 - (void) setIcon: (UIImage*)icon label: (NSString*)label;
-- (void) setStatePressed: (BOOL)pressed;
+- (void) setCellStateNormal: (BOOL)pressed;
 
 @end
