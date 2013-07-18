@@ -100,7 +100,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
                          commentPostingViewController.view.frame = self.view.frame;
 					 }
                      completion:^(BOOL finished) {
-                         ;
+                         [self resetUIViewsState];
 					 }];
     
     
@@ -306,6 +306,8 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
                 [self.view bringSubviewToFront:_btnComment];
                 [self.view bringSubviewToFront:_imgViewCommentFrame];
                 [self.view bringSubviewToFront:_tblViewPostDiscussion];
+                [self.view bringSubviewToFront:_tblViewPostDiscussion];
+                [self.view bringSubviewToFront:_btnPostComment];
             }
         });
     });

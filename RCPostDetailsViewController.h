@@ -19,6 +19,7 @@
 @property (weak, nonatomic) IBOutlet UITextView *txtViewPostComment;
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @property (weak, nonatomic) IBOutlet UIButton *btnDelete;
+@property (weak, nonatomic) IBOutlet UIButton *btnPostComment;
 @property (weak, nonatomic) IBOutlet UILabel *lblLandmark;
 @property (weak, nonatomic) IBOutlet UILabel *lblDatePosted;
 @property (weak, nonatomic) IBOutlet UILabel *lblUsername;
