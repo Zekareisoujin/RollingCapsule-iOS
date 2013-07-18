@@ -58,7 +58,7 @@
     if ([post.fileUrl isKindOfClass:[NSNull class]]) return;
     RCResourceCache *cache = [RCResourceCache centralCache];
     NSString *key = [NSString stringWithFormat:@"%@/%d/thumbnail", RCPostsResource, post.postID];
-    /*dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
+    dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
         RCUser *owner = [[RCUser alloc] init];
         owner.userID = post.userID;
@@ -78,7 +78,7 @@
                 [_imageView setImage:cachedImg];
             callback();
         });
-    });*/
+    });/*
     
     [RCUser getUserWithIDAsync:post.userID completionHandler:^(RCUser* owner){
         UIImage* cachedImg = (UIImage*)[cache getResourceForKey:key usingQuery:^{
@@ -91,7 +91,7 @@
                 [_imageView setImage:cachedImg];
             callback();
         });
-    }];
+    }];*/
 }
 
 - (void) changeCellState:(int)newState {

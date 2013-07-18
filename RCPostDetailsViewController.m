@@ -29,6 +29,9 @@
 @property (nonatomic, assign) BOOL         didMoveCommentsBox;
 @property (nonatomic, assign) CGFloat      commentsBoxMovedBy;
 @property (nonatomic, assign) int          currentCommentID;
+@property (nonatomic, assign) BOOL         didStartDraggingCommentBox;
+@property (nonatomic, assign) CGFloat      originalCommentBoxPosition;
+
 @end
 
 @implementation RCPostDetailsViewController
@@ -47,6 +50,8 @@
 @synthesize didMoveCommentsBox = _didMoveCommentsBox;
 @synthesize commentsBoxMovedBy = _commentsBoxMovedBy;
 @synthesize currentCommentID = _currentCommentID;
+@synthesize didStartDraggingCommentBox = _didStartDraggingCommentBox;
+@synthesize originalCommentBoxPosition = _originalCommentBoxPosition;
 
 BOOL _isTapToCloseKeyboard;
 BOOL _firstTimeEditPost;
@@ -153,11 +158,6 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     [_imgViewCommentFrame setImage:image];
     [self resetUIViewsState];
     
-    _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
-    [self.view addGestureRecognizer:_tapGestureRecognizer];
-    _isTapToCloseKeyboard = NO;
-    _firstTimeEditPost = YES;
-    
     [self getPostImageFromInternet];
     [self asynchGetCommentsRequest];
     
@@ -173,6 +173,53 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
             if (!isFriend)
                 _btnFriendsWith.enabled = YES;
         } withFailureFunction:nil];
+    }
+    
+    //prepare comment button for drag
+    _didStartDraggingCommentBox = NO;
+    _originalCommentBoxPosition = [_btnComment center].y;
+    [_btnComment addTarget:self action:@selector(imageTouch:withEvent:) forControlEvents:UIControlEventTouchDown];
+    //[_btnComment addTarget:self action:@selector(imageTouchUp:withEvent:) forControlEvents:UIControlEventTouchUpInside];
+    //[_btnComment addTarget:self action:@selector(imageTouchUp:withEvent:) forControlEvents:UIControlEventTouchUpOutside];
+    UIPanGestureRecognizer *rec = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
+    [rec setMaximumNumberOfTouches:2];
+    [self.view addGestureRecognizer:rec];
+}
+
+- (IBAction) imageTouchUp:(id) sender withEvent:(UIEvent *) event {
+    
+}
+- (IBAction) imageTouch:(id) sender withEvent:(UIEvent *) event {
+    _didStartDraggingCommentBox = YES;
+}
+- (void) handlePan: (UIPanGestureRecognizer*) rec {
+    if (_didStartDraggingCommentBox) {
+        if ([rec state] == UIGestureRecognizerStateEnded) {
+            _didStartDraggingCommentBox = NO;
+            if (abs(_commentsBoxMovedBy) < eps) {
+                _commentsBoxMovedBy = 0;
+                _didMoveCommentsBox = NO;
+            }
+        }
+        if ([rec state] == UIGestureRecognizerStateBegan || [rec state] == UIGestureRecognizerStateChanged) {
+            CGPoint cur = [rec locationInView:self.view];
+            //CGPoint translation = [rec translationInView:self.view];
+            if (cur.y <= _originalCommentBoxPosition) {
+                _didMoveCommentsBox = YES;
+                CGFloat movedBy = cur.y - [_btnComment center].y;
+                _commentsBoxMovedBy -= movedBy;
+                [_btnComment setCenter:CGPointMake([_btnComment center].x, cur.y)];
+                CGRect frame2 = _imgViewCommentFrame.frame;
+                CGRect frame3 = _tblViewPostDiscussion.frame;
+                frame2.size.height = (frame2.size.height - movedBy);
+                frame3.size.height = (frame3.size.height - movedBy);
+                frame2.origin.y += movedBy;
+                frame3.origin.y += movedBy;
+                
+                _imgViewCommentFrame.frame = frame2;
+                _tblViewPostDiscussion.frame = frame3;
+            }
+        }
     }
 }
 
@@ -231,9 +278,9 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
             } else if (cachedObj != nil && [cachedObj isKindOfClass:[NSURL class]]) {
                 _videoUrl = (NSURL*)cachedObj;
                 CGRect frame =  _scrollViewImage.frame;
-                frame.origin.x = frame.size.width / 4;
+                frame.origin.x += frame.size.width / 4;
                 frame.size.width /= 2;
-                frame.origin.y = (frame.size.height - frame.size.width) / 2;
+                frame.origin.y += (frame.size.height - frame.size.width) / 2;
                 frame.size.height = frame.size.width;
                 UIButton *playVideoButton = [[UIButton alloc] initWithFrame:frame];
                 [playVideoButton addTarget:self action:@selector(playVideo:) forControlEvents:UIControlEventTouchUpInside];
@@ -241,6 +288,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
                 _postImage = thumbnailImage;
                 [self setupImageScrollView];
                 [self.view addSubview:playVideoButton];
+                [self.view bringSubviewToFront:_btnComment];
                 [self.view bringSubviewToFront:_imgViewCommentFrame];
                 [self.view bringSubviewToFront:_tblViewPostDiscussion];
             }
@@ -450,9 +498,6 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
                  _successfulPost = NO;
              } else _successfulPost = YES;
              
-             
-             _btnComment.enabled = YES;
-             
              NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
              NSLog(@"%@",responseData);
              
@@ -470,7 +515,6 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-         _btnComment.enabled = YES;
         alertStatus(@"Post Failed.",@"Post Failed!",nil);
     }
 }
@@ -559,7 +603,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
-    if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height) {
+    /*if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height) {
         [_closeButton setHidden:YES];
         [_closeButton setEnabled:NO];
         CGRect closeFrame = _closeButton.frame;
@@ -577,7 +621,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
         frame.size.height +=  _imgViewMainFrame.frame.origin.y - 2;
         self.view.frame = frame;
         
-    }
+    }*/
     [super viewWillAppear:animated];
 }
 
@@ -618,6 +662,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 }
 
 - (IBAction)commentButtonTouchUpInside:(id)sender {
+    _didStartDraggingCommentBox = NO;
     [UIView animateWithDuration:0.5
 						  delay:0
 						options:UIViewAnimationOptionCurveEaseInOut

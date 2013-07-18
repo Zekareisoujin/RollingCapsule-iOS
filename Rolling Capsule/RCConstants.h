@@ -10,7 +10,7 @@
 #define Rolling_Capsule_Constants_h
 
 #define METERS_PER_MILE 1609.344
-
+#define eps 1e-9
 //prefix RC : rolling capsule
 static NSString* const RCServiceURL = @"https://rocaps.herokuapp.com";
 static NSString* const RCSessionsResource = @"/sessions";
