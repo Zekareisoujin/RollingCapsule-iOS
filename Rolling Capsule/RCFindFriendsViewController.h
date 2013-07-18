@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UITableView *tblViewFoundUsers;
 @property (nonatomic, strong) NSMutableArray *items;
 @property (nonatomic, strong) RCUser* user;
+- (IBAction)btnBackgroupTap:(id)sender;
 
 - (id)initWithUser:(RCUser *)user;
 @end
