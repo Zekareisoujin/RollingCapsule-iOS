@@ -64,6 +64,7 @@ static NSString* const RCLogUserDefault = @"loggedUser";
 #define RCUploadImageSizeWidth  225
 #define RCUploadImageSizeHeight 225
 #define RCIphone5Height         568
+#define RCPostPerPage           30
 
 //Displayed strings
 static NSString* const RCImageSourcePhotoLibrary = @"Photo Library";

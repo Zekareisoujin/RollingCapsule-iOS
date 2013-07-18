@@ -86,7 +86,6 @@ BOOL _didQueueOpenMainFeedOption;
     _mainViewController.menuViewController = _menuViewController;
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    _menuViewController.btnUserProfileNav.enabled = NO;
     if ([[NSUserDefaults standardUserDefaults] boolForKey:RCLogStatusDefault]) {
         //queue main feed open action so that the main feed is opened automatically
         //when location is updated
@@ -167,7 +166,6 @@ BOOL _didQueueOpenMainFeedOption;
 #pragma mark - global data flow
 - (void) setCurrentUser:(RCUser *)user {
     _menuViewController.user = user;
-    _menuViewController.btnUserProfileNav.enabled = YES;
     NSLog(@"%@ set current user %d:%@",[AppDelegate debugTag], user.userID,user.email);
 }
 

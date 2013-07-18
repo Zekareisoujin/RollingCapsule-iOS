@@ -42,7 +42,12 @@
 
 @implementation RCMainFeedViewController
 
-int _nRows;
+// Feed page control:
+NSString    *address;
+int         currentPageNumber;
+int         currentMaxPostNumber;
+
+int         _nRows;
 BOOL        _firstRefresh;
 BOOL        _willRefresh;
 BOOL        _haveScreenshot;
@@ -130,7 +135,7 @@ BOOL        _haveScreenshot;
     UICollectionViewFlowLayout *flow =  (UICollectionViewFlowLayout *)_collectionView.collectionViewLayout;
     flow.minimumInteritemSpacing = 0.0;
     _refreshControl = [[UIRefreshControl alloc] init];//tableViewController.refreshControl;
-    [_collectionView addSubview:_refreshControl];
+    //[_collectionView addSubview:_refreshControl];
     [_refreshControl addTarget:self
                         action:@selector(handleRefresh:)
               forControlEvents:UIControlEventValueChanged  ];
@@ -183,11 +188,13 @@ BOOL        _haveScreenshot;
 - (void) asynchFetchFeeds {
     //Asynchronous Request
     @try {
+        currentPageNumber = 1;
+        currentMaxPostNumber = currentPageNumber * RCPostPerPage;
+        
         [RCConnectionManager startConnection];
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
         CLLocationCoordinate2D zoomLocation = appDelegate.currentLocation.coordinate;
 
-        NSString *address;
         switch(_currentViewMode) {
             case RCMainFeedViewModePublic:
                 address = [[NSString alloc] initWithFormat:@"%@?mobile=1&latitude=%f&longitude=%f&%@", RCServiceURL, zoomLocation.latitude, zoomLocation.longitude, RCLevelsQueryString];
@@ -220,6 +227,7 @@ BOOL        _haveScreenshot;
             
             if (jsonData != NULL) {
                 [_postsByLandmark removeAllObjects];
+                
                 NSLog(@"current annotations:%@",_mapView.annotations);
                 NSLog(@"currentlandmark %d",_currentLandmarkID);
                 int pastCurrentLandmark = _currentLandmarkID;
@@ -286,6 +294,83 @@ BOOL        _haveScreenshot;
         NSLog(@"Exception: %@", e);
         alertStatus(RCErrorMessageFailedToGetFeed,RCAlertMessageConnectionFailed,self);
     }
+}
+
+- (void) asynchFetchFeedNextPage {
+    //Asynchronous Request
+    @try {
+        currentPageNumber++;
+        currentMaxPostNumber = currentPageNumber * RCPostPerPage;
+        
+        [RCConnectionManager startConnection];
+        NSString *nextPage = [NSString stringWithFormat:@"%d", currentPageNumber];
+        NSMutableString *nextPageAddress = [[NSMutableString alloc] initWithString:address];
+        addArgumentToQueryString(nextPageAddress, @"page", nextPage);
+        
+        NSLog(@"Main-Feed: get feed address:%@",address);
+        NSURL *url=[NSURL URLWithString:nextPageAddress];
+        NSURLRequest *request = CreateHttpGetRequest(url);
+        
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+         {
+             [RCConnectionManager endConnection];
+             [_refreshControl endRefreshing];
+             
+             NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+             
+             SBJsonParser *jsonParser = [SBJsonParser new];
+             NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
+             //NSLog(@"%@%@",[RCMainFeedViewController debugTag], jsonData);
+             
+             if (jsonData != NULL) {
+                 NSLog(@"current annotations:%@",_mapView.annotations);
+                 NSLog(@"currentlandmark %d",_currentLandmarkID);
+                 int pastCurrentLandmark = _currentLandmarkID;
+                 NSArray *postList = (NSArray *) [jsonData objectForKey:@"post_list"];
+                 NSArray *landmarkList = (NSArray*) [jsonData objectForKey:@"landmark_list"];
+                 
+                 //set user avatar image in background
+                 /*dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
+                  dispatch_async(queue, ^{
+                  UIImage *image = [RCAmazonS3Helper getAvatarImage:_user withLoggedinUserID:_user.userID];
+                  dispatch_async(dispatch_get_main_queue(), ^{
+                  if (image == nil)
+                  [_btnUserAvatar setImage:[UIImage imageNamed:@"default_avatar.png"] forState:UIControlStateNormal];
+                  else
+                  [_btnUserAvatar setImage:image forState:UIControlStateNormal];
+                  });
+                  });*/
+                 [_user getUserAvatarAsync:_user.userID completionHandler:^(UIImage* img){
+                     [_btnUserAvatar setImage:img forState:UIControlStateNormal];
+                 }];
+                 
+                 for (NSDictionary *postData in postList) {
+                     RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
+                     [_posts addObject:post];
+                     id key = [[NSNumber alloc] initWithInteger:post.landmarkID];
+                     NSMutableArray *postList = (NSMutableArray *)[_postsByLandmark objectForKey:key];
+                     if (postList != nil) {
+                         [postList addObject:post];
+                     } else {
+                         NSMutableArray* postList = [[NSMutableArray alloc] init];
+                         [postList addObject:post];
+                         [_postsByLandmark setObject:postList forKey:key];
+                     }
+
+                 }
+                 
+                 [_collectionView reloadData];
+             }else {
+                 alertStatus([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetFeed, responseData], RCAlertMessageConnectionFailed, self);
+             }
+         }];
+    }
+    @catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+        alertStatus(RCErrorMessageFailedToGetFeed,RCAlertMessageConnectionFailed,self);
+    }
+
 }
 
 - (UIImage*) takeScreenshot {
@@ -361,6 +446,12 @@ BOOL        _haveScreenshot;
             [cell changeCellState:RCCellStateDimmed];
         }
     }
+    
+    // Pulling next page if necessary:
+    if (indexPath.row == (currentMaxPostNumber - 1)) {
+        [self asynchFetchFeedNextPage];
+    }
+    
     return cell;
 }
 // 4

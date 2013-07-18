@@ -151,6 +151,9 @@
 		64FE8433176B9E0E00E561D8 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FE8432176B9E0E00E561D8 /* libTestFlight.a */; };
 		64FE84E5176BAAD800E561D8 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FE84E4176BAAD800E561D8 /* libz.dylib */; };
 		64FFD2CD17662D1B004337F8 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FFD2CC17662D1B004337F8 /* MapKit.framework */; };
+		BF0B17E81798430D004AEEC5 /* slideMenuLogoutBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = BF0B17E71798430D004AEEC5 /* slideMenuLogoutBackground.png */; };
+		BF0B17EA17984468004AEEC5 /* menuIconLogout.png in Resources */ = {isa = PBXBuildFile; fileRef = BF0B17E917984468004AEEC5 /* menuIconLogout.png */; };
+		BF0B17EC17984486004AEEC5 /* menuIconLogoutDropDown.png in Resources */ = {isa = PBXBuildFile; fileRef = BF0B17EB17984486004AEEC5 /* menuIconLogoutDropDown.png */; };
 		BF0B2E531794123600A1B8E0 /* RCLoginViewController4.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF0B2E521794123600A1B8E0 /* RCLoginViewController4.xib */; };
 		BF0B2E571794329800A1B8E0 /* RCAddLandmarkController.m in Sources */ = {isa = PBXBuildFile; fileRef = BF0B2E551794329800A1B8E0 /* RCAddLandmarkController.m */; };
 		BF0B2E581794329800A1B8E0 /* RCAddLandmarkController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF0B2E561794329800A1B8E0 /* RCAddLandmarkController.xib */; };
@@ -397,6 +400,9 @@
 		64FE84E3176B9E4E00E561D8 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = SOURCE_ROOT; };
 		64FE84E4176BAAD800E561D8 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		64FFD2CC17662D1B004337F8 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		BF0B17E71798430D004AEEC5 /* slideMenuLogoutBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slideMenuLogoutBackground.png; sourceTree = "<group>"; };
+		BF0B17E917984468004AEEC5 /* menuIconLogout.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menuIconLogout.png; sourceTree = "<group>"; };
+		BF0B17EB17984486004AEEC5 /* menuIconLogoutDropDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menuIconLogoutDropDown.png; sourceTree = "<group>"; };
 		BF0B2E521794123600A1B8E0 /* RCLoginViewController4.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCLoginViewController4.xib; sourceTree = "<group>"; };
 		BF0B2E541794329700A1B8E0 /* RCAddLandmarkController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAddLandmarkController.h; sourceTree = "<group>"; };
 		BF0B2E551794329800A1B8E0 /* RCAddLandmarkController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAddLandmarkController.m; sourceTree = "<group>"; };
@@ -550,6 +556,9 @@
 		643EACE9175BBE0D002761D9 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				BF0B17EB17984486004AEEC5 /* menuIconLogoutDropDown.png */,
+				BF0B17E917984468004AEEC5 /* menuIconLogout.png */,
+				BF0B17E71798430D004AEEC5 /* slideMenuLogoutBackground.png */,
 				6460E869178AE3EA0065D6BA /* appIcon.png */,
 				6460E86A178AE3EA0065D6BA /* appIcon@2x.png */,
 				643EACE7175BACC0002761D9 /* back_button.png */,
@@ -1084,6 +1093,9 @@
 				6401034E17981D10002A6E2E /* postButtonTimeCapsule.png in Resources */,
 				6401035317981E6C002A6E2E /* RCDatePickerView.xib in Resources */,
 				64010355179825DE002A6E2E /* postDatePickerFrame.png in Resources */,
+				BF0B17E81798430D004AEEC5 /* slideMenuLogoutBackground.png in Resources */,
+				BF0B17EA17984468004AEEC5 /* menuIconLogout.png in Resources */,
+				BF0B17EC17984486004AEEC5 /* menuIconLogoutDropDown.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

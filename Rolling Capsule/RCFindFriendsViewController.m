@@ -34,6 +34,10 @@ RCConnectionManager *_connectionManager;
     return self;
 }
 
+- (IBAction)btnBackgroupTap:(id)sender {
+    [_searchBarFriends resignFirstResponder];
+}
+
 - (id)initWithUser:(RCUser *)user {
     self = [super init];
     if (self) {

@@ -19,12 +19,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *lblUserName;
 @property (weak, nonatomic) IBOutlet UITableView *menuTable;
 
-@property (weak, nonatomic) IBOutlet UIButton *btnMainFeedNav;
-@property (weak, nonatomic) IBOutlet UIButton *btnUserProfileNav;
-@property (weak, nonatomic) IBOutlet UIButton *btnFriendViewNav;
+@property (weak, nonatomic) IBOutlet UIButton *btnLogOutDropdown;
 @property (weak, nonatomic) IBOutlet UIButton *btnLogOut;
-
-- (IBAction)openFriendRequestsView:(id)sender;
+@property (weak, nonatomic) IBOutlet UIImageView *btnLogOutIcon;
 
 - (id)initWithContentView:(UINavigationController *) mainNavigationController;
 
@@ -32,5 +29,7 @@
 - (IBAction)btnActionUserProfileNav:(id)sender;
 - (IBAction)btnActionFriendViewNav:(id)sender;
 - (IBAction)btnActionSetting:(id)sender;
+- (IBAction)btnActionLogOut:(id)sender;
+- (IBAction)btnActionLogOutDropDown:(id)sender;
 - (void)setNavigationBarMenuBttonForViewController:(UIViewController *) viewController;
 @end
