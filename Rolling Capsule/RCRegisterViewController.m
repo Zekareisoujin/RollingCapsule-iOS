@@ -28,7 +28,7 @@ BOOL        _willMoveKeyboardUp;
     [_txtFieldName setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
     [_txtFieldEmail setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
     [_txtFieldPassword setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
-    [_txtFieldPasswordConfirmation setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];c
+    [_txtFieldPasswordConfirmation setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
     
     [self animateViewAppearance];
 }
