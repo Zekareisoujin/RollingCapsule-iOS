@@ -448,6 +448,9 @@ double  minimapScaleY;
     [self.navigationController pushViewController:friendListViewController animated:YES];
 }
 
+- (IBAction)btnMoreFeedClicked:(id)sender {
+}
+
 #pragma mark - upload in background thread
 - (void)processBackgroundThreadUpload:(UIImage *)avatarImage
 {

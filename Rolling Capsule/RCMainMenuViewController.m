@@ -108,7 +108,7 @@ int     activeMenuIndex = 0;
             [self btnActionFriendViewNav:self];
             break;
         case 3:
-            [self btnActionSetting:self];
+            //[self btnActionSetting:self];
             break;
         default:
             break;
@@ -215,9 +215,10 @@ int     activeMenuIndex = 0;
     [[NSUserDefaults standardUserDefaults] setBool:NO forKey:RCLogStatusDefault];
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:RCLogUserDefault];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    [_navigationController popToRootViewControllerAnimated:YES];
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate disableSideMenu];
+    [self slideThenHide];
 }
 
 - (IBAction)btnActionLogOutDropDown:(id)sender {

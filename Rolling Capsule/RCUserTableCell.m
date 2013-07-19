@@ -30,7 +30,7 @@
 }
 
 -(void) populateCellData:(RCUser *) user withLoggedInUserID:(int)loggedInUserID completion:(void (^)(void))callback {
-    [_lblEmail setText:user.email];
+    //[_lblEmail setText:user.email];
     [_lblName setText:user.name];
     
     /*RCResourceCache *cache = [RCResourceCache centralCache];
@@ -69,7 +69,7 @@
 }
 
 + (CGFloat) cellHeight {
-    return 78;
+    return 60;
 }
 
 @end
