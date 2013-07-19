@@ -26,6 +26,7 @@
 @property (nonatomic, strong) MPMoviePlayerController *player;
 @property (nonatomic, strong) UIImageView* imageViewFullPost;
 @property (nonatomic, strong) UIImage*     postImage;
+@property (nonatomic, strong) UIImageView* descriptionMarker;
 @property (nonatomic, assign) BOOL         didMoveCommentsBox;
 @property (nonatomic, assign) CGFloat      commentsBoxMovedBy;
 @property (nonatomic, assign) int          currentCommentID;
@@ -36,6 +37,7 @@
 
 @implementation RCPostDetailsViewController
 
+@synthesize descriptionMarker = _descriptionMarker;
 @synthesize post = _post;
 @synthesize postOwner = _postOwner;
 @synthesize loggedInUser = _loggedInUser;
@@ -119,7 +121,9 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     [button addTarget:self action:@selector(openCommentPostingView) forControlEvents:UIControlEventTouchUpInside];
     
     _tblViewPostDiscussion.tableFooterView = [[UIView alloc] init];//button;
-    [_tblViewPostDiscussion setSeparatorColor:[UIColor whiteColor]];
+    _tblViewPostDiscussion.contentInset = UIEdgeInsetsMake(0,-8,0,-8);
+
+    //[_tblViewPostDiscussion setSeparatorColor:[UIColor whiteColor]];
     _currentCommentID = -1;
     _comments = [[NSMutableArray alloc] init];
     
@@ -188,6 +192,15 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     }
 }
 
+- (void) setupDescriptionMarker:(UIView*) markView {
+    CGRect tableFrame = [_tblViewPostDiscussion rectForRowAtIndexPath:[NSIndexPath indexPathForItem:0 inSection:0]];
+    //CGRect tableFrame = [_tblViewPostDiscussion convertRect:tableFrame1]
+    //CGRect tableFrame = cell.frame;
+    _descriptionMarker = [[UIImageView alloc] initWithFrame:CGRectMake(tableFrame.origin.x - 12, tableFrame.origin.y, 10, 20)];
+    [_descriptionMarker setImage:[UIImage imageNamed:@"viewPostDescriptionMarker.png"]];
+    [self.view addSubview:_descriptionMarker];
+}
+
 - (IBAction) imageTouchUp:(id) sender withEvent:(UIEvent *) event {
     
 }
@@ -233,6 +246,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 
 - (void)viewDidAppear:(BOOL)animated {
     //prepare comment button for drag
+    //[self setupDescriptionMarker:nil];
     _originalCommentBoxPosition = [_btnComment center].y;
     [super viewDidAppear:animated];
 }
@@ -421,13 +435,13 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     cell.textLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0];
     if (idx == 0) {
         if ([cell.textLabel respondsToSelector:@selector(setAttributedText:)])
-            [cell.textLabel setAttributedText:[self generateAttributesStringForUser:_post.authorName forComment:_post.content]];
+            [cell.textLabel setAttributedText:[self generateAttributedStringForUser:_post.authorName forComment:_post.content withDate:nil]];
          else
             [cell.textLabel setText:[NSString stringWithFormat:@"%@: %@",_post.authorName,_post.content]];
     } else {
         RCComment *comment = [_comments objectAtIndex:(idx-1)];
         if ([cell.textLabel respondsToSelector:@selector(setAttributedText:)])
-            [cell.textLabel setAttributedText:[self generateAttributesStringForUser:comment.authorName forComment:comment.content]];
+            [cell.textLabel setAttributedText:[self generateAttributedStringForUser:comment.authorName forComment:comment.content withDate:comment.createdTime]];
          else
             [cell.textLabel setText:[NSString stringWithFormat:@"%@: %@",comment.authorName,comment.content]];
     }
@@ -441,12 +455,25 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     return cell;
 }
     
-- (NSMutableAttributedString *) generateAttributesStringForUser:(NSString*)userName forComment:(NSString*) comment {
-    NSString *textContent = [NSString stringWithFormat:@"%@ %@",userName, comment];
+- (NSMutableAttributedString *) generateAttributedStringForUser:(NSString*)userName forComment:(NSString*)comment withDate:(NSDate*)timeStamp {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"dd/M/yyyy HH:mm"];
+    NSString* dateString = [formatter stringFromDate:timeStamp];
+    NSString *textContent;
+    if (timeStamp != nil)
+        textContent = [NSString stringWithFormat:@"%@ %@\n%@",userName, comment, dateString];
+    else 
+        textContent = [NSString stringWithFormat:@"%@ %@",userName, comment];
+    
     
     UIFont *boldFont = [UIFont fontWithName:@"Helvetica-Bold" size:17.0];
     UIFont *regularFont = [UIFont fontWithName:@"Helvetica" size:17.0];
     UIColor *foregroundColor = [UIColor blackColor];
+    if (timeStamp == nil) {
+        foregroundColor = [UIColor colorWithRed:(0.0/255.0) green:0.0 blue:255.0 alpha:1.0];
+        //boldFont = [UIFont fontWithName:@"Optima-Bold" size:17.0];
+        //regularFont = [UIFont fontWithName:@"Optima-Italic" size:17.0];
+    }
     
     // Create the attributes
     NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -454,37 +481,69 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     NSDictionary *subAttrs = [NSDictionary dictionaryWithObjectsAndKeys:
                               boldFont, NSFontAttributeName,
                               foregroundColor, NSForegroundColorAttributeName, nil];
-    NSRange range = NSMakeRange(0,[userName length]);
+    
+    NSRange nameRange = NSMakeRange(0,[userName length]);
+    
     // Create the attributed string (text + attributes)
     NSMutableAttributedString *attributedText =
     [[NSMutableAttributedString alloc] initWithString:textContent
                                            attributes:attrs];
-    [attributedText setAttributes:subAttrs range:range];
+    [attributedText setAttributes:subAttrs range:nameRange];
+    
+    if (timeStamp != nil) {
+        UIFont *timestampFont = [UIFont fontWithName:@"Helvetica" size:15.0];
+        UIColor *timestampColor = [UIColor grayColor];
+        NSDictionary *timestampAttrs = [NSDictionary dictionaryWithObjectsAndKeys:
+                                        timestampFont, NSFontAttributeName,
+                                        timestampColor, NSForegroundColorAttributeName, nil];
+        NSRange timestampRange = NSMakeRange([textContent length] - [dateString length], [dateString length]);
+        [attributedText setAttributes:timestampAttrs range:timestampRange];
+    }
     return attributedText;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    int idx = indexPath.row;
+    NSAttributedString *attributedText;
+    if (idx == 0) {
+        attributedText = [self generateAttributedStringForUser:_post.authorName forComment:_post.content withDate:nil];
+    } else {
+        RCComment *comment = [_comments objectAtIndex:(idx-1)];
+        attributedText = [self generateAttributedStringForUser:comment.authorName forComment:comment.content withDate:comment.createdTime];
+    }
+    UILabel *lbl = [[UILabel alloc] init];
+    lbl.lineBreakMode = NSLineBreakByWordWrapping;
+    lbl.numberOfLines = 0;
+    [lbl setAttributedText:attributedText];
+    CGSize size =[lbl sizeThatFits:CGSizeMake(_tblViewPostDiscussion.frame.size.width,MAXFLOAT)];
+    return size.height + 50.0;
+/*
     //magic number
     CGFloat extra = 20.0;
     NSString *cellText;
     if (indexPath.row > 0) {
         RCComment *comment = (RCComment*)[_comments objectAtIndex:indexPath.row - 1];
-        cellText = comment.content;
+        cellText = [NSString stringWithFormat:@"%@ %@",comment.authorName,comment.content];
     }
     else {
         cellText = [NSString stringWithFormat:@"%@ %@",_post.authorName,_post.content];
         if ([[UILabel alloc] respondsToSelector:@selector(setAttributedText:)])
         {
             //this is because when drawing attributed text the label seems to be further away from the boundary for some reason
-            extra += 10;
+            //extra += 10;
         }
     }
     
     UIFont *cellFont = [UIFont fontWithName:@"Helvetica" size:17.0];
-    CGSize constraintSize = CGSizeMake(_tblViewPostDiscussion.frame.size.width, MAXFLOAT);
+    CGSize constraintSize = CGSizeMake(_imgViewCommentFrame.frame.size.width, MAXFLOAT);
     CGSize labelSize = [cellText sizeWithFont:cellFont constrainedToSize:constraintSize lineBreakMode:NSLineBreakByWordWrapping];
     
-    return labelSize.height + extra;
+    if (indexPath.row > 0) {
+        UIFont *timestampFont = [UIFont fontWithName:@"Helvetica" size:15.0];
+        CGSize timestampSize = [cellText sizeWithFont:timestampFont constrainedToSize:constraintSize lineBreakMode:NSLineBreakByWordWrapping];
+        extra += timestampSize.height;
+    }
+    return labelSize.height + extra;*/
 }
 
 #pragma mark - UITableViewDelegate

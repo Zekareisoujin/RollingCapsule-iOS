@@ -112,6 +112,8 @@
 		64D029911796F84C00E4AC7B /* magnifyingGlass@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D029901796F84C00E4AC7B /* magnifyingGlass@2x.png */; };
 		64D2442B177F123D00C1206F /* menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D2442A177F123D00C1206F /* menu.png */; };
 		64D6D7F91798694300AA1161 /* viewPostDeleteButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D6D7F81798694300AA1161 /* viewPostDeleteButton.png */; };
+		64D6D7FB1798FD7400AA1161 /* viewPostOpenCommentPostingButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D6D7FA1798FD7400AA1161 /* viewPostOpenCommentPostingButton.png */; };
+		64D6D7FD179907F600AA1161 /* viewPostDescriptionMarker.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D6D7FC179907F500AA1161 /* viewPostDescriptionMarker.png */; };
 		64E293101784A84B009496FF /* viewPostCommentButton-normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */; };
 		64E293121784A8C8009496FF /* viewPostCommentButton-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */; };
 		64E293161784ABEE009496FF /* viewPostFollowLabel.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293131784ABEE009496FF /* viewPostFollowLabel.png */; };
@@ -359,6 +361,8 @@
 		64D029901796F84C00E4AC7B /* magnifyingGlass@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "magnifyingGlass@2x.png"; path = "../magnifyingGlass@2x.png"; sourceTree = "<group>"; };
 		64D2442A177F123D00C1206F /* menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = menu.png; path = ../menu.png; sourceTree = "<group>"; };
 		64D6D7F81798694300AA1161 /* viewPostDeleteButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = viewPostDeleteButton.png; sourceTree = "<group>"; };
+		64D6D7FA1798FD7400AA1161 /* viewPostOpenCommentPostingButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = viewPostOpenCommentPostingButton.png; sourceTree = "<group>"; };
+		64D6D7FC179907F500AA1161 /* viewPostDescriptionMarker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = viewPostDescriptionMarker.png; sourceTree = "<group>"; };
 		64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "viewPostCommentButton-normal.png"; path = "../viewPostCommentButton-normal.png"; sourceTree = "<group>"; };
 		64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "viewPostCommentButton-highlighted.png"; path = "../viewPostCommentButton-highlighted.png"; sourceTree = "<group>"; };
 		64E293131784ABEE009496FF /* viewPostFollowLabel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostFollowLabel.png; path = ../viewPostFollowLabel.png; sourceTree = "<group>"; };
@@ -680,6 +684,8 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
+				64D6D7FC179907F500AA1161 /* viewPostDescriptionMarker.png */,
+				64D6D7FA1798FD7400AA1161 /* viewPostOpenCommentPostingButton.png */,
 				64D6D7F81798694300AA1161 /* viewPostDeleteButton.png */,
 				64010354179825DD002A6E2E /* postDatePickerFrame.png */,
 				6401035217981E6C002A6E2E /* RCDatePickerView.xib */,
@@ -1100,6 +1106,8 @@
 				BF0B17EA17984468004AEEC5 /* menuIconLogout.png in Resources */,
 				BF0B17EC17984486004AEEC5 /* menuIconLogoutDropDown.png in Resources */,
 				64D6D7F91798694300AA1161 /* viewPostDeleteButton.png in Resources */,
+				64D6D7FB1798FD7400AA1161 /* viewPostOpenCommentPostingButton.png in Resources */,
+				64D6D7FD179907F600AA1161 /* viewPostDescriptionMarker.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
