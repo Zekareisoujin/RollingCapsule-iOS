@@ -531,58 +531,24 @@ NSData *_thumbnailData;
     dispatch_async(queue, ^{
         NSLog(@"inside data upload");
         NSLog(@"generating thumbnail");
-        
-        UIImage *thumbnail;
-
-        NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
-        //check if media is a video
-        if (CFStringCompare ((__bridge CFStringRef) mediaType, kUTTypeMovie, 0)
-            == kCFCompareEqualTo)
-        {
-            _isMovie = YES;
-            _videoUrl=(NSURL*)[info objectForKey:UIImagePickerControllerMediaURL];
-            
-            AVURLAsset *sourceAsset = [AVURLAsset URLAssetWithURL:_videoUrl options:nil];
-            CMTime duration = sourceAsset.duration;
-            AVAssetImageGenerator* generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:sourceAsset];
-            generator.appliesPreferredTrackTransform = YES;
-            //Get the 1st frame 3 seconds in
-            int frameTimeStart = (int)(CMTimeGetSeconds(duration) / 2.0);
-            int frameLocation = 1;
-            
-            //Snatch a frame
-            CGImageRef frameRef = [generator copyCGImageAtTime:CMTimeMake(frameTimeStart,frameLocation) actualTime:nil error:nil];
-            _postImage = [UIImage imageWithCGImage:frameRef];
-            thumbnail = [self generateSquareImageThumbnail:_postImage];
-        } else {
-            // Get the selected image
-            _isMovie = NO;
-            _postImage = [info objectForKey:UIImagePickerControllerOriginalImage];
-            thumbnail = [self generateSquareImageThumbnail:_postImage];
-                    }
-        
-        
         //after succesful thumbnail generation start uploading data
         NSLog(@"begin uploading data");
+        NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
+        //check if media is a video
+
         if (CFStringCompare ((__bridge CFStringRef) mediaType, kUTTypeMovie, 0)
             == kCFCompareEqualTo)
         {
             NSString *moviePath = [[info objectForKey:UIImagePickerControllerMediaURL] path];
             if ([picker sourceType] == UIImagePickerControllerSourceTypeCamera)
                 UISaveVideoAtPathToSavedPhotosAlbum (moviePath, nil, nil, nil);
-            UIImage *rescaledThumbnail = imageWithImage(thumbnail, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
-            _thumbnailData = UIImageJPEGRepresentation(rescaledThumbnail,0.7);
+            
             _uploadData = [NSData dataWithContentsOfURL:_videoUrl];
             NSLog(@"obtained thumbnail and upload data");
         } else {
             //save photo if newly taken
             if ([picker sourceType] == UIImagePickerControllerSourceTypeCamera)
                 UIImageWriteToSavedPhotosAlbum(_postImage, self, nil, nil);
-            
-            //generate thumbnail
-            UIImage *uploadThumbnailImage =imageWithImage(thumbnail, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));;
-            _thumbnailData = UIImageJPEGRepresentation(uploadThumbnailImage, 0.7);
-            
             
             NSLog(@"image size %f %f",_postImage.size.width, _postImage.size.height);
             if (_postImage.size.width > 800 && _postImage.size.height > 800) {
@@ -606,6 +572,41 @@ NSData *_thumbnailData;
             [_activityIndicator stopAnimating];
             
         });
+        
+        UIImage *thumbnail;
+
+        if (CFStringCompare ((__bridge CFStringRef) mediaType, kUTTypeMovie, 0)
+            == kCFCompareEqualTo)
+        {
+            _isMovie = YES;
+            _videoUrl=(NSURL*)[info objectForKey:UIImagePickerControllerMediaURL];
+            
+            AVURLAsset *sourceAsset = [AVURLAsset URLAssetWithURL:_videoUrl options:nil];
+            CMTime duration = sourceAsset.duration;
+            AVAssetImageGenerator* generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:sourceAsset];
+            generator.appliesPreferredTrackTransform = YES;
+            //Get the 1st frame 3 seconds in
+            int frameTimeStart = (int)(CMTimeGetSeconds(duration) / 2.0);
+            int frameLocation = 1;
+            
+            //Snatch a frame
+            CGImageRef frameRef = [generator copyCGImageAtTime:CMTimeMake(frameTimeStart,frameLocation) actualTime:nil error:nil];
+            _postImage = [UIImage imageWithCGImage:frameRef];
+            thumbnail = [self generateSquareImageThumbnail:_postImage];
+            UIImage *rescaledThumbnail = imageWithImage(thumbnail, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
+            _thumbnailData = UIImageJPEGRepresentation(rescaledThumbnail,0.7);
+        } else {
+            // Get the selected image
+            _isMovie = NO;
+            _postImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+            thumbnail = [self generateSquareImageThumbnail:_postImage];
+            //generate thumbnail
+            UIImage *uploadThumbnailImage =imageWithImage(thumbnail, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));;
+            _thumbnailData = UIImageJPEGRepresentation(uploadThumbnailImage, 0.7);
+        }
+        
+        
+        
         NSLog(@"before uploading image");
         [self uploadImageToS3:_uploadData withThumbnail:_thumbnailData dataBeingMovie:_isMovie];
         [self processCompletionOfDataUpload];
