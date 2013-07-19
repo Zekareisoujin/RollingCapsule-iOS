@@ -814,6 +814,7 @@ double  minimapScaleY;
         _txtFieldEditName.borderStyle = UITextBorderStyleRoundedRect;
         _txtFieldEditName.text = _lblName.text;
         _txtFieldEditName.textAlignment = NSTextAlignmentRight;
+        _txtFieldEditName.delegate = self;
         [self.view addSubview:_txtFieldEditName];
     }
 }
@@ -861,5 +862,10 @@ double  minimapScaleY;
                 [_btnMoreFeed setHidden:show];
         }];
     }
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    NSUInteger newLength = [textField.text length] + [string length] - range.length;
+    return (newLength <= 32);
 }
 @end

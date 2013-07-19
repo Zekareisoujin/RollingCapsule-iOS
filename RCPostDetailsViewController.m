@@ -18,6 +18,7 @@
 #import "RCFriendListViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
 #import "SBJson.h"
+#import "RCUserProfileViewController.h"
 
 @interface RCPostDetailsViewController ()
 @property (nonatomic, strong) NSMutableArray* comments;
@@ -115,6 +116,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     
     //[_keyboardPushHandler reset];
     //_keyboardPushHandler.view = self.view;
+    _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [button setTitle:@"Comment" forState:UIControlStateNormal];
@@ -126,9 +128,6 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     //[_tblViewPostDiscussion setSeparatorColor:[UIColor whiteColor]];
     _currentCommentID = -1;
     _comments = [[NSMutableArray alloc] init];
-    
-    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Delete Post" style:UIBarButtonItemStylePlain target:self action:@selector(deletePost:)];
-    self.navigationItem.rightBarButtonItem = rightButton;
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"dd/M/yyyy"];
@@ -169,7 +168,12 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
                 });
             });
         }
+
     }*/
+    
+    UIView *sview = [[UIView alloc] initWithFrame:_lblUsername.frame];
+    [sview addGestureRecognizer:_tapGestureRecognizer];
+    [self.view addSubview:sview];
     
     //initialize comments box
     UIImage *image = [[UIImage imageNamed:@"viewPostCommentFrame.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(70,5,30,5)];
@@ -262,8 +266,12 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     //[self setupDescriptionMarker:nil];
     _originalCommentBoxPosition = [_btnComment center].y;
     [super viewDidAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
+- (void) viewDidDisappear:(BOOL)animated {
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
 
 - (void)didReceiveMemoryWarning
 {
@@ -273,19 +281,8 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 
 #pragma mark - tap gesture handler
 -(void) handleTap:(UITapGestureRecognizer *)tapGestureRecognizer {
-    if (_isTapToCloseKeyboard){
-        [self backgroundTap:nil];
-        _isTapToCloseKeyboard = NO;
-    }
-    else {
-        CGPoint point = [tapGestureRecognizer locationInView:_imgViewMainFrame];
-        //CGRect frame = _imageViewPostFrame.frame;
-        if (![_imgViewMainFrame pointInside:point withEvent:nil])
-            ;/*[self animateViewDisapperance:^ {
-                [self.view removeFromSuperview];
-                [self removeFromParentViewController];
-            }];*/
-    }
+    RCUserProfileViewController *userProfileView = [[RCUserProfileViewController alloc] initWithUser:_postOwner viewingUser:_loggedInUser];
+    [self.navigationController pushViewController:userProfileView animated:YES];
 }
 
 #pragma mark - web request
@@ -697,10 +694,10 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     return YES;
 }
 - (IBAction)btnCloseTouchUpInside:(id)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];/*[self animateViewDisapperance:^ {
-        [self.view removeFromSuperview];
-        [self removeFromParentViewController];
-    }];*/
+    //[self dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
+
 }
 
 - (IBAction)commentButtonTouchUpInside:(id)sender {
@@ -843,4 +840,5 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
         alertStatus(errorMessage, @"Error following user", nil);
     }];
 }
+
 @end
