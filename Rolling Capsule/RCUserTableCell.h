@@ -13,7 +13,7 @@
 @interface RCUserTableCell : UITableViewCell
 
 @property (nonatomic, weak) IBOutlet UILabel *lblName;
-@property (nonatomic, weak) IBOutlet UILabel *lblEmail;
+//@property (nonatomic, weak) IBOutlet UILabel *lblEmail;
 @property (nonatomic, weak) IBOutlet UIImageView *imgViewAvatar;
 
 - (void) populateCellData:(RCUser *) user withLoggedInUserID:(int)loggedInUserID completion:(void (^)(void))callback;

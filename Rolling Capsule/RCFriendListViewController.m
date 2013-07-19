@@ -92,6 +92,11 @@ NSArray                 *controlButtonArray;
     _firstRefresh = YES;
     _viewingMode = RCFriendListViewModeFriends;
 
+    [_user getUserAvatarAsync:_user.userID completionHandler:^(UIImage* img){
+        [_imgUserAvatar setImage:img];
+    }];
+    [_lblTableTitle setText:_user.name];
+    
     _items = _friends;
     [self handleRefresh:_refreshControl];
 }
@@ -104,15 +109,12 @@ NSArray                 *controlButtonArray;
     switch (_viewingMode) {
         case RCFriendListViewModeFriends:
             [self asynchGetFriendsRequest];
-            [_lblTableTitle setText:[[NSString alloc] initWithFormat:@"%@'s friends", _user.name]];
             break;
         case RCFriendListViewModePendingFriends:
             [self asynchGetRequestedFriendsRequest];
-            [_lblTableTitle setText:[[NSString alloc] initWithFormat:@"People who want to be %@'s friends", _user.name]];
             break;
         case RCFriendListViewModeFollowees:
             [self asynchGetFolloweesRequest];
-            [_lblTableTitle setText:[[NSString alloc] initWithFormat:@"People who %@ is following", _user.name]];
             break;
         default:
             break;
@@ -158,6 +160,30 @@ NSArray                 *controlButtonArray;
     RCUser *user = [_items objectAtIndex:indexPath.row];
     RCUserProfileViewController *detailViewController = [[RCUserProfileViewController alloc] initWithUser:user viewingUser:_loggedinUser];
     [self.navigationController pushViewController:detailViewController animated:YES];
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+    NSString *sectionName;
+    switch (section)
+    {
+        default:
+            switch (_viewingMode) {
+                case RCFriendListViewModeFriends:
+                    sectionName = @"Friends";
+                    break;
+                case RCFriendListViewModePendingFriends:
+                    sectionName = @"Pending Requests";
+                    break;
+                case RCFriendListViewModeFollowees:
+                    sectionName = @"People you follow";
+                    break;
+                default:
+                    break;
+            }
+            break;
+    }
+    return sectionName;
 }
 
 #pragma mark - web request

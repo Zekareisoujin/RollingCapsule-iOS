@@ -154,6 +154,7 @@
 		64FE8433176B9E0E00E561D8 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FE8432176B9E0E00E561D8 /* libTestFlight.a */; };
 		64FE84E5176BAAD800E561D8 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FE84E4176BAAD800E561D8 /* libz.dylib */; };
 		64FFD2CD17662D1B004337F8 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FFD2CC17662D1B004337F8 /* MapKit.framework */; };
+		BF05D89A17990BC100398929 /* feedButtonMore.png in Resources */ = {isa = PBXBuildFile; fileRef = BF05D89917990BC100398929 /* feedButtonMore.png */; };
 		BF0B17E81798430D004AEEC5 /* slideMenuLogoutBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = BF0B17E71798430D004AEEC5 /* slideMenuLogoutBackground.png */; };
 		BF0B17EA17984468004AEEC5 /* menuIconLogout.png in Resources */ = {isa = PBXBuildFile; fileRef = BF0B17E917984468004AEEC5 /* menuIconLogout.png */; };
 		BF0B17EC17984486004AEEC5 /* menuIconLogoutDropDown.png in Resources */ = {isa = PBXBuildFile; fileRef = BF0B17EB17984486004AEEC5 /* menuIconLogoutDropDown.png */; };
@@ -233,15 +234,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		6401017C1797DC79002A6E2E /* RCNewPostViewController4.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RCNewPostViewController4.xib; path = "Rolling Capsule/RCNewPostViewController4.xib"; sourceTree = "<group>"; };
-		640103471798041A002A6E2E /* buttonPost@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "buttonPost@2x.png"; sourceTree = "<group>"; };
-		640103481798041A002A6E2E /* buttonRefresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttonRefresh.png; sourceTree = "<group>"; };
-		6401034B17981D10002A6E2E /* postButtonTimeCapsule-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "postButtonTimeCapsule-highlighted.png"; sourceTree = "<group>"; };
-		6401034C17981D10002A6E2E /* postButtonTimeCapsule.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = postButtonTimeCapsule.png; sourceTree = "<group>"; };
-		6401034F17981E4D002A6E2E /* RCDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDatePickerView.h; sourceTree = "<group>"; };
-		6401035017981E4D002A6E2E /* RCDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDatePickerView.m; sourceTree = "<group>"; };
-		6401035217981E6C002A6E2E /* RCDatePickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCDatePickerView.xib; sourceTree = "<group>"; };
-		64010354179825DD002A6E2E /* postDatePickerFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = postDatePickerFrame.png; sourceTree = "<group>"; };
+		6401017C1797DC79002A6E2E /* RCNewPostViewController4.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCNewPostViewController4.xib; sourceTree = "<group>"; };
+		640103471798041A002A6E2E /* buttonPost@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "buttonPost@2x.png"; path = "../buttonPost@2x.png"; sourceTree = "<group>"; };
+		640103481798041A002A6E2E /* buttonRefresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = buttonRefresh.png; path = ../buttonRefresh.png; sourceTree = "<group>"; };
+		6401034B17981D10002A6E2E /* postButtonTimeCapsule-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "postButtonTimeCapsule-highlighted.png"; path = "../postButtonTimeCapsule-highlighted.png"; sourceTree = "<group>"; };
+		6401034C17981D10002A6E2E /* postButtonTimeCapsule.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = postButtonTimeCapsule.png; path = ../postButtonTimeCapsule.png; sourceTree = "<group>"; };
+		6401034F17981E4D002A6E2E /* RCDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCDatePickerView.h; path = ../RCDatePickerView.h; sourceTree = "<group>"; };
+		6401035017981E4D002A6E2E /* RCDatePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCDatePickerView.m; path = ../RCDatePickerView.m; sourceTree = "<group>"; };
+		6401035217981E6C002A6E2E /* RCDatePickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RCDatePickerView.xib; path = ../RCDatePickerView.xib; sourceTree = "<group>"; };
+		64010354179825DD002A6E2E /* postDatePickerFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = postDatePickerFrame.png; path = ../postDatePickerFrame.png; sourceTree = "<group>"; };
 		64011D2E17781DA400816D93 /* RCTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCTextField.h; path = ../RCTextField.h; sourceTree = "<group>"; };
 		64011D2F17781DA400816D93 /* RCTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCTextField.m; path = ../RCTextField.m; sourceTree = "<group>"; };
 		64014915177966F5009B69DF /* RCMainFeedCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RCMainFeedCell.xib; path = ../RCMainFeedCell.xib; sourceTree = "<group>"; };
@@ -360,9 +361,7 @@
 		64D0298E1796E7E900E4AC7B /* btnTransparent-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "btnTransparent-normal.png"; path = "../btnTransparent-normal.png"; sourceTree = "<group>"; };
 		64D029901796F84C00E4AC7B /* magnifyingGlass@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "magnifyingGlass@2x.png"; path = "../magnifyingGlass@2x.png"; sourceTree = "<group>"; };
 		64D2442A177F123D00C1206F /* menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = menu.png; path = ../menu.png; sourceTree = "<group>"; };
-		64D6D7F81798694300AA1161 /* viewPostDeleteButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = viewPostDeleteButton.png; sourceTree = "<group>"; };
-		64D6D7FA1798FD7400AA1161 /* viewPostOpenCommentPostingButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = viewPostOpenCommentPostingButton.png; sourceTree = "<group>"; };
-		64D6D7FC179907F500AA1161 /* viewPostDescriptionMarker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = viewPostDescriptionMarker.png; sourceTree = "<group>"; };
+		64D6D7F81798694300AA1161 /* viewPostDeleteButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostDeleteButton.png; path = ../viewPostDeleteButton.png; sourceTree = "<group>"; };
 		64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "viewPostCommentButton-normal.png"; path = "../viewPostCommentButton-normal.png"; sourceTree = "<group>"; };
 		64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "viewPostCommentButton-highlighted.png"; path = "../viewPostCommentButton-highlighted.png"; sourceTree = "<group>"; };
 		64E293131784ABEE009496FF /* viewPostFollowLabel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostFollowLabel.png; path = ../viewPostFollowLabel.png; sourceTree = "<group>"; };
@@ -406,6 +405,7 @@
 		64FE84E3176B9E4E00E561D8 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = SOURCE_ROOT; };
 		64FE84E4176BAAD800E561D8 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		64FFD2CC17662D1B004337F8 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		BF05D89917990BC100398929 /* feedButtonMore.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = feedButtonMore.png; sourceTree = "<group>"; };
 		BF0B17E71798430D004AEEC5 /* slideMenuLogoutBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slideMenuLogoutBackground.png; sourceTree = "<group>"; };
 		BF0B17E917984468004AEEC5 /* menuIconLogout.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menuIconLogout.png; sourceTree = "<group>"; };
 		BF0B17EB17984486004AEEC5 /* menuIconLogoutDropDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menuIconLogoutDropDown.png; sourceTree = "<group>"; };
@@ -562,9 +562,7 @@
 		643EACE9175BBE0D002761D9 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				BF0B17EB17984486004AEEC5 /* menuIconLogoutDropDown.png */,
-				BF0B17E917984468004AEEC5 /* menuIconLogout.png */,
-				BF0B17E71798430D004AEEC5 /* slideMenuLogoutBackground.png */,
+				BF05D89917990BC100398929 /* feedButtonMore.png */,
 				6460E869178AE3EA0065D6BA /* appIcon.png */,
 				6460E86A178AE3EA0065D6BA /* appIcon@2x.png */,
 				643EACE7175BACC0002761D9 /* back_button.png */,
@@ -573,6 +571,8 @@
 				BF46ECB51778476C00F26A05 /* btnStandard-normal.png */,
 				64D0298E1796E7E900E4AC7B /* btnTransparent-normal.png */,
 				64B81CB71795E21C00B5A825 /* buttonPlay.png */,
+				640103471798041A002A6E2E /* buttonPost@2x.png */,
+				640103481798041A002A6E2E /* buttonRefresh.png */,
 				64119A12178460A500BF0B05 /* closeButton.png */,
 				6460E888178B2D800065D6BA /* closeButton@2x.png */,
 				BF728EEC176768000050699C /* Default-568h@2x.png */,
@@ -618,17 +618,22 @@
 				BF8DDD4B1796EAEC00803CE1 /* menuButtonNormal.png */,
 				BF8DDD4C1796EAEC00803CE1 /* menuButtonPressed.png */,
 				BF8DDD4F1796EDC400803CE1 /* menuIconFriends.png */,
+				BF0B17E917984468004AEEC5 /* menuIconLogout.png */,
+				BF0B17EB17984486004AEEC5 /* menuIconLogoutDropDown.png */,
 				BF8DDD501796EDC400803CE1 /* menuIconMainFeeds.png */,
 				BF8DDD511796EDC400803CE1 /* menuIconProfile.png */,
 				BF8DDD521796EDC400803CE1 /* menuIconSettings.png */,
 				64361E33178E9ABB0041B5C2 /* navBarButtonBackground@2x.png */,
 				64EA9B4717887B5A0022FA67 /* navigationBarBackground@2x.png */,
 				641199EE178088FE00BF0B05 /* postBackground.png */,
+				6401034B17981D10002A6E2E /* postButtonTimeCapsule-highlighted.png */,
+				6401034C17981D10002A6E2E /* postButtonTimeCapsule.png */,
 				641199EF178088FE00BF0B05 /* postCameraSourceButton-normal.png */,
 				644556B9179709EB00DAFE26 /* postCameraSourceButton.png */,
 				64B81CB31795DE5500B5A825 /* postCommentCancelButton.png */,
 				64B81CB41795DE5500B5A825 /* postCommentPostButton.png */,
 				644556B71796FDC300DAFE26 /* postControlFrame.png */,
+				64010354179825DD002A6E2E /* postDatePickerFrame.png */,
 				644556BF179712AD00DAFE26 /* postFriendPrivacyButton-2.png */,
 				64119A0C17834E9700BF0B05 /* postFriendPrivacyButton-highlighted.png */,
 				64119A0617833A8A00BF0B05 /* postFriendPrivacyButton.png */,
@@ -661,6 +666,7 @@
 				6460E872178AE4070065D6BA /* slideMenuBackground.png */,
 				6460E873178AE4070065D6BA /* slideMenuFriend.png */,
 				6460E874178AE4070065D6BA /* slideMenuLogout.png */,
+				BF0B17E71798430D004AEEC5 /* slideMenuLogoutBackground.png */,
 				6460E875178AE4070065D6BA /* slideMenuMainFeed.png */,
 				6460E876178AE4070065D6BA /* slideMenuProfile.png */,
 				6460E877178AE4070065D6BA /* slideMenuSettings.png */,
@@ -670,6 +676,7 @@
 				64B81CA31795551E00B5A825 /* viewPostCommentButton.png */,
 				64B81CA9179556A900B5A825 /* viewPostCommentFrame@2x.png */,
 				64E293191784AE14009496FF /* viewPostCommentTextView.png */,
+				64D6D7F81798694300AA1161 /* viewPostDeleteButton.png */,
 				64B81CA41795551E00B5A825 /* viewPostFollowButton.png */,
 				64E293131784ABEE009496FF /* viewPostFollowLabel.png */,
 				64B81CA51795551E00B5A825 /* viewPostFriendWithButton.png */,
@@ -684,18 +691,6 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
-				64D6D7FC179907F500AA1161 /* viewPostDescriptionMarker.png */,
-				64D6D7FA1798FD7400AA1161 /* viewPostOpenCommentPostingButton.png */,
-				64D6D7F81798694300AA1161 /* viewPostDeleteButton.png */,
-				64010354179825DD002A6E2E /* postDatePickerFrame.png */,
-				6401035217981E6C002A6E2E /* RCDatePickerView.xib */,
-				6401034F17981E4D002A6E2E /* RCDatePickerView.h */,
-				6401035017981E4D002A6E2E /* RCDatePickerView.m */,
-				6401034B17981D10002A6E2E /* postButtonTimeCapsule-highlighted.png */,
-				6401034C17981D10002A6E2E /* postButtonTimeCapsule.png */,
-				640103471798041A002A6E2E /* buttonPost@2x.png */,
-				640103481798041A002A6E2E /* buttonRefresh.png */,
-				6401017C1797DC79002A6E2E /* RCNewPostViewController4.xib */,
 				BFCA7821174DFD3F00666CBA /* Rolling Capsule */,
 				BFCA7845174DFD3F00666CBA /* Rolling CapsuleTests */,
 				BFCA781A174DFD3F00666CBA /* Frameworks */,
@@ -755,6 +750,9 @@
 				642E71FC17639D9400B3464E /* RCConnectionManager.h */,
 				642E71FD17639D9400B3464E /* RCConnectionManager.m */,
 				BF3AFF971750763400D46558 /* RCConstants.h */,
+				6401034F17981E4D002A6E2E /* RCDatePickerView.h */,
+				6401035017981E4D002A6E2E /* RCDatePickerView.m */,
+				6401035217981E6C002A6E2E /* RCDatePickerView.xib */,
 				6491DCEA1755CF8D006FBCD8 /* RCFindFriendsViewController.h */,
 				6491DCEB1755CF8D006FBCD8 /* RCFindFriendsViewController.m */,
 				6491DCEC1755CF8D006FBCD8 /* RCFindFriendsViewController.xib */,
@@ -784,12 +782,13 @@
 				6490A9091757C07000E5048F /* RCMainMenuViewController.h */,
 				6490A90A1757C07100E5048F /* RCMainMenuViewController.m */,
 				6490A90B1757C07100E5048F /* RCMainMenuViewController.xib */,
-				BF8DDD461796E8E600803CE1 /* RCMenuTableCell.xib */,
 				BF8DDD481796E91000803CE1 /* RCMenuTableCell.h */,
 				BF8DDD491796E91000803CE1 /* RCMenuTableCell.m */,
+				BF8DDD461796E8E600803CE1 /* RCMenuTableCell.xib */,
 				643EACEA175BBE51002761D9 /* RCNewPostViewController.h */,
 				643EACEB175BBE51002761D9 /* RCNewPostViewController.m */,
 				643EACEC175BBE51002761D9 /* RCNewPostViewController.xib */,
+				6401017C1797DC79002A6E2E /* RCNewPostViewController4.xib */,
 				BF2CD6251754E60C00EF2E85 /* RCPostCommentCell.h */,
 				BF2CD6261754E60C00EF2E85 /* RCPostCommentCell.m */,
 				BF2CD6231754E12D00EF2E85 /* RCPostCommentCell.xib */,
@@ -1106,8 +1105,7 @@
 				BF0B17EA17984468004AEEC5 /* menuIconLogout.png in Resources */,
 				BF0B17EC17984486004AEEC5 /* menuIconLogoutDropDown.png in Resources */,
 				64D6D7F91798694300AA1161 /* viewPostDeleteButton.png in Resources */,
-				64D6D7FB1798FD7400AA1161 /* viewPostOpenCommentPostingButton.png in Resources */,
-				64D6D7FD179907F600AA1161 /* viewPostDescriptionMarker.png in Resources */,
+				BF05D89A17990BC100398929 /* feedButtonMore.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1250,7 +1248,7 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1265,6 +1263,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				ONLY_ACTIVE_ARCH = YES;
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3FA673B5-77DC-46B5-A994-59548EF2EDDC";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1281,7 +1280,7 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -1290,6 +1289,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3FA673B5-77DC-46B5-A994-59548EF2EDDC";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1299,7 +1299,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Downloads/aws-ios-sdk-1.6.0\"",
@@ -1314,7 +1314,7 @@
 				);
 				PRODUCT_NAME = memcap;
 				PROVISIONING_PROFILE = "736F0BB1-2353-4E70-B6E7-12E2C7FAB327";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "736F0BB1-2353-4E70-B6E7-12E2C7FAB327";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3FA673B5-77DC-46B5-A994-59548EF2EDDC";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1324,7 +1324,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Downloads/aws-ios-sdk-1.6.0\"",
@@ -1339,7 +1339,7 @@
 				);
 				PRODUCT_NAME = memcap;
 				PROVISIONING_PROFILE = "3FA673B5-77DC-46B5-A994-59548EF2EDDC";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "736F0BB1-2353-4E70-B6E7-12E2C7FAB327";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3FA673B5-77DC-46B5-A994-59548EF2EDDC";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};

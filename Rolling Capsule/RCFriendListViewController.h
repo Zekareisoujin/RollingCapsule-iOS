@@ -21,6 +21,7 @@ typedef enum RCFriendListViewMode RCFriendListViewMode;
 
 - (id)initWithUser:(RCUser *)user withLoggedinUser:(RCUser*)loggedinUser;
 
+@property (weak, nonatomic) IBOutlet UIImageView *imgUserAvatar;
 @property (weak, nonatomic) IBOutlet UILabel *lblTableTitle;
 @property (weak, nonatomic) IBOutlet UITableView *tblViewFriendList;
 @property (nonatomic, strong) NSMutableArray *friends;

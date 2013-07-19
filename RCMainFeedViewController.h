@@ -29,6 +29,7 @@ typedef enum RCMainFeedViewMode RCMainFeedViewMode;
 @property (weak, nonatomic) IBOutlet UIButton *btnViewModePublic;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
+@property (weak, nonatomic) IBOutlet UIButton *btnMoreFeed;
 
 @property (nonatomic, strong) NSMutableDictionary *userCache;
 @property (nonatomic, strong) NSMutableDictionary *postCache;
@@ -39,5 +40,7 @@ typedef enum RCMainFeedViewMode RCMainFeedViewMode;
 - (IBAction)btnViewModeChosen:(UIButton *)sender;
 - (IBAction)btnCenterMapTouchUpInside:(id)sender;
 - (IBAction)btnRefreshTouchUpInside:(id)sender;
+- (IBAction)btnMoreFeedClicked:(id)sender;
+
 - (void) setCurrentUser: (RCUser*) user;
 @end
