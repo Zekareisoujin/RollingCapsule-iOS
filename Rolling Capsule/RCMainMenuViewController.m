@@ -109,6 +109,7 @@ int     activeMenuIndex = 0;
             break;
         case 3:
             //[self btnActionSetting:self];
+            [self btnActionLogOutDropDown:self];
             break;
         default:
             break;
