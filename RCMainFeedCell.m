@@ -11,6 +11,7 @@
 #import "RCResourceCache.h"
 #import "RCConstants.h"
 #import "RCAmazonS3Helper.h"
+#import "RCConnectionManager.h"
 
 @implementation RCMainFeedCell
 
@@ -65,10 +66,9 @@
         owner.email = post.authorEmail;
         owner.name = post.authorName;
         UIImage* cachedImg = (UIImage*)[cache getResourceForKey:key usingQuery:^{
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+            [RCConnectionManager startConnection];
             UIImage *image = [RCAmazonS3Helper getUserMediaImage:owner withLoggedinUserID:user.userID withImageUrl:post.thumbnailUrl];
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-            //NSLog(@"downloading images");
+            [RCConnectionManager endConnection];
             return image;
         }];
         dispatch_async(dispatch_get_main_queue(), ^{

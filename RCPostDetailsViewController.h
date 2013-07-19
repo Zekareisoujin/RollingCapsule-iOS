@@ -21,7 +21,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnDelete;
 @property (weak, nonatomic) IBOutlet UIButton *btnPostComment;
 @property (weak, nonatomic) IBOutlet UILabel *lblLandmark;
-@property (weak, nonatomic) IBOutlet UILabel *lblDatePosted;
+@property (strong, nonatomic) IBOutlet UILabel *lblDatePosted;
 @property (weak, nonatomic) IBOutlet UILabel *lblUsername;
 @property (weak, nonatomic) IBOutlet UIImageView *imageViewCommentTextViewBackground;
 @property (weak, nonatomic) IBOutlet UIImageView *imgViewCommentFrame;

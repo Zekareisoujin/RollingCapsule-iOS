@@ -545,6 +545,7 @@ NSData *_thumbnailData;
             AVURLAsset *sourceAsset = [AVURLAsset URLAssetWithURL:_videoUrl options:nil];
             CMTime duration = sourceAsset.duration;
             AVAssetImageGenerator* generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:sourceAsset];
+            generator.appliesPreferredTrackTransform = YES;
             //Get the 1st frame 3 seconds in
             int frameTimeStart = (int)(CMTimeGetSeconds(duration) / 2.0);
             int frameLocation = 1;
@@ -558,17 +559,8 @@ NSData *_thumbnailData;
             _isMovie = NO;
             _postImage = [info objectForKey:UIImagePickerControllerOriginalImage];
             thumbnail = [self generateSquareImageThumbnail:_postImage];
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self setupImageScrollView];
-            /*_imageViewPostPicture = [[UIImageView alloc] initWithImage:_postImage];
-            [_imageViewPostPicture setImage:_postImage];
-            [_scrollViewImage addSubview:_imageViewPostPicture];*/
-            NSLog(@"remove activity indicator");
-            [_activityIndicator removeFromSuperview];
-            [_activityIndicator stopAnimating];
-            
-        });
+                    }
+        
         
         //after succesful thumbnail generation start uploading data
         NSLog(@"begin uploading data");
@@ -596,6 +588,7 @@ NSData *_thumbnailData;
             if (_postImage.size.width > 800 && _postImage.size.height > 800) {
                 float division = MIN(_postImage.size.width/(800.0-1.0), _postImage.size.height/(800-1.0));
                 UIImage *rescaledPostImage = imageWithImage(_postImage, CGSizeMake(_postImage.size.width/division,_postImage.size.height/division));
+                _postImage = rescaledPostImage;
                 _uploadData = UIImageJPEGRepresentation(rescaledPostImage, 1.0);
             } else {
                 _uploadData = UIImageJPEGRepresentation(_postImage, 1.0);
@@ -603,6 +596,16 @@ NSData *_thumbnailData;
             NSLog(@"number of bytes %d",[_uploadData length]);
             
         }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self setupImageScrollView];
+            /*_imageViewPostPicture = [[UIImageView alloc] initWithImage:_postImage];
+             [_imageViewPostPicture setImage:_postImage];
+             [_scrollViewImage addSubview:_imageViewPostPicture];*/
+            NSLog(@"remove activity indicator");
+            [_activityIndicator removeFromSuperview];
+            [_activityIndicator stopAnimating];
+            
+        });
         NSLog(@"before uploading image");
         [self uploadImageToS3:_uploadData withThumbnail:_thumbnailData dataBeingMovie:_isMovie];
         [self processCompletionOfDataUpload];
@@ -1134,16 +1137,10 @@ handler:(void (^)(AVAssetExportSession*))handler
     NSLog(@"crop coordinates x=%f y=%f size=%f",x,y,squareSize);
     CGRect cropRect = CGRectMake(0,0,squareSize,squareSize);
     
-    // Create new image context (retina safe)
-    UIGraphicsBeginImageContextWithOptions(cropRect.size, NO, 0.0);
-    // Draw the image into the rect
-    [largeImage drawInRect:cropRect];
-    
-    // Saving the image, ending image context
-    UIImage *croppedImage = UIGraphicsGetImageFromCurrentImageContext();
-    
-    UIGraphicsEndImageContext();
-    
+    CGImageRef imageRef = CGImageCreateWithImageInRect([largeImage CGImage], cropRect);
+    // or use the UIImage wherever you like
+    UIImage *croppedImage = [UIImage imageWithCGImage:imageRef scale:largeImage.scale orientation:largeImage.imageOrientation];
+    CGImageRelease(imageRef);
     return croppedImage;
 }
 @end

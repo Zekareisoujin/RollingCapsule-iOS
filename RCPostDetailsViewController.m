@@ -133,11 +133,24 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"dd/M/yyyy"];
     
+    _lblDatePosted = [[UILabel alloc] init];
+    [_lblDatePosted setBackgroundColor:[UIColor clearColor]];
+    [_lblDatePosted setTextColor:[UIColor whiteColor]];
+
+    _lblDatePosted.font = [UIFont fontWithName:_lblPostSubject.font.fontName size:13.0];
     _lblDatePosted.text = [formatter stringFromDate:_post.createdTime];
     _lblPostSubject.text = _post.subject;
+    [_lblDatePosted sizeToFit];
     [_lblPostSubject setBackgroundColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.4]];
     _lblUsername.text = _post.authorName;
-    if (_landmark != nil) {
+    [_lblUsername sizeToFit];
+    [self.view addSubview:_lblDatePosted];
+    CGRect dateLabelFrame = _lblDatePosted.frame;
+    dateLabelFrame.origin.x = _lblUsername.frame.origin.x + _lblUsername.frame.size.width + 15.0;
+    dateLabelFrame.origin.y = _lblUsername.frame.origin.y + (_lblUsername.frame.size.height - dateLabelFrame.size.height);
+    _lblDatePosted.frame = dateLabelFrame;
+    
+    /*if (_landmark != nil) {
         _lblUsername.text = [NSString stringWithFormat:@"%@ @ %@", _post.authorName, _landmark.name];
         UIImage *landmarkImage = [UIImage imageNamed:[NSString stringWithFormat:@"landmarkCategory%@.png",_landmark.category]];
         [_imgViewLandmarkCategory setImage:landmarkImage];
@@ -156,7 +169,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
                 });
             });
         }
-    }
+    }*/
     
     //initialize comments box
     UIImage *image = [[UIImage imageNamed:@"viewPostCommentFrame.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(70,5,30,5)];
