@@ -29,6 +29,7 @@
 NSArray *menuItemLabel;
 NSArray *menuItemIcon;
 int     activeMenuIndex = 0;
+BOOL    showLogOut;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -61,6 +62,7 @@ int     activeMenuIndex = 0;
     [backgroundView setFrame:_menuTable.frame];
     [_menuTable setBackgroundView: backgroundView];
     [_menuTable reloadData];
+    showLogOut = false;
     
 }
 
@@ -223,10 +225,9 @@ int     activeMenuIndex = 0;
 }
 
 - (IBAction)btnActionLogOutDropDown:(id)sender {
-    static BOOL show;
     float offset;
-    offset = (!show?40:-40);
-    show = !show;
+    offset = (!showLogOut?40:-40);
+    showLogOut = !showLogOut;
     
     [UIView animateWithDuration:0.5 animations:^{
         CGRect rect = _btnLogOut.frame;
