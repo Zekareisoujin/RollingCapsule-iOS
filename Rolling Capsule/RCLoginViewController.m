@@ -95,6 +95,13 @@
 }
 
 - (IBAction)btnActionRegister:(id)sender {
+    [[NSNotificationCenter defaultCenter] removeObserver:_keyboardHandler
+                                                    name:UIKeyboardWillShowNotification
+                                                  object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:_keyboardHandler
+                                                    name:UIKeyboardWillHideNotification
+                                                  object:nil];
     RCRegisterViewController *registerViewController = [[RCRegisterViewController alloc]
                                                       init];
     [self addChildViewController:registerViewController];

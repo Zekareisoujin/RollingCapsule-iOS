@@ -259,15 +259,16 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 - (void)viewWillAppear:(BOOL)animated
 {
     [self resetUIViewsState];
+    [self.navigationController setNavigationBarHidden:YES animated:NO];
     [super viewWillAppear:animated];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     //prepare comment button for drag
     //[self setupDescriptionMarker:nil];
+    
     _originalCommentBoxPosition = [_btnComment center].y;
     [super viewDidAppear:animated];
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
 }
 
 - (void) viewDidDisappear:(BOOL)animated {

@@ -20,6 +20,7 @@ typedef enum RCMainFeedViewMode RCMainFeedViewMode;
 
 @interface RCMainFeedViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDataSource, MKMapViewDelegate, UIGestureRecognizerDelegate>
 - (IBAction)btnUserAvatarTouchUpInside:(id)sender;
+@property (weak, nonatomic) IBOutlet UIButton *btnRefresh;
 
 @property (weak, nonatomic) IBOutlet UITableView *tblFeedList;
 @property (weak, nonatomic) IBOutlet UIButton *btnViewModeFollow;

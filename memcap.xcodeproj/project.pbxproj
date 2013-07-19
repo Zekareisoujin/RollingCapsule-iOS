@@ -114,6 +114,8 @@
 		64D6D80117991FCD00AA1161 /* viewPostOpenCommentPostingButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D6D7FF17991FCD00AA1161 /* viewPostOpenCommentPostingButton.png */; };
 		64D6D80417994B5400AA1161 /* buttonCancel.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D6D80217994B5300AA1161 /* buttonCancel.png */; };
 		64D6D80517994B5400AA1161 /* buttonSubmit.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D6D80317994B5400AA1161 /* buttonSubmit.png */; };
+		64D6D80B17998ECF00AA1161 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 64D6D80A17998ECF00AA1161 /* Reachability.m */; };
+		64D6D80D179995C500AA1161 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64D6D80C179995C500AA1161 /* SystemConfiguration.framework */; };
 		64E293101784A84B009496FF /* viewPostCommentButton-normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */; };
 		64E293121784A8C8009496FF /* viewPostCommentButton-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */; };
 		64E293161784ABEE009496FF /* viewPostFollowLabel.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293131784ABEE009496FF /* viewPostFollowLabel.png */; };
@@ -366,6 +368,9 @@
 		64D6D7FF17991FCD00AA1161 /* viewPostOpenCommentPostingButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostOpenCommentPostingButton.png; path = ../viewPostOpenCommentPostingButton.png; sourceTree = "<group>"; };
 		64D6D80217994B5300AA1161 /* buttonCancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttonCancel.png; sourceTree = "<group>"; };
 		64D6D80317994B5400AA1161 /* buttonSubmit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttonSubmit.png; sourceTree = "<group>"; };
+		64D6D80817998E7B00AA1161 /* Reachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		64D6D80A17998ECF00AA1161 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		64D6D80C179995C500AA1161 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "viewPostCommentButton-normal.png"; path = "../viewPostCommentButton-normal.png"; sourceTree = "<group>"; };
 		64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "viewPostCommentButton-highlighted.png"; path = "../viewPostCommentButton-highlighted.png"; sourceTree = "<group>"; };
 		64E293131784ABEE009496FF /* viewPostFollowLabel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostFollowLabel.png; path = ../viewPostFollowLabel.png; sourceTree = "<group>"; };
@@ -516,6 +521,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				64D6D80D179995C500AA1161 /* SystemConfiguration.framework in Frameworks */,
 				6417B232179415C6007777E5 /* CoreMedia.framework in Frameworks */,
 				647E2FD117929BFC00AA6B9A /* AVFoundation.framework in Frameworks */,
 				64EEBFC4178DDA4B00D2C968 /* MediaPlayer.framework in Frameworks */,
@@ -699,6 +705,9 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
+				64D6D80C179995C500AA1161 /* SystemConfiguration.framework */,
+				64D6D80A17998ECF00AA1161 /* Reachability.m */,
+				64D6D80817998E7B00AA1161 /* Reachability.h */,
 				64D6D80217994B5300AA1161 /* buttonCancel.png */,
 				64D6D80317994B5400AA1161 /* buttonSubmit.png */,
 				BFCA7821174DFD3F00666CBA /* Rolling Capsule */,
@@ -1201,6 +1210,7 @@
 				BF8DDD4A1796E91000803CE1 /* RCMenuTableCell.m in Sources */,
 				BF8DDD5A1797068100803CE1 /* RCSettingViewController.m in Sources */,
 				6401035117981E4E002A6E2E /* RCDatePickerView.m in Sources */,
+				64D6D80B17998ECF00AA1161 /* Reachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

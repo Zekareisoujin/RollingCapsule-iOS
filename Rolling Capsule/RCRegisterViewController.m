@@ -173,8 +173,10 @@ BOOL        _willMoveKeyboardUp;
 }
 - (IBAction)btnCloseTouchUpInside:(id)sender {
     [self animateViewDisapperance:^ {
+        [[self parentViewController] viewWillAppear:NO];
         [self.view removeFromSuperview];
         [self removeFromParentViewController];
+        
     }];
 }
 @end

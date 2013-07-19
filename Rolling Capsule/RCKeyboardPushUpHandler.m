@@ -9,10 +9,10 @@
 #import "RCKeyboardPushUpHandler.h"
 
 @implementation RCKeyboardPushUpHandler
-BOOL _keyboardVisible;
-double _keyboardTopPosition;
-double _movedUpBy;
 
+@synthesize movedUpBy = _movedUpBy;
+@synthesize keyboardTopPosition = _keyboardTopPosition;
+@synthesize keyboardVisible = _keyboardVisible;
 @synthesize enabled = _enabled;
 @synthesize bottomScreenGap = _bottomScreenGap;
 

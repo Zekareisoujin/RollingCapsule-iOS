@@ -21,6 +21,7 @@
 #import "RCConnectionManager.h"
 #import "RCNotification.h"
 #import "RCAddLandmarkController.h"
+#import "Reachability.h"
 #import <QuartzCore/QuartzCore.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import "SBJson.h"
@@ -38,6 +39,8 @@
 @property (nonatomic, strong) UIImage *backgroundImage;
 @property (nonatomic, assign) RCMainFeedViewMode      currentViewMode;
 @property (nonatomic, strong) UIButton* postButton;
+@property (nonatomic, strong) Reachability * reachability;
+@property (nonatomic, strong) UILabel* lblWarningNoConnection;
 @end
 
 @implementation RCMainFeedViewController
@@ -69,6 +72,8 @@ BOOL        _haveScreenshot;
 @synthesize landmarks = _landmarks;
 @synthesize postButton = _postButton;
 @synthesize posts = _posts;
+@synthesize reachability = _reachability;
+@synthesize lblWarningNoConnection = _lblWarningNoConnection;
 
 + (NSString*) debugTag {
     return @"MainFeedView";
@@ -99,6 +104,12 @@ BOOL        _haveScreenshot;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    //setup connectivity notification
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(networkChanged:) name:kReachabilityChangedNotification object:nil];
+    
+    _reachability = [Reachability reachabilityForInternetConnection];
+    [_reachability startNotifier];
     
     //setup custom back button when necessary
     if ([self.navigationController.viewControllers count] > 2)
@@ -174,6 +185,24 @@ BOOL        _haveScreenshot;
     _mapView.showsUserLocation = YES;
 }
 
+- (void)networkChanged:(NSNotification *)notification
+{
+    
+    NetworkStatus remoteHostStatus = [_reachability currentReachabilityStatus];
+    
+    if(remoteHostStatus == NotReachable) {
+        NSLog(@"not reachable");
+        [self showNoConnectionWarningMessage];
+    }
+    else {
+        [self hideNoConnectionWarningMessage];
+        if (remoteHostStatus == ReachableViaWiFi) {
+            NSLog(@"wifi");
+            }
+        else if (remoteHostStatus == ReachableViaWWAN) { NSLog(@"wwan"); }
+    }
+}
+
 - (void) handleRefresh:(UIRefreshControl*) refreshControl {
     [self btnCenterMapTouchUpInside:nil];
     
@@ -190,7 +219,42 @@ BOOL        _haveScreenshot;
     // Dispose of any resources that can be recreated.
 }
 
+- (void) showNoConnectionWarningMessage {
+    _btnRefresh.enabled = NO;
+        if (_lblWarningNoConnection == nil) {
+        _lblWarningNoConnection = [[UILabel alloc] init];
+        _lblWarningNoConnection.text = @"No Internet Connection";
+        _lblWarningNoConnection.textAlignment = NSTextAlignmentCenter;
+        _lblWarningNoConnection.textColor = [ UIColor whiteColor];
+        [_lblWarningNoConnection setBackgroundColor:[UIColor redColor]];//[UIColor colorWithRed:255.0 green:0.0 blue:0.0 alpha:0.5]];
+    }
+    
+    [self.view addSubview:_lblWarningNoConnection];
+    _lblWarningNoConnection.frame = CGRectMake(0,-30,self.view.frame.size.width,30);
+    [UIView animateWithDuration:0.5 animations:^{
+        CGRect frame = self.view.frame;
+        frame.origin.y += 30;
+        self.view.frame = frame;
+    }];
+}
+- (void) hideNoConnectionWarningMessage {
+    [UIView animateWithDuration:0.5 animations:^{
+        CGRect frame = self.view.frame;
+        frame.origin.y -= 30;
+        self.view.frame = frame;
+    } completion:^(BOOL finished){
+        [_lblWarningNoConnection removeFromSuperview];
+        _btnRefresh.enabled = YES;
+    }];
+
+    
+}
+
 - (void) asynchFetchFeeds {
+    if ([_reachability currentReachabilityStatus] == NotReachable) {
+        [self showNoConnectionWarningMessage];
+        return;
+    }
     //Asynchronous Request
     @try {
         currentPageNumber = 1;
@@ -537,6 +601,9 @@ BOOL        _haveScreenshot;
     
     //refresh if necessary, views like post where the main feed should refresh when finish
     //would set the _willRefresh parameter
+    }
+- (void) viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     if (_willRefresh) {
         [self handleRefresh:_refreshControl];
         _willRefresh = NO;
