@@ -620,7 +620,8 @@ BOOL        _haveScreenshot;
                 [self handleRefresh:_refreshControl];
             };
             postDetailsViewController.landmarkID = post.landmarkID;
-            [self presentViewController:postDetailsViewController animated:YES completion:nil];
+            //[self presentViewController:postDetailsViewController animated:YES completion:nil];
+            [self.navigationController pushViewController:postDetailsViewController animated:YES];
             
         }
     }

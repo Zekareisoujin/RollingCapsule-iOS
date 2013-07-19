@@ -930,7 +930,7 @@ NSData *_thumbnailData;
     }
 }
 
-- (BOOL)textView:(UITextField *)textField shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)string
+- (BOOL)textView:(UITextView *)textField shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)string
 {
     NSString *resultString = [textField.text stringByReplacingCharactersInRange:range withString:string];
     NSLog(@"resulting string would be: %@", resultString);
@@ -994,6 +994,14 @@ NSData *_thumbnailData;
             [self.view removeFromSuperview];
         }];*/
     }
+}
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if (textField == _txtFieldPostSubject) {
+        NSUInteger newLength = [textField.text length] + [string length] - range.length;
+        return (newLength <= 48);
+    }
+    return YES;
 }
 
 #pragma mark - post privacy options
