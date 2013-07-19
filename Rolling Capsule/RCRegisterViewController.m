@@ -25,6 +25,11 @@ BOOL        _willMoveKeyboardUp;
     _txtFieldPassword.delegate = self;
 	_willMoveKeyboardUp = FALSE;
     _keyboardVisible = FALSE;
+    [_txtFieldName setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
+    [_txtFieldEmail setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
+    [_txtFieldPassword setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
+    [_txtFieldPasswordConfirmation setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];c
+    
     [self animateViewAppearance];
 }
 
