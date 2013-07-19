@@ -597,15 +597,16 @@ BOOL        _haveScreenshot;
 - (void) viewWillAppear:(BOOL)animated {
 
     //add gesture recognizer
+    [super viewWillAppear:animated];
     [_collectionView addGestureRecognizer:_pinchGestureRecognizer];
     [_collectionView addGestureRecognizer:_tapGestureRecognizer];
     [_collectionView addGestureRecognizer:_longPressGestureRecognizer];
-    
-    //refresh if necessary, views like post where the main feed should refresh when finish
-    //would set the _willRefresh parameter
-    }
+}
+
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    //refresh if necessary, views like post where the main feed should refresh when finish
+    //would set the _willRefresh parameter
     if (_willRefresh) {
         [self handleRefresh:_refreshControl];
         _willRefresh = NO;
