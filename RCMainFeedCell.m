@@ -41,8 +41,8 @@
 */
 
 - (void)getPostContentImageFromInternet:(RCUser *) user withPostContent:(RCPost *) post usingCollection:(NSMutableDictionary*)postCache completion:(void (^)(void))callback {
-    if (_dimMask != nil)
-        [_dimMask removeFromSuperview];
+
+    [_dimMask removeFromSuperview];
     self.imageView.layer.borderColor = [UIColor colorWithRed:RCAppThemeColorRed green:RCAppThemeColorGreen blue:RCAppThemeColorBlue alpha:1.0].CGColor;
     self.imageView.layer.borderWidth = 2.0;
     self.imageView.layer.cornerRadius = 5.0;
@@ -101,15 +101,14 @@
     _cellState = newState;
     switch (newState) {
         case RCCellStateDimmed:
-            if (_dimMask == nil) {
-                _dimMask = [[UIView alloc] initWithFrame:self.imageView.frame];
-                [_dimMask setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.3]];
-            }
+            //if (_dimMask == nil) {
+            _dimMask = [[UIView alloc] initWithFrame:self.imageView.frame];
+            [_dimMask setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.3]];
+            //}
             [self addSubview:_dimMask];
             break;
         case RCCellStateNormal:
-            if (_dimMask != nil)
-                [_dimMask removeFromSuperview];
+            [_dimMask removeFromSuperview];
             [self.layer setMasksToBounds:NO];
             [self.layer setShadowColor:[UIColor blackColor].CGColor];
             [self.layer setShadowRadius:5.0];
@@ -117,8 +116,7 @@
             [self.layer setShadowOpacity:0.5];
             break;
         case RCCellStateFloat:
-            if (_dimMask != nil)
-                [_dimMask removeFromSuperview];
+            [_dimMask removeFromSuperview];
             [self.layer setShadowColor:[UIColor blackColor].CGColor];
             [self.layer setShadowRadius:5.0];
             [self.layer setShadowOffset:CGSizeMake(5,5)];

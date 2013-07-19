@@ -41,6 +41,7 @@
 @property (nonatomic, strong) UIButton* postButton;
 @property (nonatomic, strong) Reachability * reachability;
 @property (nonatomic, strong) UILabel* lblWarningNoConnection;
+@property (nonatomic, assign) BOOL didZoom;
 @end
 
 @implementation RCMainFeedViewController
@@ -74,6 +75,7 @@ BOOL        _haveScreenshot;
 @synthesize posts = _posts;
 @synthesize reachability = _reachability;
 @synthesize lblWarningNoConnection = _lblWarningNoConnection;
+@synthesize didZoom = _didZoom;
 
 + (NSString*) debugTag {
     return @"MainFeedView";
@@ -614,6 +616,20 @@ BOOL        _haveScreenshot;
 
 - (IBAction)handlePinch:(UIPinchGestureRecognizer *)recognizer {
     NSLog(@"Main-feed:pinch scale %f",recognizer.scale);
+    if ([recognizer state] == UIGestureRecognizerStateBegan) {
+        _didZoom = NO;
+    } else {
+        if (recognizer.scale > 1.5 && _nRows > 1 && !_didZoom) {
+            _nRows--;
+            _didZoom = YES;
+            [_collectionView reloadData];
+        }
+        if (recognizer.scale < 0.8 && _nRows < 3 && !_didZoom) {
+            _didZoom = YES;
+            _nRows++;
+            [_collectionView reloadData];
+        }
+    }
 }
 
 - (IBAction)handleTap:(UITapGestureRecognizer *)recognizer {

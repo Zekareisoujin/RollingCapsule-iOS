@@ -259,7 +259,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 - (void)viewWillAppear:(BOOL)animated
 {
     [self resetUIViewsState];
-    [self.navigationController setNavigationBarHidden:YES animated:NO];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
     [super viewWillAppear:animated];
 }
 
@@ -659,10 +659,10 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
              
              if ([responseData isEqualToString:@"ok"]){
                  alertStatus(@"Post deleted successfully!", @"Success!", nil);
-                 [self dismissViewControllerAnimated:YES completion:^{
-                     if (_deleteFunction != nil)
-                         _deleteFunction();
-                 }];
+                 [self.navigationController popViewControllerAnimated:YES];
+                 [self.navigationController setNavigationBarHidden:NO animated:YES];
+                 if (_deleteFunction != nil)
+                     _deleteFunction();
              }else if ([responseData isEqualToString:@"error"]){
                  alertStatus(@"Please try again!", @"Deletion Failed", nil);
              }
