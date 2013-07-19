@@ -112,8 +112,8 @@
 		64D029911796F84C00E4AC7B /* magnifyingGlass@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D029901796F84C00E4AC7B /* magnifyingGlass@2x.png */; };
 		64D2442B177F123D00C1206F /* menu.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D2442A177F123D00C1206F /* menu.png */; };
 		64D6D7F91798694300AA1161 /* viewPostDeleteButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D6D7F81798694300AA1161 /* viewPostDeleteButton.png */; };
-		64D6D7FB1798FD7400AA1161 /* viewPostOpenCommentPostingButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D6D7FA1798FD7400AA1161 /* viewPostOpenCommentPostingButton.png */; };
-		64D6D7FD179907F600AA1161 /* viewPostDescriptionMarker.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D6D7FC179907F500AA1161 /* viewPostDescriptionMarker.png */; };
+		64D6D80017991FCD00AA1161 /* viewPostDescriptionMarker.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D6D7FE17991FCD00AA1161 /* viewPostDescriptionMarker.png */; };
+		64D6D80117991FCD00AA1161 /* viewPostOpenCommentPostingButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D6D7FF17991FCD00AA1161 /* viewPostOpenCommentPostingButton.png */; };
 		64E293101784A84B009496FF /* viewPostCommentButton-normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */; };
 		64E293121784A8C8009496FF /* viewPostCommentButton-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */; };
 		64E293161784ABEE009496FF /* viewPostFollowLabel.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293131784ABEE009496FF /* viewPostFollowLabel.png */; };
@@ -362,6 +362,8 @@
 		64D029901796F84C00E4AC7B /* magnifyingGlass@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "magnifyingGlass@2x.png"; path = "../magnifyingGlass@2x.png"; sourceTree = "<group>"; };
 		64D2442A177F123D00C1206F /* menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = menu.png; path = ../menu.png; sourceTree = "<group>"; };
 		64D6D7F81798694300AA1161 /* viewPostDeleteButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostDeleteButton.png; path = ../viewPostDeleteButton.png; sourceTree = "<group>"; };
+		64D6D7FE17991FCD00AA1161 /* viewPostDescriptionMarker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = viewPostDescriptionMarker.png; sourceTree = "<group>"; };
+		64D6D7FF17991FCD00AA1161 /* viewPostOpenCommentPostingButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = viewPostOpenCommentPostingButton.png; sourceTree = "<group>"; };
 		64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "viewPostCommentButton-normal.png"; path = "../viewPostCommentButton-normal.png"; sourceTree = "<group>"; };
 		64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "viewPostCommentButton-highlighted.png"; path = "../viewPostCommentButton-highlighted.png"; sourceTree = "<group>"; };
 		64E293131784ABEE009496FF /* viewPostFollowLabel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostFollowLabel.png; path = ../viewPostFollowLabel.png; sourceTree = "<group>"; };
@@ -691,6 +693,8 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
+				64D6D7FE17991FCD00AA1161 /* viewPostDescriptionMarker.png */,
+				64D6D7FF17991FCD00AA1161 /* viewPostOpenCommentPostingButton.png */,
 				BFCA7821174DFD3F00666CBA /* Rolling Capsule */,
 				BFCA7845174DFD3F00666CBA /* Rolling CapsuleTests */,
 				BFCA781A174DFD3F00666CBA /* Frameworks */,
@@ -1106,6 +1110,8 @@
 				BF0B17EC17984486004AEEC5 /* menuIconLogoutDropDown.png in Resources */,
 				64D6D7F91798694300AA1161 /* viewPostDeleteButton.png in Resources */,
 				BF05D89A17990BC100398929 /* feedButtonMore.png in Resources */,
+				64D6D80017991FCD00AA1161 /* viewPostDescriptionMarker.png in Resources */,
+				64D6D80117991FCD00AA1161 /* viewPostOpenCommentPostingButton.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1299,7 +1305,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Downloads/aws-ios-sdk-1.6.0\"",
@@ -1314,7 +1320,7 @@
 				);
 				PRODUCT_NAME = memcap;
 				PROVISIONING_PROFILE = "736F0BB1-2353-4E70-B6E7-12E2C7FAB327";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3FA673B5-77DC-46B5-A994-59548EF2EDDC";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "736F0BB1-2353-4E70-B6E7-12E2C7FAB327";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1324,7 +1330,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Downloads/aws-ios-sdk-1.6.0\"",
@@ -1338,8 +1344,8 @@
 					"\"$(SRCROOT)\"",
 				);
 				PRODUCT_NAME = memcap;
-				PROVISIONING_PROFILE = "3FA673B5-77DC-46B5-A994-59548EF2EDDC";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3FA673B5-77DC-46B5-A994-59548EF2EDDC";
+				PROVISIONING_PROFILE = "736F0BB1-2353-4E70-B6E7-12E2C7FAB327";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "736F0BB1-2353-4E70-B6E7-12E2C7FAB327";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
