@@ -362,8 +362,8 @@
 		64D029901796F84C00E4AC7B /* magnifyingGlass@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "magnifyingGlass@2x.png"; path = "../magnifyingGlass@2x.png"; sourceTree = "<group>"; };
 		64D2442A177F123D00C1206F /* menu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = menu.png; path = ../menu.png; sourceTree = "<group>"; };
 		64D6D7F81798694300AA1161 /* viewPostDeleteButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostDeleteButton.png; path = ../viewPostDeleteButton.png; sourceTree = "<group>"; };
-		64D6D7FE17991FCD00AA1161 /* viewPostDescriptionMarker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = viewPostDescriptionMarker.png; sourceTree = "<group>"; };
-		64D6D7FF17991FCD00AA1161 /* viewPostOpenCommentPostingButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = viewPostOpenCommentPostingButton.png; sourceTree = "<group>"; };
+		64D6D7FE17991FCD00AA1161 /* viewPostDescriptionMarker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostDescriptionMarker.png; path = ../viewPostDescriptionMarker.png; sourceTree = "<group>"; };
+		64D6D7FF17991FCD00AA1161 /* viewPostOpenCommentPostingButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostOpenCommentPostingButton.png; path = ../viewPostOpenCommentPostingButton.png; sourceTree = "<group>"; };
 		64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "viewPostCommentButton-normal.png"; path = "../viewPostCommentButton-normal.png"; sourceTree = "<group>"; };
 		64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "viewPostCommentButton-highlighted.png"; path = "../viewPostCommentButton-highlighted.png"; sourceTree = "<group>"; };
 		64E293131784ABEE009496FF /* viewPostFollowLabel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostFollowLabel.png; path = ../viewPostFollowLabel.png; sourceTree = "<group>"; };
@@ -564,7 +564,6 @@
 		643EACE9175BBE0D002761D9 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				BF05D89917990BC100398929 /* feedButtonMore.png */,
 				6460E869178AE3EA0065D6BA /* appIcon.png */,
 				6460E86A178AE3EA0065D6BA /* appIcon@2x.png */,
 				643EACE7175BACC0002761D9 /* back_button.png */,
@@ -581,6 +580,7 @@
 				BF728EEE1767680F0050699C /* Default.png */,
 				BF728EEA176767CD0050699C /* Default@2x.png */,
 				647E2FCE1791F2E600AA6B9A /* default_avatar.png */,
+				BF05D89917990BC100398929 /* feedButtonMore.png */,
 				BFE3073417959619000C9C58 /* friendListFollow.png */,
 				BFE307351795961A000C9C58 /* friendListFriend.png */,
 				BFE307361795961B000C9C58 /* friendListPending.png */,
@@ -679,12 +679,14 @@
 				64B81CA9179556A900B5A825 /* viewPostCommentFrame@2x.png */,
 				64E293191784AE14009496FF /* viewPostCommentTextView.png */,
 				64D6D7F81798694300AA1161 /* viewPostDeleteButton.png */,
+				64D6D7FE17991FCD00AA1161 /* viewPostDescriptionMarker.png */,
 				64B81CA41795551E00B5A825 /* viewPostFollowButton.png */,
 				64E293131784ABEE009496FF /* viewPostFollowLabel.png */,
 				64B81CA51795551E00B5A825 /* viewPostFriendWithButton.png */,
 				64E293141784ABEE009496FF /* viewPostFriendWithLabel.png */,
 				64B81CA117954FC800B5A825 /* viewPostImageFrame.png */,
 				64119A1717849DBB00BF0B05 /* viewPostMainFrame.png */,
+				64D6D7FF17991FCD00AA1161 /* viewPostOpenCommentPostingButton.png */,
 				64E293151784ABEE009496FF /* viewPostViewSeedLabel.png */,
 			);
 			name = Images;
@@ -693,8 +695,6 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
-				64D6D7FE17991FCD00AA1161 /* viewPostDescriptionMarker.png */,
-				64D6D7FF17991FCD00AA1161 /* viewPostOpenCommentPostingButton.png */,
 				BFCA7821174DFD3F00666CBA /* Rolling Capsule */,
 				BFCA7845174DFD3F00666CBA /* Rolling CapsuleTests */,
 				BFCA781A174DFD3F00666CBA /* Frameworks */,
@@ -1304,8 +1304,8 @@
 		BFCA7851174DFD3F00666CBA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Downloads/aws-ios-sdk-1.6.0\"",
@@ -1319,8 +1319,8 @@
 					"\"$(SRCROOT)\"",
 				);
 				PRODUCT_NAME = memcap;
-				PROVISIONING_PROFILE = "736F0BB1-2353-4E70-B6E7-12E2C7FAB327";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "736F0BB1-2353-4E70-B6E7-12E2C7FAB327";
+				PROVISIONING_PROFILE = "3FA673B5-77DC-46B5-A994-59548EF2EDDC";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3FA673B5-77DC-46B5-A994-59548EF2EDDC";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -1329,8 +1329,8 @@
 		BFCA7852174DFD3F00666CBA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Downloads/aws-ios-sdk-1.6.0\"",
@@ -1344,8 +1344,8 @@
 					"\"$(SRCROOT)\"",
 				);
 				PRODUCT_NAME = memcap;
-				PROVISIONING_PROFILE = "736F0BB1-2353-4E70-B6E7-12E2C7FAB327";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "736F0BB1-2353-4E70-B6E7-12E2C7FAB327";
+				PROVISIONING_PROFILE = "3FA673B5-77DC-46B5-A994-59548EF2EDDC";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "3FA673B5-77DC-46B5-A994-59548EF2EDDC";
 				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
