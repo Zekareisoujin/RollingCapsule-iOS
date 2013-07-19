@@ -15,6 +15,7 @@
 @synthesize year = _year;
 @synthesize months = _months;
 @synthesize yearOffset = _yearOffset;
+@synthesize delegate;
 
 #define MULTIPLY 4
 #define YEAR_RANGE 200
@@ -211,6 +212,10 @@
                          self.alpha = 0.0;
 					 }
                      completion:^(BOOL finished) {
+                         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+                         [dateFormatter setDateFormat:@"yyyy-MM-ddHH:mm:ss"];
+                         NSDate *date = [dateFormatter dateFromString:[NSString stringWithFormat:@"%04d-%02d-%02d%02d:00:00",_year,_month,_day,_hour]];
+                         [delegate didPickedDate:date];
                          [self setHidden:YES];
                          NSLog(@"year %d month %d day %d hour %d",_year, _month, _day, _hour);
 					 }];

@@ -162,7 +162,7 @@ int     activeMenuIndex = 0;
     [self refreshUserAvatar];
 }
 
-- (void)initializeUserFromLogIn:(RCUser *)user {
+- (void)userDidLogIn:(RCUser *)user {
     _user = user;
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:RCLogStatusDefault];
     [[NSUserDefaults standardUserDefaults] setObject:[user getDictionaryObject] forKey:RCLogUserDefault];

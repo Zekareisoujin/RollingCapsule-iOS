@@ -11,8 +11,8 @@
 #import "RCKeyboardPushUpHandler.h"
 
 @protocol RCLoginViewControllerDelegate
-
-- (void)initializeUserFromLogIn:(RCUser *)user;
+@optional
+- (void)userDidLogIn:(RCUser *)user;
 
 @end
 
@@ -23,7 +23,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnRegister;
 
 @property (strong, nonatomic) RCKeyboardPushUpHandler *keyboardHandler;
-@property (nonatomic, assign) id delegate;
+@property (nonatomic, assign) id<RCLoginViewControllerDelegate> delegate;
 
 - (IBAction)btnActionLogIn:(id)sender;
 - (IBAction)btnActionRegister:(id)sender;

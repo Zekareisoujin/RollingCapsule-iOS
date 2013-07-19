@@ -8,9 +8,10 @@
 
 #import <UIKit/UIKit.h>
 #import "RCUser.h"
+#import "RCLoginViewController.h"
 
 
-@interface RCMainMenuViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface RCMainMenuViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, RCLoginViewControllerDelegate>
 
 @property (strong, nonatomic) UINavigationController *navigationController;
 @property (nonatomic, strong) RCUser* user;

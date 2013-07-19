@@ -8,6 +8,12 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol RCDatePickerDelegate
+@optional
+- (void) didPickedDate: (NSDate*) pickedDateTime;
+
+@end
+
 @interface RCDatePickerView : UIView <UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *pickerViewYear;
 @property (weak, nonatomic) IBOutlet UITableView *pickerViewMonth;
@@ -20,6 +26,7 @@
 @property (nonatomic, assign) int month;
 @property (nonatomic, assign) int year;
 @property (nonatomic, assign) int yearOffset;
+@property (nonatomic, assign) id<RCDatePickerDelegate> delegate;
 
 - (void) prepareView;
 - (IBAction)pickDate:(id)sender;

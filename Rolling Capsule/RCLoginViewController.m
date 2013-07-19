@@ -80,7 +80,7 @@
                 //Temporary:
                 if (jsonData != NULL) {
                     RCUser *user = [[RCUser alloc] initWithNSDictionary:(NSDictionary*)[jsonData objectForKey:@"user"]];
-                    [delegate initializeUserFromLogIn:user];
+                    [delegate userDidLogIn:user];
                 }else {
                     alertStatus([NSString stringWithFormat:RCErrorMessagePleaseTryAgain], RCAlertMessageLoginFailed, self);
                 }
