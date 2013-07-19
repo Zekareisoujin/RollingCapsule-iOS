@@ -542,14 +542,22 @@ NSData *_thumbnailData;
             NSString *moviePath = [[info objectForKey:UIImagePickerControllerMediaURL] path];
             if ([picker sourceType] == UIImagePickerControllerSourceTypeCamera)
                 UISaveVideoAtPathToSavedPhotosAlbum (moviePath, nil, nil, nil);
-            
+            AVURLAsset *sourceAsset = [AVURLAsset URLAssetWithURL:_videoUrl options:nil];
+            CMTime duration = sourceAsset.duration;
+            AVAssetImageGenerator* generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:sourceAsset];
+            generator.appliesPreferredTrackTransform = YES;
+            //Get the 1st frame 3 seconds in
+            int frameTimeStart = (int)(CMTimeGetSeconds(duration) / 2.0);
+            int frameLocation = 1;
+            CGImageRef frameRef = [generator copyCGImageAtTime:CMTimeMake(frameTimeStart,frameLocation) actualTime:nil error:nil];
+            _postImage = [UIImage imageWithCGImage:frameRef];
             _uploadData = [NSData dataWithContentsOfURL:_videoUrl];
             NSLog(@"obtained thumbnail and upload data");
         } else {
             //save photo if newly taken
             if ([picker sourceType] == UIImagePickerControllerSourceTypeCamera)
                 UIImageWriteToSavedPhotosAlbum(_postImage, self, nil, nil);
-            
+            _postImage = [info objectForKey:UIImagePickerControllerOriginalImage];
             NSLog(@"image size %f %f",_postImage.size.width, _postImage.size.height);
             if (_postImage.size.width > 800 && _postImage.size.height > 800) {
                 float division = MIN(_postImage.size.width/(800.0-1.0), _postImage.size.height/(800-1.0));
@@ -581,24 +589,16 @@ NSData *_thumbnailData;
             _isMovie = YES;
             _videoUrl=(NSURL*)[info objectForKey:UIImagePickerControllerMediaURL];
             
-            AVURLAsset *sourceAsset = [AVURLAsset URLAssetWithURL:_videoUrl options:nil];
-            CMTime duration = sourceAsset.duration;
-            AVAssetImageGenerator* generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:sourceAsset];
-            generator.appliesPreferredTrackTransform = YES;
-            //Get the 1st frame 3 seconds in
-            int frameTimeStart = (int)(CMTimeGetSeconds(duration) / 2.0);
-            int frameLocation = 1;
+            
             
             //Snatch a frame
-            CGImageRef frameRef = [generator copyCGImageAtTime:CMTimeMake(frameTimeStart,frameLocation) actualTime:nil error:nil];
-            _postImage = [UIImage imageWithCGImage:frameRef];
+            
             thumbnail = [self generateSquareImageThumbnail:_postImage];
             UIImage *rescaledThumbnail = imageWithImage(thumbnail, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
             _thumbnailData = UIImageJPEGRepresentation(rescaledThumbnail,0.7);
         } else {
             // Get the selected image
             _isMovie = NO;
-            _postImage = [info objectForKey:UIImagePickerControllerOriginalImage];
             thumbnail = [self generateSquareImageThumbnail:_postImage];
             //generate thumbnail
             UIImage *uploadThumbnailImage =imageWithImage(thumbnail, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));;
@@ -667,9 +667,9 @@ NSData *_thumbnailData;
     
     
     NSLog(@"screen size: %d",[[UIScreen mainScreen] bounds].size.height );
-    UIImage *closeImage = [UIImage imageNamed:@"postCommentCancelButton.png"];
-    CGFloat buttonWidth = closeImage.size.width/3.3;
-    CGFloat buttonHeight = closeImage.size.height/3.3;
+    UIImage *closeImage = [UIImage imageNamed:@"buttonCancel.png"];
+    CGFloat buttonWidth = closeImage.size.width/3;
+    CGFloat buttonHeight = closeImage.size.height/3;
     UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(0,0,buttonWidth,buttonHeight)];
     [closeButton setBackgroundImage:closeImage forState:UIControlStateNormal];
     closeButton.frame = CGRectMake(_imgViewMainFrame.frame.origin.x + _imgViewMainFrame.frame.size.width - buttonWidth - 3,_imgViewMainFrame.frame.origin.y + 3,buttonWidth,buttonHeight);

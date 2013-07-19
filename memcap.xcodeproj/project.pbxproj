@@ -104,8 +104,6 @@
 		64B81CAD1795BD4C00B5A825 /* RCComment.m in Sources */ = {isa = PBXBuildFile; fileRef = 64B81CAC1795BD4C00B5A825 /* RCComment.m */; };
 		64B81CB11795CCA600B5A825 /* RCCommentPostingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64B81CAF1795CCA500B5A825 /* RCCommentPostingViewController.m */; };
 		64B81CB21795CCA600B5A825 /* RCCommentPostingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64B81CB01795CCA500B5A825 /* RCCommentPostingViewController.xib */; };
-		64B81CB51795DE5600B5A825 /* postCommentCancelButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 64B81CB31795DE5500B5A825 /* postCommentCancelButton.png */; };
-		64B81CB61795DE5600B5A825 /* postCommentPostButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 64B81CB41795DE5500B5A825 /* postCommentPostButton.png */; };
 		64B81CB81795E21C00B5A825 /* buttonPlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 64B81CB71795E21C00B5A825 /* buttonPlay.png */; };
 		64CA28451789ED1C0018D626 /* postLandmarkChosenBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 64CA28441789ED1C0018D626 /* postLandmarkChosenBackground.png */; };
 		64D0298F1796E7E900E4AC7B /* btnTransparent-normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D0298E1796E7E900E4AC7B /* btnTransparent-normal.png */; };
@@ -114,6 +112,8 @@
 		64D6D7F91798694300AA1161 /* viewPostDeleteButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D6D7F81798694300AA1161 /* viewPostDeleteButton.png */; };
 		64D6D80017991FCD00AA1161 /* viewPostDescriptionMarker.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D6D7FE17991FCD00AA1161 /* viewPostDescriptionMarker.png */; };
 		64D6D80117991FCD00AA1161 /* viewPostOpenCommentPostingButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D6D7FF17991FCD00AA1161 /* viewPostOpenCommentPostingButton.png */; };
+		64D6D80417994B5400AA1161 /* buttonCancel.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D6D80217994B5300AA1161 /* buttonCancel.png */; };
+		64D6D80517994B5400AA1161 /* buttonSubmit.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D6D80317994B5400AA1161 /* buttonSubmit.png */; };
 		64E293101784A84B009496FF /* viewPostCommentButton-normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */; };
 		64E293121784A8C8009496FF /* viewPostCommentButton-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */; };
 		64E293161784ABEE009496FF /* viewPostFollowLabel.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293131784ABEE009496FF /* viewPostFollowLabel.png */; };
@@ -354,8 +354,6 @@
 		64B81CAE1795CCA500B5A825 /* RCCommentPostingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCCommentPostingViewController.h; path = ../RCCommentPostingViewController.h; sourceTree = "<group>"; };
 		64B81CAF1795CCA500B5A825 /* RCCommentPostingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCCommentPostingViewController.m; path = ../RCCommentPostingViewController.m; sourceTree = "<group>"; };
 		64B81CB01795CCA500B5A825 /* RCCommentPostingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RCCommentPostingViewController.xib; path = ../RCCommentPostingViewController.xib; sourceTree = "<group>"; };
-		64B81CB31795DE5500B5A825 /* postCommentCancelButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = postCommentCancelButton.png; path = ../postCommentCancelButton.png; sourceTree = "<group>"; };
-		64B81CB41795DE5500B5A825 /* postCommentPostButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = postCommentPostButton.png; path = ../postCommentPostButton.png; sourceTree = "<group>"; };
 		64B81CB71795E21C00B5A825 /* buttonPlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = buttonPlay.png; path = ../buttonPlay.png; sourceTree = "<group>"; };
 		64CA28441789ED1C0018D626 /* postLandmarkChosenBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = postLandmarkChosenBackground.png; path = ../postLandmarkChosenBackground.png; sourceTree = "<group>"; };
 		64D0298E1796E7E900E4AC7B /* btnTransparent-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "btnTransparent-normal.png"; path = "../btnTransparent-normal.png"; sourceTree = "<group>"; };
@@ -364,6 +362,8 @@
 		64D6D7F81798694300AA1161 /* viewPostDeleteButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostDeleteButton.png; path = ../viewPostDeleteButton.png; sourceTree = "<group>"; };
 		64D6D7FE17991FCD00AA1161 /* viewPostDescriptionMarker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostDescriptionMarker.png; path = ../viewPostDescriptionMarker.png; sourceTree = "<group>"; };
 		64D6D7FF17991FCD00AA1161 /* viewPostOpenCommentPostingButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostOpenCommentPostingButton.png; path = ../viewPostOpenCommentPostingButton.png; sourceTree = "<group>"; };
+		64D6D80217994B5300AA1161 /* buttonCancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttonCancel.png; sourceTree = "<group>"; };
+		64D6D80317994B5400AA1161 /* buttonSubmit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttonSubmit.png; sourceTree = "<group>"; };
 		64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "viewPostCommentButton-normal.png"; path = "../viewPostCommentButton-normal.png"; sourceTree = "<group>"; };
 		64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "viewPostCommentButton-highlighted.png"; path = "../viewPostCommentButton-highlighted.png"; sourceTree = "<group>"; };
 		64E293131784ABEE009496FF /* viewPostFollowLabel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostFollowLabel.png; path = ../viewPostFollowLabel.png; sourceTree = "<group>"; };
@@ -632,8 +632,6 @@
 				6401034C17981D10002A6E2E /* postButtonTimeCapsule.png */,
 				641199EF178088FE00BF0B05 /* postCameraSourceButton-normal.png */,
 				644556B9179709EB00DAFE26 /* postCameraSourceButton.png */,
-				64B81CB31795DE5500B5A825 /* postCommentCancelButton.png */,
-				64B81CB41795DE5500B5A825 /* postCommentPostButton.png */,
 				644556B71796FDC300DAFE26 /* postControlFrame.png */,
 				64010354179825DD002A6E2E /* postDatePickerFrame.png */,
 				644556BF179712AD00DAFE26 /* postFriendPrivacyButton-2.png */,
@@ -695,6 +693,8 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
+				64D6D80217994B5300AA1161 /* buttonCancel.png */,
+				64D6D80317994B5400AA1161 /* buttonSubmit.png */,
 				BFCA7821174DFD3F00666CBA /* Rolling Capsule */,
 				BFCA7845174DFD3F00666CBA /* Rolling CapsuleTests */,
 				BFCA781A174DFD3F00666CBA /* Frameworks */,
@@ -1075,8 +1075,6 @@
 				64B81CA81795551E00B5A825 /* viewPostFriendWithButton.png in Resources */,
 				64B81CAA179556A900B5A825 /* viewPostCommentFrame@2x.png in Resources */,
 				64B81CB21795CCA600B5A825 /* RCCommentPostingViewController.xib in Resources */,
-				64B81CB51795DE5600B5A825 /* postCommentCancelButton.png in Resources */,
-				64B81CB61795DE5600B5A825 /* postCommentPostButton.png in Resources */,
 				64B81CB81795E21C00B5A825 /* buttonPlay.png in Resources */,
 				64D0298F1796E7E900E4AC7B /* btnTransparent-normal.png in Resources */,
 				64D029911796F84C00E4AC7B /* magnifyingGlass@2x.png in Resources */,
@@ -1112,6 +1110,8 @@
 				BF05D89A17990BC100398929 /* feedButtonMore.png in Resources */,
 				64D6D80017991FCD00AA1161 /* viewPostDescriptionMarker.png in Resources */,
 				64D6D80117991FCD00AA1161 /* viewPostOpenCommentPostingButton.png in Resources */,
+				64D6D80417994B5400AA1161 /* buttonCancel.png in Resources */,
+				64D6D80517994B5400AA1161 /* buttonSubmit.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
