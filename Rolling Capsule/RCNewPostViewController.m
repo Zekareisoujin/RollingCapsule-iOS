@@ -14,7 +14,6 @@
 #import "RCKeyboardPushUpHandler.h"
 #import "RCConnectionManager.h"
 #import "RCLandmarkCell.h"
-#import "RCDatePickerView.h"
 #import <QuartzCore/QuartzCore.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <MediaPlayer/MediaPlayer.h>
@@ -70,6 +69,9 @@ BOOL _firstTimeEditPost = YES;
 BOOL _didFinishUploadingImage = NO;
 BOOL _isMovie = NO;
 BOOL _isPosting = NO;
+BOOL _isTimedRelease = NO;
+
+UIButton *timeCapsule;
 
 S3PutObjectResponse *_putObjectResponse;
 AmazonClientException *_amazonException;
@@ -769,38 +771,47 @@ NSData *_thumbnailData;
 
 - (void) openDatePickerView:(UIButton*) sender {
     
-    BOOL open = YES;
-    if (_datePickerView == nil) {
-        NSArray *nibContents = [[NSBundle mainBundle] loadNibNamed:@"RCDatePickerView" owner:self options:nil];
-        _datePickerView = (RCDatePickerView*)nibContents[0];        [_datePickerView prepareView];
-        [self.view addSubview:_datePickerView];
-        CGRect frame = _datePickerView.frame;
-        frame.origin.x = (self.view.frame.size.width - frame.size.width) / 2.0;
-        frame.origin.y = sender.frame.origin.y - frame.size.height - 5;
-        _datePickerView.frame = frame;
-        _datePickerView.alpha = 0.0;
-        
-        
-    } else {
-        if (!_datePickerView.hidden)
-            open = NO;
-        else
-            [_datePickerView setHidden:NO];
+    if (!_isTimedRelease) {
+    
+        BOOL open = YES;
+        if (_datePickerView == nil) {
+            NSArray *nibContents = [[NSBundle mainBundle] loadNibNamed:@"RCDatePickerView" owner:self options:nil];
+            _datePickerView = (RCDatePickerView*)nibContents[0];
+            [_datePickerView prepareView];
+            [_datePickerView setDelegate:self];
+            [self.view addSubview:_datePickerView];
+            CGRect frame = _datePickerView.frame;
+            frame.origin.x = (self.view.frame.size.width - frame.size.width) / 2.0;
+            frame.origin.y = sender.frame.origin.y - frame.size.height - 5;
+            _datePickerView.frame = frame;
+            _datePickerView.alpha = 0.0;
+            
+            
+        } else {
+            if (!_datePickerView.hidden)
+                open = NO;
+            else
+                [_datePickerView setHidden:NO];
+        }
+        [UIView animateWithDuration:0.5
+                              delay:0
+                            options:UIViewAnimationOptionCurveEaseInOut
+                         animations:^{
+                             if (open)
+                                 _datePickerView.alpha = 1.0;
+                             else {
+                                 _datePickerView.alpha= 0.0;
+                                                          }
+                         }
+                         completion:^(BOOL finished) {
+                             if (!open)
+                                 [_datePickerView setHidden:YES];
+                         }];
+    }else {
+        _isTimedRelease = NO;
+        [timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsuleInactive.png"] forState:UIControlStateNormal];
+        alertStatus(@"You have deactivated capsule release mode for this post", @"Notice", nil);
     }
-    [UIView animateWithDuration:0.5
-                          delay:0
-                        options:UIViewAnimationOptionCurveEaseInOut
-                     animations:^{
-                         if (open)
-                             _datePickerView.alpha = 1.0;
-                         else {
-                             _datePickerView.alpha= 0.0;
-                                                      }
-                     }
-                     completion:^(BOOL finished) {
-                         if (!open)
-                             [_datePickerView setHidden:YES];
-                     }];
 }
 
 - (void) removePhotoSourceControlAndAddPrivacyControl {
@@ -836,8 +847,8 @@ NSData *_thumbnailData;
     [_postButton setImage:[UIImage imageNamed:@"postPostButton-2.png"] forState:UIControlStateNormal];
     CGRect frame5 = frame4;
     frame5.origin.x = separator.frame.origin.x + separator.frame.size.width;
-    UIButton *timeCapsule = [[UIButton alloc] initWithFrame:frame5];
-    [timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsule.png"] forState:UIControlStateNormal];
+    timeCapsule = [[UIButton alloc] initWithFrame:frame5];
+    [timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsuleInactive.png"] forState:UIControlStateNormal];
     [timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsule-highlighted.png"] forState:UIControlStateHighlighted];
     [timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsule-highlighted.png"] forState:UIControlStateDisabled];
     [timeCapsule addTarget:self action:@selector(openDatePickerView:) forControlEvents:UIControlEventTouchUpInside];
@@ -1151,6 +1162,17 @@ handler:(void (^)(AVAssetExportSession*))handler
     UIImage *croppedImage = [UIImage imageWithCGImage:imageRef scale:largeImage.scale orientation:largeImage.imageOrientation];
     CGImageRelease(imageRef);
     return croppedImage;
+}
+
+#pragma mark - RCDatePickerDelegate
+- (void) didPickedDate:(NSDate *)pickedDateTime {
+    _isTimedRelease = YES;
+    [timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsuleActive.png"] forState:UIControlStateNormal];
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"HH:mm, dd/MM/yyyy"];
+    
+    alertStatus([NSString stringWithFormat:@"You have scheduled your post to be released at %@", [dateFormatter stringFromDate:pickedDateTime]], @"Notice", nil);
 }
 @end
 

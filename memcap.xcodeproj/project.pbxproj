@@ -155,6 +155,8 @@
 		64FE84E5176BAAD800E561D8 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FE84E4176BAAD800E561D8 /* libz.dylib */; };
 		64FFD2CD17662D1B004337F8 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FFD2CC17662D1B004337F8 /* MapKit.framework */; };
 		BF05D89A17990BC100398929 /* feedButtonMore.png in Resources */ = {isa = PBXBuildFile; fileRef = BF05D89917990BC100398929 /* feedButtonMore.png */; };
+		BF05D89D17995D0F00398929 /* postButtonTimeCapsuleActive.png in Resources */ = {isa = PBXBuildFile; fileRef = BF05D89B17995D0F00398929 /* postButtonTimeCapsuleActive.png */; };
+		BF05D89E17995D0F00398929 /* postButtonTimeCapsuleInactive.png in Resources */ = {isa = PBXBuildFile; fileRef = BF05D89C17995D0F00398929 /* postButtonTimeCapsuleInactive.png */; };
 		BF0B17E81798430D004AEEC5 /* slideMenuLogoutBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = BF0B17E71798430D004AEEC5 /* slideMenuLogoutBackground.png */; };
 		BF0B17EA17984468004AEEC5 /* menuIconLogout.png in Resources */ = {isa = PBXBuildFile; fileRef = BF0B17E917984468004AEEC5 /* menuIconLogout.png */; };
 		BF0B17EC17984486004AEEC5 /* menuIconLogoutDropDown.png in Resources */ = {isa = PBXBuildFile; fileRef = BF0B17EB17984486004AEEC5 /* menuIconLogoutDropDown.png */; };
@@ -408,6 +410,8 @@
 		64FE84E4176BAAD800E561D8 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		64FFD2CC17662D1B004337F8 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		BF05D89917990BC100398929 /* feedButtonMore.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = feedButtonMore.png; sourceTree = "<group>"; };
+		BF05D89B17995D0F00398929 /* postButtonTimeCapsuleActive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = postButtonTimeCapsuleActive.png; sourceTree = "<group>"; };
+		BF05D89C17995D0F00398929 /* postButtonTimeCapsuleInactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = postButtonTimeCapsuleInactive.png; sourceTree = "<group>"; };
 		BF0B17E71798430D004AEEC5 /* slideMenuLogoutBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = slideMenuLogoutBackground.png; sourceTree = "<group>"; };
 		BF0B17E917984468004AEEC5 /* menuIconLogout.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menuIconLogout.png; sourceTree = "<group>"; };
 		BF0B17EB17984486004AEEC5 /* menuIconLogoutDropDown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menuIconLogoutDropDown.png; sourceTree = "<group>"; };
@@ -630,6 +634,8 @@
 				641199EE178088FE00BF0B05 /* postBackground.png */,
 				6401034B17981D10002A6E2E /* postButtonTimeCapsule-highlighted.png */,
 				6401034C17981D10002A6E2E /* postButtonTimeCapsule.png */,
+				BF05D89B17995D0F00398929 /* postButtonTimeCapsuleActive.png */,
+				BF05D89C17995D0F00398929 /* postButtonTimeCapsuleInactive.png */,
 				641199EF178088FE00BF0B05 /* postCameraSourceButton-normal.png */,
 				644556B9179709EB00DAFE26 /* postCameraSourceButton.png */,
 				644556B71796FDC300DAFE26 /* postControlFrame.png */,
@@ -1112,6 +1118,8 @@
 				64D6D80117991FCD00AA1161 /* viewPostOpenCommentPostingButton.png in Resources */,
 				64D6D80417994B5400AA1161 /* buttonCancel.png in Resources */,
 				64D6D80517994B5400AA1161 /* buttonSubmit.png in Resources */,
+				BF05D89D17995D0F00398929 /* postButtonTimeCapsuleActive.png in Resources */,
+				BF05D89E17995D0F00398929 /* postButtonTimeCapsuleInactive.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

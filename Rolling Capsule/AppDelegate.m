@@ -80,7 +80,7 @@ BOOL _didQueueOpenMainFeedOption;
 
     _menuViewController = [[RCMainMenuViewController alloc] initWithContentView:_navigationController];
     
-    firstViewController.delegate = _menuViewController;
+    [firstViewController setDelegate:_menuViewController];
     _mainViewController = [[RCSlideoutViewController alloc] init];
     _mainViewController.contentController = _navigationController;
     _mainViewController.menuViewController = _menuViewController;
