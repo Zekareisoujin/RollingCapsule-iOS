@@ -1161,14 +1161,18 @@ handler:(void (^)(AVAssetExportSession*))handler
 }
 
 #pragma mark - RCDatePickerDelegate
-- (void) didPickedDate:(NSDate *)pickedDateTime {
-    _isTimedRelease = YES;
-    [timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsuleActive.png"] forState:UIControlStateNormal];
-    
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"HH:mm, dd/MM/yyyy"];
-    
-    alertStatus([NSString stringWithFormat:@"You have scheduled your post to be released at %@", [dateFormatter stringFromDate:pickedDateTime]], @"Notice", nil);
+- (void) didPickDate:(NSDate *)pickedDateTime success:(BOOL)success {
+    if (success) {
+        _isTimedRelease = YES;
+        [timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsuleActive.png"] forState:UIControlStateNormal];
+        
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"HH:mm, dd/MM/yyyy"];
+        
+        alertStatus([NSString stringWithFormat:@"You have scheduled your post to be released at %@", [dateFormatter stringFromDate:pickedDateTime]], @"Notice", nil);
+    }else {
+        alertStatus(@"The release date has already passed", @"Notice", nil);
+    }
 }
 @end
 

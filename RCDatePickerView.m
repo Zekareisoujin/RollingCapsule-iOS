@@ -215,29 +215,13 @@
                          NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
                          [dateFormatter setDateFormat:@"yyyy-MM-ddHH:mm:ss"];
                          NSDate *date = [dateFormatter dateFromString:[NSString stringWithFormat:@"%04d-%02d-%02d%02d:00:00",_year,_month,_day,_hour]];
-                         [delegate didPickedDate:date];
+                         if ([date compare:[NSDate date]] == NSOrderedDescending) {
+                             [delegate didPickDate:date success:YES];
+                         }else
+                             [delegate didPickDate:date success:NO];
                          [self setHidden:YES];
                          NSLog(@"year %d month %d day %d hour %d",_year, _month, _day, _hour);
 					 }];
-}
-
-#pragma mark -misc
-- (void) preparePickerView:(UIPickerView*)pickerView {
-      //Make a view to set as background of UIPickerView
-    //UIView * viewForPickerView = [[UIView alloc]initWithFrame:_pickerViewYear.frame];
-    //[viewForPickerView setBackgroundColor:[UIColor clearColor]];
-    NSLog(@"number of subviews: %f",[[pickerView subviews] count]);
-    [pickerView setBackgroundColor:[UIColor clearColor]];
-    /*[[[pickerView subviews]objectAtIndex:2] addSubview: viewForPickerView];
-    
-    //UIPickerView has 8 subviews like, background, rows, container etc.
-    // hide unnecessary subview
-    
-    [(UIView*)[[pickerView subviews] objectAtIndex:3] setHidden:YES];
-    [(UIView*)[[pickerView subviews] objectAtIndex:5] setHidden:YES];
-    [(UIView*)[[pickerView subviews] objectAtIndex:6] setHidden:YES];
-    [(UIView*)[[pickerView subviews] objectAtIndex:7] setHidden:YES];
-    [(UIView*)[[pickerView subviews] objectAtIndex:8] setHidden:YES];*/
 }
 
 /*

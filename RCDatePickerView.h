@@ -10,7 +10,7 @@
 
 @protocol RCDatePickerDelegate
 @optional
-- (void) didPickedDate: (NSDate*) pickedDateTime;
+- (void) didPickDate: (NSDate*) pickedDateTime success:(BOOL)success;
 
 @end
 
