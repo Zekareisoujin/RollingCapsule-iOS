@@ -542,6 +542,7 @@ NSData *_thumbnailData;
             NSString *moviePath = [[info objectForKey:UIImagePickerControllerMediaURL] path];
             if ([picker sourceType] == UIImagePickerControllerSourceTypeCamera)
                 UISaveVideoAtPathToSavedPhotosAlbum (moviePath, nil, nil, nil);
+            _videoUrl=(NSURL*)[info objectForKey:UIImagePickerControllerMediaURL];
             AVURLAsset *sourceAsset = [AVURLAsset URLAssetWithURL:_videoUrl options:nil];
             CMTime duration = sourceAsset.duration;
             AVAssetImageGenerator* generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:sourceAsset];
@@ -549,6 +550,7 @@ NSData *_thumbnailData;
             //Get the 1st frame 3 seconds in
             int frameTimeStart = (int)(CMTimeGetSeconds(duration) / 2.0);
             int frameLocation = 1;
+            //Snatch a frame
             CGImageRef frameRef = [generator copyCGImageAtTime:CMTimeMake(frameTimeStart,frameLocation) actualTime:nil error:nil];
             _postImage = [UIImage imageWithCGImage:frameRef];
             _uploadData = [NSData dataWithContentsOfURL:_videoUrl];
@@ -587,12 +589,6 @@ NSData *_thumbnailData;
             == kCFCompareEqualTo)
         {
             _isMovie = YES;
-            _videoUrl=(NSURL*)[info objectForKey:UIImagePickerControllerMediaURL];
-            
-            
-            
-            //Snatch a frame
-            
             thumbnail = [self generateSquareImageThumbnail:_postImage];
             UIImage *rescaledThumbnail = imageWithImage(thumbnail, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
             _thumbnailData = UIImageJPEGRepresentation(rescaledThumbnail,0.7);
@@ -668,8 +664,8 @@ NSData *_thumbnailData;
     
     NSLog(@"screen size: %d",[[UIScreen mainScreen] bounds].size.height );
     UIImage *closeImage = [UIImage imageNamed:@"buttonCancel.png"];
-    CGFloat buttonWidth = closeImage.size.width/3;
-    CGFloat buttonHeight = closeImage.size.height/3;
+    CGFloat buttonWidth = closeImage.size.width/2.0;
+    CGFloat buttonHeight = closeImage.size.height/2.0;
     UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(0,0,buttonWidth,buttonHeight)];
     [closeButton setBackgroundImage:closeImage forState:UIControlStateNormal];
     closeButton.frame = CGRectMake(_imgViewMainFrame.frame.origin.x + _imgViewMainFrame.frame.size.width - buttonWidth - 3,_imgViewMainFrame.frame.origin.y + 3,buttonWidth,buttonHeight);
