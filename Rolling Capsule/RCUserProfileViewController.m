@@ -57,6 +57,8 @@ int       nRows;
 // Feed page control:
 int     currentPageNumber;
 int     currentMaxPostNumber;
+int     currentMaxDisplayedPostNumber;
+int     showThreshold;
 
 // Map reference data:
 double  refLong;
@@ -140,6 +142,9 @@ double  minimapScaleY;
         _editingProfile = NO;
     }
     
+    [self showMoreFeedButton:NO animate:NO];
+    showThreshold = 15;
+    
     NSString* cellIdentifier = [RCProfileViewCell cellIdentifier];
     [self.collectionView registerClass:[RCProfileViewCell class] forCellWithReuseIdentifier:cellIdentifier];
     UINib *nib = [UINib nibWithNibName:cellIdentifier bundle: nil];
@@ -162,7 +167,7 @@ double  minimapScaleY;
     //[_postList removeAllObjects];
     @try {
         currentPageNumber++;
-        currentMaxPostNumber = currentPageNumber * RCPostPerPage;
+        currentMaxDisplayedPostNumber = currentMaxPostNumber = currentPageNumber * RCPostPerPage;
         
         NSMutableString *address = [[NSMutableString alloc] initWithFormat:@"%@%@/%d?mobile=1", RCServiceURL, RCUsersResource, _profileUser.userID];
         addArgumentToQueryString(address, @"page", [NSString stringWithFormat:@"%d",currentPageNumber]);
@@ -204,6 +209,61 @@ double  minimapScaleY;
              }else {
                  alertStatus([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetFeed, responseData], RCAlertMessageConnectionFailed, self);
              }*/
+         }];
+    }
+    @catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+        alertStatus(RCErrorMessageFailedToGetUsersRelation, RCAlertMessageConnectionFailed,self);
+    }
+}
+
+- (void)asynchFetchFeedNextPage {
+    //Asynchronous Request
+    //[_postList removeAllObjects];
+    @try {
+        currentPageNumber++;
+        currentMaxPostNumber = currentPageNumber * RCPostPerPage;
+        
+        NSMutableString *address = [[NSMutableString alloc] initWithFormat:@"%@%@/%d?mobile=1", RCServiceURL, RCUsersResource, _profileUser.userID];
+        addArgumentToQueryString(address, @"page", [NSString stringWithFormat:@"%d",currentPageNumber]);
+        
+        NSURL *url=[NSURL URLWithString:address];
+        NSURLRequest *request = CreateHttpGetRequest(url);
+        
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+         {
+             NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+             
+             SBJsonParser *jsonParser = [SBJsonParser new];
+             NSArray *jsonData = (NSArray *) [jsonParser objectWithString:responseData error:nil];
+             
+             if ([jsonData count] > 0) {
+                 for (NSDictionary* elem in jsonData){
+                     [_postList addObject:[[RCPost alloc] initWithNSDictionary:elem]];
+                     
+                     /*RCPost *test = [[RCPost alloc] initWithNSDictionary:elem];
+                      CLLocationCoordinate2D coord = CLLocationCoordinate2DMake(test.latitude, test.longitude);
+                      MKMapPoint point = MKMapPointForCoordinate(coord);
+                      NSLog(@"Long & lat: %.2f and %.2f; producing: %.2f and %.2f", test.longitude, test.latitude, point.x, point.y);*/
+                 }
+                 
+                 //[_collectionView reloadData];
+                 //[self drawMinimap];
+             }
+             
+             /*if (jsonData != NULL) {
+              //NSLog(@"Profile View: fetched feeds: %@", jsonData);
+              NSArray *jsonDataArray = (NSArray *) [jsonData objectForKey:@"post_list"];
+              //NSLog(@"Profile View: post lists: %@", jsonDataArray);
+              for (NSDictionary* elem in jsonDataArray){
+              [_postList addObject:[[RCPost alloc] initWithNSDictionary:elem]];
+              }
+              
+              [_collectionView reloadData];
+              }else {
+              alertStatus([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetFeed, responseData], RCAlertMessageConnectionFailed, self);
+              }*/
          }];
     }
     @catch (NSException * e) {
@@ -449,6 +509,9 @@ double  minimapScaleY;
 }
 
 - (IBAction)btnMoreFeedClicked:(id)sender {
+    [self showMoreFeedButton:NO animate:NO];
+    currentMaxDisplayedPostNumber = currentMaxPostNumber;
+    [_collectionView reloadData];
 }
 
 #pragma mark - upload in background thread
@@ -580,7 +643,14 @@ double  minimapScaleY;
     
     // Pulling next page if necessary:
     if (indexPath.row == (currentMaxPostNumber - 1)) {
-        [self asynchFetchFeeds];
+        [self asynchFetchFeedNextPage];
+    }
+    
+    if (indexPath.row == (currentMaxDisplayedPostNumber - 1)){
+        [self showMoreFeedButton:YES animate:YES];
+    }else if (indexPath.row < (currentMaxDisplayedPostNumber - 1 - showThreshold)) {
+        if (!_btnMoreFeed.isHidden)
+            [self showMoreFeedButton:NO animate:YES];
     }
     
     return cell;
@@ -773,5 +843,23 @@ double  minimapScaleY;
         [textField resignFirstResponder];
     }
     return NO;
+}
+
+- (void) showMoreFeedButton: (BOOL)show animate:(BOOL)animate {
+    float duration = (animate?1.0:0.0);
+    
+    if (show) {
+        [_btnMoreFeed setHidden:!show];
+        [UIView animateWithDuration:duration animations:^{
+            [_btnMoreFeed.layer setOpacity:1.0];
+        }];
+    }else {
+        [UIView animateWithDuration:duration animations:^{
+            [_btnMoreFeed.layer setOpacity:0.0];
+        }completion:^(BOOL complete){
+            if (complete)
+                [_btnMoreFeed setHidden:show];
+        }];
+    }
 }
 @end

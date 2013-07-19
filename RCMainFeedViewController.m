@@ -46,6 +46,8 @@
 NSString    *address;
 int         currentPageNumber;
 int         currentMaxPostNumber;
+int         currentMaxDisplayedPostNumber;
+int         showThreshold;
 
 int         _nRows;
 BOOL        _firstRefresh;
@@ -166,6 +168,9 @@ BOOL        _haveScreenshot;
     if (_user != nil)
         _lblUsername.text = _user.name;
     
+    [self showMoreFeedButton:NO animate:NO];
+    showThreshold = 8;
+    
     _mapView.showsUserLocation = YES;
 }
 
@@ -189,7 +194,7 @@ BOOL        _haveScreenshot;
     //Asynchronous Request
     @try {
         currentPageNumber = 1;
-        currentMaxPostNumber = currentPageNumber * RCPostPerPage;
+        currentMaxDisplayedPostNumber = currentMaxPostNumber = currentPageNumber * RCPostPerPage;
         
         [RCConnectionManager startConnection];
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
@@ -360,7 +365,7 @@ BOOL        _haveScreenshot;
 
                  }
                  
-                 [_collectionView reloadData];
+                 //[_collectionView reloadData];
              }else {
                  alertStatus([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetFeed, responseData], RCAlertMessageConnectionFailed, self);
              }
@@ -450,6 +455,13 @@ BOOL        _haveScreenshot;
     // Pulling next page if necessary:
     if (indexPath.row == (currentMaxPostNumber - 1)) {
         [self asynchFetchFeedNextPage];
+    }
+    
+    if (indexPath.row == (currentMaxDisplayedPostNumber - 1)){
+        [self showMoreFeedButton:YES animate:YES];
+    }else if (indexPath.row < (currentMaxDisplayedPostNumber - 1 - showThreshold)) {
+        if (!_btnMoreFeed.isHidden)
+            [self showMoreFeedButton:NO animate:YES];
     }
     
     return cell;
@@ -655,8 +667,32 @@ BOOL        _haveScreenshot;
     [self handleRefresh:_refreshControl];
 }
 
+- (IBAction)btnMoreFeedClicked:(id)sender {
+    [self showMoreFeedButton:NO animate:NO];
+    currentMaxDisplayedPostNumber = currentMaxPostNumber;
+    [_collectionView reloadData];
+}
+
 - (void) setCurrentUser: (RCUser*) user {
     _user = user;
+}
+
+- (void) showMoreFeedButton: (BOOL)show animate:(BOOL)animate {
+    float duration = (animate?1.0:0.0);
+    
+    if (show) {
+        [_btnMoreFeed setHidden:!show];
+        [UIView animateWithDuration:duration animations:^{
+            [_btnMoreFeed.layer setOpacity:1.0];
+        }];
+    }else {
+        [UIView animateWithDuration:duration animations:^{
+            [_btnMoreFeed.layer setOpacity:0.0];
+        }completion:^(BOOL complete){
+            if (complete)
+                [_btnMoreFeed setHidden:show];
+        }];
+    }
 }
 
 @end
