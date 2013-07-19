@@ -62,6 +62,7 @@ BOOL _firstTimeEditPost;
 RCConnectionManager *_connectionManager;
 RCKeyboardPushUpHandler *_keyboardPushHandler;
 
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -289,7 +290,8 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 -(void) getPostImageFromInternet {
     
     RCResourceCache *cache = [RCResourceCache centralCache];
-    NSString *key = [NSString stringWithFormat:@"%@/%d", RCPostsResource, _post.postID];
+    NSString *key = [NSString stringWithFormat:@"%@/%@", RCMediaResource, _post.fileUrl];
+    
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
         NSObject* cachedObj = [cache getResourceForKey:key usingQuery:^{
@@ -301,7 +303,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
         UIImage *thumbnailImage;
         //if returned object is a string, this means the post is a movie
         if (![cachedObj isKindOfClass:[UIImage class]]) {
-            NSString *thumbnailKey = [NSString stringWithFormat:@"%@-thumbnail",key];
+            NSString *thumbnailKey = [NSString stringWithFormat:@"%@/%@", RCMediaResource, _post.thumbnailUrl];
             thumbnailImage = [cache getResourceForKey:thumbnailKey usingQuery:^{
                 [RCConnectionManager startConnection];
                 NSObject *object = [RCAmazonS3Helper getUserMediaImage:_postOwner withLoggedinUserID:_loggedInUser.userID   withImageUrl:_post.thumbnailUrl];
@@ -802,7 +804,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     NSNumber *finishReason = (NSNumber *)[notification.userInfo objectForKey:MPMoviePlayerPlaybackDidFinishReasonUserInfoKey];
     if ([finishReason integerValue] == MPMovieFinishReasonPlaybackError) {
         RCResourceCache *cache = [RCResourceCache centralCache];
-        NSString *key = [NSString stringWithFormat:@"%@/%d", RCPostsResource, _post.postID];
+        NSString *key = [NSString stringWithFormat:@"%@/%@", RCMediaResource, _post.fileUrl];
         dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
         dispatch_async(queue, ^{
             [cache invalidateKey:key];
