@@ -319,8 +319,11 @@ BOOL        _haveScreenshot;
                     _lblUsername.text = _user.name;
                     
                     [_user getUserAvatarAsync:_user.userID completionHandler:^(UIImage* img){
-                        [_btnUserAvatar setImage:img forState:UIControlStateNormal];
-                    }];
+                         dispatch_async(dispatch_get_main_queue(), ^{
+                             [_btnUserAvatar setImage:img forState:UIControlStateNormal];
+                         });
+                     }];
+                    //[_btnUserAvatar setImage:[_user getUserAvatar:_user.userID] forState:UIControlStateNormal];
                     
                     [appDelegate setCurrentUser:_user];
                     [_posts removeAllObjects];
@@ -400,7 +403,8 @@ BOOL        _haveScreenshot;
                  NSLog(@"currentlandmark %d",_currentLandmarkID);
                  //int pastCurrentLandmark = _currentLandmarkID;
                  NSArray *postList = (NSArray *) [jsonData objectForKey:@"post_list"];
-                 //NSArray *landmarkList = (NSArray*) [jsonData objectForKey:@"landmark_list"]
+
+                 [_btnUserAvatar setImage:[_user getUserAvatar:_user.userID] forState:UIControlStateNormal];
                  
                  for (NSDictionary *postData in postList) {
                      RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];

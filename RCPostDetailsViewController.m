@@ -150,6 +150,15 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     dateLabelFrame.origin.y = _lblUsername.frame.origin.y + (_lblUsername.frame.size.height - dateLabelFrame.size.height);
     _lblDatePosted.frame = dateLabelFrame;
     
+    //setup release time if there's one:
+    if (_post.isTimeCapsule) {
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setTimeZone:[NSTimeZone systemTimeZone]];
+        [formatter setDateFormat:@"hh:mm 'on' dd/MM/yyyy"];
+        NSString *dtString = [formatter stringFromDate:_post.releaseDate];
+        _post.content = [NSString stringWithFormat:@"Released at %@.", dtString];
+    }
+    
     /*if (_landmark != nil) {
         _lblUsername.text = [NSString stringWithFormat:@"%@ @ %@", _post.authorName, _landmark.name];
         UIImage *landmarkImage = [UIImage imageNamed:[NSString stringWithFormat:@"landmarkCategory%@.png",_landmark.category]];

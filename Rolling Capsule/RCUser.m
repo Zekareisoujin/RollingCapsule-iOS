@@ -46,6 +46,45 @@
     return retval;
 }
 
+- (void) setUserAvatarAsync: (UIImage*)avatar completionHandler:(void (^)(BOOL, UIImage*))completionFunc {
+    dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
+    dispatch_async(queue, ^{
+        // Convert the image to JPEG data.
+        NSData *imageData = UIImageJPEGRepresentation(avatar, 1.0);
+        
+        // Upload image data.  Remember to set the content type.
+        S3PutObjectRequest *por = [[S3PutObjectRequest alloc] initWithKey:_email
+                                                                 inBucket:RCAmazonS3AvatarPictureBucket];
+        por.contentType = @"image/jpeg";
+        por.data        = imageData;
+        
+        // Put the image data into the specified s3 bucket and object.
+        AmazonS3Client *s3 = [RCAmazonS3Helper s3:_userID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3AvatarPictureBucket]];
+        NSString *error = @"Couldn't connect to server, please try again later";
+        if (s3 != nil) {
+            S3PutObjectResponse *putObjectResponse = [s3 putObject:por];
+            error = putObjectResponse.error.description;
+            if(putObjectResponse.error != nil) {
+                NSLog(@"Error: %@", putObjectResponse.error);
+            }
+            
+            if(error != nil) {
+                NSLog(@"Error: %@", error);
+                alertStatus(error,RCAlertMessageUploadError,self);
+                completionFunc(NO, nil);
+            }else {
+                RCResourceCache *cache = [RCResourceCache centralCache];
+                NSString *key = [[NSString alloc] initWithFormat:@"%@/%d/avatar", RCUsersResource, _userID];
+                [cache invalidateKey:key];
+                [cache putResourceInCache:key forKey:avatar];
+                completionFunc(YES, avatar);
+            }
+        }
+        
+        
+    });
+}
+
 - (UIImage*) getUserAvatar: (int)viewingUserID {
     if (_displayAvatar == nil) {
         RCResourceCache *cache = [RCResourceCache centralCache];
@@ -65,21 +104,24 @@
 }
 
 - (void) getUserAvatarAsync: (int)viewingUserID completionHandler:(void (^)(UIImage*)) completionFunc {
-    if (_displayAvatar == nil) {
-        RCResourceCache *cache = [RCResourceCache centralCache];
-        NSString *key = [[NSString alloc] initWithFormat:@"%@/%d/avatar", RCUsersResource, _userID];
-        
-        UIImage *cachedImg = [cache getResourceForKey:key usingQuery:^{
-            UIImage *image = [RCAmazonS3Helper getAvatarImage:self withLoggedinUserID:viewingUserID];
-            return image;
-        }];
-        
-        if (cachedImg == nil)
-            _displayAvatar = [UIImage imageNamed:@"default_avatar.png"];
-        else
-            _displayAvatar = cachedImg;
-    }
-    completionFunc(_displayAvatar);
+    dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
+    dispatch_async(queue, ^{
+        if (_displayAvatar == nil) {
+            RCResourceCache *cache = [RCResourceCache centralCache];
+            NSString *key = [[NSString alloc] initWithFormat:@"%@/%d/avatar", RCUsersResource, _userID];
+            
+            UIImage *cachedImg = [cache getResourceForKey:key usingQuery:^{
+                UIImage *image = [RCAmazonS3Helper getAvatarImage:self withLoggedinUserID:viewingUserID];
+                return image;
+            }];
+            
+            if (cachedImg == nil)
+                _displayAvatar = [UIImage imageNamed:@"default_avatar.png"];
+            else
+                _displayAvatar = cachedImg;
+        }
+        completionFunc(_displayAvatar);
+    });
 }
 
 - (void) updateNewName : (NSString*) newName {

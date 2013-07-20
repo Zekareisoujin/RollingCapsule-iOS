@@ -210,7 +210,9 @@ BOOL    showLogOut;
         });
     });*/
     [_user getUserAvatarAsync:_user.userID completionHandler:^(UIImage* img){
-        [_imgUserAvatar setImage:img];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_imgUserAvatar setImage:img];
+        });
     }];
 }
 
