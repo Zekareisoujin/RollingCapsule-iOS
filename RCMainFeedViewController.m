@@ -207,7 +207,10 @@ BOOL        _haveScreenshot;
 
 - (void) handleRefresh:(UIRefreshControl*) refreshControl {
     [self btnCenterMapTouchUpInside:nil];
-    
+    if ([_reachability currentReachabilityStatus] == NotReachable) {
+        [self showNoConnectionWarningMessage];
+        return;
+    }
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:RCInfoStringDateFormat];
     NSString *lastUpdated = [NSString stringWithFormat:RCInfoStringLastUpdatedOnFormat, [formatter  stringFromDate:[NSDate date] ] ];
@@ -253,13 +256,9 @@ BOOL        _haveScreenshot;
 }
 
 - (void) asynchFetchFeeds {
-    if ([_reachability currentReachabilityStatus] == NotReachable) {
-        [self showNoConnectionWarningMessage];
-        return;
-    }
     int nRetry = 5;
-    BOOL failed;
-    while (nRetry--) {
+    BOOL failed = YES;
+    while (failed && nRetry--) {
         failed = NO;
         //Asynchronous Request
         @try {
@@ -599,6 +598,10 @@ BOOL        _haveScreenshot;
     [_collectionView addGestureRecognizer:_pinchGestureRecognizer];
     [_collectionView addGestureRecognizer:_tapGestureRecognizer];
     [_collectionView addGestureRecognizer:_longPressGestureRecognizer];
+}
+
+- (void) viewWillDisappear:(BOOL)animated {
+    [self hideNoConnectionWarningMessage];
 }
 
 - (void) viewDidAppear:(BOOL)animated {

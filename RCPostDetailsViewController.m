@@ -191,10 +191,10 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
             if (!isFollowing)
                 _btnFollow.enabled = YES;
         } withFailureFunction:nil];
-        [_loggedInUser getUserFriendRelationAsync:_postOwner completion:^(BOOL isFriend) {
+        /*[_loggedInUser getUserFriendRelationAsync:_postOwner completion:^(BOOL isFriend) {
             if (!isFriend)
                 _btnFriendsWith.enabled = YES;
-        } withFailureFunction:nil];
+        } withFailureFunction:nil];*/
     }
     
     //prepare comment button for drag
