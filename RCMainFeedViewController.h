@@ -18,7 +18,7 @@ enum RCMainFeedViewMode {
 };
 typedef enum RCMainFeedViewMode RCMainFeedViewMode;
 
-@interface RCMainFeedViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDataSource, MKMapViewDelegate, UIGestureRecognizerDelegate>
+@interface RCMainFeedViewController : UIViewController <UICollectionViewDelegate, UICollectionViewDataSource, MKMapViewDelegate, UIGestureRecognizerDelegate, UINavigationControllerDelegate>
 - (IBAction)btnUserAvatarTouchUpInside:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *btnRefresh;
 

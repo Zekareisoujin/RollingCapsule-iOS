@@ -46,6 +46,7 @@
 		642E71FE17639D9400B3464E /* RCConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 642E71FD17639D9400B3464E /* RCConnectionManager.m */; };
 		642E72011763A7F600B3464E /* RCKeyboardPushUpHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 642E72001763A7F500B3464E /* RCKeyboardPushUpHandler.m */; };
 		64361E34178E9ABB0041B5C2 /* navBarButtonBackground@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64361E33178E9ABB0041B5C2 /* navBarButtonBackground@2x.png */; };
+		643C0802179B0B0E002BD751 /* RCPhotoDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 643C0801179B0B0E002BD751 /* RCPhotoDownloadOperation.m */; };
 		643EACE8175BACC0002761D9 /* back_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 643EACE7175BACC0002761D9 /* back_button.png */; };
 		643EACED175BBE51002761D9 /* RCNewPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 643EACEB175BBE51002761D9 /* RCNewPostViewController.m */; };
 		643EACEE175BBE51002761D9 /* RCNewPostViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 643EACEC175BBE51002761D9 /* RCNewPostViewController.xib */; };
@@ -106,6 +107,7 @@
 		64B81CB21795CCA600B5A825 /* RCCommentPostingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64B81CB01795CCA500B5A825 /* RCCommentPostingViewController.xib */; };
 		64B81CB81795E21C00B5A825 /* buttonPlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 64B81CB71795E21C00B5A825 /* buttonPlay.png */; };
 		64C62DE6179AD0D4005DFD8B /* RCS3CredentialsWithExpiration.m in Sources */ = {isa = PBXBuildFile; fileRef = 64C62DE5179AD0D4005DFD8B /* RCS3CredentialsWithExpiration.m */; };
+		64C62DE9179B007F005DFD8B /* RCOperationsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 64C62DE8179B007E005DFD8B /* RCOperationsManager.m */; };
 		64CA28451789ED1C0018D626 /* postLandmarkChosenBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 64CA28441789ED1C0018D626 /* postLandmarkChosenBackground.png */; };
 		64D0298F1796E7E900E4AC7B /* btnTransparent-normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D0298E1796E7E900E4AC7B /* btnTransparent-normal.png */; };
 		64D029911796F84C00E4AC7B /* magnifyingGlass@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D029901796F84C00E4AC7B /* magnifyingGlass@2x.png */; };
@@ -287,6 +289,8 @@
 		642E71FF1763A7F500B3464E /* RCKeyboardPushUpHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCKeyboardPushUpHandler.h; sourceTree = "<group>"; };
 		642E72001763A7F500B3464E /* RCKeyboardPushUpHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCKeyboardPushUpHandler.m; sourceTree = "<group>"; };
 		64361E33178E9ABB0041B5C2 /* navBarButtonBackground@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "navBarButtonBackground@2x.png"; path = "../navBarButtonBackground@2x.png"; sourceTree = "<group>"; };
+		643C0800179B0B0E002BD751 /* RCPhotoDownloadOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCPhotoDownloadOperation.h; sourceTree = "<group>"; };
+		643C0801179B0B0E002BD751 /* RCPhotoDownloadOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCPhotoDownloadOperation.m; sourceTree = "<group>"; };
 		643EACE7175BACC0002761D9 /* back_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back_button.png; sourceTree = "<group>"; };
 		643EACEA175BBE51002761D9 /* RCNewPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCNewPostViewController.h; sourceTree = "<group>"; };
 		643EACEB175BBE51002761D9 /* RCNewPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNewPostViewController.m; sourceTree = "<group>"; };
@@ -362,6 +366,8 @@
 		64B81CB71795E21C00B5A825 /* buttonPlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = buttonPlay.png; path = ../buttonPlay.png; sourceTree = "<group>"; };
 		64C62DE4179AD0D4005DFD8B /* RCS3CredentialsWithExpiration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCS3CredentialsWithExpiration.h; sourceTree = "<group>"; };
 		64C62DE5179AD0D4005DFD8B /* RCS3CredentialsWithExpiration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCS3CredentialsWithExpiration.m; sourceTree = "<group>"; };
+		64C62DE7179B007E005DFD8B /* RCOperationsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCOperationsManager.h; sourceTree = "<group>"; };
+		64C62DE8179B007E005DFD8B /* RCOperationsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCOperationsManager.m; sourceTree = "<group>"; };
 		64CA28441789ED1C0018D626 /* postLandmarkChosenBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = postLandmarkChosenBackground.png; path = ../postLandmarkChosenBackground.png; sourceTree = "<group>"; };
 		64D0298E1796E7E900E4AC7B /* btnTransparent-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "btnTransparent-normal.png"; path = "../btnTransparent-normal.png"; sourceTree = "<group>"; };
 		64D029901796F84C00E4AC7B /* magnifyingGlass@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "magnifyingGlass@2x.png"; path = "../magnifyingGlass@2x.png"; sourceTree = "<group>"; };
@@ -710,6 +716,10 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
+				643C0800179B0B0E002BD751 /* RCPhotoDownloadOperation.h */,
+				643C0801179B0B0E002BD751 /* RCPhotoDownloadOperation.m */,
+				64C62DE7179B007E005DFD8B /* RCOperationsManager.h */,
+				64C62DE8179B007E005DFD8B /* RCOperationsManager.m */,
 				64C62DE4179AD0D4005DFD8B /* RCS3CredentialsWithExpiration.h */,
 				64C62DE5179AD0D4005DFD8B /* RCS3CredentialsWithExpiration.m */,
 				64D6D80C179995C500AA1161 /* SystemConfiguration.framework */,
@@ -1217,6 +1227,8 @@
 				6401035117981E4E002A6E2E /* RCDatePickerView.m in Sources */,
 				64D6D80B17998ECF00AA1161 /* Reachability.m in Sources */,
 				64C62DE6179AD0D4005DFD8B /* RCS3CredentialsWithExpiration.m in Sources */,
+				64C62DE9179B007F005DFD8B /* RCOperationsManager.m in Sources */,
+				643C0802179B0B0E002BD751 /* RCPhotoDownloadOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

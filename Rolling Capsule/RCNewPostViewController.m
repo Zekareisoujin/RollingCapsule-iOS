@@ -992,23 +992,25 @@ NSData *_thumbnailData;
     return NO;
 }
 - (IBAction)closeBtnTouchUpInside:(id)sender {
-    if (!_isPosting) {
-        [self dismissViewControllerAnimated:YES completion:^{
-            if (_postCancel != nil)
-                _postCancel();
-        }];
-        /*[self animateViewDisapperance:^ {
+   
+    [self dismissViewControllerAnimated:YES completion:^ {
+        if (_postCancel != nil)
+            _postCancel();
+    }];
+
+    /*if (!_isPosting) {
+                /*[self animateViewDisapperance:^ {
             if (_postCancel != nil)
                 _postCancel();
             [self.view removeFromSuperview];
             [self removeFromParentViewController];
         }];*/
-    } else {
+    /*} else {
         [self dismissViewControllerAnimated:YES completion:nil];
         /*[self animateViewDisapperance:^ {
             [self.view removeFromSuperview];
         }];*/
-    }
+    //}
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {

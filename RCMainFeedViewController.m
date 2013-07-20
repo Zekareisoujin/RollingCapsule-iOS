@@ -231,15 +231,15 @@ BOOL        _haveScreenshot;
         _lblWarningNoConnection.text = @"No Internet Connection";
         _lblWarningNoConnection.textAlignment = NSTextAlignmentCenter;
         _lblWarningNoConnection.textColor = [ UIColor whiteColor];
-        [_lblWarningNoConnection setBackgroundColor:[UIColor redColor]];//[UIColor colorWithRed:255.0 green:0.0 blue:0.0 alpha:0.5]];
+        [_lblWarningNoConnection setBackgroundColor:[UIColor colorWithRed:200.0/255.0 green:50.0/255.0 blue:50.0/255.0 alpha:0.9]];
     }
     
     [self.view addSubview:_lblWarningNoConnection];
-    _lblWarningNoConnection.frame = CGRectMake(0,-30,self.view.frame.size.width,30);
+    _lblWarningNoConnection.frame = CGRectMake(0,42,self.view.frame.size.width,0);
     [UIView animateWithDuration:0.5 animations:^{
-        CGRect frame = self.view.frame;
-        frame.origin.y += 30;
-        self.view.frame = frame;
+        CGRect frame2 = _lblWarningNoConnection.frame;
+        frame2.size.height += 20;
+        _lblWarningNoConnection.frame = frame2;
     }];
 }
 - (void) hideNoConnectionWarningMessage {
@@ -294,7 +294,13 @@ BOOL        _haveScreenshot;
                 [_refreshControl endRefreshing];
                 
                 NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-                
+                if ([responseData isEqualToString:@"Unauthorized"]) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+                        [appDelegate.menuViewController btnActionLogOut:nil];
+                    });
+                    return;
+                }                
                 SBJsonParser *jsonParser = [SBJsonParser new];
                 NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
                 NSLog(@"%@%@",[RCMainFeedViewController debugTag], jsonData);
@@ -342,6 +348,7 @@ BOOL        _haveScreenshot;
                     
                     return;
                 } else {
+                    NSLog(@"error: %@",error);
                     alertStatus(RCErrorMessageFailedToGetFeed,RCAlertMessageServerError,self);
                 }
             }];
@@ -377,7 +384,13 @@ BOOL        _haveScreenshot;
              [_refreshControl endRefreshing];
              
              NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-             
+             if ([responseData isEqualToString:@"Unauthorized"]) {
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+                     [appDelegate.menuViewController btnActionLogOut:nil];
+                 });
+                 return;
+             }
              SBJsonParser *jsonParser = [SBJsonParser new];
              NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
              //NSLog(@"%@%@",[RCMainFeedViewController debugTag], jsonData);
@@ -462,10 +475,7 @@ BOOL        _haveScreenshot;
     RCPost *post;
     post = [_posts objectAtIndex:indexPath.row];
     [RCConnectionManager startConnection];
-    [cell getPostContentImageFromInternet:_user withPostContent:post usingCollection:nil completion:^{
-        [RCConnectionManager endConnection];
-        
-    }];
+    [cell getPostContentImageFromInternet:_user withPostContent:post usingCollection:nil completion:^{ [RCConnectionManager endConnection];}];
     if ([_chosenPosts count] != 0) {
         if ([_chosenPosts containsObject:[[NSNumber alloc] initWithInt:post.postID]]) {
             [cell changeCellState:RCCellStateFloat];
@@ -565,8 +575,6 @@ BOOL        _haveScreenshot;
 
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    //refresh if necessary, views like post where the main feed should refresh when finish
-    //would set the _willRefresh parameter
     if (_willRefresh) {
         [self handleRefresh:_refreshControl];
         _willRefresh = NO;
@@ -580,12 +588,13 @@ BOOL        _haveScreenshot;
     if ([recognizer state] == UIGestureRecognizerStateBegan) {
         _didZoom = NO;
     } else {
+        int maximumRow = [UIScreen mainScreen].bounds.size.height < RCIphone5Height ? 3 : 4;
         if (recognizer.scale > 1.5 && _nRows > 1 && !_didZoom) {
             _nRows--;
             _didZoom = YES;
             [_collectionView reloadData];
         }
-        if (recognizer.scale < 0.8 && _nRows < 3 && !_didZoom) {
+        if (recognizer.scale < 0.8 && _nRows < maximumRow && !_didZoom) {
             _didZoom = YES;
             _nRows++;
             [_collectionView reloadData];

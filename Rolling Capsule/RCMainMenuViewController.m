@@ -125,6 +125,7 @@ BOOL    showLogOut;
 
 - (IBAction)btnActionMainFeedNav:(id)sender {
     RCMainFeedViewController *mainFeedViewController = [[RCMainFeedViewController alloc] init];
+    //_navigationController.delegate = mainFeedViewController;
     [mainFeedViewController setCurrentUser:_user];
     [self navigateToViewControllerFromMenu:mainFeedViewController];
 }
