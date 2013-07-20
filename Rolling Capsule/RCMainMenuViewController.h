@@ -33,4 +33,5 @@
 - (IBAction)btnActionLogOut:(id)sender;
 - (IBAction)btnActionLogOutDropDown:(id)sender;
 - (void)setNavigationBarMenuBttonForViewController:(UIViewController *) viewController;
+- (void)setLoggedInUser: (RCUser*)user;
 @end

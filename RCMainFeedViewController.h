@@ -32,8 +32,6 @@ typedef enum RCMainFeedViewMode RCMainFeedViewMode;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UIButton *btnMoreFeed;
 
-@property (nonatomic, strong) NSMutableDictionary *userCache;
-@property (nonatomic, strong) NSMutableDictionary *postCache;
 @property (nonatomic, strong) NSMutableSet *chosenPosts;
 @property (nonatomic, strong) RCUser *user;
 @property (nonatomic, strong) UIRefreshControl *refreshControl;

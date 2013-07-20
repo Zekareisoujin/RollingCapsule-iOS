@@ -166,9 +166,8 @@ BOOL    showLogOut;
 }
 
 - (void)userDidLogIn:(RCUser *)user {
-    _user = user;
+    [self setLoggedInUser:user];
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:RCLogStatusDefault];
-    [[NSUserDefaults standardUserDefaults] setObject:[user getDictionaryObject] forKey:RCLogUserDefault];
     [[NSUserDefaults standardUserDefaults] synchronize];
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate enableSideMenu];
@@ -176,7 +175,11 @@ BOOL    showLogOut;
     [self btnActionMainFeedNav:self];
 }
 
-
+- (void)setLoggedInUser: (RCUser*)user {
+    _user = user;
+    [[NSUserDefaults standardUserDefaults] setObject:[user getDictionaryObject] forKey:RCLogUserDefault];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
 
 - (UIBarButtonItem*) menuBarButton {
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc]
