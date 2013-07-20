@@ -14,6 +14,7 @@
 #import "RCAmazonS3Helper.h"
 #import "RCResourceCache.h"
 #import "RCFriendListViewController.h"
+#import "RCPostDetailsViewController.h"
 #import <AWSRuntime/AWSRuntime.h>
 
 @interface RCUserProfileViewController ()
@@ -23,6 +24,7 @@
 @property (nonatomic, assign) BOOL pickedNewAvatarImage;
 @property (nonatomic, strong) UIImage *userAvatarImage;
 @property (nonatomic, strong) UILabel *lblAvatarEdit;
+@property (nonatomic, strong) UILongPressGestureRecognizer *longPressGestureRecognizer;
 @end
 
 @implementation RCUserProfileViewController
@@ -45,6 +47,7 @@
 @synthesize pickedNewAvatarImage = _pickedNewAvatarImage;
 @synthesize userAvatarImage = _userAvatarImage;
 @synthesize lblAvatarEdit = _lblAvatarEdit;
+@synthesize longPressGestureRecognizer = _longPressGestureRecognizer;
 
 NSArray  *_postPreviewElements;
 NSString *_friendStatus;
@@ -108,7 +111,8 @@ double  minimapScaleY;
         nRows = 3;
     }
     
-    currentPageNumber = 0;
+    _longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    
     _postList = [[NSMutableArray alloc] init];
     
     _postPreviewElements = [[NSArray alloc] initWithObjects:_previewBackground, _previewPostImage, _previewLabelDate, _previewLabelDescription, _previewLabelLocation, nil];
@@ -166,7 +170,7 @@ double  minimapScaleY;
     //Asynchronous Request
     //[_postList removeAllObjects];
     @try {
-        currentPageNumber++;
+        currentPageNumber = 1;
         currentMaxDisplayedPostNumber = currentMaxPostNumber = currentPageNumber * RCPostPerPage;
         
         NSMutableString *address = [[NSMutableString alloc] initWithFormat:@"%@%@/%d?mobile=1", RCServiceURL, RCUsersResource, _profileUser.userID];
@@ -707,7 +711,7 @@ double  minimapScaleY;
         [elem setHidden:NO];
     
     [_previewPostImage setImage:cell.imageView.image];
-    [_previewLabelDescription setText:post.content];
+    [_previewLabelDescription setText:post.subject];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"dd.MM.yyyy"];
@@ -868,4 +872,42 @@ double  minimapScaleY;
     NSUInteger newLength = [textField.text length] + [string length] - range.length;
     return (newLength <= 32);
 }
+
+#pragma mark - Long Press Gesture handler
+- (IBAction)handleLongPress:(UILongPressGestureRecognizer *)recognizer {
+    if (recognizer.state == UIGestureRecognizerStateBegan) {
+        CGPoint point = [recognizer locationInView:_collectionView];
+        NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:point];
+        
+        //if index path for cell not found
+        if (indexPath != nil ) {
+            RCPost *post = [_postList objectAtIndex:indexPath.row];
+            RCUser *owner = [[RCUser alloc] init];
+            owner.userID = post.userID;
+            owner.name = post.authorName;
+            
+            //[_collectionView removeGestureRecognizer:recognizer];
+            RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_viewingUser];
+            
+            /*if (post.landmarkID == -1)
+                postDetailsViewController.landmark = nil;
+            else
+                postDetailsViewController.landmark = [_landmarks objectForKey:[NSNumber numberWithInt:post.landmarkID]];*/
+            postDetailsViewController.deleteFunction = ^{
+                [_postList removeObjectAtIndex:indexPath.row];
+                [_collectionView reloadData];
+                [self hidePostPreview];
+            };
+            //postDetailsViewController.landmarkID = post.landmarkID;
+            
+            [self.navigationController pushViewController:postDetailsViewController animated:YES];
+            
+        }
+    }
+}
+
+- (void) viewWillAppear:(BOOL)animated {
+    [_collectionView addGestureRecognizer:_longPressGestureRecognizer];
+}
+
 @end
