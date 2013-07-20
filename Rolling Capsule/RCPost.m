@@ -30,6 +30,8 @@
 @synthesize landmarkID = _landmarkID;
 @synthesize subject = _subject;
 @synthesize thumbnailUrl = _thumbnailUrl;
+@synthesize releaseDate = _releaseDate;
+@synthesize isTimeCapsule = _isTimeCapsule;
 
 - (id) initWithNSDictionary:(NSDictionary *)postData {
     self = [super init];
@@ -54,9 +56,18 @@
         _authorEmail = [postData objectForKey:@"author_email"];
         _thumbnailUrl = [postData objectForKey:@"thumbnail_url"];
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
         [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
         _createdTime = [formatter dateFromString:(NSString*)[postData objectForKey:@"created_at"]];
         _updatedTime = [formatter dateFromString:(NSString*)[postData objectForKey:@"updated_at"]];
+        
+        NSString *releaseTime = [postData objectForKey:@"release"];
+        if ((NSNull*)releaseTime == [NSNull null]){
+            _isTimeCapsule = NO;
+        }else {
+            _isTimeCapsule = YES;
+            _releaseDate = [formatter dateFromString:releaseTime];
+        }
     }
     return self;
 }
