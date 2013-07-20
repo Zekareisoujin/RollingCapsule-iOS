@@ -22,7 +22,7 @@
 @property (nonatomic, strong) UITextField* txtFieldEditName;
 @property (nonatomic, assign) BOOL editingProfile;
 @property (nonatomic, assign) BOOL pickedNewAvatarImage;
-@property (nonatomic, strong) UIImage *userAvatarImage;
+@property (nonatomic, weak)   UIImage *userAvatarImage;
 @property (nonatomic, strong) UILabel *lblAvatarEdit;
 @property (nonatomic, strong) UILongPressGestureRecognizer *longPressGestureRecognizer;
 @end
@@ -522,8 +522,19 @@ double  minimapScaleY;
 - (void)processBackgroundThreadUpload:(UIImage *)avatarImage
 {
     _btnAvatarImg.enabled = NO;
-    [self performSelectorInBackground:@selector(processBackgroundThreadUploadInBackground:)
-                           withObject:avatarImage];
+    //[self performSelectorInBackground:@selector(processBackgroundThreadUploadInBackground:)
+    //                       withObject:avatarImage];
+    
+    __unsafe_unretained typeof(self) weakSelf = self;
+    [_profileUser setUserAvatarAsync:avatarImage completionHandler:^(BOOL success, UIImage* retAvatar){
+        dispatch_async(dispatch_get_main_queue(),^{
+            if (success) {
+                weakSelf.userAvatarImage = retAvatar;
+                alertStatus(RCInfoStringPostSuccess, RCAlertMessageUploadSuccess, nil);
+                [weakSelf.btnAvatarImg setBackgroundImage:retAvatar forState:UIControlStateDisabled];
+            }
+        });
+    }];
 }
 
 - (void)processBackgroundThreadUploadInBackground:(UIImage *)avatarImage
@@ -562,7 +573,7 @@ double  minimapScaleY;
     else
     {
         RCResourceCache *cache = [RCResourceCache centralCache];
-        NSString *key = [[NSString alloc] initWithFormat:@"%@/%d-avatar", RCUsersResource, _profileUser.userID];
+        NSString *key = [[NSString alloc] initWithFormat:@"%@/%d/avatar", RCUsersResource, _profileUser.userID];
         [cache invalidateKey:key];
         _userAvatarImage = image;
         alertStatus(RCInfoStringPostSuccess, RCAlertMessageUploadSuccess,self);
@@ -620,8 +631,10 @@ double  minimapScaleY;
     });*/
     
     [_profileUser getUserAvatarAsync:_viewingUserID completionHandler:^(UIImage* img){
-        _userAvatarImage = img;
-        [_btnAvatarImg setBackgroundImage:_userAvatarImage forState:UIControlStateDisabled];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            _userAvatarImage = img;
+            [_btnAvatarImg setBackgroundImage:_userAvatarImage forState:UIControlStateDisabled];
+        });
     }];
 }
 

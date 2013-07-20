@@ -24,6 +24,7 @@
 - (void) getUserFollowRelationAsync:(RCUser*) otherUser completion:(void (^)(BOOL))processFunction withFailureFunction:(void (^)(NSString*)) failureFunction;
 - (void) getUserFriendRelationAsync:(RCUser*) otherUser completion:(void (^)(BOOL))processFunction withFailureFunction:(void (^)(NSString*)) failureFunction;
 + (void) addFriendAsync:(RCUser*) otherUser withSuccessfulFunction:(void (^)(int)) successFunction withFailureFunction:(void (^)(NSString*)) failureFunction;
+- (void) setUserAvatarAsync: (UIImage*)avatar completionHandler:(void (^)(BOOL, UIImage*))completionFunc;
 - (UIImage*) getUserAvatar: (int)viewingUserID;
 - (void) getUserAvatarAsync: (int)viewingUserID completionHandler:(void (^)(UIImage*))completionFunc;
 + (void) getUserWithIDAsync: (int)userID completionHandler:(void (^)(RCUser*))completionFunc;

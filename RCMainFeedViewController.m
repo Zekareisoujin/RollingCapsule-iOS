@@ -313,8 +313,11 @@ BOOL        _haveScreenshot;
                     _lblUsername.text = _user.name;
                     
                     [_user getUserAvatarAsync:_user.userID completionHandler:^(UIImage* img){
-                        [_btnUserAvatar setImage:img forState:UIControlStateNormal];
-                    }];
+                         dispatch_async(dispatch_get_main_queue(), ^{
+                             [_btnUserAvatar setImage:img forState:UIControlStateNormal];
+                         });
+                     }];
+                    //[_btnUserAvatar setImage:[_user getUserAvatar:_user.userID] forState:UIControlStateNormal];
                     
                     [appDelegate setCurrentUser:_user];
                     [_posts removeAllObjects];
@@ -398,20 +401,12 @@ BOOL        _haveScreenshot;
                  NSArray *postList = (NSArray *) [jsonData objectForKey:@"post_list"];
                  //NSArray *landmarkList = (NSArray*) [jsonData objectForKey:@"landmark_list"];
                  
-                 //set user avatar image in background
-                 /*dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
-                  dispatch_async(queue, ^{
-                  UIImage *image = [RCAmazonS3Helper getAvatarImage:_user withLoggedinUserID:_user.userID];
-                  dispatch_async(dispatch_get_main_queue(), ^{
-                  if (image == nil)
-                  [_btnUserAvatar setImage:[UIImage imageNamed:@"default_avatar.png"] forState:UIControlStateNormal];
-                  else
-                  [_btnUserAvatar setImage:image forState:UIControlStateNormal];
-                  });
-                  });*/
-                 [_user getUserAvatarAsync:_user.userID completionHandler:^(UIImage* img){
-                     [_btnUserAvatar setImage:img forState:UIControlStateNormal];
-                 }];
+                 /*[_user getUserAvatarAsync:_user.userID completionHandler:^(UIImage* img){
+                     dispatch_async(dispatch_get_main_queue(), ^{
+                         [_btnUserAvatar setImage:img forState:UIControlStateNormal];
+                     });
+                 }];*/
+                 [_btnUserAvatar setImage:[_user getUserAvatar:_user.userID] forState:UIControlStateNormal];
                  
                  for (NSDictionary *postData in postList) {
                      RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
