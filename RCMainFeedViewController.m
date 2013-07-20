@@ -298,7 +298,7 @@ BOOL        _haveScreenshot;
                 }                
                 SBJsonParser *jsonParser = [SBJsonParser new];
                 NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
-                NSLog(@"%@%@",[RCMainFeedViewController debugTag], jsonData);
+                NSLog(@"%@%@",[RCMainFeedViewController debugTag], responseData);
                 
                 if (jsonData != NULL) {
                     [_postsByLandmark removeAllObjects];
@@ -392,7 +392,7 @@ BOOL        _haveScreenshot;
              }
              SBJsonParser *jsonParser = [SBJsonParser new];
              NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
-             //NSLog(@"%@%@",[RCMainFeedViewController debugTag], jsonData);
+             NSLog(@"%@%@",[RCMainFeedViewController debugTag], responseData);
              
              if (jsonData != NULL) {
                  NSLog(@"current annotations:%@",_mapView.annotations);
