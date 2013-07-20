@@ -83,10 +83,12 @@ return staticRCLoadingImage;
         owner.userID = post.userID;
         owner.email = post.authorEmail;
         owner.name = post.authorName;
-        UIImage* cachedImg = (UIImage*)[cache getResourceForKey:key usingQuery:^{
+        UIImage* cachedImg = nil;
+        
+        cachedImg = [cache getResourceForKey:key usingQuery:^{
             UIImage *image = [RCAmazonS3Helper getUserMediaImage:owner withLoggedinUserID:user.userID withImageUrl:post.thumbnailUrl];
             return image;
-        }];
+            }];
         dispatch_async(dispatch_get_main_queue(), ^{
             if (self.imageView.image == [RCMainFeedCell loadingImage]) {
                 if (cachedImg == nil)

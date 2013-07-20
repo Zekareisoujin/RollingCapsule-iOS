@@ -105,6 +105,7 @@
 		64B81CB11795CCA600B5A825 /* RCCommentPostingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64B81CAF1795CCA500B5A825 /* RCCommentPostingViewController.m */; };
 		64B81CB21795CCA600B5A825 /* RCCommentPostingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64B81CB01795CCA500B5A825 /* RCCommentPostingViewController.xib */; };
 		64B81CB81795E21C00B5A825 /* buttonPlay.png in Resources */ = {isa = PBXBuildFile; fileRef = 64B81CB71795E21C00B5A825 /* buttonPlay.png */; };
+		64C62DE6179AD0D4005DFD8B /* RCS3CredentialsWithExpiration.m in Sources */ = {isa = PBXBuildFile; fileRef = 64C62DE5179AD0D4005DFD8B /* RCS3CredentialsWithExpiration.m */; };
 		64CA28451789ED1C0018D626 /* postLandmarkChosenBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 64CA28441789ED1C0018D626 /* postLandmarkChosenBackground.png */; };
 		64D0298F1796E7E900E4AC7B /* btnTransparent-normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D0298E1796E7E900E4AC7B /* btnTransparent-normal.png */; };
 		64D029911796F84C00E4AC7B /* magnifyingGlass@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D029901796F84C00E4AC7B /* magnifyingGlass@2x.png */; };
@@ -359,6 +360,8 @@
 		64B81CAF1795CCA500B5A825 /* RCCommentPostingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCCommentPostingViewController.m; path = ../RCCommentPostingViewController.m; sourceTree = "<group>"; };
 		64B81CB01795CCA500B5A825 /* RCCommentPostingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RCCommentPostingViewController.xib; path = ../RCCommentPostingViewController.xib; sourceTree = "<group>"; };
 		64B81CB71795E21C00B5A825 /* buttonPlay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = buttonPlay.png; path = ../buttonPlay.png; sourceTree = "<group>"; };
+		64C62DE4179AD0D4005DFD8B /* RCS3CredentialsWithExpiration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCS3CredentialsWithExpiration.h; sourceTree = "<group>"; };
+		64C62DE5179AD0D4005DFD8B /* RCS3CredentialsWithExpiration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCS3CredentialsWithExpiration.m; sourceTree = "<group>"; };
 		64CA28441789ED1C0018D626 /* postLandmarkChosenBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = postLandmarkChosenBackground.png; path = ../postLandmarkChosenBackground.png; sourceTree = "<group>"; };
 		64D0298E1796E7E900E4AC7B /* btnTransparent-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "btnTransparent-normal.png"; path = "../btnTransparent-normal.png"; sourceTree = "<group>"; };
 		64D029901796F84C00E4AC7B /* magnifyingGlass@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "magnifyingGlass@2x.png"; path = "../magnifyingGlass@2x.png"; sourceTree = "<group>"; };
@@ -707,6 +710,8 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
+				64C62DE4179AD0D4005DFD8B /* RCS3CredentialsWithExpiration.h */,
+				64C62DE5179AD0D4005DFD8B /* RCS3CredentialsWithExpiration.m */,
 				64D6D80C179995C500AA1161 /* SystemConfiguration.framework */,
 				64D6D80A17998ECF00AA1161 /* Reachability.m */,
 				64D6D80817998E7B00AA1161 /* Reachability.h */,
@@ -1211,6 +1216,7 @@
 				BF8DDD5A1797068100803CE1 /* RCSettingViewController.m in Sources */,
 				6401035117981E4E002A6E2E /* RCDatePickerView.m in Sources */,
 				64D6D80B17998ECF00AA1161 /* Reachability.m in Sources */,
+				64C62DE6179AD0D4005DFD8B /* RCS3CredentialsWithExpiration.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1322,8 +1328,8 @@
 		BFCA7851174DFD3F00666CBA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Downloads/aws-ios-sdk-1.6.0\"",
@@ -1347,8 +1353,8 @@
 		BFCA7852174DFD3F00666CBA /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Long Nguyen (3UQSWEVNWJ)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Trinh Tuan Phuong (YJQ3C79V2K)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Downloads/aws-ios-sdk-1.6.0\"",

@@ -321,15 +321,6 @@ BOOL        _haveScreenshot;
                     for (NSDictionary *postData in postList) {
                         RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
                         [_posts addObject:post];
-                        id key = [[NSNumber alloc] initWithInteger:post.landmarkID];
-                        NSMutableArray *postList = (NSMutableArray *)[_postsByLandmark objectForKey:key];
-                        if (postList != nil) {
-                            [postList addObject:post];
-                        } else {
-                            NSMutableArray* postList = [[NSMutableArray alloc] init];
-                            [postList addObject:post];
-                            [_postsByLandmark setObject:postList forKey:key];
-                        }
                         //NSLog(@"%@ post coordinates %f %f",[RCMainFeedViewController debugTag], post.coordinate.latitude, post.coordinate.longitude);
                     }
                     
@@ -396,36 +387,11 @@ BOOL        _haveScreenshot;
                  NSLog(@"currentlandmark %d",_currentLandmarkID);
                  //int pastCurrentLandmark = _currentLandmarkID;
                  NSArray *postList = (NSArray *) [jsonData objectForKey:@"post_list"];
-                 //NSArray *landmarkList = (NSArray*) [jsonData objectForKey:@"landmark_list"];
-                 
-                 //set user avatar image in background
-                 /*dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
-                  dispatch_async(queue, ^{
-                  UIImage *image = [RCAmazonS3Helper getAvatarImage:_user withLoggedinUserID:_user.userID];
-                  dispatch_async(dispatch_get_main_queue(), ^{
-                  if (image == nil)
-                  [_btnUserAvatar setImage:[UIImage imageNamed:@"default_avatar.png"] forState:UIControlStateNormal];
-                  else
-                  [_btnUserAvatar setImage:image forState:UIControlStateNormal];
-                  });
-                  });*/
-                 [_user getUserAvatarAsync:_user.userID completionHandler:^(UIImage* img){
-                     [_btnUserAvatar setImage:img forState:UIControlStateNormal];
-                 }];
+                 //NSArray *landmarkList = (NSArray*) [jsonData objectForKey:@"landmark_list"]
                  
                  for (NSDictionary *postData in postList) {
                      RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
                      [_posts addObject:post];
-                     id key = [[NSNumber alloc] initWithInteger:post.landmarkID];
-                     NSMutableArray *postList = (NSMutableArray *)[_postsByLandmark objectForKey:key];
-                     if (postList != nil) {
-                         [postList addObject:post];
-                     } else {
-                         NSMutableArray* postList = [[NSMutableArray alloc] init];
-                         [postList addObject:post];
-                         [_postsByLandmark setObject:postList forKey:key];
-                     }
-
                  }
                  
                  //[_collectionView reloadData];
@@ -479,9 +445,6 @@ BOOL        _haveScreenshot;
 - (NSInteger)collectionView:(UICollectionView *)view numberOfItemsInSection:(NSInteger)section {
     int nPosts;
     switch (_currentViewMode) {
-        case RCMainFeedViewModePublic:
-            nPosts = section == 0 ? [[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInteger:_currentLandmarkID]] count] : 0;
-            break;
         default:
             nPosts = [_posts count];
             break;
@@ -497,11 +460,7 @@ BOOL        _haveScreenshot;
     NSString* cellIdentifier = [RCMainFeedCell cellIdentifier];
     RCMainFeedCell *cell = [cv dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
     RCPost *post;
-    if (_currentViewMode == RCMainFeedViewModePublic) {
-        NSArray* items = [_postsByLandmark objectForKey:[[NSNumber alloc] initWithInteger:_currentLandmarkID]];
-        post = [items objectAtIndex:indexPath.row];
-    } else
-        post = [_posts objectAtIndex:indexPath.row];
+    post = [_posts objectAtIndex:indexPath.row];
     [RCConnectionManager startConnection];
     [cell getPostContentImageFromInternet:_user withPostContent:post usingCollection:nil completion:^{
         [RCConnectionManager endConnection];
@@ -641,8 +600,7 @@ BOOL        _haveScreenshot;
     //if there's no item at point of tap
     if (indexPath != nil) {
         int idx = [indexPath row];
-        NSArray* items = (NSArray*)[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInt:_currentLandmarkID]];
-        RCPost *post = [items objectAtIndex:idx];
+        RCPost *post = [_posts objectAtIndex:idx];
         NSNumber *key = [[NSNumber alloc] initWithInt:post.postID];
         RCMainFeedCell* currentCell = (RCMainFeedCell *)[_collectionView cellForItemAtIndexPath:indexPath];
         
@@ -667,8 +625,7 @@ BOOL        _haveScreenshot;
             for (UICollectionViewCell* cell in _collectionView.visibleCells) {
                 RCMainFeedCell *feedCell = (RCMainFeedCell *)cell;
                 int index = [[_collectionView indexPathForCell:cell] row];
-                NSArray* items = (NSArray*)[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInt:_currentLandmarkID]];
-                RCPost *iteratingPost = [items objectAtIndex:index];
+                RCPost *iteratingPost = [_posts objectAtIndex:index];
                 NSNumber *key = [[NSNumber alloc] initWithInt:iteratingPost.postID];
                 //if post not chosen then dim
                 if (![_chosenPosts containsObject:key])
@@ -686,11 +643,7 @@ BOOL        _haveScreenshot;
         //if index path for cell not found
         if (indexPath != nil ) {
             RCPost *post;
-            if (_currentViewMode == RCMainFeedViewModePublic) {
-                NSArray* items = [_postsByLandmark objectForKey:[[NSNumber alloc] initWithInteger:_currentLandmarkID]];
-                post = [items objectAtIndex:indexPath.row];
-            } else
-                post = [_posts objectAtIndex:indexPath.row];
+            post = [_posts objectAtIndex:indexPath.row];
             RCUser *owner = [[RCUser alloc] init];
             owner.userID = post.userID;
             owner.name = post.authorName;
