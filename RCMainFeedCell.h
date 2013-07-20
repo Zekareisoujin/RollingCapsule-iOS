@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (strong, nonatomic) UIView *dimMask;
 @property (assign, nonatomic) int cellState;
+@property (nonatomic, strong) NSString* currentFileUrl;
 + (NSString*) cellIdentifier;
 - (void)getPostContentImageFromInternet:(RCUser *) user withPostContent:(RCPost *) post usingCollection:(NSMutableDictionary*)postCache completion:(void (^)(void))callback;
 - (void) changeCellState:(int)newState;

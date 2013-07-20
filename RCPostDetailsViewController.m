@@ -659,8 +659,8 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
              
              if ([responseData isEqualToString:@"ok"]){
                  alertStatus(@"Post deleted successfully!", @"Success!", nil);
-                 [self.navigationController popViewControllerAnimated:YES];
                  [self.navigationController setNavigationBarHidden:NO animated:YES];
+                 [self.navigationController popViewControllerAnimated:YES];
                  if (_deleteFunction != nil)
                      _deleteFunction();
              }else if ([responseData isEqualToString:@"error"]){

@@ -17,7 +17,15 @@
 
 @synthesize dimMask = _dimMask;
 @synthesize cellState = _cellState;
+@synthesize currentFileUrl = _currentFileUrl;
 
++ (UIImage*) loadingImage {
+    static UIImage* staticRCLoadingImage = nil;
+    if (staticRCLoadingImage == nil) {
+        staticRCLoadingImage = [UIImage imageNamed:@"loading.gif"];
+    }
+return staticRCLoadingImage;
+}
 + (NSString*) cellIdentifier {
     return @"RCMainFeedCell";
 }
@@ -26,9 +34,32 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        [self prepareForReuse];
     }
     return self;
 
+}
+
+- (void) awakeFromNib {
+    [super awakeFromNib];
+    [self prepareForReuse];
+}
+
+- (void) prepareForReuse {
+    [_dimMask removeFromSuperview];
+    _dimMask = [[UIView alloc] init];
+    [_dimMask setBackgroundColor:[UIColor blackColor]];
+    _dimMask.alpha = 0.7;
+    self.imageView.layer.borderColor = [UIColor colorWithRed:RCAppThemeColorRed green:RCAppThemeColorGreen blue:RCAppThemeColorBlue alpha:1.0].CGColor;
+    self.imageView.layer.borderWidth = 2.0;
+    self.imageView.layer.cornerRadius = 5.0;
+    self.imageView.clipsToBounds = YES;
+    [self.layer setMasksToBounds:NO];
+    [self.layer setShadowColor:[UIColor blackColor].CGColor];
+    [self.layer setShadowRadius:5.0];
+    [self.layer setShadowOffset:CGSizeMake(2,2)];
+    [self.layer setShadowOpacity:0.5];
+    [_imageView setImage:[RCMainFeedCell loadingImage]];
 }
 
 /*
@@ -41,21 +72,8 @@
 */
 
 - (void)getPostContentImageFromInternet:(RCUser *) user withPostContent:(RCPost *) post usingCollection:(NSMutableDictionary*)postCache completion:(void (^)(void))callback {
-
-    [_dimMask removeFromSuperview];
-    self.imageView.layer.borderColor = [UIColor colorWithRed:RCAppThemeColorRed green:RCAppThemeColorGreen blue:RCAppThemeColorBlue alpha:1.0].CGColor;
-    self.imageView.layer.borderWidth = 2.0;
-    self.imageView.layer.cornerRadius = 5.0;
-    self.imageView.clipsToBounds = YES;
-    [self.layer setMasksToBounds:NO];
-    [self.layer setShadowColor:[UIColor blackColor].CGColor];
-    [self.layer setShadowRadius:5.0];
-    [self.layer setShadowOffset:CGSizeMake(2,2)];
-    [self.layer setShadowOpacity:0.5];
     [self.layer setShadowPath:[[UIBezierPath
-                                  bezierPathWithRect:self.bounds] CGPath]];
-    [_imageView setImage:[UIImage imageNamed:@"loading.gif"]];
-    
+                                bezierPathWithRect:self.bounds] CGPath]];
     if ([post.fileUrl isKindOfClass:[NSNull class]]) return;
     RCResourceCache *cache = [RCResourceCache centralCache];
     NSString *key = [NSString stringWithFormat:@"%@/%@", RCMediaResource, post.thumbnailUrl];
@@ -66,16 +84,16 @@
         owner.email = post.authorEmail;
         owner.name = post.authorName;
         UIImage* cachedImg = (UIImage*)[cache getResourceForKey:key usingQuery:^{
-            [RCConnectionManager startConnection];
             UIImage *image = [RCAmazonS3Helper getUserMediaImage:owner withLoggedinUserID:user.userID withImageUrl:post.thumbnailUrl];
-            [RCConnectionManager endConnection];
             return image;
         }];
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (cachedImg == nil)
-                [_imageView setImage:[UIImage imageNamed:@"default_avatar.jpg"]];
-            else
-                [_imageView setImage:cachedImg];
+            if (self.imageView.image == [RCMainFeedCell loadingImage]) {
+                if (cachedImg == nil)
+                    [_imageView setImage:[UIImage imageNamed:@"default_avatar.jpg"]];
+                else
+                    [_imageView setImage:cachedImg];
+            }
             callback();
         });
     });
@@ -96,16 +114,22 @@
     }];*/
 }
 
+-(void)setFrame:(CGRect)frame {
+    [super setFrame:frame];
+    [self setNeedsDisplay];
+    NSLog(@"here");
+    //UICollectionView* collectionView;
+    //[collectionView indexPathForCell:self];
+}
+
 - (void) changeCellState:(int)newState {
     int backup = _cellState;
     _cellState = newState;
     switch (newState) {
         case RCCellStateDimmed:
-            //if (_dimMask == nil) {
-            _dimMask = [[UIView alloc] initWithFrame:self.imageView.frame];
-            [_dimMask setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.3]];
-            //}
-            [self addSubview:_dimMask];
+            _dimMask.frame = CGRectMake(0,0,self.frame.size.width,self.frame.size.height);
+            [self.imageView addSubview:_dimMask];
+            _dimMask.frame = CGRectMake(0,0,self.frame.size.width,self.frame.size.height);
             break;
         case RCCellStateNormal:
             [_dimMask removeFromSuperview];
