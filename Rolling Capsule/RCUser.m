@@ -49,6 +49,7 @@
 - (void) setUserAvatarAsync: (UIImage*)avatar completionHandler:(void (^)(BOOL, UIImage*))completionFunc {
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
+        [RCConnectionManager startConnection];
         // Convert the image to JPEG data.
         NSData *imageData = UIImageJPEGRepresentation(avatar, 1.0);
         
@@ -61,6 +62,7 @@
         // Put the image data into the specified s3 bucket and object.
         AmazonS3Client *s3 = [RCAmazonS3Helper s3:_userID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3AvatarPictureBucket]];
         NSString *error = @"Couldn't connect to server, please try again later";
+        [RCConnectionManager endConnection];
         if (s3 != nil) {
             S3PutObjectResponse *putObjectResponse = [s3 putObject:por];
             error = putObjectResponse.error.description;

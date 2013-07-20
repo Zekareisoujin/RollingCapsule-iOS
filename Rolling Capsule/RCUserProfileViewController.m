@@ -62,6 +62,7 @@ int     currentPageNumber;
 int     currentMaxPostNumber;
 int     currentMaxDisplayedPostNumber;
 int     showThreshold;
+BOOL    willShowMoreFeeds;
 
 // Map reference data:
 double  refLong;
@@ -110,6 +111,10 @@ double  minimapScaleY;
     }else {
         nRows = 3;
     }
+    float width = (_collectionView.frame.size.height-42) / nRows;
+    int numCell = [[UIScreen mainScreen] bounds].size.width / width + 0.5;
+    showThreshold = numCell * nRows;
+    
     
     _longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
     
@@ -147,7 +152,6 @@ double  minimapScaleY;
     }
     
     [self showMoreFeedButton:NO animate:NO];
-    showThreshold = 15;
     
     NSString* cellIdentifier = [RCProfileViewCell cellIdentifier];
     [self.collectionView registerClass:[RCProfileViewCell class] forCellWithReuseIdentifier:cellIdentifier];
@@ -200,6 +204,7 @@ double  minimapScaleY;
                  [_collectionView reloadData];
                  [self drawMinimap];
              }
+             willShowMoreFeeds = ([_postList count] == currentMaxPostNumber);
              
              /*if (jsonData != NULL) {
                  //NSLog(@"Profile View: fetched feeds: %@", jsonData);
@@ -245,15 +250,10 @@ double  minimapScaleY;
              if ([jsonData count] > 0) {
                  for (NSDictionary* elem in jsonData){
                      [_postList addObject:[[RCPost alloc] initWithNSDictionary:elem]];
-                     
-                     /*RCPost *test = [[RCPost alloc] initWithNSDictionary:elem];
-                      CLLocationCoordinate2D coord = CLLocationCoordinate2DMake(test.latitude, test.longitude);
-                      MKMapPoint point = MKMapPointForCoordinate(coord);
-                      NSLog(@"Long & lat: %.2f and %.2f; producing: %.2f and %.2f", test.longitude, test.latitude, point.x, point.y);*/
                  }
-                 
-                 //[_collectionView reloadData];
-                 //[self drawMinimap];
+             }else {
+                 willShowMoreFeeds = NO;
+                 [_btnMoreFeed setHidden:YES];
              }
              
              /*if (jsonData != NULL) {
@@ -513,7 +513,7 @@ double  minimapScaleY;
 }
 
 - (IBAction)btnMoreFeedClicked:(id)sender {
-    [self showMoreFeedButton:NO animate:NO];
+    //[self showMoreFeedButton:NO animate:NO];
     currentMaxDisplayedPostNumber = currentMaxPostNumber;
     [_collectionView reloadData];
 }
@@ -838,17 +838,14 @@ double  minimapScaleY;
 
 - (void) doneEditProfile {
     [_txtFieldEditName removeFromSuperview];
-    [RCConnectionManager startConnection];
     if (_pickedNewAvatarImage) {
-        [RCConnectionManager startConnection];
         [self processBackgroundThreadUpload:_userAvatarImage];
     }
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
-        [self.viewingUser updateNewName:_txtFieldEditName.text];
+        [self.profileUser updateNewName:_txtFieldEditName.text];
         dispatch_async(dispatch_get_main_queue(), ^{
             _lblName.text = _viewingUser.name;
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             [RCConnectionManager endConnection];
         });
     });
@@ -866,7 +863,7 @@ double  minimapScaleY;
 - (void) showMoreFeedButton: (BOOL)show animate:(BOOL)animate {
     float duration = (animate?1.0:0.0);
     
-    if (show) {
+    if (show && willShowMoreFeeds) {
         [_btnMoreFeed setHidden:!show];
         [UIView animateWithDuration:duration animations:^{
             [_btnMoreFeed.layer setOpacity:1.0];

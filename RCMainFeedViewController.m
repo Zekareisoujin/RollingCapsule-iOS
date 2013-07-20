@@ -48,10 +48,11 @@
 
 // Feed page control:
 NSString    *address;
-int         currentPageNumber;
-int         currentMaxPostNumber;
-int         currentMaxDisplayedPostNumber;
-int         showThreshold;
+int     currentPageNumber;
+int     currentMaxPostNumber;
+int     currentMaxDisplayedPostNumber;
+int     showThreshold;
+BOOL    willShowMoreFeeds;
 
 int         _nRows;
 BOOL        _firstRefresh;
@@ -59,8 +60,6 @@ BOOL        _willRefresh;
 BOOL        _haveScreenshot;
 @synthesize refreshControl = _refreshControl;
 @synthesize user = _user;
-@synthesize userCache = _userCache;
-@synthesize postCache = _postCache;
 @synthesize connectionManager = _connectionManager;
 @synthesize postsByLandmark = _postsByLandmark;
 @synthesize currentLandmarkID = _currentLandmarkID;
@@ -127,10 +126,6 @@ BOOL        _haveScreenshot;
     [_postsByLandmark removeAllObjects];
     [_landmarks removeAllObjects];
     
-    _userCache = [[NSMutableDictionary alloc] init];
-    _postCache = [[NSMutableDictionary alloc] init];
-    
-    
     //customizing navigation bar
     self.navigationItem.title = @"";
     
@@ -176,13 +171,13 @@ BOOL        _haveScreenshot;
     //initialize miscellaneaous constants
     _nRows = 2; //the number of rows of images that are gonig to be displayed in the UICollectionView
     _willRefresh = YES; //indicate whether this view will refresh after returning from another view
+    showThreshold = 8;
     
     //prepare user UI element
     if (_user != nil)
         _lblUsername.text = _user.name;
     
     [self showMoreFeedButton:NO animate:NO];
-    showThreshold = 8;
     
     _mapView.showsUserLocation = YES;
 }
@@ -332,6 +327,7 @@ BOOL        _haveScreenshot;
                         [_posts addObject:post];
                         //NSLog(@"%@ post coordinates %f %f",[RCMainFeedViewController debugTag], post.coordinate.latitude, post.coordinate.longitude);
                     }
+                    willShowMoreFeeds = ([_posts count] == currentMaxPostNumber);
                     
                     [_mapView removeAnnotations:_mapView.annotations];
                     
@@ -405,6 +401,11 @@ BOOL        _haveScreenshot;
                  NSArray *postList = (NSArray *) [jsonData objectForKey:@"post_list"];
 
                  [_btnUserAvatar setImage:[_user getUserAvatar:_user.userID] forState:UIControlStateNormal];
+                 
+                 if ([postList count] == 0) {
+                     willShowMoreFeeds = NO;
+                     [_btnMoreFeed setHidden:YES];
+                 }
                  
                  for (NSDictionary *postData in postList) {
                      RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
@@ -604,6 +605,10 @@ BOOL        _haveScreenshot;
             [_collectionView reloadData];
         }
     }
+    
+    float width = (_collectionView.frame.size.height-42) / _nRows;
+    int numCell = [[UIScreen mainScreen] bounds].size.width / width + 0.5;
+    showThreshold = numCell * _nRows;
 }
 
 - (IBAction)handleTap:(UITapGestureRecognizer *)recognizer {
@@ -719,7 +724,7 @@ BOOL        _haveScreenshot;
 }
 
 - (IBAction)btnMoreFeedClicked:(id)sender {
-    [self showMoreFeedButton:NO animate:NO];
+    //[self showMoreFeedButton:NO animate:NO];
     currentMaxDisplayedPostNumber = currentMaxPostNumber;
     [_collectionView reloadData];
 }
@@ -731,7 +736,7 @@ BOOL        _haveScreenshot;
 - (void) showMoreFeedButton: (BOOL)show animate:(BOOL)animate {
     float duration = (animate?1.0:0.0);
     
-    if (show) {
+    if (show && willShowMoreFeeds) {
         [_btnMoreFeed setHidden:!show];
         [UIView animateWithDuration:duration animations:^{
             [_btnMoreFeed.layer setOpacity:1.0];
