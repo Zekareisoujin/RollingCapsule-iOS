@@ -91,6 +91,7 @@ NSArray                 *controlButtonArray;
     
     _firstRefresh = YES;
     _viewingMode = RCFriendListViewModeFriends;
+    [_btnFriends setEnabled:NO];
 
     [_user getUserAvatarAsync:_user.userID completionHandler:^(UIImage* img){
         [_imgUserAvatar setImage:img];
@@ -330,6 +331,7 @@ NSArray                 *controlButtonArray;
 - (IBAction)btnFriendTouchUpInside:(id)sender {
     _viewingMode = RCFriendListViewModeFriends;
     _items = _friends;
+    [_tblViewFriendList reloadData];
     
     for (UIButton *btn in controlButtonArray)
         btn.enabled = YES;
@@ -341,6 +343,7 @@ NSArray                 *controlButtonArray;
 - (IBAction)btnRequestsTouchUpInside:(id)sender {
     _viewingMode = RCFriendListViewModePendingFriends;
     _items = _requested_friends;
+    [_tblViewFriendList reloadData];
 
     for (UIButton *btn in controlButtonArray)
         btn.enabled = YES;
@@ -352,6 +355,7 @@ NSArray                 *controlButtonArray;
 - (IBAction)btnFolloweeTouchUpInside:(id)sender {
     _viewingMode = RCFriendListViewModeFollowees;
     _items = _followees;
+    [_tblViewFriendList reloadData];
 
     for (UIButton *btn in controlButtonArray)
         btn.enabled = YES;
