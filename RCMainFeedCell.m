@@ -42,15 +42,15 @@ return staticRCLoadingImage;
 
 - (void) awakeFromNib {
     [super awakeFromNib];
+    _dimMask = [[UIView alloc] init];
+    [_dimMask setBackgroundColor:[UIColor blackColor]];
+    _dimMask.alpha = 0.7;
     [self prepareForReuse];
 }
 
 - (void) prepareForReuse {
     [_dimMask removeFromSuperview];
-    _dimMask = [[UIView alloc] init];
-    [_dimMask setBackgroundColor:[UIColor blackColor]];
-    _dimMask.alpha = 0.7;
-    self.imageView.layer.borderColor = [UIColor colorWithRed:RCAppThemeColorRed green:RCAppThemeColorGreen blue:RCAppThemeColorBlue alpha:1.0].CGColor;
+        self.imageView.layer.borderColor = [UIColor colorWithRed:RCAppThemeColorRed green:RCAppThemeColorGreen blue:RCAppThemeColorBlue alpha:1.0].CGColor;
     self.imageView.layer.borderWidth = 2.0;
     self.imageView.layer.cornerRadius = 5.0;
     self.imageView.clipsToBounds = YES;
@@ -117,7 +117,6 @@ return staticRCLoadingImage;
 -(void)setFrame:(CGRect)frame {
     [super setFrame:frame];
     [self setNeedsDisplay];
-    NSLog(@"here");
     //UICollectionView* collectionView;
     //[collectionView indexPathForCell:self];
 }

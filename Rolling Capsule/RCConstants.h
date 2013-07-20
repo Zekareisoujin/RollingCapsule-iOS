@@ -46,6 +46,7 @@ static NSString* const RCAlertMessageRegistrationSuccess = @"Registration Succes
 static NSString* const RCAlertMessageConnectionFailed = @"Connection Failed!";
 static NSString* const RCAlertMessageUploadError = @"Upload Error!";
 static NSString* const RCAlertMessageUploadSuccess = @"Upload Success!";
+static NSString* const RCAlertMessageServerError = @"Server Error!";
 
 //error strings
 static NSString* const RCErrorMessageUsernameAndPasswordMissing = @"Please enter both Username and Password";

@@ -257,114 +257,112 @@ BOOL        _haveScreenshot;
         [self showNoConnectionWarningMessage];
         return;
     }
-    //Asynchronous Request
-    @try {
-        currentPageNumber = 1;
-        currentMaxDisplayedPostNumber = currentMaxPostNumber = currentPageNumber * RCPostPerPage;
-        
-        [RCConnectionManager startConnection];
-        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-        CLLocationCoordinate2D zoomLocation = appDelegate.currentLocation.coordinate;
+    int nRetry = 5;
+    BOOL failed;
+    while (nRetry--) {
+        failed = NO;
+        //Asynchronous Request
+        @try {
+            currentPageNumber = 1;
+            currentMaxDisplayedPostNumber = currentMaxPostNumber = currentPageNumber * RCPostPerPage;
+            
+            [RCConnectionManager startConnection];
+            AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+            CLLocationCoordinate2D zoomLocation = appDelegate.currentLocation.coordinate;
 
-        switch(_currentViewMode) {
-            case RCMainFeedViewModePublic:
-                address = [[NSString alloc] initWithFormat:@"%@?mobile=1&latitude=%f&longitude=%f&%@", RCServiceURL, zoomLocation.latitude, zoomLocation.longitude, RCLevelsQueryString];
-                break;
-            case RCMainFeedViewModeFollow:
-                address = [[NSString alloc] initWithFormat:@"%@?mobile=1&view_follow=1", RCServiceURL];
-                break;
-            case RCMainFeedViewModeFriends:
-                address = [[NSString alloc] initWithFormat:@"%@?mobile=1", RCServiceURL];
-                break;
-            default:
-                return;
-                break;
-        }
-        NSLog(@"Main-Feed: get feed address:%@",address);
-        NSURL *url=[NSURL URLWithString:address];
-        NSURLRequest *request = CreateHttpGetRequest(url);
-        
-        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
-                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
-        {
-            [RCConnectionManager endConnection];
-            [_refreshControl endRefreshing];
-            
-            NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-            
-            SBJsonParser *jsonParser = [SBJsonParser new];
-            NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
-            NSLog(@"%@%@",[RCMainFeedViewController debugTag], jsonData);
-            
-            if (jsonData != NULL) {
-                [_postsByLandmark removeAllObjects];
-                
-                NSLog(@"current annotations:%@",_mapView.annotations);
-                NSLog(@"currentlandmark %d",_currentLandmarkID);
-                int pastCurrentLandmark = _currentLandmarkID;
-                NSArray *postList = (NSArray *) [jsonData objectForKey:@"post_list"];
-                NSArray *landmarkList = (NSArray*) [jsonData objectForKey:@"landmark_list"];
-                NSDictionary *userDictionary = (NSDictionary *) [jsonData objectForKey:@"user"];
-                _user = [[RCUser alloc] initWithNSDictionary:userDictionary];
-                AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                _lblUsername.text = _user.name;
-                
-                //set user avatar image in background
-                /*dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
-                dispatch_async(queue, ^{
-                    UIImage *image = [RCAmazonS3Helper getAvatarImage:_user withLoggedinUserID:_user.userID];
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        if (image == nil)
-                            [_btnUserAvatar setImage:[UIImage imageNamed:@"default_avatar.png"] forState:UIControlStateNormal];
-                        else
-                            [_btnUserAvatar setImage:image forState:UIControlStateNormal];
-                    });
-                });*/
-                [_user getUserAvatarAsync:_user.userID completionHandler:^(UIImage* img){
-                    [_btnUserAvatar setImage:img forState:UIControlStateNormal];
-                }];
-                
-                [appDelegate setCurrentUser:_user];
-                [_posts removeAllObjects];
-                for (NSDictionary *postData in postList) {
-                    RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
-                    [_posts addObject:post];
-                    id key = [[NSNumber alloc] initWithInteger:post.landmarkID];
-                    NSMutableArray *postList = (NSMutableArray *)[_postsByLandmark objectForKey:key];
-                    if (postList != nil) {
-                        [postList addObject:post];
-                    } else {
-                        NSMutableArray* postList = [[NSMutableArray alloc] init];
-                        [postList addObject:post];
-                        [_postsByLandmark setObject:postList forKey:key];
-                    }
-                    //NSLog(@"%@ post coordinates %f %f",[RCMainFeedViewController debugTag], post.coordinate.latitude, post.coordinate.longitude);
-                }
-                
-                [_mapView removeAnnotations:_mapView.annotations];
-                
-                //initializing landmarks
-                NSLog(@"current landmark Id %d",_currentLandmarkID);
-                _currentLandmarkID = -1;
-                for (NSDictionary *landmarkData in landmarkList) {
-                    RCLandmark *landmark = [[RCLandmark alloc] initWithNSDictionary:landmarkData];
-                    [_mapView addAnnotation:landmark];
-                    [_landmarks setObject:landmark forKey:[NSNumber numberWithInt:landmark.landmarkID]];
-                    if (landmark.landmarkID == pastCurrentLandmark)
-                        _currentLandmarkID = landmark.landmarkID;
-                    //NSLog(@"%@: landmark coordinates %f %f",[RCMainFeedViewController debugTag], landmark.coordinate.latitude, landmark.coordinate.longitude);
-                }
-                //NSLog(@"current landmark Id %d",_currentLandmarkID);
-                [_collectionView reloadData];
-            }else {
-                alertStatus([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetFeed, responseData], RCAlertMessageConnectionFailed, self);
+            switch(_currentViewMode) {
+                case RCMainFeedViewModePublic:
+                    address = [[NSString alloc] initWithFormat:@"%@?mobile=1&latitude=%f&longitude=%f&%@", RCServiceURL, zoomLocation.latitude, zoomLocation.longitude, RCLevelsQueryString];
+                    break;
+                case RCMainFeedViewModeFollow:
+                    address = [[NSString alloc] initWithFormat:@"%@?mobile=1&view_follow=1", RCServiceURL];
+                    break;
+                case RCMainFeedViewModeFriends:
+                    address = [[NSString alloc] initWithFormat:@"%@?mobile=1", RCServiceURL];
+                    break;
+                default:
+                    return;
+                    break;
             }
-        }];
+            NSLog(@"Main-Feed: get feed address:%@",address);
+            NSURL *url=[NSURL URLWithString:address];
+            NSURLRequest *request = CreateHttpGetRequest(url);
+            
+            [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                                   completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+            {
+                [RCConnectionManager endConnection];
+                [_refreshControl endRefreshing];
+                
+                NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+                
+                SBJsonParser *jsonParser = [SBJsonParser new];
+                NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
+                NSLog(@"%@%@",[RCMainFeedViewController debugTag], jsonData);
+                
+                if (jsonData != NULL) {
+                    [_postsByLandmark removeAllObjects];
+                    [_chosenPosts removeAllObjects];
+                    NSLog(@"current annotations:%@",_mapView.annotations);
+                    NSLog(@"currentlandmark %d",_currentLandmarkID);
+                    int pastCurrentLandmark = _currentLandmarkID;
+                    NSArray *postList = (NSArray *) [jsonData objectForKey:@"post_list"];
+                    NSArray *landmarkList = (NSArray*) [jsonData objectForKey:@"landmark_list"];
+                    NSDictionary *userDictionary = (NSDictionary *) [jsonData objectForKey:@"user"];
+                    _user = [[RCUser alloc] initWithNSDictionary:userDictionary];
+                    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                    _lblUsername.text = _user.name;
+                    
+                    [_user getUserAvatarAsync:_user.userID completionHandler:^(UIImage* img){
+                        [_btnUserAvatar setImage:img forState:UIControlStateNormal];
+                    }];
+                    
+                    [appDelegate setCurrentUser:_user];
+                    [_posts removeAllObjects];
+                    for (NSDictionary *postData in postList) {
+                        RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
+                        [_posts addObject:post];
+                        id key = [[NSNumber alloc] initWithInteger:post.landmarkID];
+                        NSMutableArray *postList = (NSMutableArray *)[_postsByLandmark objectForKey:key];
+                        if (postList != nil) {
+                            [postList addObject:post];
+                        } else {
+                            NSMutableArray* postList = [[NSMutableArray alloc] init];
+                            [postList addObject:post];
+                            [_postsByLandmark setObject:postList forKey:key];
+                        }
+                        //NSLog(@"%@ post coordinates %f %f",[RCMainFeedViewController debugTag], post.coordinate.latitude, post.coordinate.longitude);
+                    }
+                    
+                    [_mapView removeAnnotations:_mapView.annotations];
+                    
+                    //initializing landmarks
+                    NSLog(@"current landmark Id %d",_currentLandmarkID);
+                    _currentLandmarkID = -1;
+                    for (NSDictionary *landmarkData in landmarkList) {
+                        RCLandmark *landmark = [[RCLandmark alloc] initWithNSDictionary:landmarkData];
+                        [_mapView addAnnotation:landmark];
+                        [_landmarks setObject:landmark forKey:[NSNumber numberWithInt:landmark.landmarkID]];
+                        if (landmark.landmarkID == pastCurrentLandmark)
+                            _currentLandmarkID = landmark.landmarkID;
+                        //NSLog(@"%@: landmark coordinates %f %f",[RCMainFeedViewController debugTag], landmark.coordinate.latitude, landmark.coordinate.longitude);
+                    }
+                    //NSLog(@"current landmark Id %d",_currentLandmarkID);
+                    [_collectionView reloadData];
+                    
+                    return;
+                } else {
+                    alertStatus(RCErrorMessageFailedToGetFeed,RCAlertMessageServerError,self);
+                }
+            }];
+        }
+        @catch (NSException * e) {
+            NSLog(@"Exception: %@", e);
+            failed = YES;
+        }
     }
-    @catch (NSException * e) {
-        NSLog(@"Exception: %@", e);
+    if (failed)
         alertStatus(RCErrorMessageFailedToGetFeed,RCAlertMessageConnectionFailed,self);
-    }
 }
 
 - (void) asynchFetchFeedNextPage {
@@ -726,7 +724,6 @@ BOOL        _haveScreenshot;
         _btnViewModePublic.enabled = YES;
     }
     sender.enabled = NO;
-    [_chosenPosts removeAllObjects];
     [self handleRefresh:_refreshControl];
 }
 
