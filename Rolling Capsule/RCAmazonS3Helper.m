@@ -18,6 +18,10 @@
 
 @implementation RCAmazonS3Helper
 + (AmazonS3Client *) s3:(int) userID  forResource:(NSString *)resource {
+    static NSMutableDictionary* clientPool = nil;
+    if (clientPool == nil) {
+        clientPool = [[NSMutableDictionary alloc] init];
+    }
     AmazonS3Client* s3Client = nil;
     @try {
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/amazon_s3_temporary_credentials?mobile=1&resource=%@", RCServiceURL, RCUsersResource, userID, resource]];
@@ -113,14 +117,6 @@
                 NSURL *url = [s3 getPreSignedURL:gpsur];
                 NSLog(@"end generate url");
                 return url;
-                
-                /*S3GetObjectResponse *response = [s3 getObject:getObjectRequest];
-                NSData *yourMovieData = response.body;
-                NSString* completeFileName = [NSString stringWithFormat:@"%@.mov",url];
-                NSString* filename = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:completeFileName];
-                
-                [[NSFileManager defaultManager] createFileAtPath:filename contents:yourMovieData attributes:nil];
-                return filename;*/
             }
         } @catch (AmazonServiceException * e) {
             NSLog(@"%@",e);

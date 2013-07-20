@@ -364,7 +364,7 @@ NSData *_thumbnailData;
         addArgumentToQueryString(dataSt, @"post[file_url]", _imageFileName);
         addArgumentToQueryString(dataSt, @"post[privacy_option]", _privacyOption);
         addArgumentToQueryString(dataSt, @"post[thumbnail_url]", thumbnail);
-        addArgumentToQueryString(dataSt, @"subject", postSubject);
+        addArgumentToQueryString(dataSt, @"post[subject]", postSubject);
         if (_datePickerView != nil) {
             NSString* releaseDate = [_datePickerView dateTimeString];
             if (releaseDate != nil) {
@@ -670,7 +670,7 @@ NSData *_thumbnailData;
     CGFloat buttonHeight = closeImage.size.height/2.0;
     UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(0,0,buttonWidth,buttonHeight)];
     [closeButton setBackgroundImage:closeImage forState:UIControlStateNormal];
-    closeButton.frame = CGRectMake(_imgViewMainFrame.frame.origin.x + _imgViewMainFrame.frame.size.width - buttonWidth - 3,_imgViewMainFrame.frame.origin.y + 3,buttonWidth,buttonHeight);
+    closeButton.frame = CGRectMake(_imgViewMainFrame.frame.origin.x + _imgViewMainFrame.frame.size.width - buttonWidth - 3,_imgViewMainFrame.frame.origin.y,buttonWidth,buttonHeight);
     [self.view addSubview:closeButton];
     [closeButton addTarget:self action:@selector(closeBtnTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
     /*if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height && _viewFirstLoad) {
