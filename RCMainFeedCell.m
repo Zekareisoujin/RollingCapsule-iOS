@@ -13,7 +13,9 @@
 #import "RCAmazonS3Helper.h"
 #import "RCConnectionManager.h"
 
-@implementation RCMainFeedCell
+@implementation RCMainFeedCell {
+    int _currrentPostID;
+}
 
 @synthesize dimMask = _dimMask;
 @synthesize cellState = _cellState;
@@ -72,6 +74,7 @@ return staticRCLoadingImage;
 */
 
 - (void)getPostContentImageFromInternet:(RCUser *) user withPostContent:(RCPost *) post usingCollection:(NSMutableDictionary*)postCache completion:(void (^)(void))callback {
+    _currrentPostID = post.postID;
     [self.layer setShadowPath:[[UIBezierPath
                                 bezierPathWithRect:self.bounds] CGPath]];
     if ([post.fileUrl isKindOfClass:[NSNull class]]) return;
@@ -83,19 +86,24 @@ return staticRCLoadingImage;
         owner.userID = post.userID;
         owner.email = post.authorEmail;
         owner.name = post.authorName;
-        UIImage* cachedImg = (UIImage*)[cache getResourceForKey:key usingQuery:^{
+        UIImage* cachedImg = nil;
+        
+        cachedImg = [cache getResourceForKey:key usingQuery:^{
             UIImage *image = [RCAmazonS3Helper getUserMediaImage:owner withLoggedinUserID:user.userID withImageUrl:post.thumbnailUrl];
             return image;
-        }];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (self.imageView.image == [RCMainFeedCell loadingImage]) {
+            }];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{    
+            if (post.postID == _currrentPostID) {
                 if (cachedImg == nil)
                     [_imageView setImage:[UIImage imageNamed:@"default_avatar.jpg"]];
                 else
                     [_imageView setImage:cachedImg];
             }
-            callback();
+            if (callback != nil)
+                callback();
         });
+        
     });
     
     /*[RCUser getUserWithIDAsync:post.userID completionHandler:^(RCUser* owner){

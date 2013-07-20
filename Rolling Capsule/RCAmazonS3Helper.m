@@ -7,6 +7,7 @@
 //
 
 #import "RCAmazonS3Helper.h"
+#import "RCS3CredentialsWithExpiration.h"
 #import <AWSRuntime/AWSRuntime.h>
 #import "RCConstants.h"
 #import "RCUtilities.h"
@@ -18,6 +19,17 @@
 
 @implementation RCAmazonS3Helper
 + (AmazonS3Client *) s3:(int) userID  forResource:(NSString *)resource {
+    static NSMutableDictionary* clientPool = nil;
+    if (clientPool == nil) {
+        clientPool = [[NSMutableDictionary alloc] init];
+    }
+
+    NSString*key= [NSString stringWithFormat:@"%d %@",userID, resource];
+    RCS3CredentialsWithExpiration *s3 = [clientPool objectForKey:key];
+    if ([s3.expiryDate compare:[NSDate date]] == NSOrderedAscending)
+        return s3.s3;
+    [clientPool removeObjectForKey:key];
+
     AmazonS3Client* s3Client = nil;
     @try {
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/amazon_s3_temporary_credentials?mobile=1&resource=%@", RCServiceURL, RCUsersResource, userID, resource]];
@@ -69,20 +81,23 @@
 }
 
 + (UIImage *) getAvatarImage:(RCUser*) user withLoggedinUserID:(int)loggedinUserID {
-    S3ResponseHeaderOverrides *override = [[S3ResponseHeaderOverrides alloc] init];
-    override.contentType = @"image/jpeg";
-    AmazonS3Client *s3 = [RCAmazonS3Helper s3:loggedinUserID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3AvatarPictureBucket]];
-    if (s3 != nil) {
-        @try {
-            S3GetObjectRequest *getObjectRequest = [[S3GetObjectRequest alloc] initWithKey:user.email withBucket:RCAmazonS3AvatarPictureBucket];
-            S3GetObjectResponse *response = [s3 getObject:getObjectRequest];
-            UIImage *image = [UIImage imageWithData:response.body];
-            return image;
-        } @catch (AmazonServiceException * e) {
-            NSLog(@"%@",e);
-            return nil;
+    int nRetry = 3;
+    while (nRetry--) {
+        S3ResponseHeaderOverrides *override = [[S3ResponseHeaderOverrides alloc] init];
+        override.contentType = @"image/jpeg";
+        AmazonS3Client *s3 = [RCAmazonS3Helper s3:loggedinUserID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3AvatarPictureBucket]];
+        if (s3 != nil) {
+            @try {
+                S3GetObjectRequest *getObjectRequest = [[S3GetObjectRequest alloc] initWithKey:user.email withBucket:RCAmazonS3AvatarPictureBucket];
+                S3GetObjectResponse *response = [s3 getObject:getObjectRequest];
+                UIImage *image = [UIImage imageWithData:response.body];
+                return image;
+            } @catch (AmazonServiceException * e) {
+                NSLog(@"%@",e);
+            }
         }
-    } else return nil;
+    }
+    return nil;
 }
 
 /*!
@@ -92,41 +107,36 @@
  */
 
 + (NSObject *) getUserMediaImage:(RCUser *)user withLoggedinUserID:(int)loggedinUserID withImageUrl:(NSString*)url {
-    AmazonS3Client *s3 = [RCAmazonS3Helper s3:loggedinUserID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3UsersMediaBucket]];
-    if (s3 != nil) {
-        @try {
-            
-            if (![url hasSuffix:@".mov"]) {
-                S3GetObjectRequest *getObjectRequest = [[S3GetObjectRequest alloc] initWithKey:url withBucket:RCAmazonS3UsersMediaBucket];
-                S3GetObjectResponse *response = [s3 getObject:getObjectRequest];
-                UIImage *image = [UIImage imageWithData:response.body];
-                return image;
-            } else {
-                NSLog(@"begin generate url");
-                S3ResponseHeaderOverrides *override = [[S3ResponseHeaderOverrides alloc] init];
-                override.contentType = @"movie/mov";
-                S3GetPreSignedURLRequest *gpsur = [[S3GetPreSignedURLRequest alloc] init];
-                gpsur.key     = url;
-                gpsur.bucket  = RCAmazonS3UsersMediaBucket;
-                gpsur.expires = [NSDate dateWithTimeIntervalSinceNow:(NSTimeInterval) 3600];  // Added an hour's worth of seconds to the current time.
-                gpsur.responseHeaderOverrides = override;
-                NSURL *url = [s3 getPreSignedURL:gpsur];
-                NSLog(@"end generate url");
-                return url;
-                
-                /*S3GetObjectResponse *response = [s3 getObject:getObjectRequest];
-                NSData *yourMovieData = response.body;
-                NSString* completeFileName = [NSString stringWithFormat:@"%@.mov",url];
-                NSString* filename = [[NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0] stringByAppendingPathComponent:completeFileName];
-                
-                [[NSFileManager defaultManager] createFileAtPath:filename contents:yourMovieData attributes:nil];
-                return filename;*/
+    int nRetry = 3;
+    while (nRetry--) {
+        AmazonS3Client *s3 = [RCAmazonS3Helper s3:loggedinUserID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3UsersMediaBucket]];
+        if (s3 != nil) {
+            @try {
+                if (![url hasSuffix:@".mov"]) {
+                    S3GetObjectRequest *getObjectRequest = [[S3GetObjectRequest alloc] initWithKey:url withBucket:RCAmazonS3UsersMediaBucket];
+                    S3GetObjectResponse *response = [s3 getObject:getObjectRequest];
+                    UIImage *image = [UIImage imageWithData:response.body];
+                    if (image != nil)
+                        return image;
+                } else {
+                    NSLog(@"begin generate url");
+                    S3ResponseHeaderOverrides *override = [[S3ResponseHeaderOverrides alloc] init];
+                    override.contentType = @"movie/mov";
+                    S3GetPreSignedURLRequest *gpsur = [[S3GetPreSignedURLRequest alloc] init];
+                    gpsur.key     = url;
+                    gpsur.bucket  = RCAmazonS3UsersMediaBucket;
+                    gpsur.expires = [NSDate dateWithTimeIntervalSinceNow:(NSTimeInterval) 3600];  // Added an hour's worth of seconds to the current time.
+                    gpsur.responseHeaderOverrides = override;
+                    NSURL *url = [s3 getPreSignedURL:gpsur];
+                    NSLog(@"end generate url");
+                    return url;
+                }
+            } @catch (AmazonServiceException * e) {
+                NSLog(@"%@",e);
             }
-        } @catch (AmazonServiceException * e) {
-            NSLog(@"%@",e);
-            return nil;
         }
-    } else return nil;
+    }
+    return nil;
 }
 
 @end

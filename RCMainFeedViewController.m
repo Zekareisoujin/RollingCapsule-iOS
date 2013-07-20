@@ -226,15 +226,15 @@ BOOL        _haveScreenshot;
         _lblWarningNoConnection.text = @"No Internet Connection";
         _lblWarningNoConnection.textAlignment = NSTextAlignmentCenter;
         _lblWarningNoConnection.textColor = [ UIColor whiteColor];
-        [_lblWarningNoConnection setBackgroundColor:[UIColor redColor]];//[UIColor colorWithRed:255.0 green:0.0 blue:0.0 alpha:0.5]];
+        [_lblWarningNoConnection setBackgroundColor:[UIColor colorWithRed:200.0/255.0 green:50.0/255.0 blue:50.0/255.0 alpha:0.9]];
     }
     
     [self.view addSubview:_lblWarningNoConnection];
-    _lblWarningNoConnection.frame = CGRectMake(0,-30,self.view.frame.size.width,30);
+    _lblWarningNoConnection.frame = CGRectMake(0,42,self.view.frame.size.width,0);
     [UIView animateWithDuration:0.5 animations:^{
-        CGRect frame = self.view.frame;
-        frame.origin.y += 30;
-        self.view.frame = frame;
+        CGRect frame2 = _lblWarningNoConnection.frame;
+        frame2.size.height += 20;
+        _lblWarningNoConnection.frame = frame2;
     }];
 }
 - (void) hideNoConnectionWarningMessage {
@@ -289,7 +289,13 @@ BOOL        _haveScreenshot;
                 [_refreshControl endRefreshing];
                 
                 NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-                
+                if ([responseData isEqualToString:@"Unauthorized"]) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+                        [appDelegate.menuViewController btnActionLogOut:nil];
+                    });
+                    return;
+                }                
                 SBJsonParser *jsonParser = [SBJsonParser new];
                 NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
                 NSLog(@"%@%@",[RCMainFeedViewController debugTag], jsonData);
@@ -319,15 +325,6 @@ BOOL        _haveScreenshot;
                     for (NSDictionary *postData in postList) {
                         RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
                         [_posts addObject:post];
-                        id key = [[NSNumber alloc] initWithInteger:post.landmarkID];
-                        NSMutableArray *postList = (NSMutableArray *)[_postsByLandmark objectForKey:key];
-                        if (postList != nil) {
-                            [postList addObject:post];
-                        } else {
-                            NSMutableArray* postList = [[NSMutableArray alloc] init];
-                            [postList addObject:post];
-                            [_postsByLandmark setObject:postList forKey:key];
-                        }
                         //NSLog(@"%@ post coordinates %f %f",[RCMainFeedViewController debugTag], post.coordinate.latitude, post.coordinate.longitude);
                     }
                     willShowMoreFeeds = ([_posts count] == currentMaxPostNumber);
@@ -350,6 +347,7 @@ BOOL        _haveScreenshot;
                     
                     return;
                 } else {
+                    NSLog(@"error: %@",error);
                     alertStatus(RCErrorMessageFailedToGetFeed,RCAlertMessageServerError,self);
                 }
             }];
@@ -385,7 +383,13 @@ BOOL        _haveScreenshot;
              [_refreshControl endRefreshing];
              
              NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-             
+             if ([responseData isEqualToString:@"Unauthorized"]) {
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+                     [appDelegate.menuViewController btnActionLogOut:nil];
+                 });
+                 return;
+             }
              SBJsonParser *jsonParser = [SBJsonParser new];
              NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
              //NSLog(@"%@%@",[RCMainFeedViewController debugTag], jsonData);
@@ -395,13 +399,7 @@ BOOL        _haveScreenshot;
                  NSLog(@"currentlandmark %d",_currentLandmarkID);
                  //int pastCurrentLandmark = _currentLandmarkID;
                  NSArray *postList = (NSArray *) [jsonData objectForKey:@"post_list"];
-                 //NSArray *landmarkList = (NSArray*) [jsonData objectForKey:@"landmark_list"];
-                 
-                 /*[_user getUserAvatarAsync:_user.userID completionHandler:^(UIImage* img){
-                     dispatch_async(dispatch_get_main_queue(), ^{
-                         [_btnUserAvatar setImage:img forState:UIControlStateNormal];
-                     });
-                 }];*/
+
                  [_btnUserAvatar setImage:[_user getUserAvatar:_user.userID] forState:UIControlStateNormal];
                  
                  if ([postList count] == 0) {
@@ -412,16 +410,6 @@ BOOL        _haveScreenshot;
                  for (NSDictionary *postData in postList) {
                      RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
                      [_posts addObject:post];
-                     id key = [[NSNumber alloc] initWithInteger:post.landmarkID];
-                     NSMutableArray *postList = (NSMutableArray *)[_postsByLandmark objectForKey:key];
-                     if (postList != nil) {
-                         [postList addObject:post];
-                     } else {
-                         NSMutableArray* postList = [[NSMutableArray alloc] init];
-                         [postList addObject:post];
-                         [_postsByLandmark setObject:postList forKey:key];
-                     }
-
                  }
                  
                  //[_collectionView reloadData];
@@ -475,9 +463,6 @@ BOOL        _haveScreenshot;
 - (NSInteger)collectionView:(UICollectionView *)view numberOfItemsInSection:(NSInteger)section {
     int nPosts;
     switch (_currentViewMode) {
-        case RCMainFeedViewModePublic:
-            nPosts = section == 0 ? [[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInteger:_currentLandmarkID]] count] : 0;
-            break;
         default:
             nPosts = [_posts count];
             break;
@@ -493,16 +478,9 @@ BOOL        _haveScreenshot;
     NSString* cellIdentifier = [RCMainFeedCell cellIdentifier];
     RCMainFeedCell *cell = [cv dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
     RCPost *post;
-    if (_currentViewMode == RCMainFeedViewModePublic) {
-        NSArray* items = [_postsByLandmark objectForKey:[[NSNumber alloc] initWithInteger:_currentLandmarkID]];
-        post = [items objectAtIndex:indexPath.row];
-    } else
-        post = [_posts objectAtIndex:indexPath.row];
+    post = [_posts objectAtIndex:indexPath.row];
     [RCConnectionManager startConnection];
-    [cell getPostContentImageFromInternet:_user withPostContent:post usingCollection:nil completion:^{
-        [RCConnectionManager endConnection];
-        
-    }];
+    [cell getPostContentImageFromInternet:_user withPostContent:post usingCollection:nil completion:^{ [RCConnectionManager endConnection];}];
     if ([_chosenPosts count] != 0) {
         if ([_chosenPosts containsObject:[[NSNumber alloc] initWithInt:post.postID]]) {
             [cell changeCellState:RCCellStateFloat];
@@ -602,8 +580,6 @@ BOOL        _haveScreenshot;
 
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    //refresh if necessary, views like post where the main feed should refresh when finish
-    //would set the _willRefresh parameter
     if (_willRefresh) {
         [self handleRefresh:_refreshControl];
         _willRefresh = NO;
@@ -617,12 +593,13 @@ BOOL        _haveScreenshot;
     if ([recognizer state] == UIGestureRecognizerStateBegan) {
         _didZoom = NO;
     } else {
+        int maximumRow = [UIScreen mainScreen].bounds.size.height < RCIphone5Height ? 3 : 4;
         if (recognizer.scale > 1.5 && _nRows > 1 && !_didZoom) {
             _nRows--;
             _didZoom = YES;
             [_collectionView reloadData];
         }
-        if (recognizer.scale < 0.8 && _nRows < 3 && !_didZoom) {
+        if (recognizer.scale < 0.8 && _nRows < maximumRow && !_didZoom) {
             _didZoom = YES;
             _nRows++;
             [_collectionView reloadData];
@@ -641,8 +618,7 @@ BOOL        _haveScreenshot;
     //if there's no item at point of tap
     if (indexPath != nil) {
         int idx = [indexPath row];
-        NSArray* items = (NSArray*)[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInt:_currentLandmarkID]];
-        RCPost *post = [items objectAtIndex:idx];
+        RCPost *post = [_posts objectAtIndex:idx];
         NSNumber *key = [[NSNumber alloc] initWithInt:post.postID];
         RCMainFeedCell* currentCell = (RCMainFeedCell *)[_collectionView cellForItemAtIndexPath:indexPath];
         
@@ -667,8 +643,7 @@ BOOL        _haveScreenshot;
             for (UICollectionViewCell* cell in _collectionView.visibleCells) {
                 RCMainFeedCell *feedCell = (RCMainFeedCell *)cell;
                 int index = [[_collectionView indexPathForCell:cell] row];
-                NSArray* items = (NSArray*)[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInt:_currentLandmarkID]];
-                RCPost *iteratingPost = [items objectAtIndex:index];
+                RCPost *iteratingPost = [_posts objectAtIndex:index];
                 NSNumber *key = [[NSNumber alloc] initWithInt:iteratingPost.postID];
                 //if post not chosen then dim
                 if (![_chosenPosts containsObject:key])
@@ -686,11 +661,7 @@ BOOL        _haveScreenshot;
         //if index path for cell not found
         if (indexPath != nil ) {
             RCPost *post;
-            if (_currentViewMode == RCMainFeedViewModePublic) {
-                NSArray* items = [_postsByLandmark objectForKey:[[NSNumber alloc] initWithInteger:_currentLandmarkID]];
-                post = [items objectAtIndex:indexPath.row];
-            } else
-                post = [_posts objectAtIndex:indexPath.row];
+            post = [_posts objectAtIndex:indexPath.row];
             RCUser *owner = [[RCUser alloc] init];
             owner.userID = post.userID;
             owner.name = post.authorName;

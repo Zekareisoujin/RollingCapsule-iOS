@@ -90,6 +90,7 @@ BOOL _didQueueOpenMainFeedOption;
         //queue main feed open action so that the main feed is opened automatically
         //when location is updated
         _didQueueOpenMainFeedOption = YES;
+        //[firstViewController setUIIntera]
     }
     
     // Configure Window

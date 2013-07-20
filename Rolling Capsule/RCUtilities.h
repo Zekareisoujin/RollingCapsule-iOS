@@ -11,6 +11,8 @@
 
 // temporary
 #define IS_IPHONE_5 ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON )
+#import "RCConnectionManager.h"
+#import "RCConstants.h"
 
 typedef void (^VoidBlock)();
 
@@ -141,6 +143,51 @@ static UIImage *imageWithImage(UIImage*image,CGSize newSize) {
     UIGraphicsEndImageContext();
     
     return newImage;
+}
+
+static void getResourceAsynch(NSString *resourceKey, NSObject *(^parser)(NSString*), void (^processFunction)(NSObject*)) {
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, resourceKey]];
+        NSURLRequest *request = CreateHttpGetRequest(url);
+        [RCConnectionManager startConnection];
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+         {
+             if (error == nil) {
+                 NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+                 NSObject* obj = parser(responseData);
+                 processFunction(obj);
+             }
+         }];
+
+}
+
+static void postResourceAsync(NSString *resourceKey, NSDictionary *params, NSObject* (^parser)(NSString*), void (^processFunction)(NSObject*)) {
+    NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, resourceKey]];
+    NSMutableString* dataSt = initEmptyQueryString();
+    for (NSString* key in params) {
+        addArgumentToQueryString(dataSt, key, [params objectForKey:key]);
+    }
+    NSData *postData = [dataSt dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+    NSURLRequest *request = CreateHttpPostRequest(url, postData);
+    [RCConnectionManager startConnection];
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+     {
+         [RCConnectionManager endConnection];
+         if (error == nil) {
+             NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+             NSObject* obj = parser(responseData);
+             processFunction(obj);
+         }
+     }];
+}
+
+static void putResourceAsync(NSString *resourceKey, NSDictionary *param, NSObject (*parser)(NSString*), void (^processFunction)(NSObject*)) {
+    //TODO
+}
+
+static void deleteResourceAsync(NSString *resourceKey, void (^processFunction)(BOOL)) {
+    //TODO
 }
 
 #endif
