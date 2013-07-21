@@ -154,7 +154,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     if (_post.isTimeCapsule) {
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setTimeZone:[NSTimeZone systemTimeZone]];
-        [formatter setDateFormat:@"hh:mm 'on' dd/MM/yyyy"];
+        [formatter setDateFormat:@"hh:mm a 'on' dd/MM/yyyy"];
         NSString *dtString = [formatter stringFromDate:_post.releaseDate];
         _post.content = [NSString stringWithFormat:@"Released at %@.", dtString];
     }
