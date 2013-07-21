@@ -38,7 +38,11 @@
     if (self) {
         _postID = [[postData objectForKey:@"id"] intValue];
         _content = (NSString*)[postData objectForKey:@"content"];
+        if ([_content isKindOfClass:[NSNull class]])
+            _content = @"";
         _subject = (NSString*)[postData objectForKey:@"subject"];
+        if ([_subject isKindOfClass:[NSNull class]])
+            _subject = @"";
         _fileUrl = (NSString*)[postData objectForKey:@"file_url"];
         _privacyOption = (NSString*)[postData objectForKey:@"privacy_option"];
         _likeCount = [[postData objectForKey:@"like_count"] intValue];

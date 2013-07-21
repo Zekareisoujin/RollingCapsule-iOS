@@ -12,7 +12,9 @@
 #import "RCConstants.h"
 #import "RCAmazonS3Helper.h"
 
-@implementation RCProfileViewCell
+@implementation RCProfileViewCell {
+    int _currentPostID;
+}
 
 @synthesize imageView = _imageView;
 
@@ -31,6 +33,7 @@
 
 - (void)getPostContentImageFromInternet:(RCUser *) user withPostContent:(RCPost *) post usingCollection:(NSMutableDictionary*)postCache completion:(void (^)(void))callback {
     
+    _currentPostID = post.postID;
     [self.imageView.layer setCornerRadius:10.0];
     [self.imageView setClipsToBounds:YES];
     
@@ -40,7 +43,7 @@
     [self.layer setShadowOffset:CGSizeZero];
     [self.layer setShadowPath:[[UIBezierPath
                                 bezierPathWithRect:self.bounds] CGPath]];
-    
+    [self.imageView setImage:[UIImage imageNamed:@"loading.gif"]];
     if ([post.fileUrl isKindOfClass:[NSNull class]]) return;
     RCResourceCache *cache = [RCResourceCache centralCache];
     NSString *key = [NSString stringWithFormat:@"%@/%@", RCMediaResource, post.thumbnailUrl];
@@ -59,7 +62,7 @@
             return image;
         }];
         dispatch_async(dispatch_get_main_queue(), ^{
-            if (cachedImg != nil)
+            if (post.postID == _currentPostID)
                 [_imageView setImage:cachedImg];
             callback();
         });

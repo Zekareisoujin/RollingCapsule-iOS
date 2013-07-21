@@ -561,7 +561,7 @@ NSData *_thumbnailData;
             //save photo if newly taken
             if ([picker sourceType] == UIImagePickerControllerSourceTypeCamera)
                 UIImageWriteToSavedPhotosAlbum(_postImage, self, nil, nil);
-            _postImage = [info objectForKey:UIImagePickerControllerEditedImage];
+            _postImage = [info objectForKey:UIImagePickerControllerOriginalImage];
             NSLog(@"image size %f %f",_postImage.size.width, _postImage.size.height);
             if (_postImage.size.width > 800 && _postImage.size.height > 800) {
                 float division = MIN(_postImage.size.width/(800.0-1.0), _postImage.size.height/(800-1.0));
@@ -591,7 +591,9 @@ NSData *_thumbnailData;
             == kCFCompareEqualTo)
         {
             _isMovie = YES;
-            thumbnail = [self generateSquareImageThumbnail:_postImage];
+            thumbnail = [info objectForKey:UIImagePickerControllerEditedImage];
+            if (thumbnail == nil)
+                thumbnail = [self generateSquareImageThumbnail:_postImage];
             UIImage *rescaledThumbnail = imageWithImage(thumbnail, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
             _thumbnailData = UIImageJPEGRepresentation(rescaledThumbnail,0.7);
         } else {
@@ -739,7 +741,7 @@ NSData *_thumbnailData;
         UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
         imagePicker.delegate = self;
         imagePicker.videoQuality = UIImagePickerControllerQualityTypeMedium;
-        imagePicker.allowsEditing = YES;
+        //imagePicker.allowsEditing = YES;
         imagePicker.videoMaximumDuration = RCMaxVideoLength;
         NSMutableArray *currentMediaTypesArray = [[NSMutableArray alloc] initWithArray:imagePicker.mediaTypes];
         [currentMediaTypesArray addObject:(NSString *) kUTTypeMovie];
@@ -759,7 +761,7 @@ NSData *_thumbnailData;
         imagePicker.delegate = self;
         imagePicker.videoQuality = UIImagePickerControllerQualityTypeMedium;
         imagePicker.mediaTypes =[[NSArray alloc] initWithObjects: (NSString *) kUTTypeMovie, nil];
-        imagePicker.allowsEditing = YES;
+        //imagePicker.allowsEditing = YES;
         imagePicker.videoMaximumDuration = RCMaxVideoLength;
         [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
         [_txtViewPostContent resignFirstResponder];

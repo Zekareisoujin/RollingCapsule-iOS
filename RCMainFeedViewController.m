@@ -235,9 +235,9 @@ BOOL        _haveScreenshot;
 }
 - (void) hideNoConnectionWarningMessage {
     [UIView animateWithDuration:0.5 animations:^{
-        CGRect frame = self.view.frame;
-        frame.origin.y -= 30;
-        self.view.frame = frame;
+        CGRect frame = _lblWarningNoConnection.frame;
+        frame.size.height = 0;
+        _lblWarningNoConnection.frame = frame;
     } completion:^(BOOL finished){
         [_lblWarningNoConnection removeFromSuperview];
         _btnRefresh.enabled = YES;
@@ -294,7 +294,7 @@ BOOL        _haveScreenshot;
                 }                
                 SBJsonParser *jsonParser = [SBJsonParser new];
                 NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
-                NSLog(@"%@%@",[RCMainFeedViewController debugTag], jsonData);
+                NSLog(@"%@%@",[RCMainFeedViewController debugTag], responseData);
                 
                 if (jsonData != NULL) {
                     [_postsByLandmark removeAllObjects];
@@ -388,7 +388,7 @@ BOOL        _haveScreenshot;
              }
              SBJsonParser *jsonParser = [SBJsonParser new];
              NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
-             //NSLog(@"%@%@",[RCMainFeedViewController debugTag], jsonData);
+             NSLog(@"%@%@",[RCMainFeedViewController debugTag], responseData);
              
              if (jsonData != NULL) {
                  NSLog(@"current annotations:%@",_mapView.annotations);
