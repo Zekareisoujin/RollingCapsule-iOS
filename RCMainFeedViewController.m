@@ -173,10 +173,6 @@ BOOL        _haveScreenshot;
     _willRefresh = YES; //indicate whether this view will refresh after returning from another view
     showThreshold = 8;
     
-    //prepare user UI element
-    if (_user != nil)
-        _lblUsername.text = _user.name;
-    
     [self showMoreFeedButton:NO animate:NO];
     
     _mapView.showsUserLocation = YES;
@@ -572,6 +568,16 @@ BOOL        _haveScreenshot;
     [_collectionView addGestureRecognizer:_pinchGestureRecognizer];
     [_collectionView addGestureRecognizer:_tapGestureRecognizer];
     [_collectionView addGestureRecognizer:_longPressGestureRecognizer];
+    
+    //prepare user UI element
+    if (_user != nil) {
+        _lblUsername.text = _user.name;
+        [_user getUserAvatarAsync:_user.userID completionHandler:^(UIImage* retAvatar){
+            dispatch_async(dispatch_get_main_queue(),^{
+                [_btnUserAvatar setImage:retAvatar forState:UIControlStateNormal];
+            });
+        }];
+    }
 }
 
 - (void) viewWillDisappear:(BOOL)animated {
