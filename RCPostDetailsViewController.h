@@ -16,6 +16,7 @@
 @interface RCPostDetailsViewController : UIViewController<UITableViewDataSource, UITableViewDataSource, UITextFieldDelegate, UITextViewDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollViewImage;
 @property (weak, nonatomic) IBOutlet UIImageView *imgViewMainFrame;
+@property (weak, nonatomic) IBOutlet UIView *viewCoverStrip;
 @property (weak, nonatomic) IBOutlet UITextView *txtViewPostComment;
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @property (weak, nonatomic) IBOutlet UIButton *btnDelete;

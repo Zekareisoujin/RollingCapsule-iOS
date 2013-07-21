@@ -18,7 +18,7 @@
 {
     self = [super init];
     if (self) {
-        s3 = _s3;
+        _s3 = s3;
         _expiryDate = [[NSDate date] dateByAddingTimeInterval:3600];
     }
     return self;

@@ -32,6 +32,7 @@
 @synthesize thumbnailUrl = _thumbnailUrl;
 @synthesize releaseDate = _releaseDate;
 @synthesize isTimeCapsule = _isTimeCapsule;
+@synthesize topic = _topic;
 
 - (id) initWithNSDictionary:(NSDictionary *)postData {
     self = [super init];
@@ -43,6 +44,9 @@
         _subject = (NSString*)[postData objectForKey:@"subject"];
         if ([_subject isKindOfClass:[NSNull class]])
             _subject = @"";
+        _topic = [postData objectForKey:@"topic"];
+        if ([_topic isKindOfClass:[NSNull class]])
+            _topic = nil;
         _fileUrl = (NSString*)[postData objectForKey:@"file_url"];
         _privacyOption = (NSString*)[postData objectForKey:@"privacy_option"];
         _likeCount = [[postData objectForKey:@"like_count"] intValue];

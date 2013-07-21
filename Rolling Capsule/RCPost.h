@@ -26,6 +26,7 @@
 @property (nonatomic, assign) int     landmarkID;
 @property (nonatomic, strong) NSString* subject;
 @property (nonatomic, strong) NSDate *releaseDate;
+@property (nonatomic, strong) NSString* topic;
 @property (nonatomic, assign) BOOL  isTimeCapsule;
 
 @property (nonatomic,strong) NSString *authorName;
