@@ -999,20 +999,6 @@ NSData *_thumbnailData;
         if (_postCancel != nil)
             _postCancel();
     }];
-
-    /*if (!_isPosting) {
-                /*[self animateViewDisapperance:^ {
-            if (_postCancel != nil)
-                _postCancel();
-            [self.view removeFromSuperview];
-            [self removeFromParentViewController];
-        }];*/
-    /*} else {
-        [self dismissViewControllerAnimated:YES completion:nil];
-        /*[self animateViewDisapperance:^ {
-            [self.view removeFromSuperview];
-        }];*/
-    //}
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
