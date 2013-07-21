@@ -92,5 +92,9 @@ static double const RCAppThemeColorBlue = 167.0/255.0;
 #define RCCellStateNormal 0
 #define RCCellStateDimmed -1
 #define RCCellStateFloat 1
+
+//topics
+#define NUM_TOPICS 7
+static char *RCTopics[] = {"Cafe","Cinema","Interest","Mall","Restaurant","School","Shop"};
 #endif
 

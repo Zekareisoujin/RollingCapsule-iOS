@@ -32,10 +32,11 @@
 @property (nonatomic, strong) UIButton* personalPrivacyButton;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 @property (nonatomic, strong) NSString* privacyOption;
-@property (nonatomic, strong) UIView *viewLandmark;
+@property (nonatomic, strong) UIView *viewTopic;
 @property (nonatomic, strong) NSURL *videoUrl;
 @property (nonatomic, strong) UIActivityIndicatorView *activityIndicator;
 @property (nonatomic, strong) RCDatePickerView* datePickerView;
+@property (nonatomic, strong) NSString* currentTopic;
 @property (nonatomic, assign) BOOL viewFirstLoad;
 
 @end
@@ -48,19 +49,20 @@
 @synthesize imageFileName = _imageFileName;
 @synthesize user = _user;
 @synthesize keyboardPushHandler = _keyboardPushHandler;
-@synthesize landmarks = _landmarks;
-@synthesize tblViewLandmark = _tblViewLandmark;
+@synthesize topics = _topics;
+@synthesize tblViewLandmark = _collectionViewTopic;
 @synthesize currentLandmark = _currentLandmark;
 @synthesize postButton = _postButton;
 @synthesize publicPrivacyButton = _publicPrivacyButton;
 @synthesize friendPrivacyButton = _friendPrivacyButton;
 @synthesize personalPrivacyButton = _personalPrivacyButton;
 @synthesize privacyOption = _privacyOption;
-@synthesize viewLandmark = _viewLandmark;
+@synthesize viewTopic = _viewTopic;
 @synthesize postComplete = _postComplete;
 @synthesize postCancel = _postCancel;
 @synthesize viewFirstLoad = _viewFirstLoad;
 @synthesize activityIndicator = _activityIndicator;
+@synthesize currentTopic = _currentTopic;
 
 BOOL _isTapToCloseKeyboard = NO;
 BOOL _landmarkTableVisible = NO;
@@ -91,11 +93,17 @@ NSData *_thumbnailData;
 - (IBAction)callLandmarkTable:(id)sender {
     if (_landmarkTableVisible) {
         _landmarkTableVisible = NO;
-        [_viewLandmark removeFromSuperview];
+        [_viewTopic removeFromSuperview];
         //[self.view addGestureRecognizer:_tapGestureRecognizer];
     } else {
-        [self asynchGetLandmarkRequest];
-        [self.view addSubview:_viewLandmark];
+        //[self asynchGetLandmarkRequest];
+        if (_topics == nil || [_topics count] == 0) {
+            _topics = [[NSMutableArray alloc] init];
+            for (int i = 0; i < NUM_TOPICS; i++)
+                [_topics addObject:[NSString stringWithUTF8String:RCTopics[i]]];
+            [_collectionViewTopic reloadData];
+        }
+        [self.view addSubview:_viewTopic];
         _landmarkTableVisible = YES;
     }
 }
@@ -156,26 +164,26 @@ NSData *_thumbnailData;
     _txtFieldPostSubject.leftViewMode = UITextFieldViewModeAlways;*/
     
     //prepare landmark view
-    _viewLandmark = [[UIView alloc] initWithFrame:CGRectMake(10, 90, 300, 160)];
+    _viewTopic = [[UIView alloc] initWithFrame:CGRectMake(10, 90, 300, 160)];
     UIImageView *landmarkBackground = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 300, 160)];
     [landmarkBackground setImage:[UIImage imageNamed:@"postLandmarkBackground.png"]];
     UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
-    _tblViewLandmark = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, 280, 160) collectionViewLayout:flowLayout];
-    [_viewLandmark addSubview:landmarkBackground];
-    landmarkBackground.frame = CGRectMake(0,0,_viewLandmark.frame.size.width, _viewLandmark.frame.size.height);
-    [_viewLandmark addSubview:_tblViewLandmark];
-    _tblViewLandmark.frame = CGRectMake(10,0,280,160);
-    [_tblViewLandmark setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0]];
+    _collectionViewTopic = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, 280, 160) collectionViewLayout:flowLayout];
+    [_viewTopic addSubview:landmarkBackground];
+    landmarkBackground.frame = CGRectMake(0,0,_viewTopic.frame.size.width, _viewTopic.frame.size.height);
+    [_viewTopic addSubview:_collectionViewTopic];
+    _collectionViewTopic.frame = CGRectMake(10,0,280,160);
+    [_collectionViewTopic setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0]];
     [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
-    _tblViewLandmark.allowsSelection = YES;
-    _tblViewLandmark.delegate = self;
-    _tblViewLandmark.dataSource = self;
+    _collectionViewTopic.allowsSelection = YES;
+    _collectionViewTopic.delegate = self;
+    _collectionViewTopic.dataSource = self;
     NSString* cellIdentifier = [RCLandmarkCell cellIdentifier];
-    [_tblViewLandmark registerClass:[RCLandmarkCell class] forCellWithReuseIdentifier:cellIdentifier];
+    [_collectionViewTopic registerClass:[RCLandmarkCell class] forCellWithReuseIdentifier:cellIdentifier];
     UINib *nib = [UINib nibWithNibName:cellIdentifier bundle: nil];
-    [_tblViewLandmark registerNib:nib forCellWithReuseIdentifier:cellIdentifier];
+    [_collectionViewTopic registerNib:nib forCellWithReuseIdentifier:cellIdentifier];
     
-    _landmarks = [[NSMutableArray alloc] init];
+    _topics = [[NSMutableArray alloc] init];
     _landmarkTableVisible = NO;
     _currentLandmark = nil;
     
@@ -365,6 +373,8 @@ NSData *_thumbnailData;
         addArgumentToQueryString(dataSt, @"post[privacy_option]", _privacyOption);
         addArgumentToQueryString(dataSt, @"post[thumbnail_url]", thumbnail);
         addArgumentToQueryString(dataSt, @"post[subject]", postSubject);
+        if (_currentTopic != nil)
+            addArgumentToQueryString(dataSt, @"post[topic]", _currentTopic);
         if (_datePickerView != nil) {
             NSString* releaseDate = [_datePickerView dateTimeString];
             if (releaseDate != nil) {
@@ -444,12 +454,12 @@ NSData *_thumbnailData;
              } else {
                  SBJsonParser *jsonParser = [SBJsonParser new];
                  NSArray *jsonData = (NSArray *) [jsonParser objectWithString:responseData error:nil];
-                 [_landmarks removeAllObjects];
+                 [_topics removeAllObjects];
                  for (NSDictionary *landmarkJson in jsonData) {
                      RCLandmark *landmark = [[RCLandmark alloc] initWithNSDictionary:landmarkJson];
-                     [_landmarks addObject:landmark];
+                     [_topics addObject:landmark];
                  }
-                 [_tblViewLandmark reloadData];
+                 [_collectionViewTopic reloadData];
              }
          }];
     }
@@ -477,6 +487,8 @@ NSData *_thumbnailData;
 }
 #pragma mark - UIScrollViewDelegate
 - (void) setupImageScrollView {
+    [_activityIndicator removeFromSuperview];
+    [_activityIndicator stopAnimating];
     UIImage *image = _postImage;
     _scrollViewImage.delegate = self;
     _imageViewPostPicture = [[UIImageView alloc] initWithImage:image];
@@ -1036,7 +1048,7 @@ NSData *_thumbnailData;
 #pragma mark - UICollectionView Datasource
 // 1
 - (NSInteger)collectionView:(UICollectionView *)view numberOfItemsInSection:(NSInteger)section {
-    return [_landmarks count] + 1;//section == 0 ? [[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInteger:_currentLandmarkID]] count] : 0;
+    return [_topics count] + 1;//section == 0 ? [[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInteger:_currentLandmarkID]] count] : 0;
 }
 // 2
 - (NSInteger)numberOfSectionsInCollectionView: (UICollectionView *)collectionView {
@@ -1048,24 +1060,24 @@ NSData *_thumbnailData;
     RCLandmarkCell *cell = [cv dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
     int idx = [indexPath row] - 1;
     if (idx < 0) {
-        if (_currentLandmark == nil)
+        if (_currentTopic == nil)
             [cell.imgViewChosenMark setImage:[UIImage imageNamed:@"postLandmarkChosenBackground.png"]];
         else
             [cell.imgViewChosenMark setImage:nil];
-        [cell.imgViewCategory setImage:[UIImage imageNamed:@"landmarkEmpty.png"]];
-        cell.lblLandmarkTitle.text = @"No location";        
+        [cell.imgViewCategory setImage:[UIImage imageNamed:@"buttonCancel.png"]];
+        cell.lblLandmarkTitle.text = @"No topic";        
     } else {
-        RCLandmark *landmark = [_landmarks objectAtIndex:idx];
-        NSString *imageName = [NSString stringWithFormat:@"landmarkCategory%@.png", landmark.category];
+        NSString *topic = [_topics objectAtIndex:idx];
+        NSString *imageName = [NSString stringWithFormat:@"topicCategory%@.png", topic];
         [cell.imgViewCategory setImage:[UIImage imageNamed:imageName]];
         
-        if (landmark.landmarkID == _currentLandmark.landmarkID)
+        if ([topic isEqualToString:_currentTopic])
             [cell.imgViewChosenMark setImage:[UIImage imageNamed:@"postLandmarkChosenBackground.png"]];
         else
             [cell.imgViewChosenMark setImage:nil];
         cell.lblLandmarkTitle.lineBreakMode = NSLineBreakByWordWrapping;
         cell.lblLandmarkTitle.numberOfLines = 0;
-        cell.lblLandmarkTitle.text = landmark.name;
+        cell.lblLandmarkTitle.text = topic;
         NSLog(@"width of text label %f", cell.lblLandmarkTitle.frame.size.width);
         NSLog(@"width of cell %f", cell.frame.size.width);
     }
@@ -1084,17 +1096,17 @@ NSData *_thumbnailData;
     int idx = [indexPath row] - 1;
     UIButton *button = _btnChooseLandmark;//(UIButton*)_txtFieldPostSubject.leftView;
     if (idx >= 0) {
-        RCLandmark *landmark = [_landmarks objectAtIndex:idx];
-        _currentLandmark = landmark;
-        NSString *imageName = [NSString stringWithFormat:@"landmarkCategory%@.png", landmark.category];
+        NSString *topic = [_topics objectAtIndex:idx];
+        _currentTopic = topic;
+        NSString *imageName = [NSString stringWithFormat:@"topicCategory%@.png", topic];
         [button setImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
-        _lblLandmarkName.text = [NSString stringWithFormat:@"%@ @ %@",_user.name,landmark.name];
+        _lblLandmarkName.text = [NSString stringWithFormat:@"%@ @ %@",_user.name,topic];
     } else {
-        _currentLandmark = nil;
-        [button setImage:[UIImage imageNamed:@"locate.png"] forState:UIControlStateNormal];
+        _currentTopic = nil;
+        [button setImage:[UIImage imageNamed:@"buttonTopic.png"] forState:UIControlStateNormal];
         _lblLandmarkName.text = _user.name;
     }
-    [_viewLandmark removeFromSuperview];
+    [_viewTopic removeFromSuperview];
     //[self.view addGestureRecognizer:_tapGestureRecognizer];
     _landmarkTableVisible = NO;
 }
