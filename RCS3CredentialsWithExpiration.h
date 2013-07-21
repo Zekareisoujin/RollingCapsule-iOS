@@ -12,5 +12,5 @@
 
 @property (nonatomic, strong) NSDate *expiryDate;
 @property (nonatomic, strong) AmazonS3Client *s3;
-
+- (id)initWithAmazonS3Client:(AmazonS3Client*) s3;
 @end
