@@ -26,6 +26,8 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "SBJson.h"
 
+#define NUM_RETRY_MAIN_FEED 5
+
 @interface RCMainFeedViewController ()
 
 @property (nonatomic, strong) RCConnectionManager *connectionManager;
@@ -206,7 +208,7 @@ BOOL        _haveScreenshot;
     [formatter setDateFormat:RCInfoStringDateFormat];
     NSString *lastUpdated = [NSString stringWithFormat:RCInfoStringLastUpdatedOnFormat, [formatter  stringFromDate:[NSDate date] ] ];
     [_refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:lastUpdated]];
-	[self asynchFetchFeeds];
+	[self asynchFetchFeeds:NUM_RETRY_MAIN_FEED];
 }
 
 - (void)didReceiveMemoryWarning
@@ -246,8 +248,7 @@ BOOL        _haveScreenshot;
     
 }
 
-- (void) asynchFetchFeeds {
-    int nRetry = 5;
+- (void) asynchFetchFeeds:(int)nRetry {
     BOOL failed = YES;
     while (failed && nRetry--) {
         failed = NO;
@@ -329,7 +330,11 @@ BOOL        _haveScreenshot;
                     return;
                 } else {
                     NSLog(@"error: %@",error);
-                    alertStatus(RCErrorMessageFailedToGetFeed,RCAlertMessageServerError,self);
+                    if (nRetry == 0)
+                        alertStatus(RCErrorMessageFailedToGetFeed,RCAlertMessageServerError,self);
+                    else {
+                        [self asynchFetchFeeds:NUM_RETRY_MAIN_FEED];
+                    }
                 }
             }];
         }
