@@ -52,7 +52,9 @@
     });*/
     
     [user getUserAvatarAsync:loggedInUserID completionHandler:^(UIImage* img){
-        [_imgViewAvatar setImage:img];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_imgViewAvatar setImage:img];
+        });
     }];
 }
 

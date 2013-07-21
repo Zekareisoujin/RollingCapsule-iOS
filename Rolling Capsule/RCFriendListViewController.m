@@ -89,7 +89,6 @@ NSArray                 *controlButtonArray;
                         action:@selector(handleRefresh:)
               forControlEvents:UIControlEventValueChanged  ];
     
-    _firstRefresh = YES;
     _viewingMode = RCFriendListViewModeFriends;
     [_btnFriends setEnabled:NO];
 
@@ -99,7 +98,11 @@ NSArray                 *controlButtonArray;
     [_lblTableTitle setText:_user.name];
     
     _items = _friends;
-    [self handleRefresh:_refreshControl];
+
+    [self asynchGetFriendsRequest];
+    [self asynchGetFolloweesRequest];
+    [self asynchGetRequestedFriendsRequest];
+    [self btnFriendTouchUpInside:self];
 }
 
 - (void) handleRefresh:(UIRefreshControl *) refreshControl {
@@ -107,6 +110,7 @@ NSArray                 *controlButtonArray;
     [formatter setDateFormat:RCInfoStringDateFormat];
     NSString *lastUpdated = [NSString stringWithFormat:RCInfoStringLastUpdatedOnFormat, [formatter  stringFromDate:[NSDate date] ] ];
     [_refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:lastUpdated]];
+    
     switch (_viewingMode) {
         case RCFriendListViewModeFriends:
             [self asynchGetFriendsRequest];
@@ -216,10 +220,6 @@ NSArray                 *controlButtonArray;
                     if (_viewingMode == RCFriendListViewModeFriends)
                         [_tblViewFriendList reloadData];
                     
-                    if (_firstRefresh) {
-                        [_tblViewFriendList setContentOffset:CGPointMake(0, 0) animated:YES];
-                        _firstRefresh = NO;
-                    }
                 }else {
                     alertStatus([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetFriends, responseData], RCAlertMessageConnectionFailed, self);
                     
@@ -261,10 +261,6 @@ NSArray                 *controlButtonArray;
                  if (_viewingMode == RCFriendListViewModePendingFriends)
                     [_tblViewFriendList reloadData];
                  
-                 if (_firstRefresh) {
-                     [_tblViewFriendList setContentOffset:CGPointMake(0, 0) animated:YES];
-                     _firstRefresh = NO;
-                 }
              }else {
                  alertStatus([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetFriends, responseData], RCAlertMessageConnectionFailed, self);
                  
@@ -304,10 +300,7 @@ NSArray                 *controlButtonArray;
                  }
                  if (_viewingMode == RCFriendListViewModeFollowees)
                      [_tblViewFriendList reloadData];
-                 if (_firstRefresh) {
-                     [_tblViewFriendList setContentOffset:CGPointMake(0, 0) animated:YES];
-                     _firstRefresh = NO;
-                 }
+                 
              }else {
                  alertStatus([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetFriends, responseData], RCAlertMessageConnectionFailed, self);
                  
@@ -331,36 +324,40 @@ NSArray                 *controlButtonArray;
 - (IBAction)btnFriendTouchUpInside:(id)sender {
     _viewingMode = RCFriendListViewModeFriends;
     _items = _friends;
+    
     [_tblViewFriendList reloadData];
-    
-    for (UIButton *btn in controlButtonArray)
-        btn.enabled = YES;
-    _btnFriends.enabled = NO;
-    
-    [self handleRefresh:_refreshControl];
+    [self enableControl:YES];
 }
 
 - (IBAction)btnRequestsTouchUpInside:(id)sender {
     _viewingMode = RCFriendListViewModePendingFriends;
     _items = _requested_friends;
-    [_tblViewFriendList reloadData];
-
-    for (UIButton *btn in controlButtonArray)
-        btn.enabled = YES;
-    _btnRequests.enabled = NO;
     
-    [self handleRefresh:_refreshControl];
+    [_tblViewFriendList reloadData];
+    [self enableControl:YES];
 }
 
 - (IBAction)btnFolloweeTouchUpInside:(id)sender {
     _viewingMode = RCFriendListViewModeFollowees;
     _items = _followees;
-    [_tblViewFriendList reloadData];
-
-    for (UIButton *btn in controlButtonArray)
-        btn.enabled = YES;
-    _btnFollowees.enabled = NO;
     
-    [self handleRefresh:_refreshControl];
+    [_tblViewFriendList reloadData];
+    [self enableControl:YES];
 }
+
+- (void) enableControl: (BOOL)enable {
+    for (UIButton *btn in controlButtonArray)
+        btn.enabled = enable;
+    switch (_viewingMode) {
+        case RCFriendListViewModeFriends:
+            _btnFriends.enabled = NO;
+            break;
+        case RCFriendListViewModeFollowees:
+            _btnFollowees.enabled = NO;
+            break;
+        case RCFriendListViewModePendingFriends:
+            _btnRequests.enabled = NO;
+    }
+}
+
 @end
