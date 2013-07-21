@@ -562,6 +562,8 @@ NSData *_thumbnailData;
             if ([picker sourceType] == UIImagePickerControllerSourceTypeCamera)
                 UIImageWriteToSavedPhotosAlbum(_postImage, self, nil, nil);
             _postImage = [info objectForKey:UIImagePickerControllerEditedImage];
+            if (_postImage == nil)
+                _postImage = [info objectForKey:UIImagePickerControllerOriginalImage];
             NSLog(@"image size %f %f",_postImage.size.width, _postImage.size.height);
             if (_postImage.size.width > 800 && _postImage.size.height > 800) {
                 float division = MIN(_postImage.size.width/(800.0-1.0), _postImage.size.height/(800-1.0));
