@@ -576,9 +576,6 @@ NSData *_thumbnailData;
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             [self setupImageScrollView];
-            /*_imageViewPostPicture = [[UIImageView alloc] initWithImage:_postImage];
-             [_imageViewPostPicture setImage:_postImage];
-             [_scrollViewImage addSubview:_imageViewPostPicture];*/
             NSLog(@"remove activity indicator");
             [_activityIndicator removeFromSuperview];
             [_activityIndicator stopAnimating];
