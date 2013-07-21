@@ -31,6 +31,7 @@ BOOL        _firstRefresh;
 @synthesize user = _user;
 @synthesize loggedinUser = _loggedinUser;
 @synthesize refreshControl = _refreshControl;
+@synthesize searchResultList = _searchResultList;
 
 RCFriendListViewMode    _viewingMode;
 RCConnectionManager     *_connectionManager;
@@ -69,6 +70,7 @@ NSArray                 *controlButtonArray;
     _requested_friends = [[NSMutableArray alloc] init];
     _followees = [[NSMutableArray alloc] init];
     _tblViewFriendList.tableFooterView = [[UIView alloc] init];
+    _searchResultList = [[NSMutableArray alloc] init];
     
     UIImage *image = [UIImage imageNamed:@"profileBtnFriendAction.png"];//resizableImageWithCapInsets:UIEdgeInsetsMake(0,20,0,10)];
     UIButton *findFriendsButton = [[UIButton alloc] initWithFrame:CGRectMake(0,0,image.size.width, image.size.height)];
@@ -89,16 +91,17 @@ NSArray                 *controlButtonArray;
                         action:@selector(handleRefresh:)
               forControlEvents:UIControlEventValueChanged  ];
     
-    _viewingMode = RCFriendListViewModeFriends;
-    [_btnFriends setEnabled:NO];
-
+    // Configure search display table view
+    
+    // Configure name & avatar display in friend list
     [_user getUserAvatarAsync:_user.userID completionHandler:^(UIImage* img){
         [_imgUserAvatar setImage:img];
     }];
     [_lblTableTitle setText:_user.name];
     
+    // Load all lists once at the beginning, and default tab is friend tab:
+    _viewingMode = RCFriendListViewModeFriends;
     _items = _friends;
-
     [self asynchGetFriendsRequest];
     [self asynchGetFolloweesRequest];
     [self asynchGetRequestedFriendsRequest];
@@ -137,7 +140,10 @@ NSArray                 *controlButtonArray;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [_items count];
+    if (tableView == self.searchDisplayController.searchResultsTableView)
+        return [_searchResultList count];
+    else
+        return [_items count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -145,7 +151,12 @@ NSArray                 *controlButtonArray;
     
     RCUserTableCell *cell = [RCUserTableCell getFriendListTableCell:tableView];
     
-    RCUser *user = [_items objectAtIndex:indexPath.row];
+    RCUser *user;// = [_items objectAtIndex:indexPath.row];
+    if (tableView == self.searchDisplayController.searchResultsTableView) {
+        user = [_searchResultList objectAtIndex:indexPath.row];
+    } else {
+        user = [_items objectAtIndex:indexPath.row];
+    }
     //[RCConnectionManager startConnection];
     [cell populateCellData:user
                   withLoggedInUserID:_loggedinUser.userID
@@ -162,7 +173,11 @@ NSArray                 *controlButtonArray;
 #pragma mark - UITableViewDelegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    RCUser *user = [_items objectAtIndex:indexPath.row];
+    RCUser *user;
+    if (tableView == self.searchDisplayController.searchResultsTableView)
+        user = [_searchResultList objectAtIndex:indexPath.row];
+    else
+        user = [_items objectAtIndex:indexPath.row];
     RCUserProfileViewController *detailViewController = [[RCUserProfileViewController alloc] initWithUser:user viewingUser:_loggedinUser];
     [self.navigationController pushViewController:detailViewController animated:YES];
 }
@@ -324,6 +339,7 @@ NSArray                 *controlButtonArray;
 - (IBAction)btnFriendTouchUpInside:(id)sender {
     _viewingMode = RCFriendListViewModeFriends;
     _items = _friends;
+    [_searchBar setPlaceholder:@"Search for friends"];
     
     [_tblViewFriendList reloadData];
     [self enableControl:YES];
@@ -332,6 +348,7 @@ NSArray                 *controlButtonArray;
 - (IBAction)btnRequestsTouchUpInside:(id)sender {
     _viewingMode = RCFriendListViewModePendingFriends;
     _items = _requested_friends;
+    [_searchBar setPlaceholder:@"Search for pending requests"];
     
     [_tblViewFriendList reloadData];
     [self enableControl:YES];
@@ -340,6 +357,7 @@ NSArray                 *controlButtonArray;
 - (IBAction)btnFolloweeTouchUpInside:(id)sender {
     _viewingMode = RCFriendListViewModeFollowees;
     _items = _followees;
+    [_searchBar setPlaceholder:@"Search for people you follow"];
     
     [_tblViewFriendList reloadData];
     [self enableControl:YES];
@@ -358,6 +376,53 @@ NSArray                 *controlButtonArray;
         case RCFriendListViewModePendingFriends:
             _btnRequests.enabled = NO;
     }
+}
+
+#pragma mark - UISearchDisplayController helper
+- (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope {
+    // Update the filtered array based on the search text and scope.
+    // Remove all objects from the filtered search array
+    [_searchResultList removeAllObjects];
+    // Filter the array using NSPredicate
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.name contains[c] %@",searchText];
+    _searchResultList = [NSMutableArray arrayWithArray:[_items filteredArrayUsingPredicate:predicate]];
+}
+
+#pragma mark - UISearchDisplayController Delegate Methods
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
+    // Tells the table data source to reload when text changes
+    [self filterContentForSearchText:searchString scope:
+     [[self.searchDisplayController.searchBar scopeButtonTitles] objectAtIndex:[self.searchDisplayController.searchBar selectedScopeButtonIndex]]];
+    // Return YES to cause the search result table view to be reloaded.
+    return YES;
+}
+
+- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchScope:(NSInteger)searchOption {
+    // Tells the table data source to reload when scope bar selection changes
+    [self filterContentForSearchText:self.searchDisplayController.searchBar.text scope:
+     [[self.searchDisplayController.searchBar scopeButtonTitles] objectAtIndex:searchOption]];
+    // Return YES to cause the search result table view to be reloaded.
+    return YES;
+}
+
+- (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller {
+    UITableView *searchView = controller.searchResultsTableView;
+    [searchView setBackgroundColor:[UIColor clearColor]];
+}
+
+- (void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView {
+    [tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"friendListTableBackground"]]];
+    [tableView setFrame:_tblViewFriendList.frame];
+    [tableView setBackgroundColor:[UIColor colorWithRed:243.0/255.0 green:236.0/255.0 blue:212.0/255.0 alpha:1]];
+}
+
+- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller {
+    [self performSelector:@selector(removeOverlay) withObject:nil afterDelay:.01f];
+}
+
+- (void)removeOverlay
+{
+    [[self.view.subviews lastObject] setHidden:YES];
 }
 
 @end

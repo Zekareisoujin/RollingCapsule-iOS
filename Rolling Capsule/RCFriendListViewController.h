@@ -17,7 +17,7 @@ enum RCFriendListViewMode {
 };
 typedef enum RCFriendListViewMode RCFriendListViewMode;
 
-@interface RCFriendListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@interface RCFriendListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate>
 
 - (id)initWithUser:(RCUser *)user withLoggedinUser:(RCUser*)loggedinUser;
 
@@ -30,8 +30,11 @@ typedef enum RCFriendListViewMode RCFriendListViewMode;
 @property (weak, nonatomic) IBOutlet UIButton *btnRequests;
 @property (weak, nonatomic) IBOutlet UIButton *btnFriends;
 @property (weak, nonatomic) IBOutlet UIButton *btnFollowees;
+@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
 @property (nonatomic,strong) RCUser *user;
 @property (nonatomic,strong) RCUser *loggedinUser;
+@property (strong,nonatomic) NSMutableArray *searchResultList;
+@property (strong, nonatomic) IBOutlet UIViewController *contentSubView;
 
 - (IBAction)btnFriendTouchUpInside:(id)sender;
 - (IBAction)btnRequestsTouchUpInside:(id)sender;

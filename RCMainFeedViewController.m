@@ -169,7 +169,7 @@ BOOL        _haveScreenshot;
     
     
     //initialize miscellaneaous constants
-    _nRows = 2; //the number of rows of images that are gonig to be displayed in the UICollectionView
+    _nRows = 3; //the number of rows of images that are gonig to be displayed in the UICollectionView
     _willRefresh = YES; //indicate whether this view will refresh after returning from another view
     showThreshold = 8;
     
