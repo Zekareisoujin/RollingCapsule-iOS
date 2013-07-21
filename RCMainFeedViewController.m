@@ -27,6 +27,8 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "SBJson.h"
 
+#define NUM_RETRY_MAIN_FEED 5
+
 @interface RCMainFeedViewController ()
 
 @property (nonatomic, strong) RCConnectionManager *connectionManager;
@@ -207,7 +209,7 @@ BOOL        _haveScreenshot;
     [formatter setDateFormat:RCInfoStringDateFormat];
     NSString *lastUpdated = [NSString stringWithFormat:RCInfoStringLastUpdatedOnFormat, [formatter  stringFromDate:[NSDate date] ] ];
     [_refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:lastUpdated]];
-	[self asynchFetchFeeds];
+	[self asynchFetchFeeds:NUM_RETRY_MAIN_FEED];
 }
 
 - (void)didReceiveMemoryWarning
@@ -247,8 +249,7 @@ BOOL        _haveScreenshot;
     
 }
 
-- (void) asynchFetchFeeds {
-    int nRetry = 5;
+- (void) asynchFetchFeeds:(int)nRetry {
     BOOL failed = YES;
     while (failed && nRetry--) {
         failed = NO;
@@ -300,6 +301,7 @@ BOOL        _haveScreenshot;
                 if (jsonData != NULL) {
                     [_postsByLandmark removeAllObjects];
                     [_chosenPosts removeAllObjects];
+
                     NSArray *postList = (NSArray *) [jsonData objectForKey:@"post_list"];
                     NSDictionary *userDictionary = (NSDictionary *) [jsonData objectForKey:@"user"];
                     _user = [[RCUser alloc] initWithNSDictionary:userDictionary];
@@ -334,7 +336,11 @@ BOOL        _haveScreenshot;
                     return;
                 } else {
                     NSLog(@"error: %@",error);
-                    alertStatus(RCErrorMessageFailedToGetFeed,RCAlertMessageServerError,self);
+                    if (nRetry == 0)
+                        alertStatus(RCErrorMessageFailedToGetFeed,RCAlertMessageServerError,self);
+                    else {
+                        [self asynchFetchFeeds:NUM_RETRY_MAIN_FEED];
+                    }
                 }
             }];
         }
@@ -392,9 +398,6 @@ BOOL        _haveScreenshot;
              NSLog(@"%@%@",[RCMainFeedViewController debugTag], responseData);
              
              if (jsonData != NULL) {
-                 NSLog(@"current annotations:%@",_mapView.annotations);
-                 NSLog(@"currentlandmark %d",_currentLandmarkID);
-                 //int pastCurrentLandmark = _currentLandmarkID;
                  NSArray *postList = (NSArray *) [jsonData objectForKey:@"post_list"];
 
                  [_btnUserAvatar setImage:[_user getUserAvatar:_user.userID] forState:UIControlStateNormal];

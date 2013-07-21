@@ -34,7 +34,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnPhotoLibrarySource;
 @property (weak, nonatomic) IBOutlet UITextView *txtViewPostContent;
 @property (weak, nonatomic) IBOutlet UILabel* lblDate;
-@property (nonatomic, strong) NSMutableArray *landmarks;
+@property (nonatomic, strong) NSMutableArray *topics;
 @property (nonatomic, strong) RCUser *user;
 @property (strong, nonatomic) RCKeyboardPushUpHandler *keyboardPushHandler;
 @property (nonatomic, strong) UICollectionView *tblViewLandmark;

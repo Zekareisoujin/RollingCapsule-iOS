@@ -33,12 +33,14 @@
 @property (nonatomic, assign) int          currentCommentID;
 @property (nonatomic, assign) BOOL         didStartDraggingCommentBox;
 @property (nonatomic, assign) CGFloat      originalCommentBoxPosition;
+@property (nonatomic, strong) UIActivityIndicatorView* activityIndicatorView;
 
 @end
 
 @implementation RCPostDetailsViewController
 
 @synthesize descriptionMarker = _descriptionMarker;
+@synthesize activityIndicatorView = _activityIndicatorView;
 @synthesize post = _post;
 @synthesize postOwner = _postOwner;
 @synthesize loggedInUser = _loggedInUser;
@@ -142,48 +144,32 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     _lblPostSubject.text = _post.subject;
     [_lblDatePosted sizeToFit];
     [_lblPostSubject setBackgroundColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.4]];
-    _lblUsername.text = _post.authorName;
+    if (_post.topic == nil)
+        _lblUsername.text = _post.authorName;
+    else
+        _lblUsername.text = [NSString stringWithFormat:@"%@ @ %@",_post.authorName, _post.topic];
     [_lblUsername sizeToFit];
-    [self.view addSubview:_lblDatePosted];
+    [self.viewCoverStrip addSubview:_lblDatePosted];
     CGRect dateLabelFrame = _lblDatePosted.frame;
     dateLabelFrame.origin.x = _lblUsername.frame.origin.x + _lblUsername.frame.size.width + 15.0;
     dateLabelFrame.origin.y = _lblUsername.frame.origin.y + (_lblUsername.frame.size.height - dateLabelFrame.size.height);
     _lblDatePosted.frame = dateLabelFrame;
     
     //setup release time if there's one:
-    if (_post.isTimeCapsule) {
+    if (_post.isTimeCapsule && [_post.releaseDate compare:[NSDate date]] == NSOrderedDescending) {
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setTimeZone:[NSTimeZone systemTimeZone]];
-        [formatter setDateFormat:@"hh:mm 'on' dd/MM/yyyy"];
+        [formatter setDateFormat:@"hh:mm a 'on' dd/MM/yyyy"];
         NSString *dtString = [formatter stringFromDate:_post.releaseDate];
         _post.content = [NSString stringWithFormat:@"Released at %@.", dtString];
     }
     
-    /*if (_landmark != nil) {
-        _lblUsername.text = [NSString stringWithFormat:@"%@ @ %@", _post.authorName, _landmark.name];
-        UIImage *landmarkImage = [UIImage imageNamed:[NSString stringWithFormat:@"landmarkCategory%@.png",_landmark.category]];
-        [_imgViewLandmarkCategory setImage:landmarkImage];
-    }
-    else {
-        if (_landmarkID != -1) {
-            dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
-            dispatch_async(queue, ^{
-                _landmark = [RCLandmark getLandmark:_landmarkID];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    if (_landmark != nil) {
-                        _lblUsername.text = [NSString stringWithFormat:@"%@ @ %@", _post.authorName, _landmark.name];
-                        UIImage *landmarkImage = [UIImage imageNamed:[NSString stringWithFormat:@"landmarkCategory%@.png",_landmark.category]];
-                        [_imgViewLandmarkCategory setImage:landmarkImage];
-                    }
-                });
-            });
-        }
-
-    }*/
+    if (_post.topic != nil)
+        [_imgViewLandmarkCategory setImage:[UIImage imageNamed:[NSString stringWithFormat:@"topicCategory%@.png",_post.topic]]];
     
     UIView *sview = [[UIView alloc] initWithFrame:_lblUsername.frame];
     [sview addGestureRecognizer:_tapGestureRecognizer];
-    [self.view addSubview:sview];
+    [self.viewCoverStrip addSubview:sview];
     
     //initialize comments box
     UIImage *image = [[UIImage imageNamed:@"viewPostCommentFrame.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(70,5,30,5)];
@@ -212,6 +198,12 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     UIPanGestureRecognizer *rec = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
     [rec setMaximumNumberOfTouches:2];
     [self.view addGestureRecognizer:rec];
+    
+    //display loading animation
+    _activityIndicatorView = [[UIActivityIndicatorView alloc] init];
+    [_scrollViewImage addSubview:_activityIndicatorView];
+    _activityIndicatorView.frame = CGRectMake(0,0,_scrollViewImage.frame.size.width,_scrollViewImage.frame.size.height);
+    [_activityIndicatorView startAnimating];
     
     //remove delete button if not correct user
     if (_postOwner.userID != _loggedInUser.userID) {
