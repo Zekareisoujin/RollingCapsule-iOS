@@ -861,7 +861,7 @@ double  minimapScaleY;
 }
 
 - (void) showMoreFeedButton: (BOOL)show animate:(BOOL)animate {
-    float duration = (animate?1.0:0.0);
+    float duration = (animate?0.5:0.0);
     
     if (show && willShowMoreFeeds) {
         [_btnMoreFeed setHidden:!show];
