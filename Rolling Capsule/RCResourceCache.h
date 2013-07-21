@@ -14,6 +14,7 @@
 
 + (RCResourceCache*) centralCache;
 
+- (void) purge;
 - (void) putResourceInCache:(id)object forKey:(id)key;
 - (id) getResourceForKey:(id)key;
 - (id) getResourceForKey:(id)key usingQuery:(id (^)(void))queryFunction;
