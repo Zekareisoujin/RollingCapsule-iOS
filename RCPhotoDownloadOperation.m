@@ -24,7 +24,7 @@
 @synthesize delegate = _delegate;
 @synthesize ownerID = _ownerID;
 
-- (id)initWithPhotokey:(NSString *)key withOwnerID:(int)ownerID;
+- (id)initWithPhotokey:(NSString *)key withOwnerID:(int)ownerID
 {
     self = [super init];
     if (self == nil)

@@ -22,5 +22,5 @@
 @property (nonatomic, strong) id<RCPhotoDownloadOperationDelegate> delegate;
 @property (nonatomic, strong) NSString* key;
 @property (nonatomic, assign) int ownerID;
-
+- (id)initWithPhotokey:(NSString *)key withOwnerID:(int)ownerID;
 @end
