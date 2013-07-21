@@ -16,6 +16,7 @@
 #import "RCSlideoutViewController.h"
 #import "RCNewPostViewController.h"
 #import "RCPostDetailsViewController.h"
+#import "RCLoadingLocationViewController.h"
 #import "RCConstants.h"
 
 
@@ -87,8 +88,12 @@ BOOL _didQueueOpenMainFeedOption;
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:RCLogStatusDefault]) {
+        [_menuViewController btnActionMainFeedNav:nil];
         //queue main feed open action so that the main feed is opened automatically
         //when location is updated
+        RCLoadingLocationViewController *loadingViewController = [[RCLoadingLocationViewController alloc] init];
+        [_navigationController setNavigationBarHidden:YES animated:NO];
+        [_navigationController pushViewController:loadingViewController animated:NO];
         _didQueueOpenMainFeedOption = YES;
         //[firstViewController setUIIntera]
     }
@@ -155,6 +160,8 @@ BOOL _didQueueOpenMainFeedOption;
         _didUpdateLocation = YES;
         if (_didQueueOpenMainFeedOption) {
             _didQueueOpenMainFeedOption = NO;
+            [_navigationController popCurrentViewController];
+            [_navigationController setNavigationBarHidden:NO animated:NO];
             RCUser *currentUser = [[RCUser alloc] initWithNSDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:RCLogUserDefault]];
             [self setCurrentUser:currentUser];
             [_menuViewController btnActionMainFeedNav:_mainViewController];

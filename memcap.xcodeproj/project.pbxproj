@@ -103,6 +103,8 @@
 		649B4245179C3AC90019B1A7 /* topicCategoryRestaurant.png in Resources */ = {isa = PBXBuildFile; fileRef = 649B423D179C3AC90019B1A7 /* topicCategoryRestaurant.png */; };
 		649B4246179C3AC90019B1A7 /* topicCategorySchool.png in Resources */ = {isa = PBXBuildFile; fileRef = 649B423E179C3AC90019B1A7 /* topicCategorySchool.png */; };
 		649B4247179C3AC90019B1A7 /* topicCategoryShop.png in Resources */ = {isa = PBXBuildFile; fileRef = 649B423F179C3AC90019B1A7 /* topicCategoryShop.png */; };
+		649B424B179C51040019B1A7 /* RCLoadingLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 649B4249179C51030019B1A7 /* RCLoadingLocationViewController.m */; };
+		649B424C179C51040019B1A7 /* RCLoadingLocationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 649B424A179C51030019B1A7 /* RCLoadingLocationViewController.xib */; };
 		64A917081751E554007D629D /* RCRegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64A917071751E554007D629D /* RCRegisterViewController.xib */; };
 		64A9170B1751F6C9007D629D /* RCRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64A9170A1751F6C9007D629D /* RCRegisterViewController.m */; };
 		64B81CA217954FC800B5A825 /* viewPostImageFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 64B81CA117954FC800B5A825 /* viewPostImageFrame.png */; };
@@ -366,6 +368,9 @@
 		649B423D179C3AC90019B1A7 /* topicCategoryRestaurant.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = topicCategoryRestaurant.png; path = ../topicCategoryRestaurant.png; sourceTree = "<group>"; };
 		649B423E179C3AC90019B1A7 /* topicCategorySchool.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = topicCategorySchool.png; path = ../topicCategorySchool.png; sourceTree = "<group>"; };
 		649B423F179C3AC90019B1A7 /* topicCategoryShop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = topicCategoryShop.png; path = ../topicCategoryShop.png; sourceTree = "<group>"; };
+		649B4248179C51030019B1A7 /* RCLoadingLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCLoadingLocationViewController.h; sourceTree = "<group>"; };
+		649B4249179C51030019B1A7 /* RCLoadingLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCLoadingLocationViewController.m; sourceTree = "<group>"; };
+		649B424A179C51030019B1A7 /* RCLoadingLocationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCLoadingLocationViewController.xib; sourceTree = "<group>"; };
 		64A917071751E554007D629D /* RCRegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCRegisterViewController.xib; sourceTree = "<group>"; };
 		64A917091751F6C9007D629D /* RCRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCRegisterViewController.h; sourceTree = "<group>"; };
 		64A9170A1751F6C9007D629D /* RCRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCRegisterViewController.m; sourceTree = "<group>"; };
@@ -740,6 +745,9 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
+				649B4248179C51030019B1A7 /* RCLoadingLocationViewController.h */,
+				649B4249179C51030019B1A7 /* RCLoadingLocationViewController.m */,
+				649B424A179C51030019B1A7 /* RCLoadingLocationViewController.xib */,
 				643C0800179B0B0E002BD751 /* RCPhotoDownloadOperation.h */,
 				643C0801179B0B0E002BD751 /* RCPhotoDownloadOperation.m */,
 				64C62DE7179B007E005DFD8B /* RCOperationsManager.h */,
@@ -1176,6 +1184,7 @@
 				649B4245179C3AC90019B1A7 /* topicCategoryRestaurant.png in Resources */,
 				649B4246179C3AC90019B1A7 /* topicCategorySchool.png in Resources */,
 				649B4247179C3AC90019B1A7 /* topicCategoryShop.png in Resources */,
+				649B424C179C51040019B1A7 /* RCLoadingLocationViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1261,6 +1270,7 @@
 				64C62DE6179AD0D4005DFD8B /* RCS3CredentialsWithExpiration.m in Sources */,
 				64C62DE9179B007F005DFD8B /* RCOperationsManager.m in Sources */,
 				643C0802179B0B0E002BD751 /* RCPhotoDownloadOperation.m in Sources */,
+				649B424B179C51040019B1A7 /* RCLoadingLocationViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
