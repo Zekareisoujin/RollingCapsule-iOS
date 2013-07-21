@@ -9,5 +9,5 @@
 #import <Foundation/Foundation.h>
 
 @interface RCOperationsManager : NSObject
-
++ (void) addOperation:(NSOperation*) operation;
 @end

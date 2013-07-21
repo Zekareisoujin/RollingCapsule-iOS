@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
+#import "RCPhotoDownloadOperation.h"
 
-@interface RCPost : NSObject <MKAnnotation>
+@interface RCPost : NSObject <MKAnnotation, RCPhotoDownloadOperationDelegate>
 
 @property (nonatomic,retain)  NSString *content;
 @property (nonatomic,retain)  NSDate *createdTime;

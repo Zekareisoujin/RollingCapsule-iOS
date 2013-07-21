@@ -22,5 +22,6 @@
 @property (nonatomic, strong) id<RCPhotoDownloadOperationDelegate> delegate;
 @property (nonatomic, strong) NSString* key;
 @property (nonatomic, assign) int ownerID;
-
+@property (nonatomic, strong) AmazonS3Client *s3;
+- (id)initWithPhotokey:(NSString *)key withOwnerID:(int)ownerID;
 @end

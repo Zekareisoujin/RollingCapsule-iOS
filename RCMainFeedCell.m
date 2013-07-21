@@ -78,7 +78,9 @@ return staticRCLoadingImage;
     [self.layer setShadowPath:[[UIBezierPath
                                 bezierPathWithRect:self.bounds] CGPath]];
     if ([post.fileUrl isKindOfClass:[NSNull class]]) return;
-    RCResourceCache *cache = [RCResourceCache centralCache];
+    if (post.thumbnailImage != nil)
+    [ self.imageView setImage:post.thumbnailImage];
+    /*RCResourceCache *cache = [RCResourceCache centralCache];
     NSString *key = [NSString stringWithFormat:@"%@/%@", RCMediaResource, post.thumbnailUrl];
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
@@ -104,7 +106,7 @@ return staticRCLoadingImage;
                 callback();
         });
         
-    });
+    });*/
     
     /*[RCUser getUserWithIDAsync:post.userID completionHandler:^(RCUser* owner){
         UIImage* cachedImg = (UIImage*)[cache getResourceForKey:key usingQuery:^{

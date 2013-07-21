@@ -32,10 +32,12 @@
 @synthesize thumbnailUrl = _thumbnailUrl;
 @synthesize releaseDate = _releaseDate;
 @synthesize isTimeCapsule = _isTimeCapsule;
+@synthesize thumbnailImage = _thumbnailImage;
 
 - (id) initWithNSDictionary:(NSDictionary *)postData {
     self = [super init];
     if (self) {
+        _thumbnailImage = nil;
         _postID = [[postData objectForKey:@"id"] intValue];
         _content = (NSString*)[postData objectForKey:@"content"];
         if ([_content isKindOfClass:[NSNull class]])
@@ -128,5 +130,9 @@
     
     return mapItem;
 }
-
+- (void)downloadFinish:(NSObject *)object {
+    if ([object isKindOfClass:[UIImage class]]) {
+        self.thumbnailImage = (UIImage*) object;
+    }
+}
 @end

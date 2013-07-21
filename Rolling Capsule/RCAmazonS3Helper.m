@@ -25,12 +25,12 @@
     }
 
     NSString*key= [NSString stringWithFormat:@"%d %@",userID, resource];
-    RCS3CredentialsWithExpiration *s3 = [clientPool objectForKey:key];
+    RCS3CredentialsWithExpiration *s3 = nil;/*[clientPool objectForKey:key];
     if (s3 != nil) {
-        if ([s3.expiryDate compare:[NSDate date]] == NSOrderedAscending)
+        if ([s3.expiryDate compare:[NSDate date]] == NSOrderedDescending)
             return s3.s3;
         [clientPool removeObjectForKey:key];
-    }
+    }*/
 
     AmazonS3Client* s3Client = nil;
     @try {

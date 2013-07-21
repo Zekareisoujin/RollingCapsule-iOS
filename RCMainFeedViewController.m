@@ -21,6 +21,7 @@
 #import "RCConnectionManager.h"
 #import "RCNotification.h"
 #import "RCAddLandmarkController.h"
+#import "RCOperationsManager.h"
 #import "Reachability.h"
 #import <QuartzCore/QuartzCore.h>
 #import <MediaPlayer/MediaPlayer.h>
@@ -299,11 +300,7 @@ BOOL        _haveScreenshot;
                 if (jsonData != NULL) {
                     [_postsByLandmark removeAllObjects];
                     [_chosenPosts removeAllObjects];
-                    NSLog(@"current annotations:%@",_mapView.annotations);
-                    NSLog(@"currentlandmark %d",_currentLandmarkID);
-                    int pastCurrentLandmark = _currentLandmarkID;
                     NSArray *postList = (NSArray *) [jsonData objectForKey:@"post_list"];
-                    NSArray *landmarkList = (NSArray*) [jsonData objectForKey:@"landmark_list"];
                     NSDictionary *userDictionary = (NSDictionary *) [jsonData objectForKey:@"user"];
                     _user = [[RCUser alloc] initWithNSDictionary:userDictionary];
                     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -321,24 +318,17 @@ BOOL        _haveScreenshot;
                     for (NSDictionary *postData in postList) {
                         RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
                         [_posts addObject:post];
+                        RCPhotoDownloadOperation *op = [[RCPhotoDownloadOperation alloc] initWithPhotokey:post.thumbnailUrl withOwnerID:_user.userID];
+                        //[op start];
+                        op.delegate = post;
+                        //[_landmarks setObject:op forKey:[NSNumber numberWithInt:post.postID]];
+                        [RCOperationsManager addOperation:op];
+                        [post addObserver:self forKeyPath:@"thumbnailImage" options:NSKeyValueObservingOptionNew context:nil];
                         //NSLog(@"%@ post coordinates %f %f",[RCMainFeedViewController debugTag], post.coordinate.latitude, post.coordinate.longitude);
                     }
                     willShowMoreFeeds = ([_posts count] == currentMaxPostNumber);
                     
                     [_mapView removeAnnotations:_mapView.annotations];
-                    
-                    //initializing landmarks
-                    NSLog(@"current landmark Id %d",_currentLandmarkID);
-                    _currentLandmarkID = -1;
-                    for (NSDictionary *landmarkData in landmarkList) {
-                        RCLandmark *landmark = [[RCLandmark alloc] initWithNSDictionary:landmarkData];
-                        [_mapView addAnnotation:landmark];
-                        [_landmarks setObject:landmark forKey:[NSNumber numberWithInt:landmark.landmarkID]];
-                        if (landmark.landmarkID == pastCurrentLandmark)
-                            _currentLandmarkID = landmark.landmarkID;
-                        //NSLog(@"%@: landmark coordinates %f %f",[RCMainFeedViewController debugTag], landmark.coordinate.latitude, landmark.coordinate.longitude);
-                    }
-                    //NSLog(@"current landmark Id %d",_currentLandmarkID);
                     [_collectionView reloadData];
                     
                     return;
@@ -355,6 +345,17 @@ BOOL        _haveScreenshot;
     }
     if (failed)
         alertStatus(RCErrorMessageFailedToGetFeed,RCAlertMessageConnectionFailed,self);
+}
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([object isKindOfClass:[RCPost class]]) {
+        RCPost* updatedPost = (RCPost*) object;
+        for (RCMainFeedCell* cell in _collectionView.visibleCells) {
+            NSIndexPath *path = [_collectionView indexPathForCell:cell];
+            RCPost *post = [_posts objectAtIndex:path.row];
+            if (post.postID == updatedPost.postID)
+                [cell.imageView setImage:updatedPost.thumbnailImage];
+        }
+    }
 }
 
 - (void) asynchFetchFeedNextPage {
