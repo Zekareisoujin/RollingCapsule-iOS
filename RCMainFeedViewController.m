@@ -169,7 +169,8 @@ BOOL        _haveScreenshot;
     
     
     //initialize miscellaneaous constants
-    _nRows = 3; //the number of rows of images that are gonig to be displayed in the UICollectionView
+    _nRows = [[NSUserDefaults standardUserDefaults] integerForKey:RCMainFeedRowCountSetting];
+    if (_nRows == 0) _nRows = 3; //default settings
     _willRefresh = YES; //indicate whether this view will refresh after returning from another view
     showThreshold = 8;
     
@@ -612,6 +613,7 @@ BOOL        _haveScreenshot;
         }
     }
     
+    [[NSUserDefaults standardUserDefaults] setInteger:_nRows forKey:RCMainFeedRowCountSetting];
     float width = (_collectionView.frame.size.height-42) / _nRows;
     int numCell = [[UIScreen mainScreen] bounds].size.width / width + 0.5;
     showThreshold = numCell * _nRows;
