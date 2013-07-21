@@ -43,7 +43,7 @@
     [self.layer setShadowOffset:CGSizeZero];
     [self.layer setShadowPath:[[UIBezierPath
                                 bezierPathWithRect:self.bounds] CGPath]];
-    
+    [self.imageView setImage:[UIImage imageNamed:@"loading.gif"]];
     if ([post.fileUrl isKindOfClass:[NSNull class]]) return;
     RCResourceCache *cache = [RCResourceCache centralCache];
     NSString *key = [NSString stringWithFormat:@"%@/%@", RCMediaResource, post.thumbnailUrl];
