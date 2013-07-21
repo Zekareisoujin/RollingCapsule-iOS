@@ -27,7 +27,7 @@
     NSString*key= [NSString stringWithFormat:@"%d %@",userID, resource];
     RCS3CredentialsWithExpiration *s3 = [clientPool objectForKey:key];
     if (s3 != nil) {
-        if ([s3.expiryDate compare:[NSDate date]] == NSOrderedAscending)
+        if ([s3.expiryDate compare:[NSDate date]] == NSOrderedDescending)
             return s3.s3;
         [clientPool removeObjectForKey:key];
     }
@@ -56,7 +56,7 @@
         NSLog(@"Exception: %@", e);
         alertStatus(@"Failure getting friends from web service",@"Connection Failed!",self);
     }
-    s3 = [[RCS3CredentialsWithExpiration alloc] initWithAmazonS3Client:(AmazonS3Client*) s3];
+    s3 = [[RCS3CredentialsWithExpiration alloc] initWithAmazonS3Client:(AmazonS3Client*) s3Client];
     [clientPool setObject:s3 forKey:key];
     return s3Client;
 }
