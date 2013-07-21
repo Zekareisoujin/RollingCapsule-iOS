@@ -156,7 +156,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     _lblDatePosted.frame = dateLabelFrame;
     
     //setup release time if there's one:
-    if (_post.isTimeCapsule) {
+    if (_post.isTimeCapsule && [_post.releaseDate compare:[NSDate date]] == NSOrderedDescending) {
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
         [formatter setTimeZone:[NSTimeZone systemTimeZone]];
         [formatter setDateFormat:@"hh:mm a 'on' dd/MM/yyyy"];
