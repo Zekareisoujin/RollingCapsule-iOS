@@ -672,14 +672,6 @@ NSData *_thumbnailData;
     
     
     NSLog(@"screen size: %d",[[UIScreen mainScreen] bounds].size.height );
-    UIImage *closeImage = [UIImage imageNamed:@"buttonCancel.png"];
-    CGFloat buttonWidth = closeImage.size.width/2.0;
-    CGFloat buttonHeight = closeImage.size.height/2.0;
-    UIButton *closeButton = [[UIButton alloc] initWithFrame:CGRectMake(0,0,buttonWidth,buttonHeight)];
-    [closeButton setBackgroundImage:closeImage forState:UIControlStateNormal];
-    closeButton.frame = CGRectMake(_imgViewMainFrame.frame.origin.x + _imgViewMainFrame.frame.size.width - buttonWidth - 3,_imgViewMainFrame.frame.origin.y,buttonWidth,buttonHeight);
-    [self.view addSubview:closeButton];
-    [closeButton addTarget:self action:@selector(closeBtnTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
     /*if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height && _viewFirstLoad) {
         _viewFirstLoad = NO;
         [_closeButton setHidden:YES];
@@ -1046,16 +1038,19 @@ NSData *_thumbnailData;
     [buttons addObject:_friendPrivacyButton];
     [buttons addObject:_personalPrivacyButton];
     NSMutableArray *buttonFileNames = [[NSMutableArray alloc] init];
-    [buttonFileNames addObject:@"postPublicPrivacyButton"];
-    [buttonFileNames addObject:@"postFriendPrivacyButton"];
-    [buttonFileNames addObject:@"postPersonalPrivacyButton"];
+    [buttonFileNames addObject:@"postPublicPrivacyButton-2"];
+    [buttonFileNames addObject:@"postFriendPrivacyButton-2"];
+    [buttonFileNames addObject:@"postPersonalPrivacyButton-2"];
     int i = 0;
     for (UIButton *button in buttons) {
-        if([button isEqual:sender])
-            /*[button setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-highlighted.png",[buttonFileNames objectAtIndex:i]]] forState:UIControlStateNormal];*/
+        if([button isEqual:sender]) {
+            [button setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@-highlighted.png",[buttonFileNames objectAtIndex:i]]] forState:UIControlStateDisabled];
             button.enabled = NO;
-        else
-            button.enabled = YES;//[button setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@.png",[buttonFileNames objectAtIndex:i]]] forState:UIControlStateNormal];
+        }
+        else {
+            button.enabled = YES;
+            [button setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%@.png",[buttonFileNames objectAtIndex:i]]] forState:UIControlStateNormal];
+        }
         i++;
     }
 }
