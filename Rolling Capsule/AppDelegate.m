@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import <QuartzCore/QuartzCore.h>
 #import "RCPost.h"
+#import "RCUser.h"
 #import "RCLoginViewController.h"
 #import "RCFriendListViewController.h"
 #import "RCMainFeedViewController.h"
@@ -174,6 +175,7 @@ BOOL _didQueueOpenMainFeedOption;
 }
 #pragma mark - global data flow
 - (void) setCurrentUser:(RCUser *)user {
+    [RCUser setCurrentUser:user];
     [_menuViewController setLoggedInUser:user];
     NSLog(@"%@ set current user %d:%@",[AppDelegate debugTag], user.userID,user.email);
 }

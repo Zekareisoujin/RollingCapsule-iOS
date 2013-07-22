@@ -65,9 +65,9 @@
         }
         
         
-        if (![_key hasSuffix:@".mov"]) {
+        //if (![_key hasSuffix:@".mov"]) {
             [self startS3DownloadRequest];
-        } else {
+        /*} else {
             _s3 = [RCAmazonS3Helper s3:_ownerID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3UsersMediaBucket]];
             S3ResponseHeaderOverrides *override = [[S3ResponseHeaderOverrides alloc] init];
             override.contentType = @"movie/mov";
@@ -82,7 +82,7 @@
             //[self finish];
             
         }
-        [RCConnectionManager endConnection];
+        [RCConnectionManager endConnection];*/
     }
 }
 
@@ -97,6 +97,7 @@
     //[downloadRequest setDelegate: self];
     S3GetObjectResponse *response = [_s3 getObject:downloadRequest];
     UIImage *image = [UIImage imageWithData:response.body];
+    [RCConnectionManager endConnection];
     [_delegate downloadFinish:image];
 }
 
