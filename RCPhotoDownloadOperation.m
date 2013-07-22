@@ -108,10 +108,12 @@
             } else continue;
         } @catch (AmazonServiceException *e) {
 #if DEBUG==1
-            NSLog(@"amazon service exception @",e);
+            NSLog(@"amazon service exception %@",e);
 #endif
         }
     }
+    [RCConnectionManager endConnection];
+    [_delegate downloadFinish:nil];
 }
 
 - (void)request:(AmazonServiceRequest *)request didReceiveData:(NSData *)data {

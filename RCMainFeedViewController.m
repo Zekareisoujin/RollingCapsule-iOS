@@ -326,7 +326,7 @@ BOOL        _haveScreenshot;
                     for (NSDictionary *postData in postList) {
                         RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
                         [_posts addObject:post];
-                        [post addObserver:self forKeyPath:@"thumbnailImage" options:NSKeyValueObservingOptionNew context:nil];
+                        //[post addObserver:self forKeyPath:@"thumbnailImage" options:NSKeyValueObservingOptionNew context:nil];
                         //NSLog(@"%@ post coordinates %f %f",[RCMainFeedViewController debugTag], post.coordinate.latitude, post.coordinate.longitude);
                     }
                     willShowMoreFeeds = ([_posts count] == currentMaxPostNumber);
@@ -409,7 +409,6 @@ BOOL        _haveScreenshot;
                  for (NSDictionary *postData in postList) {
                      RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
                      [_posts addObject:post];
-                     [post addObserver:self forKeyPath:@"thumbnailImage" options:NSKeyValueObservingOptionNew context:nil];
                  }
                  
                  //[_collectionView reloadData];
@@ -479,6 +478,7 @@ BOOL        _haveScreenshot;
     RCMainFeedCell *cell = [cv dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
     RCPost *post;
     post = [_posts objectAtIndex:indexPath.row];
+    [post addObserver:self forKeyPath:@"thumbnailImage" options:NSKeyValueObservingOptionNew context:nil];
     [_cellForPost setObject:cell forKey:[NSNumber numberWithInt:post.postID]];
     [cell getPostContentImageFromInternet:_user withPostContent:post usingCollection:nil completion:nil];
     if ([_chosenPosts count] != 0) {
