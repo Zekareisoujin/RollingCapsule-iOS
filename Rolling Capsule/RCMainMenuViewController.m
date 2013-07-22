@@ -20,16 +20,19 @@
 
 @end
 
-@implementation RCMainMenuViewController
+@implementation RCMainMenuViewController {
+    NSArray *menuItemLabel;
+    NSArray *menuItemIcon;
+    int     activeMenuIndex;
+    BOOL    showLogOut;
+    int     plusRows;
+}
 
 @synthesize navigationController = _navigationController;
 @synthesize user = _user;
 @synthesize menuTable = _menuTable;
 
-NSArray *menuItemLabel;
-NSArray *menuItemIcon;
-int     activeMenuIndex = 0;
-BOOL    showLogOut;
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -49,6 +52,9 @@ BOOL    showLogOut;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    plusRows = 0;
+    activeMenuIndex = 0;
+    _menuTable.tableFooterView = [[UIView alloc] init];
     // Do any additional setup after loading the view from its nib.
     
     menuItemLabel = [[NSArray alloc] initWithObjects:@"Main Feeds", @"Profile", @"Friends", @"Settings", nil];
@@ -73,18 +79,31 @@ BOOL    showLogOut;
 }
 
 #pragma mark - Table view data source
+
+
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [menuItemLabel count];
+    return [menuItemLabel count] + plusRows;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     //Where we configure the cell in each row
     RCMenuTableCell *cell = [RCMenuTableCell createMenuTableCell:_menuTable];
-    
+    int idx = indexPath.row;
+    if (idx >= [menuItemIcon count]) {
+        UITableViewCell *newCell = [[UITableViewCell alloc] init];
+        [_viewLogoutRow removeFromSuperview];
+        [_viewLogoutRow setHidden:NO];
+        [newCell addSubview:_viewLogoutRow];
+        CGRect frame = _btnLogOut.frame;
+        frame.origin.x = frame.origin.y = 0;
+        _viewLogoutRow.frame = frame;
+        //[cell setIcon:[menuItemIcon objectAtIndex:0] label:@"Log out"];
+        return newCell;
+    }
     [cell setIcon:[menuItemIcon objectAtIndex:indexPath.row] label:[menuItemLabel objectAtIndex:indexPath.row]];
     [cell setCellStateNormal: (indexPath.row == activeMenuIndex)];
     
@@ -92,7 +111,10 @@ BOOL    showLogOut;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return [RCMenuTableCell cellHeight];
+    if (indexPath.row < 4)
+        return [RCMenuTableCell cellHeight];
+    else
+        return _viewLogoutRow.frame.size.height;
 }
 
 #pragma mark - Table view delegate
@@ -111,7 +133,16 @@ BOOL    showLogOut;
             break;
         case 3:
             //[self btnActionSetting:self];
-            [self btnActionLogOutDropDown:self];
+            //[self btnActionLogOutDropDown:self];
+            if (plusRows ==0) {
+                plusRows = 1;
+                [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:4 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
+            } else {
+                plusRows = 0;
+                [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:4 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
+            }
+            return;
+            //[tableView reloadData];
             break;
         default:
             break;

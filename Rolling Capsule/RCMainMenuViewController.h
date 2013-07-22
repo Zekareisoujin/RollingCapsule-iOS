@@ -21,7 +21,8 @@
 @property (weak, nonatomic) IBOutlet UITableView *menuTable;
 
 @property (weak, nonatomic) IBOutlet UIButton *btnLogOutDropdown;
-@property (weak, nonatomic) IBOutlet UIButton *btnLogOut;
+@property (strong, nonatomic) IBOutlet UIButton *btnLogOut;
+@property (strong, nonatomic) IBOutlet UIView *viewLogoutRow;
 @property (weak, nonatomic) IBOutlet UIImageView *btnLogOutIcon;
 
 - (id)initWithContentView:(UINavigationController *) mainNavigationController;
