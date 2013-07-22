@@ -190,4 +190,17 @@ static void deleteResourceAsync(NSString *resourceKey, void (^processFunction)(B
     //TODO
 }
 
+struct RCMapReferencePoint {
+    double longitude, lattitude, x, y;
+};
+
+static NSValue* createMapReferencePoint(double longitude, double lattitude, double refX, double refY) {
+    struct RCMapReferencePoint point;
+    point.lattitude = lattitude;
+    point.longitude = longitude;
+    point.x = refX;
+    point.y = refY;
+    return [NSValue valueWithBytes:&point objCType:@encode(struct RCMapReferencePoint)];
+}
+
 #endif

@@ -65,12 +65,10 @@ int     showThreshold;
 BOOL    willShowMoreFeeds;
 
 // Map reference data:
-double  refLong;
-double  refLat;
-double  refX;
-double  refY;
+NSArray *referencePoints;
 double  minimapScaleX;
 double  minimapScaleY;
+struct RCMapReferencePoint orgRefPoint;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -96,7 +94,6 @@ double  minimapScaleY;
         [self setupBackButton];
     
     self.navigationItem.title = @" ";
-    _lblEmail.text = _profileUser.email;
     _lblName.text = _profileUser.name;
     _btnFriendAction.enabled = NO;
     _btnAvatarImg.enabled = NO;
@@ -158,6 +155,21 @@ double  minimapScaleY;
     UINib *nib = [UINib nibWithNibName:cellIdentifier bundle: nil];
     [self.collectionView registerNib:nib forCellWithReuseIdentifier:cellIdentifier];
     
+    // Set up reference points:
+    // Should load this from somewhere next time
+//    referencePoints = [[NSArray alloc] initWithObjects: createMapReferencePoint(103.77, 1.32, 886, 409),
+//                                                        createMapReferencePoint(0.0, 51.51, 556, 223),
+//                                                        createMapReferencePoint(-109.87, 23.10, 219, 335),
+//                                                        createMapReferencePoint(120.93, 23.81, 933, 331),
+//                                                        createMapReferencePoint(142.62, 43.37, 982, 244), nil];
+    
+    referencePoints = [[NSArray alloc] initWithObjects: createMapReferencePoint(103.77, 1.32, 791, 352),
+                                                       createMapReferencePoint(0.0, 51.51, 497, 172),
+                                                       createMapReferencePoint(-109.87, 23.10, 187, 279),
+                                                       createMapReferencePoint(120.93, 23.81, 841, 278),
+                                                       createMapReferencePoint(142.62, 43.37, 902, 205), nil];
+    
+    //CGPoint x = [self calculateCoordinateOnMinimapWithCoordinate:0.0 lattitude:0.0];
     [self calculateReferenceCoordinate];
     [self asynchFetchFeeds];
 }
@@ -255,6 +267,8 @@ double  minimapScaleY;
                  willShowMoreFeeds = NO;
                  [_btnMoreFeed setHidden:YES];
              }
+             
+              [self drawMinimap];
              
              /*if (jsonData != NULL) {
               //NSLog(@"Profile View: fetched feeds: %@", jsonData);
@@ -738,41 +752,80 @@ double  minimapScaleY;
 }
 
 - (void) calculateReferenceCoordinate {
-    refLong = 103.77;
-    refLat = 1.32;
-    refX = 887;
-    refY = 409;
-    
-    double refLong2 = 0.0;
-    double refLat2 = 51.51;
-    double refX2 = 556;
-    double refY2 = 223;
-    
     // Method 1:
-    /*CLLocationCoordinate2D refCoord = CLLocationCoordinate2DMake(refLat, refLong);
+    NSValue *val1 = [referencePoints objectAtIndex:0];
+    NSValue *val2 = [referencePoints objectAtIndex:1];
+    struct RCMapReferencePoint p1, p2;
+    [val1 getValue:&p1];
+    [val2 getValue:&p2];
+    
+    CLLocationCoordinate2D refCoord = CLLocationCoordinate2DMake(p1.lattitude, p1.longitude);
     MKMapPoint refPoint = MKMapPointForCoordinate(refCoord);
-    CLLocationCoordinate2D refCoord2 = CLLocationCoordinate2DMake(refLat2, refLong2);
+    CLLocationCoordinate2D refCoord2 = CLLocationCoordinate2DMake(p2.lattitude, p2.longitude);
     MKMapPoint refPoint2 = MKMapPointForCoordinate(refCoord2);
     
-    minimapScaleX = (refX - refX2) / (refPoint.x - refPoint2.x);
-    minimapScaleY = (refY - refY2) / (refPoint.y - refPoint2.y);*/
+    minimapScaleX = (p1.x - p2.x) / (refPoint.x - refPoint2.x);
+    minimapScaleY = (p1.y - p2.y) / (refPoint.y - refPoint2.y);
+    orgRefPoint = p1;
     
     // Method 2:
-    minimapScaleX = (refX - refX2) / (refLong - refLong2);
-    minimapScaleY = (refY - refY2) / (refLat - refLat2);
+//    minimapScaleX = (refX - refX2) / (refLong - refLong2);
+//    minimapScaleY = (refY - refY2) / (refLat - refLat2);
 }
 
-- (CGPoint) calculateCoordinateOnMinimapWithCoordinate: (double) longitude andLattitude: (double) lattitude {
+- (CGPoint) calculateCoordinateOnMinimapWithCoordinate:(double)longitude lattitude:(double)lattitude {
     // Method 1:
-    /*CLLocationCoordinate2D refCoord = CLLocationCoordinate2DMake(refLat, refLong);
+    CLLocationCoordinate2D refCoord = CLLocationCoordinate2DMake(orgRefPoint.lattitude, orgRefPoint.longitude);
     MKMapPoint refPoint = MKMapPointForCoordinate(refCoord);
     CLLocationCoordinate2D coord = CLLocationCoordinate2DMake(lattitude, longitude);
     MKMapPoint point = MKMapPointForCoordinate(coord);
     
-    CGPoint ret = CGPointMake((point.x - refPoint.x)*minimapScaleX + refX, (point.y - refPoint.y)*minimapScaleY + refY);*/
+    CGPoint ret = CGPointMake((point.x - refPoint.x)*minimapScaleX + orgRefPoint.x, (point.y - refPoint.y)*minimapScaleY + orgRefPoint.y);
     
     // Method 2:
-    CGPoint ret = CGPointMake((longitude - refLong)*minimapScaleX + refX, (lattitude - refLat)*minimapScaleY + refY);
+//    CGPoint ret = CGPointMake((longitude - refLong)*minimapScaleX + refX, (lattitude - refLat)*minimapScaleY + refY);
+    
+    // Method 3:
+//    float longt = 0;
+//    float latt = 0;
+//    float denominator = 0;
+//    
+//    for (NSValue *val in referencePoints) {
+//        struct RCMapReferencePoint p;
+//        [val getValue:&p];
+//        
+//        CLLocationCoordinate2D coord1 = CLLocationCoordinate2DMake(lattitude, longitude);
+//        MKMapPoint point1 = MKMapPointForCoordinate(coord1);
+//        CLLocationCoordinate2D coord2 = CLLocationCoordinate2DMake(p.lattitude, p.longitude);
+//        MKMapPoint point2 = MKMapPointForCoordinate(coord2);
+//        
+//        float deltaLongt = point1.x - point2.x;
+//        float deltaLatt = point1.y - point2.y;
+//        float distSq = deltaLongt * deltaLongt + deltaLatt * deltaLatt;
+//        float weight = 1/distSq;
+//        
+//        longt += weight * p.x;
+//        latt += weight * p.y;
+//        denominator += weight;
+//    }
+//    
+//    CGPoint ret = CGPointMake(longt / denominator, latt / denominator);
+    
+    // Method 4:
+//    UIImage* map = [UIImage imageNamed:@"profileWorldMap"];
+//    CGFloat width = map.size.width;
+//    CGFloat height = map.size.height;
+//    
+//    CGFloat x = (width * (180 + longitude) / 360);
+//    while (x-width > 0) x-=width;
+//    x += width/2;
+//    
+//    CGFloat PI = 3.141592654;
+//    CGFloat latRad = lattitude * PI/180;
+//    CGFloat mercN = log(tan((PI/4)+(latRad/2)));
+//    CGFloat y = (height / 2) - (width * mercN / (2*PI));
+//    
+//    CGPoint ret = CGPointMake(x, y);
     
     return ret;
 }
@@ -789,9 +842,16 @@ double  minimapScaleY;
     UIImage *mapDot = [UIImage imageNamed:@"profileWorldMapSpot"];
     
     for (RCPost* post in _postList){
-        CGPoint drawLoc = [self calculateCoordinateOnMinimapWithCoordinate:post.longitude andLattitude:post.latitude];
+        CGPoint drawLoc = [self calculateCoordinateOnMinimapWithCoordinate:post.longitude lattitude:post.latitude];
         /*CGRect circleRect = CGRectMake(drawLoc.x, drawLoc.y, 10, 10);
         CGContextFillEllipseInRect(ctx, circleRect);*/
+        drawLoc.x -= mapDot.size.width/2;
+        drawLoc.y -= mapDot.size.height/2;
+        
+        NSLog(@"Post id: %d", post.postID);
+        if (post.postID == 434)
+            NSLog(@"Here");
+        
         [mapDot drawAtPoint:drawLoc];
     }
     

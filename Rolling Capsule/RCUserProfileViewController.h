@@ -18,7 +18,6 @@
 - (IBAction)btnEditProfileTouchUpInside:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *btnAvatarImg;
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
-@property (weak, nonatomic) IBOutlet UILabel *lblEmail;
 @property (weak, nonatomic) IBOutlet UIButton *btnFriendAction;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (strong, nonatomic) UIButton *btnDeclineRequest;

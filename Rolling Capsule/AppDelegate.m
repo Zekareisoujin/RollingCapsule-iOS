@@ -41,23 +41,6 @@ BOOL _didQueueOpenMainFeedOption;
     [TestFlight takeOff:@"9a1eac62-14de-493e-971e-bea0ff0cb99b"];
     _didUpdateLocation = NO;
     _didQueueOpenMainFeedOption = NO;
-    RCUser *user = [[RCUser alloc] init];
-    user.name = @"lolo";
-    user.email = @"lolotp@hotmail.com";
-    user.userID = 3;
-    RCPost *post = [[RCPost alloc] init];
-    post.postID = 14;
-    post.content = @"hh";
-    post.fileUrl = @"9EC1DEF34C8047388BBDCBE8682AFEA9";
-    post.longitude = -122.406417;
-    post.latitude = 37.785834;
-    post.userID = 1;
-    post.viewCount = post.likeCount = 0;
-    post.privacyOption = @"friends";
-    RCUser *owner = [[RCUser alloc] init];
-    owner.name = @"lolo";
-    owner.email = @"lolotp@hotmail.com";
-    owner.userID = 1;
     
     //set up location listening
     _locationManager = [[CLLocationManager alloc] init];
