@@ -334,7 +334,7 @@ BOOL        _haveScreenshot;
                     if (nRetry == 0)
                         alertStatus(RCErrorMessageFailedToGetFeed,RCAlertMessageServerError,self);
                     else {
-                        [self asynchFetchFeeds:NUM_RETRY_MAIN_FEED];
+                        [self asynchFetchFeeds:nRetry];
                     }
                 }
             }];
