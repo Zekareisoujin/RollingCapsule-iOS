@@ -343,6 +343,8 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 }
 
 - (void) setupImageScrollView {
+    [_activityIndicatorView removeFromSuperview];
+    [_activityIndicatorView stopAnimating];
     UIImage *image = _postImage;
     _imageViewFullPost = [[UIImageView alloc] initWithImage:image];
     CGSize size = _imageViewFullPost.frame.size;

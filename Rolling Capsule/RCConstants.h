@@ -59,8 +59,9 @@ static NSString* const RCErrorMessageFailedToGetUsersRelation = @"Failed getting
 static NSString* const RCErrorMessageFailedToEditFriendStatus = @"Failure editing friend status from web service, please try again!";
 
 //NSUserDefault key
-static NSString* const RCLogStatusDefault = @"logStatus";
-static NSString* const RCLogUserDefault = @"loggedUser";
+static NSString* const RCLogStatusDefault = @"LogStatus";
+static NSString* const RCLogUserDefault = @"LoggedUser";
+static NSString* const RCMainFeedRowCountSetting = @"MainFeedRowCount";
 
 //integer values
 #define RCUploadImageSizeWidth  225

@@ -30,6 +30,10 @@ static RCResourceCache *instance = 0;
     }
 }
 
+- (void) purge {
+    [_cache removeAllObjects];
+}
+
 - (void) putResourceInCache:(id)object forKey:(id)key {
     [_cache setObject:object forKey:key];
 }
