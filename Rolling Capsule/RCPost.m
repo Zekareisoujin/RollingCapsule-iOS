@@ -35,6 +35,7 @@
 @synthesize thumbnailImage = _thumbnailImage;
 @synthesize topic = _topic;
 
+static NSMutableDictionary* RCPostPostCollection = nil;
 
 - (id) initWithNSDictionary:(NSDictionary *)postData {
     self = [super init];

@@ -16,7 +16,7 @@ static NSOperationQueue* RCStaticOperationQueue = nil;
 + (void) addOperation:(NSOperation*) operation {
     if (RCStaticOperationQueue == nil) {
         RCStaticOperationQueue = [[NSOperationQueue alloc] init];
-        //[RCStaticOperationQueue setMaxConcurrentOperationCount:2];
+        [RCStaticOperationQueue setMaxConcurrentOperationCount:15];
     }
     [RCStaticOperationQueue addOperation:operation];
 }
