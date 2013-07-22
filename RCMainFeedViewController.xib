@@ -2,9 +2,9 @@
 <archive type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="8.00">
 	<data>
 		<int key="IBDocument.SystemTarget">1552</int>
-		<string key="IBDocument.SystemVersion">12D78</string>
+		<string key="IBDocument.SystemVersion">12E55</string>
 		<string key="IBDocument.InterfaceBuilderVersion">3084</string>
-		<string key="IBDocument.AppKitVersion">1187.37</string>
+		<string key="IBDocument.AppKitVersion">1187.39</string>
 		<string key="IBDocument.HIToolboxVersion">626.00</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginVersions">
 			<string key="NS.key.0">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -269,7 +269,6 @@
 						<string key="NSFrame">{{275, 283}, {41, 41}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
 						<reference key="NSWindow"/>
-						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -1287,11 +1286,6 @@
 						<reference key="parent" ref="574436509"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">709</int>
-						<reference key="object" ref="81315298"/>
-						<reference key="parent" ref="574436509"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">711</int>
 						<reference key="object" ref="28859792"/>
 						<reference key="parent" ref="191373211"/>
@@ -1322,18 +1316,8 @@
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">724</int>
-						<reference key="object" ref="169147050"/>
-						<reference key="parent" ref="191373211"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">728</int>
 						<reference key="object" ref="57634785"/>
-						<reference key="parent" ref="191373211"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">731</int>
-						<reference key="object" ref="763119720"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -1418,11 +1402,6 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">790</int>
 						<reference key="object" ref="413406435"/>
-						<reference key="parent" ref="191373211"/>
-					</object>
-					<object class="IBObjectRecord">
-						<int key="objectID">821</int>
-						<reference key="object" ref="1032404077"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -1738,11 +1717,6 @@
 						<reference key="parent" ref="703450586"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">937</int>
-						<reference key="object" ref="649918265"/>
-						<reference key="parent" ref="251675546"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">938</int>
 						<reference key="object" ref="979843443"/>
 						<reference key="parent" ref="251675546"/>
@@ -1791,11 +1765,6 @@
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">956</int>
-						<reference key="object" ref="455330526"/>
-						<reference key="parent" ref="191373211"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">957</int>
 						<reference key="object" ref="456295593"/>
 						<reference key="parent" ref="191373211"/>
@@ -1809,6 +1778,36 @@
 						<int key="objectID">968</int>
 						<reference key="object" ref="886942037"/>
 						<reference key="parent" ref="191373211"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">709</int>
+						<reference key="object" ref="81315298"/>
+						<reference key="parent" ref="574436509"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">821</int>
+						<reference key="object" ref="1032404077"/>
+						<reference key="parent" ref="191373211"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">724</int>
+						<reference key="object" ref="169147050"/>
+						<reference key="parent" ref="191373211"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">731</int>
+						<reference key="object" ref="763119720"/>
+						<reference key="parent" ref="191373211"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">956</int>
+						<reference key="object" ref="455330526"/>
+						<reference key="parent" ref="191373211"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">937</int>
+						<reference key="object" ref="649918265"/>
+						<reference key="parent" ref="251675546"/>
 					</object>
 				</array>
 			</object>
@@ -1981,7 +1980,7 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">968</int>
+			<int key="maxID">980</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -2097,14 +2096,6 @@
 						<string key="minorKey">./Classes/UICollectionViewFlowLayout.h</string>
 					</object>
 				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">UICollectionViewLayout</string>
-					<string key="superclassName">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/UICollectionViewLayout.h</string>
-					</object>
-				</object>
 			</array>
 		</object>
 		<int key="IBDocument.localizationMode">0</int>
@@ -2117,11 +2108,11 @@
 			<string key="feedButtonMore.png">{100, 60}</string>
 			<string key="loading.gif">{332, 332}</string>
 			<string key="locate.png">{133, 154}</string>
-			<string key="mainBackground.png">{640, 1135}</string>
-			<string key="mainTopBanner.png">{653, 81}</string>
-			<string key="mainViewOptionFollow.png">{62, 61}</string>
-			<string key="mainViewOptionFriends.png">{62, 61}</string>
-			<string key="mainViewOptionPublic.png">{62, 61}</string>
+			<string key="mainBackground.png">{640, 1136}</string>
+			<string key="mainTopBanner.png">{640, 82}</string>
+			<string key="mainViewOptionFollow.png">{78, 78}</string>
+			<string key="mainViewOptionFriends.png">{78, 78}</string>
+			<string key="mainViewOptionPublic.png">{78, 78}</string>
 		</dictionary>
 		<bool key="IBDocument.UseAutolayout">YES</bool>
 		<string key="IBCocoaTouchPluginVersion">2083</string>
