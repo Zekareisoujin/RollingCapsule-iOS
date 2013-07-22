@@ -793,7 +793,7 @@ NSData *_thumbnailData;
             [self.view addSubview:_datePickerView];
             CGRect frame = _datePickerView.frame;
             frame.origin.x = (self.view.frame.size.width - frame.size.width) / 2.0;
-            frame.origin.y = sender.frame.origin.y - frame.size.height - 5;
+            frame.origin.y = [self.view convertPoint:sender.frame.origin fromView:sender].y - frame.size.height - 5;
             _datePickerView.frame = frame;
             _datePickerView.alpha = 0.0;
             
@@ -848,7 +848,7 @@ NSData *_thumbnailData;
     UIImageView* separator = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,separatorImage.size.width/2.0,separatorImage.size.height/2.0)];
     [separator setImage:separatorImage];
     separator.frame = CGRectMake(frame3.origin.x + 54, frame3.origin.y,separatorImage.size.width/2.0,separatorImage.size.height/2.0);
-    [self.view addSubview:separator];
+    
     
     CGRect frame4 = _btnVideoSource.frame;
     frame4.size.width = buttonSize;
@@ -863,7 +863,7 @@ NSData *_thumbnailData;
     [timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsule-highlighted.png"] forState:UIControlStateHighlighted];
     [timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsule-highlighted.png"] forState:UIControlStateDisabled];
     [timeCapsule addTarget:self action:@selector(openDatePickerView:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:timeCapsule];
+    
     [_btnCameraSource setHidden:YES];
     [_btnPhotoLibrarySource setHidden:YES];
     [_btnVideoSource setHidden:YES];
@@ -878,10 +878,12 @@ NSData *_thumbnailData;
     _personalPrivacyButton.alpha = 0.0;
     _friendPrivacyButton.alpha = 0.0;
     
-    [self.view addSubview:_postButton];
-    [self.view addSubview:_publicPrivacyButton];
-    [self.view addSubview:_friendPrivacyButton];
-    [self.view addSubview:_personalPrivacyButton];
+    [self.imgViewControlFrame addSubview:_postButton];
+    [self.imgViewControlFrame addSubview:timeCapsule];
+    [self.imgViewControlFrame addSubview:separator];
+    [self.imgViewControlFrame addSubview:_publicPrivacyButton];
+    [self.imgViewControlFrame addSubview:_friendPrivacyButton];
+    [self.imgViewControlFrame addSubview:_personalPrivacyButton];
     
     
     
@@ -998,8 +1000,9 @@ NSData *_thumbnailData;
                                                   object:nil];*/
 }
 - (BOOL)textFieldShouldReturn :(UITextField*) textField {
-    [self.view removeGestureRecognizer:_tapGestureRecognizer];
-    [textField resignFirstResponder];
+    //[self.view removeGestureRecognizer:_tapGestureRecognizer];
+    //[textField resignFirstResponder];
+    [_txtViewPostContent becomeFirstResponder];
     return NO;
 }
 - (IBAction)closeBtnTouchUpInside:(id)sender {

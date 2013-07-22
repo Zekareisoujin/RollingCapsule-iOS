@@ -29,7 +29,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnVideoSource;
 @property (weak, nonatomic) IBOutlet UIButton *btnCameraSource;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollViewImage;
-@property (weak, nonatomic) IBOutlet UIImageView *imgViewControlFrame;
+@property (weak, nonatomic) IBOutlet UIView *imgViewControlFrame;
 @property (weak, nonatomic) IBOutlet UIImageView *imgViewMainFrame;
 @property (weak, nonatomic) IBOutlet UIButton *btnPhotoLibrarySource;
 @property (weak, nonatomic) IBOutlet UITextView *txtViewPostContent;
