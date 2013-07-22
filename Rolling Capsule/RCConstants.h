@@ -96,6 +96,6 @@ static double const RCAppThemeColorBlue = 167.0/255.0;
 
 //topics
 #define NUM_TOPICS 7
-static char *RCTopics[] = {"Cafe","Cinema","Interest","Mall","Restaurant","School","Shop"};
+static char* __attribute__((unused)) RCTopics[] = {"Cafe","Cinema","Interest","Mall","Restaurant","School","Shop"};
 #endif
 
