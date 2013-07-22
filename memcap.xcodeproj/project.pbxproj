@@ -39,8 +39,6 @@
 		64119A13178460A500BF0B05 /* closeButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 64119A12178460A500BF0B05 /* closeButton.png */; };
 		64119A161784611700BF0B05 /* RCLightboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64119A151784611700BF0B05 /* RCLightboxViewController.m */; };
 		64119A1817849DBB00BF0B05 /* viewPostMainFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 64119A1717849DBB00BF0B05 /* viewPostMainFrame.png */; };
-		64176AFF175A260900443B59 /* AWSRuntime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64176AFD175A260900443B59 /* AWSRuntime.framework */; };
-		64176B00175A260900443B59 /* AWSS3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64176AFE175A260900443B59 /* AWSS3.framework */; };
 		6417B232179415C6007777E5 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6417B231179415C6007777E5 /* CoreMedia.framework */; };
 		64194AD61770AAF200822F9B /* RCMainFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 64194AD51770AAF100822F9B /* RCMainFeedCell.m */; };
 		642E71FE17639D9400B3464E /* RCConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 642E71FD17639D9400B3464E /* RCConnectionManager.m */; };
@@ -295,8 +293,6 @@
 		64119A141784611700BF0B05 /* RCLightboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCLightboxViewController.h; path = ../RCLightboxViewController.h; sourceTree = "<group>"; };
 		64119A151784611700BF0B05 /* RCLightboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCLightboxViewController.m; path = ../RCLightboxViewController.m; sourceTree = "<group>"; };
 		64119A1717849DBB00BF0B05 /* viewPostMainFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostMainFrame.png; path = ../viewPostMainFrame.png; sourceTree = "<group>"; };
-		64176AFD175A260900443B59 /* AWSRuntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSRuntime.framework; path = "../../Downloads/aws-ios-sdk-1.6.0/AWSRuntime.framework"; sourceTree = "<group>"; };
-		64176AFE175A260900443B59 /* AWSS3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSS3.framework; path = "../../Downloads/aws-ios-sdk-1.6.0/AWSS3.framework"; sourceTree = "<group>"; };
 		6417B231179415C6007777E5 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		64194AD41770AAF100822F9B /* RCMainFeedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMainFeedCell.h; sourceTree = "<group>"; };
 		64194AD51770AAF100822F9B /* RCMainFeedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMainFeedCell.m; sourceTree = "<group>"; };
@@ -574,8 +570,6 @@
 				BFCA781C174DFD3F00666CBA /* UIKit.framework in Frameworks */,
 				BFCA781E174DFD3F00666CBA /* Foundation.framework in Frameworks */,
 				BFCA7820174DFD3F00666CBA /* CoreGraphics.framework in Frameworks */,
-				64176AFF175A260900443B59 /* AWSRuntime.framework in Frameworks */,
-				64176B00175A260900443B59 /* AWSS3.framework in Frameworks */,
 				BF4DCC46175C82280081B5AC /* AWSRuntime.framework in Frameworks */,
 				BF4DCC47175C82280081B5AC /* AWSS3.framework in Frameworks */,
 			);
@@ -795,9 +789,7 @@
 			children = (
 				647E2FD017929BFC00AA6B9A /* AVFoundation.framework */,
 				BF4DCC44175C82280081B5AC /* AWSRuntime.framework */,
-				64176AFD175A260900443B59 /* AWSRuntime.framework */,
 				BF4DCC45175C82280081B5AC /* AWSS3.framework */,
-				64176AFE175A260900443B59 /* AWSS3.framework */,
 				BFCA781F174DFD3F00666CBA /* CoreGraphics.framework */,
 				643EACEF175C1B5C002761D9 /* CoreLocation.framework */,
 				6417B231179415C6007777E5 /* CoreMedia.framework */,
