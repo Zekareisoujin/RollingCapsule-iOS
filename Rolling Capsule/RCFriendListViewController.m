@@ -112,7 +112,13 @@ NSArray                 *controlButtonArray;
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:RCInfoStringDateFormat];
     NSString *lastUpdated = [NSString stringWithFormat:RCInfoStringLastUpdatedOnFormat, [formatter  stringFromDate:[NSDate date] ] ];
-    [_refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:lastUpdated]];
+    
+    UIColor *foregroundColor = [UIColor whiteColor];
+    NSDictionary *attrs = [NSDictionary dictionaryWithObjectsAndKeys:
+                           foregroundColor, NSForegroundColorAttributeName, nil];
+    
+    NSAttributedString *attributedStr = [[NSAttributedString alloc] initWithString:lastUpdated attributes:attrs];
+    [_refreshControl setAttributedTitle:attributedStr];
     
     switch (_viewingMode) {
         case RCFriendListViewModeFriends:
@@ -182,7 +188,7 @@ NSArray                 *controlButtonArray;
     [self.navigationController pushViewController:detailViewController animated:YES];
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+/*- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     NSString *sectionName;
     switch (section)
@@ -204,7 +210,7 @@ NSArray                 *controlButtonArray;
             break;
     }
     return sectionName;
-}
+}*/
 
 #pragma mark - web request
 - (void)asynchGetFriendsRequest {
@@ -340,6 +346,8 @@ NSArray                 *controlButtonArray;
     _viewingMode = RCFriendListViewModeFriends;
     _items = _friends;
     [_searchBar setPlaceholder:@"Search for friends"];
+    [_tableTitleBackground setImage:[UIImage imageNamed:@"friendListBarFriends"]];
+    [_tableTitleLabel setText:@"Friends"];
     
     [_tblViewFriendList reloadData];
     [self enableControl:YES];
@@ -349,6 +357,8 @@ NSArray                 *controlButtonArray;
     _viewingMode = RCFriendListViewModePendingFriends;
     _items = _requested_friends;
     [_searchBar setPlaceholder:@"Search for pending requests"];
+    [_tableTitleBackground setImage:[UIImage imageNamed:@"friendListBarPending"]];
+    [_tableTitleLabel setText:@"Pending requests"];
     
     [_tblViewFriendList reloadData];
     [self enableControl:YES];
@@ -358,6 +368,8 @@ NSArray                 *controlButtonArray;
     _viewingMode = RCFriendListViewModeFollowees;
     _items = _followees;
     [_searchBar setPlaceholder:@"Search for people you follow"];
+    [_tableTitleBackground setImage:[UIImage imageNamed:@"friendListBarFollows"]];
+    [_tableTitleLabel setText:@"People you follow"];
     
     [_tblViewFriendList reloadData];
     [self enableControl:YES];
