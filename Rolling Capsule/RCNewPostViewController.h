@@ -30,10 +30,16 @@
 @property (weak, nonatomic) IBOutlet UIButton *btnCameraSource;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollViewImage;
 @property (weak, nonatomic) IBOutlet UIView *imgViewControlFrame;
+@property (weak, nonatomic) IBOutlet UIView *imgViewPrivacyControlFrame;
 @property (weak, nonatomic) IBOutlet UIImageView *imgViewMainFrame;
 @property (weak, nonatomic) IBOutlet UIButton *btnPhotoLibrarySource;
 @property (weak, nonatomic) IBOutlet UITextView *txtViewPostContent;
 @property (weak, nonatomic) IBOutlet UILabel* lblDate;
+@property (weak, nonatomic) IBOutlet UIButton* postButton;
+@property (weak, nonatomic) IBOutlet UIButton* publicPrivacyButton;
+@property (weak, nonatomic) IBOutlet UIButton* friendPrivacyButton;
+@property (weak, nonatomic) IBOutlet UIButton* personalPrivacyButton;
+@property (weak, nonatomic) IBOutlet UIButton *timeCapsule;
 @property (nonatomic, strong) NSMutableArray *topics;
 @property (nonatomic, strong) RCUser *user;
 @property (strong, nonatomic) RCKeyboardPushUpHandler *keyboardPushHandler;
@@ -47,6 +53,9 @@
 - (IBAction)btnActionChoosePhotoLibrarySource:(id)sender;
 - (IBAction)btnActionChooseVideSource:(id)sender;
 - (IBAction)openLandmarkView:(id)sender;
+- (IBAction) openDatePickerView:(UIButton*) sender;
+- (IBAction) postNew:(id) sender;
+- (IBAction) setPostPrivacyOption:(UIButton*) sender;
 - (id) initWithUser:(RCUser *)user;
 - (id) initWithUser:(RCUser *)user withBackgroundImage:(UIImage*) image;
 - (id) initWithUser:(RCUser *)user withNibName:(NSString *)nibNameOrNil bundle:(NSBundle*)nibBundleOrNil;

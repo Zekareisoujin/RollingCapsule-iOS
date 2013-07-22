@@ -26,10 +26,6 @@
 @property (nonatomic,strong) UIImage* postImage;
 @property (nonatomic,strong) NSString* postContent;
 @property (nonatomic,strong) NSString* imageFileName;
-@property (nonatomic, strong) UIButton* postButton;
-@property (nonatomic, strong) UIButton* publicPrivacyButton;
-@property (nonatomic, strong) UIButton* friendPrivacyButton;
-@property (nonatomic, strong) UIButton* personalPrivacyButton;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
 @property (nonatomic, strong) NSString* privacyOption;
 @property (nonatomic, strong) UIView *viewTopic;
@@ -73,7 +69,7 @@ BOOL _isMovie = NO;
 BOOL _isPosting = NO;
 BOOL _isTimedRelease = NO;
 
-UIButton *timeCapsule;
+
 
 S3PutObjectResponse *_putObjectResponse;
 AmazonClientException *_amazonException;
@@ -221,7 +217,7 @@ NSData *_thumbnailData;
     // Dispose of any resources that can be recreated.
 }
 
-- (void) postNew {
+- (IBAction) postNew:(id) sender {
     _isPosting = YES;
     if (_uploadData == nil) {
         [self showAlertMessage:@"Please choose an image or video!" withTitle:@"Incomplete post!"];
@@ -525,8 +521,8 @@ NSData *_thumbnailData;
 {
     
     [picker dismissViewControllerAnimated:YES completion:nil];
-        
-    [UIView animateWithDuration:0.6
+    [self removePhotoSourceControlAndAddPrivacyControl];
+    /*[UIView animateWithDuration:0.6
 						  delay:0
 						options:UIViewAnimationOptionCurveEaseInOut
 					 animations:^{
@@ -536,7 +532,7 @@ NSData *_thumbnailData;
 					 }
                      completion:^(BOOL finished) {
                          [self removePhotoSourceControlAndAddPrivacyControl];
-					 }];
+					 }];*/
     if (_activityIndicator == nil)
         _activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:_scrollViewImage.frame];
     [self.view addSubview:_activityIndicator];
@@ -780,7 +776,7 @@ NSData *_thumbnailData;
     }
 }
 
-- (void) openDatePickerView:(UIButton*) sender {
+- (IBAction) openDatePickerView:(UIButton*) sender {
     
     if (!_isTimedRelease) {
     
@@ -793,7 +789,7 @@ NSData *_thumbnailData;
             [self.view addSubview:_datePickerView];
             CGRect frame = _datePickerView.frame;
             frame.origin.x = (self.view.frame.size.width - frame.size.width) / 2.0;
-            frame.origin.y = [self.view convertPoint:sender.frame.origin fromView:sender].y - frame.size.height - 5;
+            frame.origin.y = [self.view convertPoint:sender.frame.origin fromView:sender].y - frame.size.height - 3;
             _datePickerView.frame = frame;
             _datePickerView.alpha = 0.0;
             
@@ -820,13 +816,41 @@ NSData *_thumbnailData;
                          }];
     }else {
         _isTimedRelease = NO;
-        [timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsuleInactive.png"] forState:UIControlStateNormal];
+        [_timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsuleInactive.png"] forState:UIControlStateNormal];
         alertStatus(@"You have deactivated capsule release mode for this post", @"Notice", nil);
     }
 }
 
 - (void) removePhotoSourceControlAndAddPrivacyControl {
-    int buttonSize = 41;
+    /*[_btnCameraSource setHidden:YES];
+    [_btnPhotoLibrarySource setHidden:YES];
+    [_btnVideoSource setHidden:YES];*/
+    
+    
+    [_timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsuleInactive.png"] forState:UIControlStateNormal];
+    [_timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsule-highlighted.png"] forState:UIControlStateHighlighted];
+    [_timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsule-highlighted.png"] forState:UIControlStateDisabled];
+    //[self.view addSubview:_imgViewPrivacyControlFrame];
+    
+    [_imgViewPrivacyControlFrame setHidden:NO];
+    CGRect frame = _imgViewControlFrame.frame;
+    frame.origin.x = _imgViewControlFrame.frame.size.width + _imgViewControlFrame.frame.origin.x;
+    //frame.origin.y = 0;
+    _imgViewPrivacyControlFrame.frame = frame;
+    [UIView animateWithDuration:0.6
+						  delay:0
+						options:UIViewAnimationOptionCurveEaseInOut
+					 animations:^{
+                         CGRect frame3 = _imgViewControlFrame.frame;
+                         frame3.origin.x -= frame3.size.width;
+                         _imgViewControlFrame.frame = frame3;
+                         CGRect frame2 = frame;
+                         frame2.origin.x -= frame2.size.width;
+                         _imgViewPrivacyControlFrame.frame = frame2;
+                     } completion:^(BOOL finished){
+                         [self setPostPrivacyOption:_publicPrivacyButton];
+                     }];
+    /*int buttonSize = 41;
     int distance = 13;
     if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height) {
         buttonSize = 35;
@@ -859,20 +883,8 @@ NSData *_thumbnailData;
     CGRect frame5 = frame4;
     frame5.origin.x = separator.frame.origin.x + separator.frame.size.width;
     timeCapsule = [[UIButton alloc] initWithFrame:frame5];
-    [timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsuleInactive.png"] forState:UIControlStateNormal];
-    [timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsule-highlighted.png"] forState:UIControlStateHighlighted];
-    [timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsule-highlighted.png"] forState:UIControlStateDisabled];
-    [timeCapsule addTarget:self action:@selector(openDatePickerView:) forControlEvents:UIControlEventTouchUpInside];
+        
     
-    [_btnCameraSource setHidden:YES];
-    [_btnPhotoLibrarySource setHidden:YES];
-    [_btnVideoSource setHidden:YES];
-    
-    
-    [_postButton addTarget:self action:@selector(postNew) forControlEvents:UIControlEventTouchUpInside];
-    [_publicPrivacyButton addTarget:self action:@selector(setPostPrivacyOption:) forControlEvents:UIControlEventTouchUpInside];
-    [_personalPrivacyButton addTarget:self action:@selector(setPostPrivacyOption:) forControlEvents:UIControlEventTouchUpInside];
-    [_friendPrivacyButton addTarget:self action:@selector(setPostPrivacyOption:) forControlEvents:UIControlEventTouchUpInside];
     _postButton.alpha = 0.0;
     _publicPrivacyButton.alpha = 0.0;
     _personalPrivacyButton.alpha = 0.0;
@@ -899,7 +911,7 @@ NSData *_thumbnailData;
 					 }
                      completion:^(BOOL finished) {
                          [self setPostPrivacyOption:_publicPrivacyButton];
-					 }];
+					 }];*/
 }
 
 #pragma mark - tap gesture handler
@@ -1022,7 +1034,7 @@ NSData *_thumbnailData;
 }
 
 #pragma mark - post privacy options
-- (void) setPostPrivacyOption:(UIButton*) sender {
+- (IBAction) setPostPrivacyOption:(UIButton*) sender {
     if ([sender isEqual:_publicPrivacyButton])
         _privacyOption = @"public";
     if ([sender isEqual:_friendPrivacyButton])
@@ -1170,7 +1182,7 @@ handler:(void (^)(AVAssetExportSession*))handler
 - (void) didPickDate:(NSDate *)pickedDateTime success:(BOOL)success {
     if (success) {
         _isTimedRelease = YES;
-        [timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsuleActive.png"] forState:UIControlStateNormal];
+        [_timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsuleActive.png"] forState:UIControlStateNormal];
         
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"HH:mm, dd/MM/yyyy"];
