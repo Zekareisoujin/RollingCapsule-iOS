@@ -21,7 +21,6 @@
 #import "RCConnectionManager.h"
 #import "RCNotification.h"
 #import "RCAddLandmarkController.h"
-#import "RCOperationsManager.h"
 #import "Reachability.h"
 #import <QuartzCore/QuartzCore.h>
 #import <MediaPlayer/MediaPlayer.h>
@@ -321,11 +320,6 @@ BOOL        _haveScreenshot;
                     for (NSDictionary *postData in postList) {
                         RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
                         [_posts addObject:post];
-                        RCPhotoDownloadOperation *op = [[RCPhotoDownloadOperation alloc] initWithPhotokey:post.thumbnailUrl withOwnerID:_user.userID];
-                        //[op start];
-                        op.delegate = post;
-                        //[_landmarks setObject:op forKey:[NSNumber numberWithInt:post.postID]];
-                        [RCOperationsManager addOperation:op];
                         [post addObserver:self forKeyPath:@"thumbnailImage" options:NSKeyValueObservingOptionNew context:nil];
                         //NSLog(@"%@ post coordinates %f %f",[RCMainFeedViewController debugTag], post.coordinate.latitude, post.coordinate.longitude);
                     }

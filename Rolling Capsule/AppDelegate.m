@@ -8,7 +8,7 @@
 
 #import "AppDelegate.h"
 #import <QuartzCore/QuartzCore.h>
-
+#import "RCPost.h"
 #import "RCLoginViewController.h"
 #import "RCFriendListViewController.h"
 #import "RCMainFeedViewController.h"
@@ -39,6 +39,7 @@ BOOL _didQueueOpenMainFeedOption;
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     [TestFlight takeOff:@"9a1eac62-14de-493e-971e-bea0ff0cb99b"];
+    [RCPost initPostDataModel];
     _didUpdateLocation = NO;
     _didQueueOpenMainFeedOption = NO;
     RCUser *user = [[RCUser alloc] init];

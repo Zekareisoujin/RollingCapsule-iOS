@@ -36,6 +36,6 @@
 
 - (MKMapItem*)mapItem;
 - (id) initWithNSDictionary:(NSDictionary *)userData;
-
++ (void) initPostDataModel;
 - (void) getThumbnailImageAsync: (int)viewingUserID completion:(void (^)(UIImage*)) completionFunc;
 @end

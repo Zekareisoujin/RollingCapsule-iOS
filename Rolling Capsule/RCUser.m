@@ -27,6 +27,16 @@
 @synthesize userID = _userID;
 @synthesize displayAvatar = _displayAvatar;
 
+static RCUser* RCUserCurrentUser =  nil;
+
++ (RCUser*) currentUser {
+    return RCUserCurrentUser;
+}
+
++ (void) setCurrentUser: (RCUser*)user {
+    RCUserCurrentUser = user;
+}
+
 - (id) initWithNSDictionary:(NSDictionary *)userData {
     self = [super init];
     if (self) {

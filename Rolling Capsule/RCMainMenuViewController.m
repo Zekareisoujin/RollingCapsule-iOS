@@ -55,6 +55,7 @@
     plusRows = 0;
     activeMenuIndex = 0;
     _menuTable.tableFooterView = [[UIView alloc] init];
+    [_menuTable setSeparatorColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.3]];
     // Do any additional setup after loading the view from its nib.
     
     menuItemLabel = [[NSArray alloc] initWithObjects:@"Main Feeds", @"Profile", @"Friends", @"Settings", nil];

@@ -11,6 +11,8 @@
 #import "RCUtilities.h"
 #import "RCAmazonS3Helper.h"
 #import "RCResourceCache.h"
+#import "RCOperationsManager.h"
+#import "RCOperationsManager.h"
 
 @implementation RCPost
 
@@ -36,6 +38,10 @@
 @synthesize topic = _topic;
 
 static NSMutableDictionary* RCPostPostCollection = nil;
+
++ (void) initPostDataModel {
+    RCPostPostCollection = [[NSMutableDictionary alloc] init];
+}
 
 - (id) initWithNSDictionary:(NSDictionary *)postData {
     self = [super init];
@@ -81,6 +87,12 @@ static NSMutableDictionary* RCPostPostCollection = nil;
             _releaseDate = [formatter dateFromString:releaseTime];
         }
     }
+    [RCPostPostCollection setObject:self forKey:[NSNumber numberWithInt:_postID]];
+    RCPhotoDownloadOperation *op = [[RCPhotoDownloadOperation alloc] initWithPhotokey:self.thumbnailUrl withOwnerID:[RCUser currentUser].userID];
+    //[op start];
+    op.delegate = self;
+    //[_landmarks setObject:op forKey:[NSNumber numberWithInt:post.postID]];
+    [RCOperationsManager addOperation:op];
     return self;
 }
 
