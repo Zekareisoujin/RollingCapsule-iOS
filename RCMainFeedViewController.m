@@ -42,8 +42,10 @@
 @property (nonatomic, assign) RCMainFeedViewMode      currentViewMode;
 @property (nonatomic, strong) UIButton* postButton;
 @property (nonatomic, strong) Reachability * reachability;
+@property (nonatomic, strong) NSMutableDictionary* cellForPost;
 @property (nonatomic, strong) UILabel* lblWarningNoConnection;
 @property (nonatomic, assign) BOOL didZoom;
+
 @end
 
 @implementation RCMainFeedViewController
@@ -60,6 +62,7 @@ int         _nRows;
 BOOL        _firstRefresh;
 BOOL        _willRefresh;
 BOOL        _haveScreenshot;
+@synthesize cellForPost = _cellForPost;
 @synthesize refreshControl = _refreshControl;
 @synthesize user = _user;
 @synthesize connectionManager = _connectionManager;
@@ -97,6 +100,7 @@ BOOL        _haveScreenshot;
     if (self) {
         _connectionManager = [[RCConnectionManager alloc] init];
         _postsByLandmark = [[NSMutableDictionary alloc] init];
+        _cellForPost = [[NSMutableDictionary alloc] init];
         _chosenPosts = [[NSMutableSet alloc] init];
         _landmarks = [[NSMutableDictionary alloc] init];
         _posts = [[NSMutableArray alloc] init];
@@ -350,12 +354,8 @@ BOOL        _haveScreenshot;
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([object isKindOfClass:[RCPost class]]) {
         RCPost* updatedPost = (RCPost*) object;
-        for (RCMainFeedCell* cell in _collectionView.visibleCells) {
-            NSIndexPath *path = [_collectionView indexPathForCell:cell];
-            RCPost *post = [_posts objectAtIndex:path.row];
-            if (post.postID == updatedPost.postID)
-                [cell.imageView setImage:updatedPost.thumbnailImage];
-        }
+        RCMainFeedCell* cell = [_cellForPost objectForKey:[NSNumber numberWithInt:updatedPost.postID]];
+        [cell.imageView setImage:updatedPost.thumbnailImage];
     }
 }
 
@@ -476,6 +476,7 @@ BOOL        _haveScreenshot;
     RCPost *post;
     post = [_posts objectAtIndex:indexPath.row];
     [cell getPostContentImageFromInternet:_user withPostContent:post usingCollection:nil completion:nil];
+    [_cellForPost setObject:cell forKey:[NSNumber numberWithInt:post.postID]];
     if ([_chosenPosts count] != 0) {
         if ([_chosenPosts containsObject:[[NSNumber alloc] initWithInt:post.postID]]) {
             [cell changeCellState:RCCellStateFloat];
