@@ -300,7 +300,9 @@ BOOL        _haveScreenshot;
                 }                
                 SBJsonParser *jsonParser = [SBJsonParser new];
                 NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
+#if DEBUG==1
                 NSLog(@"%@%@",[RCMainFeedViewController debugTag], responseData);
+#endif
                 
                 if (jsonData != NULL) {
                     [_postsByLandmark removeAllObjects];
@@ -390,7 +392,9 @@ BOOL        _haveScreenshot;
              }
              SBJsonParser *jsonParser = [SBJsonParser new];
              NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
+#if DEBUG==1
              NSLog(@"%@%@",[RCMainFeedViewController debugTag], responseData);
+#endif
              
              if (jsonData != NULL) {
                  NSArray *postList = (NSArray *) [jsonData objectForKey:@"post_list"];
@@ -475,8 +479,8 @@ BOOL        _haveScreenshot;
     RCMainFeedCell *cell = [cv dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
     RCPost *post;
     post = [_posts objectAtIndex:indexPath.row];
-    [cell getPostContentImageFromInternet:_user withPostContent:post usingCollection:nil completion:nil];
     [_cellForPost setObject:cell forKey:[NSNumber numberWithInt:post.postID]];
+    [cell getPostContentImageFromInternet:_user withPostContent:post usingCollection:nil completion:nil];
     if ([_chosenPosts count] != 0) {
         if ([_chosenPosts containsObject:[[NSNumber alloc] initWithInt:post.postID]]) {
             [cell changeCellState:RCCellStateFloat];

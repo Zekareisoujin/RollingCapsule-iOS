@@ -132,6 +132,7 @@
 		64D6D80517994B5400AA1161 /* buttonSubmit.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D6D80317994B5400AA1161 /* buttonSubmit.png */; };
 		64D6D80B17998ECF00AA1161 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 64D6D80A17998ECF00AA1161 /* Reachability.m */; };
 		64D6D80D179995C500AA1161 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64D6D80C179995C500AA1161 /* SystemConfiguration.framework */; };
+		64DEC504179DB28100FDD711 /* profileWorldMap-2.png in Resources */ = {isa = PBXBuildFile; fileRef = 64DEC503179DB28100FDD711 /* profileWorldMap-2.png */; };
 		64E293101784A84B009496FF /* viewPostCommentButton-normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */; };
 		64E293121784A8C8009496FF /* viewPostCommentButton-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */; };
 		64E293161784ABEE009496FF /* viewPostFollowLabel.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293131784ABEE009496FF /* viewPostFollowLabel.png */; };
@@ -412,6 +413,7 @@
 		64D6D80817998E7B00AA1161 /* Reachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		64D6D80A17998ECF00AA1161 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		64D6D80C179995C500AA1161 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		64DEC503179DB28100FDD711 /* profileWorldMap-2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "profileWorldMap-2.png"; path = "Rolling Capsule/profileWorldMap-2.png"; sourceTree = "<group>"; };
 		64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "viewPostCommentButton-normal.png"; path = "../viewPostCommentButton-normal.png"; sourceTree = "<group>"; };
 		64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "viewPostCommentButton-highlighted.png"; path = "../viewPostCommentButton-highlighted.png"; sourceTree = "<group>"; };
 		64E293131784ABEE009496FF /* viewPostFollowLabel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostFollowLabel.png; path = ../viewPostFollowLabel.png; sourceTree = "<group>"; };
@@ -766,6 +768,7 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
+				64DEC503179DB28100FDD711 /* profileWorldMap-2.png */,
 				649B424D179D3BE90019B1A7 /* postFriendPrivacyButton-2-highlighted.png */,
 				649B424E179D3BE90019B1A7 /* postPersonalPrivacyButton-2-highlighted.png */,
 				649B424F179D3BE90019B1A7 /* postPublicPrivacyButton-2-highlighted.png */,
@@ -1217,6 +1220,7 @@
 				BFE63144179D6AB4004992E1 /* friendListBarFriends.png in Resources */,
 				BFE63145179D6AB4004992E1 /* friendListBarPending.png in Resources */,
 				BFE63147179D8020004992E1 /* friendListSearchBarBg.png in Resources */,
+				64DEC504179DB28100FDD711 /* profileWorldMap-2.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
