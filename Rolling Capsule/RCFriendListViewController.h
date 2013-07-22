@@ -17,26 +17,24 @@ enum RCFriendListViewMode {
 };
 typedef enum RCFriendListViewMode RCFriendListViewMode;
 
-@interface RCFriendListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate>
+@interface RCFriendListViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate, UISearchDisplayDelegate, UITextFieldDelegate>
 
 - (id)initWithUser:(RCUser *)user withLoggedinUser:(RCUser*)loggedinUser;
 
 @property (weak, nonatomic) IBOutlet UIImageView *imgUserAvatar;
 @property (weak, nonatomic) IBOutlet UILabel *lblTableTitle;
 @property (weak, nonatomic) IBOutlet UITableView *tblViewFriendList;
-@property (nonatomic, strong) NSMutableArray *friends;
-@property (nonatomic, strong) NSMutableArray *requested_friends;
-@property (nonatomic, strong) NSMutableArray *followees;
 @property (weak, nonatomic) IBOutlet UIButton *btnRequests;
 @property (weak, nonatomic) IBOutlet UIButton *btnFriends;
 @property (weak, nonatomic) IBOutlet UIButton *btnFollowees;
-@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
+//@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
+@property (weak, nonatomic) IBOutlet UITextField *searchBar;
 @property (weak, nonatomic) IBOutlet UIImageView *tableTitleBackground;
 @property (weak, nonatomic) IBOutlet UILabel *tableTitleLabel;
 @property (nonatomic,strong) RCUser *user;
 @property (nonatomic,strong) RCUser *loggedinUser;
 @property (strong,nonatomic) NSMutableArray *searchResultList;
-@property (strong, nonatomic) IBOutlet UIViewController *contentSubView;
+- (IBAction)btnBackgroundTap:(id)sender;
 
 - (IBAction)btnFriendTouchUpInside:(id)sender;
 - (IBAction)btnRequestsTouchUpInside:(id)sender;

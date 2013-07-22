@@ -19,23 +19,29 @@
 @interface RCFriendListViewController ()
 
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
-@property (nonatomic, weak) NSMutableArray* items;
+@property (nonatomic, weak) NSMutableArray* displayedItems;
+@property (nonatomic, strong) NSMutableArray *friends;
+@property (nonatomic, strong) NSMutableArray *requested_friends;
+@property (nonatomic, strong) NSMutableArray *followees;
 @end
 
 @implementation RCFriendListViewController
-BOOL        _firstRefresh;
+
+@synthesize displayedItems = _displayedItems;
 @synthesize friends = _friends;
 @synthesize requested_friends = _requested_friends;
 @synthesize followees = _followees;
-@synthesize items = _items;
 @synthesize user = _user;
 @synthesize loggedinUser = _loggedinUser;
 @synthesize refreshControl = _refreshControl;
 @synthesize searchResultList = _searchResultList;
 
+BOOL                    _firstRefresh;
 RCFriendListViewMode    _viewingMode;
 RCConnectionManager     *_connectionManager;
 NSArray                 *controlButtonArray;
+NSMutableArray          *currentDisplayedItems;
+BOOL                    isSearching;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -91,17 +97,19 @@ NSArray                 *controlButtonArray;
                         action:@selector(handleRefresh:)
               forControlEvents:UIControlEventValueChanged  ];
     
-    // Configure search display table view
-    
     // Configure name & avatar display in friend list
     [_user getUserAvatarAsync:_user.userID completionHandler:^(UIImage* img){
         [_imgUserAvatar setImage:img];
     }];
     [_lblTableTitle setText:_user.name];
     
+    // Configure search bar
+    [_searchBar setDelegate:self];
+    isSearching = NO;
+    
     // Load all lists once at the beginning, and default tab is friend tab:
     _viewingMode = RCFriendListViewModeFriends;
-    _items = _friends;
+    _displayedItems = _friends;
     [self asynchGetFriendsRequest];
     [self asynchGetFolloweesRequest];
     [self asynchGetRequestedFriendsRequest];
@@ -149,7 +157,7 @@ NSArray                 *controlButtonArray;
     if (tableView == self.searchDisplayController.searchResultsTableView)
         return [_searchResultList count];
     else
-        return [_items count];
+        return [_displayedItems count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -161,7 +169,7 @@ NSArray                 *controlButtonArray;
     if (tableView == self.searchDisplayController.searchResultsTableView) {
         user = [_searchResultList objectAtIndex:indexPath.row];
     } else {
-        user = [_items objectAtIndex:indexPath.row];
+        user = [_displayedItems objectAtIndex:indexPath.row];
     }
     //[RCConnectionManager startConnection];
     [cell populateCellData:user
@@ -183,7 +191,7 @@ NSArray                 *controlButtonArray;
     if (tableView == self.searchDisplayController.searchResultsTableView)
         user = [_searchResultList objectAtIndex:indexPath.row];
     else
-        user = [_items objectAtIndex:indexPath.row];
+        user = [_displayedItems objectAtIndex:indexPath.row];
     RCUserProfileViewController *detailViewController = [[RCUserProfileViewController alloc] initWithUser:user viewingUser:_loggedinUser];
     [self.navigationController pushViewController:detailViewController animated:YES];
 }
@@ -342,35 +350,48 @@ NSArray                 *controlButtonArray;
     [self.navigationController pushViewController:findFriendsViewController animated:YES];
 }
 
+- (IBAction)btnBackgroundTap:(id)sender {
+    [_searchBar resignFirstResponder];
+}
+
 - (IBAction)btnFriendTouchUpInside:(id)sender {
     _viewingMode = RCFriendListViewModeFriends;
-    _items = _friends;
-    [_searchBar setPlaceholder:@"Search for friends"];
+    _displayedItems = _friends;
+    //[_searchBar setPlaceholder:@"Search for friends"];
     [_tableTitleBackground setImage:[UIImage imageNamed:@"friendListBarFriends"]];
     [_tableTitleLabel setText:@"Friends"];
     
+    currentDisplayedItems = _displayedItems;
+    [_searchBar setText:@""];
+    [_searchBar resignFirstResponder];
     [_tblViewFriendList reloadData];
     [self enableControl:YES];
 }
 
 - (IBAction)btnRequestsTouchUpInside:(id)sender {
     _viewingMode = RCFriendListViewModePendingFriends;
-    _items = _requested_friends;
-    [_searchBar setPlaceholder:@"Search for pending requests"];
+    _displayedItems = _requested_friends;
+    //[_searchBar setPlaceholder:@"Search for pending requests"];
     [_tableTitleBackground setImage:[UIImage imageNamed:@"friendListBarPending"]];
     [_tableTitleLabel setText:@"Pending requests"];
     
+    currentDisplayedItems = _displayedItems;
+    [_searchBar setText:@""];
+    [_searchBar resignFirstResponder];
     [_tblViewFriendList reloadData];
     [self enableControl:YES];
 }
 
 - (IBAction)btnFolloweeTouchUpInside:(id)sender {
     _viewingMode = RCFriendListViewModeFollowees;
-    _items = _followees;
-    [_searchBar setPlaceholder:@"Search for people you follow"];
+    _displayedItems = _followees;
+    //[_searchBar setPlaceholder:@"Search for people you follow"];
     [_tableTitleBackground setImage:[UIImage imageNamed:@"friendListBarFollows"]];
     [_tableTitleLabel setText:@"People you follow"];
     
+    currentDisplayedItems = _displayedItems;
+    [_searchBar setText:@""];
+    [_searchBar resignFirstResponder];
     [_tblViewFriendList reloadData];
     [self enableControl:YES];
 }
@@ -390,17 +411,43 @@ NSArray                 *controlButtonArray;
     }
 }
 
-#pragma mark - UISearchDisplayController helper
-- (void)filterContentForSearchText:(NSString*)searchText scope:(NSString*)scope {
+#pragma mark - search helper
+- (void)filterContentForSearchText:(NSString*)searchText fromList:(NSArray*)parentList withScope:(NSString*)scope {
     // Update the filtered array based on the search text and scope.
     // Remove all objects from the filtered search array
     [_searchResultList removeAllObjects];
     // Filter the array using NSPredicate
     NSPredicate *predicate = [NSPredicate predicateWithFormat:@"SELF.name contains[c] %@",searchText];
-    _searchResultList = [NSMutableArray arrayWithArray:[_items filteredArrayUsingPredicate:predicate]];
+    _searchResultList = [NSMutableArray arrayWithArray:[parentList filteredArrayUsingPredicate:predicate]];
 }
 
-#pragma mark - UISearchDisplayController Delegate Methods
+
+#pragma mark - UITextFieldDelegate
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    NSString *searchText = [_searchBar.text stringByReplacingCharactersInRange:range withString:string];
+    NSLog(@"Textfield change, search text: %@", searchText);
+    
+    if (!isSearching) {
+        isSearching = YES;
+        [self filterContentForSearchText:searchText fromList:currentDisplayedItems withScope:nil];
+        _displayedItems = _searchResultList;
+    }else if ([searchText isEqualToString:@""]) {
+        _displayedItems = currentDisplayedItems;
+        isSearching = NO;
+    }else {
+        [self filterContentForSearchText:searchText fromList:currentDisplayedItems withScope:nil];
+        _displayedItems = _searchResultList;
+    }
+    [_tblViewFriendList reloadData];
+    return YES;
+}
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField {
+    [textField resignFirstResponder];
+    return YES;
+}
+
+/*#pragma mark - UISearchDisplayController Delegate Methods
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
     // Tells the table data source to reload when text changes
     [self filterContentForSearchText:searchString scope:
@@ -435,6 +482,6 @@ NSArray                 *controlButtonArray;
 - (void)removeOverlay
 {
     [[self.view.subviews lastObject] setHidden:YES];
-}
+}*/
 
 @end
