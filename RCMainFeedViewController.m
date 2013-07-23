@@ -732,13 +732,12 @@
 }
 
 - (void) animateButtonRefresh: (BOOL)animate {
-//    if (animate) {
-//        //NSURL *url = [[NSBundle mainBundle] URLForResource:@"mainFeedRefresh" withExtension:@"gif"];
-//        //[_btnRefresh setImage:[UIImage animatedImageWithAnimatedGIFURL:url] forState:UIControlStateNormal];
-//        //[_btnRefresh setImage:[UIImage animatedImageNamed:@"refresh" duration:1.0] forState:UIControlStateNormal];
-//    }else {
-//        [_btnRefresh setImage:[UIImage imageNamed:@"buttonRefresh"] forState:UIControlStateNormal];
-//    }
+    if (animate) {
+        NSURL *url = [[NSBundle mainBundle] URLForResource:@"buttonRefresh" withExtension:@"gif"];
+        [_btnRefresh setImage:[UIImage animatedImageWithAnimatedGIFURL:url] forState:UIControlStateNormal];
+    }else {
+        [_btnRefresh setImage:[UIImage imageNamed:@"buttonRefresh"] forState:UIControlStateNormal];
+    }
 }
 
 - (void) setCurrentUser: (RCUser*) user {

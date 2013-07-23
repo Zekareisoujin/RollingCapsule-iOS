@@ -11,7 +11,6 @@
 		64008048179EBA0F00C6B2B2 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64008047179EBA0F00C6B2B2 /* CoreText.framework */; };
 		6401017D1797DC79002A6E2E /* RCNewPostViewController4.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6401017C1797DC79002A6E2E /* RCNewPostViewController4.xib */; };
 		640103491798041A002A6E2E /* buttonPost@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 640103471798041A002A6E2E /* buttonPost@2x.png */; };
-		6401034A1798041A002A6E2E /* buttonRefresh.png in Resources */ = {isa = PBXBuildFile; fileRef = 640103481798041A002A6E2E /* buttonRefresh.png */; };
 		6401034D17981D10002A6E2E /* postButtonTimeCapsule-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 6401034B17981D10002A6E2E /* postButtonTimeCapsule-highlighted.png */; };
 		6401034E17981D10002A6E2E /* postButtonTimeCapsule.png in Resources */ = {isa = PBXBuildFile; fileRef = 6401034C17981D10002A6E2E /* postButtonTimeCapsule.png */; };
 		6401035117981E4E002A6E2E /* RCDatePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6401035017981E4D002A6E2E /* RCDatePickerView.m */; };
@@ -239,6 +238,7 @@
 		BFD6530D179EE78E00D6A13D /* UIImage+animatedGIF.m in Sources */ = {isa = PBXBuildFile; fileRef = BFD6530C179EE78E00D6A13D /* UIImage+animatedGIF.m */; };
 		BFD6530F179EE7CD00D6A13D /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFD6530E179EE7CD00D6A13D /* ImageIO.framework */; };
 		BFD65310179EE8ED00D6A13D /* UIImage+animatedGIF.m in Sources */ = {isa = PBXBuildFile; fileRef = BFD6530C179EE78E00D6A13D /* UIImage+animatedGIF.m */; };
+		BFD65334179F167B00D6A13D /* buttonRefresh.gif in Resources */ = {isa = PBXBuildFile; fileRef = BFD65333179F167B00D6A13D /* buttonRefresh.gif */; };
 		BFE3073117953EE7000C9C58 /* profileWorldMapSpot.png in Resources */ = {isa = PBXBuildFile; fileRef = BFE3073017953EE7000C9C58 /* profileWorldMapSpot.png */; };
 		BFE3073317957D05000C9C58 /* mapViewAddLandmark.png in Resources */ = {isa = PBXBuildFile; fileRef = BFE3073217957D04000C9C58 /* mapViewAddLandmark.png */; };
 		BFE307371795961C000C9C58 /* friendListFollow.png in Resources */ = {isa = PBXBuildFile; fileRef = BFE3073417959619000C9C58 /* friendListFollow.png */; };
@@ -266,7 +266,6 @@
 		64008047179EBA0F00C6B2B2 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		6401017C1797DC79002A6E2E /* RCNewPostViewController4.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCNewPostViewController4.xib; sourceTree = "<group>"; };
 		640103471798041A002A6E2E /* buttonPost@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "buttonPost@2x.png"; path = "../buttonPost@2x.png"; sourceTree = "<group>"; };
-		640103481798041A002A6E2E /* buttonRefresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = buttonRefresh.png; path = ../buttonRefresh.png; sourceTree = "<group>"; };
 		6401034B17981D10002A6E2E /* postButtonTimeCapsule-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "postButtonTimeCapsule-highlighted.png"; path = "../postButtonTimeCapsule-highlighted.png"; sourceTree = "<group>"; };
 		6401034C17981D10002A6E2E /* postButtonTimeCapsule.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = postButtonTimeCapsule.png; path = ../postButtonTimeCapsule.png; sourceTree = "<group>"; };
 		6401034F17981E4D002A6E2E /* RCDatePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDatePickerView.h; sourceTree = "<group>"; };
@@ -555,6 +554,7 @@
 		BFD6530B179EE78E00D6A13D /* UIImage+animatedGIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+animatedGIF.h"; sourceTree = "<group>"; };
 		BFD6530C179EE78E00D6A13D /* UIImage+animatedGIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+animatedGIF.m"; sourceTree = "<group>"; };
 		BFD6530E179EE7CD00D6A13D /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		BFD65333179F167B00D6A13D /* buttonRefresh.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = buttonRefresh.gif; sourceTree = "<group>"; };
 		BFE3073017953EE7000C9C58 /* profileWorldMapSpot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profileWorldMapSpot.png; sourceTree = "<group>"; };
 		BFE3073217957D04000C9C58 /* mapViewAddLandmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapViewAddLandmark.png; sourceTree = "<group>"; };
 		BFE3073417959619000C9C58 /* friendListFollow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = friendListFollow.png; sourceTree = "<group>"; };
@@ -644,7 +644,7 @@
 				64D6D80217994B5300AA1161 /* buttonCancel.png */,
 				64B81CB71795E21C00B5A825 /* buttonPlay.png */,
 				640103471798041A002A6E2E /* buttonPost@2x.png */,
-				640103481798041A002A6E2E /* buttonRefresh.png */,
+				BFD65333179F167B00D6A13D /* buttonRefresh.gif */,
 				64D6D80317994B5400AA1161 /* buttonSubmit.png */,
 				649B4238179C3AC80019B1A7 /* buttonTopic.png */,
 				64119A12178460A500BF0B05 /* closeButton.png */,
@@ -1222,7 +1222,6 @@
 				BF8DDD5B1797068100803CE1 /* RCSettingViewController.xib in Resources */,
 				6401017D1797DC79002A6E2E /* RCNewPostViewController4.xib in Resources */,
 				640103491798041A002A6E2E /* buttonPost@2x.png in Resources */,
-				6401034A1798041A002A6E2E /* buttonRefresh.png in Resources */,
 				6401034D17981D10002A6E2E /* postButtonTimeCapsule-highlighted.png in Resources */,
 				6401034E17981D10002A6E2E /* postButtonTimeCapsule.png in Resources */,
 				6401035317981E6C002A6E2E /* RCDatePickerView.xib in Resources */,
@@ -1256,6 +1255,7 @@
 				BFE63145179D6AB4004992E1 /* friendListBarPending.png in Resources */,
 				BFE63147179D8020004992E1 /* friendListSearchBarBg.png in Resources */,
 				BF3E9827179EB4AC007EF258 /* friendListSearchBarCancel.png in Resources */,
+				BFD65334179F167B00D6A13D /* buttonRefresh.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
