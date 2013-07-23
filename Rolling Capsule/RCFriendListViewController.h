@@ -27,14 +27,17 @@ typedef enum RCFriendListViewMode RCFriendListViewMode;
 @property (weak, nonatomic) IBOutlet UIButton *btnRequests;
 @property (weak, nonatomic) IBOutlet UIButton *btnFriends;
 @property (weak, nonatomic) IBOutlet UIButton *btnFollowees;
-//@property (weak, nonatomic) IBOutlet UISearchBar *searchBar;
+
 @property (weak, nonatomic) IBOutlet UITextField *searchBar;
+@property (weak, nonatomic) IBOutlet UIButton *btnSearchBarCancel;
+
 @property (weak, nonatomic) IBOutlet UIImageView *tableTitleBackground;
 @property (weak, nonatomic) IBOutlet UILabel *tableTitleLabel;
 @property (nonatomic,strong) RCUser *user;
 @property (nonatomic,strong) RCUser *loggedinUser;
 @property (strong,nonatomic) NSMutableArray *searchResultList;
 - (IBAction)btnBackgroundTap:(id)sender;
+- (IBAction)btnSearchBarCancelTouchUpInside:(id)sender;
 
 - (IBAction)btnFriendTouchUpInside:(id)sender;
 - (IBAction)btnRequestsTouchUpInside:(id)sender;
