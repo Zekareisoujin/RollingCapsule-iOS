@@ -66,32 +66,9 @@
             return;
         }
         
-        
-        //if (![_key hasSuffix:@".mov"]) {
-            [self startS3DownloadRequest];
-        /*} else {
-            _s3 = [RCAmazonS3Helper s3:_ownerID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3UsersMediaBucket]];
-            S3ResponseHeaderOverrides *override = [[S3ResponseHeaderOverrides alloc] init];
-            override.contentType = @"movie/mov";
-            S3GetPreSignedURLRequest *gpsur = [[S3GetPreSignedURLRequest alloc] init];
-            gpsur.key     = _key;
-            gpsur.bucket  = RCAmazonS3UsersMediaBucket;
-            gpsur.expires = [NSDate dateWithTimeIntervalSinceNow:(NSTimeInterval) 3600];  // Added an hour's worth of seconds to the current time.
-            gpsur.responseHeaderOverrides = override;
-            NSURL *url = [_s3 getPreSignedURL:gpsur];
-            NSLog(@"end generate url");
-            [_delegate downloadFinish:url];
-            //[self finish];
-            
-        }
-        [RCConnectionManager endConnection];*/
+        [self startS3DownloadRequest];
     }
 }
-
-/*- (void)start
-{
-    
-}*/
 
 - (void) startS3DownloadRequest {
     while (nRetry--) {
@@ -118,8 +95,8 @@
 
 - (void)request:(AmazonServiceRequest *)request didReceiveData:(NSData *)data {
     UIImage *image = [UIImage imageWithData:data];
+    [[RCResourceCache centralCache] putResourceInCache:image forKey:@"media/%@"];
     [_delegate downloadFinish:image];
-    //[self finish];
 }
 
 - (void)request:(AmazonServiceRequest *)request didFailWithServiceException:(NSException *)exception {
@@ -143,10 +120,13 @@
 }
 
 -(void)request: (S3Request *)request didCompleteWithResponse: (S3Response *) response {
+#if DEBUG==1
     NSLog(@"Download finished (%d)",response.httpStatusCode);
+#endif
     /* do something with response.body and response.httpStatusCode */
     /* if you have multiple requests, you can check request arg */
 }
+
 /*
 - (void) finish {
     [self willChangeValueForKey:@"isExecuting"];

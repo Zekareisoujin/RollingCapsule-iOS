@@ -14,6 +14,11 @@
 #import "RCOperationsManager.h"
 #import "RCOperationsManager.h"
 
+@interface RCPost ()
+@property (nonatomic,strong) NSObject* objUIUpdate;
+@property (nonatomic,assign) SEL       selUIUPdate;
+@end
+
 @implementation RCPost
 
 @synthesize content = _content;
@@ -36,6 +41,8 @@
 @synthesize isTimeCapsule = _isTimeCapsule;
 @synthesize thumbnailImage = _thumbnailImage;
 @synthesize topic = _topic;
+@synthesize objUIUpdate = _objUIUpdate;
+@synthesize selUIUPdate = _selUIUPdate;
 
 static NSMutableDictionary* RCPostPostCollection = nil;
 
@@ -150,7 +157,12 @@ static NSMutableDictionary* RCPostPostCollection = nil;
 }
 - (void)downloadFinish:(NSObject *)object {
     if ([object isKindOfClass:[UIImage class]]) {
-        self.thumbnailImage = (UIImage*) object;
+        _thumbnailImage = (UIImage*) object;
+        [_objUIUpdate performSelectorOnMainThread:_selUIUPdate withObject:self waitUntilDone:NO];
     }
+}
+- (void) registerUIUpdateAction:(NSObject*)target action:(SEL)sel {
+    _objUIUpdate = target;
+    _selUIUPdate = sel;
 }
 @end

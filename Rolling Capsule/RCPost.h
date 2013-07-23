@@ -38,4 +38,5 @@
 - (id) initWithNSDictionary:(NSDictionary *)userData;
 + (void) initPostDataModel;
 - (void) getThumbnailImageAsync: (int)viewingUserID completion:(void (^)(UIImage*)) completionFunc;
+- (void) registerUIUpdateAction:(NSObject*)target action:(SEL)sel;
 @end

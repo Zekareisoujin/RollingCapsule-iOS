@@ -14,7 +14,7 @@
 #import "RCConnectionManager.h"
 
 @implementation RCMainFeedCell {
-    int _currrentPostID;
+    int _currentPostID;
 }
 
 @synthesize dimMask = _dimMask;
@@ -74,12 +74,15 @@ return staticRCLoadingImage;
 */
 
 - (void)getPostContentImageFromInternet:(RCUser *) user withPostContent:(RCPost *) post usingCollection:(NSMutableDictionary*)postCache completion:(void (^)(void))callback {
-    _currrentPostID = post.postID;
+    _currentPostID = post.postID;
     [self.layer setShadowPath:[[UIBezierPath
                                 bezierPathWithRect:self.bounds] CGPath]];
-    if ([post.fileUrl isKindOfClass:[NSNull class]]) return;
+    if ([post.thumbnailUrl isKindOfClass:[NSNull class]]) return;
+    _currentPostID = post.postID;
     if (post.thumbnailImage != nil)
-    [ self.imageView setImage:post.thumbnailImage];
+        [ self.imageView setImage:post.thumbnailImage];
+    else
+        [post registerUIUpdateAction:self action:@selector(updateUIWithPost:)];
     /*RCResourceCache *cache = [RCResourceCache centralCache];
     NSString *key = [NSString stringWithFormat:@"%@/%@", RCMediaResource, post.thumbnailUrl];
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
@@ -124,11 +127,14 @@ return staticRCLoadingImage;
     }];*/
 }
 
+- (void) updateUIWithPost:(RCPost*)post {
+    if (post.postID == _currentPostID)
+        [_imageView setImage:post.thumbnailImage];
+}
+
 -(void)setFrame:(CGRect)frame {
     [super setFrame:frame];
     [self setNeedsDisplay];
-    //UICollectionView* collectionView;
-    //[collectionView indexPathForCell:self];
 }
 
 - (void) changeCellState:(int)newState {

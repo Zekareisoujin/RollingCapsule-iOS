@@ -42,27 +42,27 @@
 @property (nonatomic, assign) RCMainFeedViewMode      currentViewMode;
 @property (nonatomic, strong) UIButton* postButton;
 @property (nonatomic, strong) Reachability * reachability;
-@property (nonatomic, strong) NSMutableDictionary* cellForPost;
 @property (nonatomic, strong) UILabel* lblWarningNoConnection;
 @property (nonatomic, assign) BOOL didZoom;
 
 @end
 
-@implementation RCMainFeedViewController
+@implementation RCMainFeedViewController {
+    // Feed page control:
+    NSString    *address;
+    int     currentPageNumber;
+    int     currentMaxPostNumber;
+    int     currentMaxDisplayedPostNumber;
+    int     showThreshold;
+    BOOL    willShowMoreFeeds;
+    
+    int         _nRows;
+    BOOL        _firstRefresh;
+    BOOL        _willRefresh;
+    BOOL        _haveScreenshot;
 
-// Feed page control:
-NSString    *address;
-int     currentPageNumber;
-int     currentMaxPostNumber;
-int     currentMaxDisplayedPostNumber;
-int     showThreshold;
-BOOL    willShowMoreFeeds;
+}
 
-int         _nRows;
-BOOL        _firstRefresh;
-BOOL        _willRefresh;
-BOOL        _haveScreenshot;
-@synthesize cellForPost = _cellForPost;
 @synthesize refreshControl = _refreshControl;
 @synthesize user = _user;
 @synthesize connectionManager = _connectionManager;
@@ -100,7 +100,6 @@ BOOL        _haveScreenshot;
     if (self) {
         _connectionManager = [[RCConnectionManager alloc] init];
         _postsByLandmark = [[NSMutableDictionary alloc] init];
-        _cellForPost = [[NSMutableDictionary alloc] init];
         _chosenPosts = [[NSMutableSet alloc] init];
         _landmarks = [[NSMutableDictionary alloc] init];
         _posts = [[NSMutableArray alloc] init];
@@ -326,8 +325,6 @@ BOOL        _haveScreenshot;
                     for (NSDictionary *postData in postList) {
                         RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
                         [_posts addObject:post];
-                        //[post addObserver:self forKeyPath:@"thumbnailImage" options:NSKeyValueObservingOptionNew context:nil];
-                        //NSLog(@"%@ post coordinates %f %f",[RCMainFeedViewController debugTag], post.coordinate.latitude, post.coordinate.longitude);
                     }
                     willShowMoreFeeds = ([_posts count] == currentMaxPostNumber);
                     
@@ -352,13 +349,6 @@ BOOL        _haveScreenshot;
     }
     if (failed)
         alertStatus(RCErrorMessageFailedToGetFeed,RCAlertMessageConnectionFailed,self);
-}
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([object isKindOfClass:[RCPost class]]) {
-        RCPost* updatedPost = (RCPost*) object;
-        RCMainFeedCell* cell = [_cellForPost objectForKey:[NSNumber numberWithInt:updatedPost.postID]];
-        [cell.imageView setImage:updatedPost.thumbnailImage];
-    }
 }
 
 - (void) asynchFetchFeedNextPage {
@@ -478,8 +468,6 @@ BOOL        _haveScreenshot;
     RCMainFeedCell *cell = [cv dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
     RCPost *post;
     post = [_posts objectAtIndex:indexPath.row];
-    [post addObserver:self forKeyPath:@"thumbnailImage" options:NSKeyValueObservingOptionNew context:nil];
-    [_cellForPost setObject:cell forKey:[NSNumber numberWithInt:post.postID]];
     [cell getPostContentImageFromInternet:_user withPostContent:post usingCollection:nil completion:nil];
     if ([_chosenPosts count] != 0) {
         if ([_chosenPosts containsObject:[[NSNumber alloc] initWithInt:post.postID]]) {
