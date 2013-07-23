@@ -16,7 +16,7 @@
 @property (strong, nonatomic) UINavigationController *navigationController;
 @property (nonatomic, strong) RCUser* user;
 
-@property (weak, nonatomic) IBOutlet UIImageView *imgUserAvatar;
+@property (weak, nonatomic) IBOutlet UIButton *btnUserAvatar;
 @property (weak, nonatomic) IBOutlet TTTAttributedLabel *lblUserName;
 @property (weak, nonatomic) IBOutlet UITableView *menuTable;
 

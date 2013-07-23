@@ -259,6 +259,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{274, 283}, {41, 41}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -642,7 +643,7 @@
 								<float key="scoringTypeFloat">40</float>
 								<int key="contentType">3</int>
 							</object>
-							<object class="IBNSLayoutConstraint" id="1010676344">
+							<object class="IBNSLayoutConstraint" id="716594791">
 								<reference key="firstItem" ref="191373211"/>
 								<int key="firstAttribute">6</int>
 								<int key="relation">0</int>
@@ -1787,7 +1788,7 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">981</int>
-						<reference key="object" ref="1010676344"/>
+						<reference key="object" ref="716594791"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -1834,7 +1835,7 @@
 					<reference ref="1025295043"/>
 					<reference ref="284719883"/>
 					<reference ref="682572116"/>
-					<reference ref="1010676344"/>
+					<reference ref="716594791"/>
 					<reference ref="116183135"/>
 					<reference ref="429496793"/>
 					<reference ref="706724175"/>
@@ -1847,6 +1848,7 @@
 					<reference ref="81315298"/>
 				</array>
 				<boolean value="NO" key="117.IBViewMetadataTranslatesAutoresizingMaskIntoConstraints"/>
+				<string key="177.CustomClassName">TTTAttributedLabel</string>
 				<string key="177.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<array class="NSMutableArray" key="177.IBViewMetadataConstraints">
 					<reference ref="913558545"/>

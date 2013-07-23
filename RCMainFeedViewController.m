@@ -23,9 +23,10 @@
 #import "RCAddLandmarkController.h"
 #import "Reachability.h"
 #import "UIImage+animatedGIF.h"
+#import "SBJson.h"
+#import "TTTAttributedLabel.h"
 #import <QuartzCore/QuartzCore.h>
 #import <MediaPlayer/MediaPlayer.h>
-#import "SBJson.h"
 
 #define NUM_RETRY_MAIN_FEED 5
 
@@ -311,7 +312,8 @@
                     NSDictionary *userDictionary = (NSDictionary *) [jsonData objectForKey:@"user"];
                     _user = [[RCUser alloc] initWithNSDictionary:userDictionary];
                     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                    _lblUsername.text = _user.name;
+                    [_lblUsername setText: _user.name];
+                    [_lblUsername addLinkToURL:[NSURL URLWithString:[NSString stringWithFormat:@"memcap:/%@/%d?user[name]=%@",RCUsersResource,_user.userID, urlEncodeValue(_user.name)]] withRange:NSMakeRange(0,[_lblUsername.text length])];
                     
                     [_user getUserAvatarAsync:_user.userID completionHandler:^(UIImage* img){
                          dispatch_async(dispatch_get_main_queue(), ^{
@@ -565,7 +567,12 @@
     
     //prepare user UI element
     if (_user != nil) {
-        _lblUsername.text = _user.name;
+        [_lblUsername setText: _user.name];
+        [_lblUsername setLinkAttributes:[[_lblUsername attributedText] attributesAtIndex:0 effectiveRange:nil]];
+        [_lblUsername setActiveLinkAttributes:[[_lblUsername attributedText] attributesAtIndex:0 effectiveRange:nil]];
+        [_lblUsername addLinkToURL:[NSURL URLWithString:[NSString stringWithFormat:@"memcap:/%@/%d?user[name]=%@",RCUsersResource,_user.userID, urlEncodeValue(_user.name)]] withRange:NSMakeRange(0,[_lblUsername.text length])];
+        [_lblUsername setDelegate:(AppDelegate*)[[UIApplication sharedApplication] delegate]];
+        
         [_user getUserAvatarAsync:_user.userID completionHandler:^(UIImage* retAvatar){
             dispatch_async(dispatch_get_main_queue(),^{
                 [_btnUserAvatar setImage:retAvatar forState:UIControlStateNormal];

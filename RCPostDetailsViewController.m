@@ -456,7 +456,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
             [textLabel setAttributedText:[self generateAttributedStringForUser:_post.authorName forComment:_post.content withDate:nil]];
         else
             [textLabel setText:[NSString stringWithFormat:@"%@: %@",_post.authorName,_post.content]];
-        textLabel.linkAttributes = [textLabel.attributedText attributesAtIndex:0 effectiveRange:nil];
+        textLabel.activeLinkAttributes = textLabel.linkAttributes = [textLabel.attributedText attributesAtIndex:0 effectiveRange:nil];
         [textLabel addLinkToURL:[NSURL URLWithString:[NSString stringWithFormat:@"memcap:/%@/%d?user[name]=%@",RCUsersResource, _post.userID, urlEncodeValue(_post.authorName)]] withRange:NSMakeRange(0,[_post.authorName length])];
     } else {
         RCComment *comment = [_comments objectAtIndex:(idx-1)];
@@ -464,7 +464,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
             [textLabel setAttributedText:[self generateAttributedStringForUser:comment.authorName forComment:comment.content withDate:comment.createdTime]];
         else
             [textLabel setText:[NSString stringWithFormat:@"%@: %@",comment.authorName,comment.content]];
-        textLabel.linkAttributes = [textLabel.attributedText attributesAtIndex:0 effectiveRange:nil];
+        textLabel.activeLinkAttributes = textLabel.linkAttributes = [textLabel.attributedText attributesAtIndex:0 effectiveRange:nil];
         [textLabel addLinkToURL:[NSURL URLWithString:[NSString stringWithFormat:@"memcap:/%@/%d?user[name]=%@",RCUsersResource, comment.userID, urlEncodeValue(comment.authorName)]] withRange:NSMakeRange(0,[comment.authorName length])];
     }
     [cell addSubview:textLabel];
