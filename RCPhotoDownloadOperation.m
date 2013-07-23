@@ -51,7 +51,7 @@
         }*/
         [RCConnectionManager startConnection];
 #if DEBUG==1
-        NSLog(@"download photo with started.", _key);
+        //NSLog(@"download photo with started.", _key);
 #endif
         
         /*[self willChangeValueForKey:@"isExecuting"];
@@ -95,7 +95,7 @@
 
 - (void)request:(AmazonServiceRequest *)request didReceiveData:(NSData *)data {
     UIImage *image = [UIImage imageWithData:data];
-    [[RCResourceCache centralCache] putResourceInCache:image forKey:@"media/%@"];
+    [[RCResourceCache centralCache] putResourceInCache:image forKey:[NSString stringWithFormat:@"media/%@",_key]];
     [_delegate downloadFinish:image];
 }
 
