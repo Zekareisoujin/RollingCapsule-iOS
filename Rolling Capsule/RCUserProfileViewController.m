@@ -27,7 +27,28 @@
 @property (nonatomic, strong) UILongPressGestureRecognizer *longPressGestureRecognizer;
 @end
 
-@implementation RCUserProfileViewController
+@implementation RCUserProfileViewController {
+    NSArray  *_postPreviewElements;
+    NSString *_friendStatus;
+    int       _friendshipID;
+    int       _followID;
+    BOOL      _isFollowing;
+    
+    int       nRows;
+    
+    // Feed page control:
+    int     currentPageNumber;
+    int     currentMaxPostNumber;
+    int     currentMaxDisplayedPostNumber;
+    int     showThreshold;
+    BOOL    willShowMoreFeeds;
+    
+    // Map reference data:
+    NSArray *referencePoints;
+    double  minimapScaleX;
+    double  minimapScaleY;
+    struct RCMapReferencePoint orgRefPoint;
+}
 
 @synthesize collectionView = _collectionView;
 @synthesize btnDeclineRequest = _btnDeclineRequest;
@@ -48,27 +69,6 @@
 @synthesize userAvatarImage = _userAvatarImage;
 @synthesize lblAvatarEdit = _lblAvatarEdit;
 @synthesize longPressGestureRecognizer = _longPressGestureRecognizer;
-
-NSArray  *_postPreviewElements;
-NSString *_friendStatus;
-int       _friendshipID;
-int       _followID;
-BOOL      _isFollowing;
-
-int       nRows;
-
-// Feed page control:
-int     currentPageNumber;
-int     currentMaxPostNumber;
-int     currentMaxDisplayedPostNumber;
-int     showThreshold;
-BOOL    willShowMoreFeeds;
-
-// Map reference data:
-NSArray *referencePoints;
-double  minimapScaleX;
-double  minimapScaleY;
-struct RCMapReferencePoint orgRefPoint;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];

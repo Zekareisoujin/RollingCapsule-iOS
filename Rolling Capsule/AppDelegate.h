@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <CoreLocation/CoreLocation.h>
 #import "TestFlight.h"
+#import "TTTAttributedLabel.h"
 
 #define NSLog TFLog
 
@@ -16,7 +17,7 @@
 @class RCSlideoutViewController;
 @class RCUser;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, CLLocationManagerDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, CLLocationManagerDelegate, TTTAttributedLabelDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 

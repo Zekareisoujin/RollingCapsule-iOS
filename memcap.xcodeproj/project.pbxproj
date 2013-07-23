@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		64008046179EB84200C6B2B2 /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 64008045179EB84200C6B2B2 /* TTTAttributedLabel.m */; };
+		64008048179EBA0F00C6B2B2 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64008047179EBA0F00C6B2B2 /* CoreText.framework */; };
 		6401017D1797DC79002A6E2E /* RCNewPostViewController4.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6401017C1797DC79002A6E2E /* RCNewPostViewController4.xib */; };
 		640103491798041A002A6E2E /* buttonPost@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 640103471798041A002A6E2E /* buttonPost@2x.png */; };
 		6401034A1798041A002A6E2E /* buttonRefresh.png in Resources */ = {isa = PBXBuildFile; fileRef = 640103481798041A002A6E2E /* buttonRefresh.png */; };
@@ -256,6 +258,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		64008044179EB84200C6B2B2 /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAttributedLabel.h; sourceTree = "<group>"; };
+		64008045179EB84200C6B2B2 /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAttributedLabel.m; sourceTree = "<group>"; };
+		64008047179EBA0F00C6B2B2 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		6401017C1797DC79002A6E2E /* RCNewPostViewController4.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCNewPostViewController4.xib; sourceTree = "<group>"; };
 		640103471798041A002A6E2E /* buttonPost@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "buttonPost@2x.png"; path = "../buttonPost@2x.png"; sourceTree = "<group>"; };
 		640103481798041A002A6E2E /* buttonRefresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = buttonRefresh.png; path = ../buttonRefresh.png; sourceTree = "<group>"; };
@@ -560,6 +565,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				64008048179EBA0F00C6B2B2 /* CoreText.framework in Frameworks */,
 				64D6D80D179995C500AA1161 /* SystemConfiguration.framework in Frameworks */,
 				6417B232179415C6007777E5 /* CoreMedia.framework in Frameworks */,
 				647E2FD117929BFC00AA6B9A /* AVFoundation.framework in Frameworks */,
@@ -771,6 +777,7 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
+				64008047179EBA0F00C6B2B2 /* CoreText.framework */,
 				BFCA7821174DFD3F00666CBA /* Rolling Capsule */,
 				BFCA7845174DFD3F00666CBA /* Rolling CapsuleTests */,
 				BFCA781A174DFD3F00666CBA /* Frameworks */,
@@ -924,6 +931,8 @@
 		BFE6314A179DCA08004992E1 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				64008044179EB84200C6B2B2 /* TTTAttributedLabel.h */,
+				64008045179EB84200C6B2B2 /* TTTAttributedLabel.m */,
 				6401034F17981E4D002A6E2E /* RCDatePickerView.h */,
 				6401035017981E4D002A6E2E /* RCDatePickerView.m */,
 				6401035217981E6C002A6E2E /* RCDatePickerView.xib */,
@@ -1322,6 +1331,7 @@
 				64C62DE9179B007F005DFD8B /* RCOperationsManager.m in Sources */,
 				643C0802179B0B0E002BD751 /* RCPhotoDownloadOperation.m in Sources */,
 				649B424B179C51040019B1A7 /* RCLoadingLocationViewController.m in Sources */,
+				64008046179EB84200C6B2B2 /* TTTAttributedLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -46,20 +46,22 @@
 @property (nonatomic, assign) BOOL didZoom;
 @end
 
-@implementation RCMainFeedViewController
+@implementation RCMainFeedViewController {
+    // Feed page control:
+    NSString    *address;
+    int     currentPageNumber;
+    int     currentMaxPostNumber;
+    int     currentMaxDisplayedPostNumber;
+    int     showThreshold;
+    BOOL    willShowMoreFeeds;
+    
+    int         _nRows;
+    BOOL        _firstRefresh;
+    BOOL        _willRefresh;
+    BOOL        _haveScreenshot;
+    
+}
 
-// Feed page control:
-NSString    *address;
-int     currentPageNumber;
-int     currentMaxPostNumber;
-int     currentMaxDisplayedPostNumber;
-int     showThreshold;
-BOOL    willShowMoreFeeds;
-
-int         _nRows;
-BOOL        _firstRefresh;
-BOOL        _willRefresh;
-BOOL        _haveScreenshot;
 @synthesize refreshControl = _refreshControl;
 @synthesize user = _user;
 @synthesize connectionManager = _connectionManager;
