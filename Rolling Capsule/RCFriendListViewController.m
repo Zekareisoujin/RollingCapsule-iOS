@@ -41,7 +41,7 @@ RCFriendListViewMode    _viewingMode;
 RCConnectionManager     *_connectionManager;
 NSArray                 *controlButtonArray;
 NSMutableArray          *currentDisplayedItems;
-BOOL                    isSearching;
+//BOOL                    isSearching;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -105,7 +105,8 @@ BOOL                    isSearching;
     
     // Configure search bar
     [_searchBar setDelegate:self];
-    isSearching = NO;
+    [_btnSearchBarCancel setHidden:YES];
+//    isSearching = NO;
     
     // Load all lists once at the beginning, and default tab is friend tab:
     _viewingMode = RCFriendListViewModeFriends;
@@ -354,6 +355,12 @@ BOOL                    isSearching;
     [_searchBar resignFirstResponder];
 }
 
+- (IBAction)btnSearchBarCancelTouchUpInside:(id)sender {
+    _displayedItems = currentDisplayedItems;
+    [self clearSearchBar];
+
+}
+
 - (IBAction)btnFriendTouchUpInside:(id)sender {
     _viewingMode = RCFriendListViewModeFriends;
     _displayedItems = _friends;
@@ -362,9 +369,7 @@ BOOL                    isSearching;
     [_tableTitleLabel setText:@"Friends"];
     
     currentDisplayedItems = _displayedItems;
-    [_searchBar setText:@""];
-    [_searchBar resignFirstResponder];
-    [_tblViewFriendList reloadData];
+    [self clearSearchBar];
     [self enableControl:YES];
 }
 
@@ -376,9 +381,7 @@ BOOL                    isSearching;
     [_tableTitleLabel setText:@"Pending requests"];
     
     currentDisplayedItems = _displayedItems;
-    [_searchBar setText:@""];
-    [_searchBar resignFirstResponder];
-    [_tblViewFriendList reloadData];
+    [self clearSearchBar];
     [self enableControl:YES];
 }
 
@@ -390,13 +393,11 @@ BOOL                    isSearching;
     [_tableTitleLabel setText:@"People you follow"];
     
     currentDisplayedItems = _displayedItems;
-    [_searchBar setText:@""];
-    [_searchBar resignFirstResponder];
-    [_tblViewFriendList reloadData];
+    [self clearSearchBar];
     [self enableControl:YES];
 }
 
-- (void) enableControl: (BOOL)enable {
+- (void)enableControl: (BOOL)enable {
     for (UIButton *btn in controlButtonArray)
         btn.enabled = enable;
     switch (_viewingMode) {
@@ -409,6 +410,13 @@ BOOL                    isSearching;
         case RCFriendListViewModePendingFriends:
             _btnRequests.enabled = NO;
     }
+}
+
+- (void)clearSearchBar {
+    [_btnSearchBarCancel setHidden:YES];
+    [_searchBar setText:@""];
+    [_searchBar resignFirstResponder];
+    [_tblViewFriendList reloadData];
 }
 
 #pragma mark - search helper
@@ -427,17 +435,26 @@ BOOL                    isSearching;
     NSString *searchText = [_searchBar.text stringByReplacingCharactersInRange:range withString:string];
     NSLog(@"Textfield change, search text: %@", searchText);
     
-    if (!isSearching) {
-        isSearching = YES;
-        [self filterContentForSearchText:searchText fromList:currentDisplayedItems withScope:nil];
-        _displayedItems = _searchResultList;
-    }else if ([searchText isEqualToString:@""]) {
+    if ([searchText isEqualToString:@""]) {
         _displayedItems = currentDisplayedItems;
-        isSearching = NO;
+        [_btnSearchBarCancel setHidden:YES];
     }else {
         [self filterContentForSearchText:searchText fromList:currentDisplayedItems withScope:nil];
         _displayedItems = _searchResultList;
+        [_btnSearchBarCancel setHidden:NO];
     }
+    
+//    if (!isSearching) {
+//        isSearching = YES;
+//        [self filterContentForSearchText:searchText fromList:currentDisplayedItems withScope:nil];
+//        _displayedItems = _searchResultList;
+//    }else if ([searchText isEqualToString:@""]) {
+//        _displayedItems = currentDisplayedItems;
+//        isSearching = NO;
+//    }else {
+//        [self filterContentForSearchText:searchText fromList:currentDisplayedItems withScope:nil];
+//        _displayedItems = _searchResultList;
+//    }
     [_tblViewFriendList reloadData];
     return YES;
 }
