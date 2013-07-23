@@ -18,6 +18,7 @@
 #import "RCNewPostViewController.h"
 #import "RCPostDetailsViewController.h"
 #import "RCLoadingLocationViewController.h"
+#import "RCUserProfileViewController.h"
 #import "RCConstants.h"
 
 
@@ -165,5 +166,54 @@ BOOL _didQueueOpenMainFeedOption;
 
 - (void) setNotificationList:(NSArray*)notifications {
     _userNotifications = notifications;
+}
+
+- (NSDictionary *)parseQueryString:(NSString *)query {
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:6] ;
+    NSArray *pairs = [query componentsSeparatedByString:@"&"];
+    
+    for (NSString *pair in pairs) {
+        NSArray *elements = [pair componentsSeparatedByString:@"="];
+        NSString *key = [[elements objectAtIndex:0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *val = [[elements objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        
+        [dict setObject:val forKey:key];
+    }
+    return dict;
+}
+
+- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
+    
+    if ([url.scheme hasPrefix:@"memcap"]) {
+        NSLog(@"%@",url.relativePath);
+        if ([url.host hasPrefix:@"users"]) {
+            NSLog(@"query-str: %@",url.query);
+            NSDictionary *params = [self parseQueryString:url.query];
+            NSString* userIDStr = [url.relativePath substringFromIndex:[@"/" length]];
+            if ([userIDStr intValue] != 0) {
+                RCUser *user = [[RCUser alloc] init];
+                user.userID = [userIDStr intValue];
+                user.name = [params objectForKey:@"user[name]"];
+                RCUserProfileViewController *userProfileViewController = [[RCUserProfileViewController alloc] initWithUser:user viewingUser:self.menuViewController.user];
+                [self.navigationController pushViewController:userProfileViewController animated:YES];
+                [self hideSideMenu];
+            }
+        }
+    }
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
+    if ([url.scheme hasPrefix:@"memcap"]) {
+        if ([url.host hasPrefix:@"users/"]) {
+            NSString* userIDStr = [url.relativePath substringFromIndex:[@"/" length]];
+            if ([userIDStr intValue] != 0) {
+                [RCUser getUserWithIDAsync:[userIDStr intValue] completionHandler:^(RCUser *user){
+                    RCUserProfileViewController *userProfileViewController = [[RCUserProfileViewController alloc] initWithUser:user viewingUser:self.menuViewController.user];
+                    [_navigationController pushViewController:userProfileViewController animated:YES];
+                }];
+            }
+        }
+    }
+    return NO;
 }
 @end

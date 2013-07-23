@@ -126,7 +126,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     [button addTarget:self action:@selector(openCommentPostingView) forControlEvents:UIControlEventTouchUpInside];
     
     _tblViewPostDiscussion.tableFooterView = [[UIView alloc] init];//button;
-    _tblViewPostDiscussion.contentInset = UIEdgeInsetsMake(0,-8,0,-8);
+    //_tblViewPostDiscussion.contentInset = UIEdgeInsetsMake(0,-8,0,-8);
 
     //[_tblViewPostDiscussion setSeparatorColor:[UIColor whiteColor]];
     _currentCommentID = -1;
@@ -446,28 +446,31 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     int idx = [indexPath row];
     
     UITableViewCell *cell = [[UITableViewCell alloc] init];
-    cell.textLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    cell.textLabel.numberOfLines = 0;
-    cell.textLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0];
+    TTTAttributedLabel *textLabel = [[TTTAttributedLabel alloc] initWithFrame:cell.textLabel.frame];
+    
+    textLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    textLabel.numberOfLines = 0;
+    textLabel.font = [UIFont fontWithName:@"Helvetica" size:17.0];
     if (idx == 0) {
-        if ([cell.textLabel respondsToSelector:@selector(setAttributedText:)])
-            [cell.textLabel setAttributedText:[self generateAttributedStringForUser:_post.authorName forComment:_post.content withDate:nil]];
-         else
-            [cell.textLabel setText:[NSString stringWithFormat:@"%@: %@",_post.authorName,_post.content]];
+        if ([textLabel respondsToSelector:@selector(setAttributedText:)])
+            [textLabel setAttributedText:[self generateAttributedStringForUser:_post.authorName forComment:_post.content withDate:nil]];
+        else
+            [textLabel setText:[NSString stringWithFormat:@"%@: %@",_post.authorName,_post.content]];
+        textLabel.linkAttributes = [textLabel.attributedText attributesAtIndex:0 effectiveRange:nil];
+        [textLabel addLinkToURL:[NSURL URLWithString:[NSString stringWithFormat:@"memcap:/%@/%d?user[name]=%@",RCUsersResource, _post.userID, urlEncodeValue(_post.authorName)]] withRange:NSMakeRange(0,[_post.authorName length])];
     } else {
         RCComment *comment = [_comments objectAtIndex:(idx-1)];
-        if ([cell.textLabel respondsToSelector:@selector(setAttributedText:)])
-            [cell.textLabel setAttributedText:[self generateAttributedStringForUser:comment.authorName forComment:comment.content withDate:comment.createdTime]];
-         else
-            [cell.textLabel setText:[NSString stringWithFormat:@"%@: %@",comment.authorName,comment.content]];
+        if ([textLabel respondsToSelector:@selector(setAttributedText:)])
+            [textLabel setAttributedText:[self generateAttributedStringForUser:comment.authorName forComment:comment.content withDate:comment.createdTime]];
+        else
+            [textLabel setText:[NSString stringWithFormat:@"%@: %@",comment.authorName,comment.content]];
+        textLabel.linkAttributes = [textLabel.attributedText attributesAtIndex:0 effectiveRange:nil];
+        [textLabel addLinkToURL:[NSURL URLWithString:[NSString stringWithFormat:@"memcap:/%@/%d?user[name]=%@",RCUsersResource, comment.userID, urlEncodeValue(comment.authorName)]] withRange:NSMakeRange(0,[comment.authorName length])];
     }
-    
-    
-    
-    //label.adjustsFontSizeToFitWidth = YES;
-    //label.adjustsLetterSpacingToFitWidth = NO;  // this crashes on iOS 6.1
-    
-
+    [cell addSubview:textLabel];
+    CGSize size = [textLabel sizeThatFits:CGSizeMake(_tblViewPostDiscussion.frame.size.width, MAXFLOAT)];
+    textLabel.frame = CGRectMake(0,0,size.width,size.height);
+    textLabel.delegate = (AppDelegate*) [[UIApplication sharedApplication] delegate];
     return cell;
 }
     
@@ -527,39 +530,13 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
         RCComment *comment = [_comments objectAtIndex:(idx-1)];
         attributedText = [self generateAttributedStringForUser:comment.authorName forComment:comment.content withDate:comment.createdTime];
     }
-    UILabel *lbl = [[UILabel alloc] init];
+    TTTAttributedLabel *lbl = [[TTTAttributedLabel alloc] init];
     lbl.lineBreakMode = NSLineBreakByWordWrapping;
     lbl.numberOfLines = 0;
     [lbl setAttributedText:attributedText];
     CGSize size =[lbl sizeThatFits:CGSizeMake(_tblViewPostDiscussion.frame.size.width,MAXFLOAT)];
-    return size.height + 50.0;
-/*
-    //magic number
-    CGFloat extra = 20.0;
-    NSString *cellText;
-    if (indexPath.row > 0) {
-        RCComment *comment = (RCComment*)[_comments objectAtIndex:indexPath.row - 1];
-        cellText = [NSString stringWithFormat:@"%@ %@",comment.authorName,comment.content];
-    }
-    else {
-        cellText = [NSString stringWithFormat:@"%@ %@",_post.authorName,_post.content];
-        if ([[UILabel alloc] respondsToSelector:@selector(setAttributedText:)])
-        {
-            //this is because when drawing attributed text the label seems to be further away from the boundary for some reason
-            //extra += 10;
-        }
-    }
-    
-    UIFont *cellFont = [UIFont fontWithName:@"Helvetica" size:17.0];
-    CGSize constraintSize = CGSizeMake(_imgViewCommentFrame.frame.size.width, MAXFLOAT);
-    CGSize labelSize = [cellText sizeWithFont:cellFont constrainedToSize:constraintSize lineBreakMode:NSLineBreakByWordWrapping];
-    
-    if (indexPath.row > 0) {
-        UIFont *timestampFont = [UIFont fontWithName:@"Helvetica" size:15.0];
-        CGSize timestampSize = [cellText sizeWithFont:timestampFont constrainedToSize:constraintSize lineBreakMode:NSLineBreakByWordWrapping];
-        extra += timestampSize.height;
-    }
-    return labelSize.height + extra;*/
+    return size.height + 20.0;
+
 }
 
 #pragma mark - UITableViewDelegate

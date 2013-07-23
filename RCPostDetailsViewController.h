@@ -12,8 +12,9 @@
 #import "RCLandmark.h"
 #import "RCLightboxViewController.h"
 #import "RCUtilities.h"
+#import "TTTAttributedLabel.h"
 
-@interface RCPostDetailsViewController : UIViewController<UITableViewDataSource, UITableViewDataSource, UITextFieldDelegate, UITextViewDelegate>
+@interface RCPostDetailsViewController : UIViewController<UITableViewDataSource, UITableViewDataSource, UITextFieldDelegate, UITextViewDelegate, TTTAttributedLabelDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollViewImage;
 @property (weak, nonatomic) IBOutlet UIImageView *imgViewMainFrame;
 @property (weak, nonatomic) IBOutlet UIView *viewCoverStrip;

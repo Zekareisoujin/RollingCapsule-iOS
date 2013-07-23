@@ -447,6 +447,10 @@ BOOL                    isSearching;
     return YES;
 }
 
+- (void) viewWillAppear:(BOOL)animated {
+    [_tblViewFriendList reloadData];
+}
+
 /*#pragma mark - UISearchDisplayController Delegate Methods
 - (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
     // Tells the table data source to reload when text changes

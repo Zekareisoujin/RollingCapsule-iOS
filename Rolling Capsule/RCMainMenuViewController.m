@@ -234,16 +234,9 @@
 
 - (void) refreshUserAvatar {
     [_lblUserName setText:_user.name];
-    
-    // retrieve user avatar
-    /*dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
-    dispatch_async(queue, ^{
-        UIImage *img = [_user getUserAvatar:_user.userID];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [_imgUserAvatar setImage:img];
-        });
-    });*/
+    _lblUserName.linkAttributes = [[_lblUserName attributedText] attributesAtIndex:0 effectiveRange:nil];
+    [_lblUserName addLinkToURL:[NSURL URLWithString:[NSString stringWithFormat:@"memcap:/%@/%d?user[name]=%@",RCUsersResource,_user.userID,_user.name]] withRange:NSMakeRange(0,[_lblUserName.text length])];
+    _lblUserName.delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     [_user getUserAvatarAsync:_user.userID completionHandler:^(UIImage* img){
         dispatch_async(dispatch_get_main_queue(), ^{
             [_imgUserAvatar setImage:img];

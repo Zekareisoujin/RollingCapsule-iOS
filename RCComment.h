@@ -14,6 +14,7 @@
 @property (nonatomic,strong) NSString *authorName;
 @property (nonatomic,strong) NSDate *createdTime;
 @property (nonatomic, assign) int commentID;
+@property (nonatomic, assign) int userID;
 - (id) initWithNSDictionary:(NSDictionary *)userData;
 
 @end

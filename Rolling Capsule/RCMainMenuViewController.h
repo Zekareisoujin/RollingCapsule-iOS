@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "RCUser.h"
 #import "RCLoginViewController.h"
-
+#import "TTTAttributedLabel.h"
 
 @interface RCMainMenuViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, RCLoginViewControllerDelegate>
 
@@ -17,7 +17,7 @@
 @property (nonatomic, strong) RCUser* user;
 
 @property (weak, nonatomic) IBOutlet UIImageView *imgUserAvatar;
-@property (weak, nonatomic) IBOutlet UILabel *lblUserName;
+@property (weak, nonatomic) IBOutlet TTTAttributedLabel *lblUserName;
 @property (weak, nonatomic) IBOutlet UITableView *menuTable;
 
 @property (weak, nonatomic) IBOutlet UIButton *btnLogOutDropdown;
