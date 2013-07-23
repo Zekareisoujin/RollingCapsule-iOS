@@ -15,6 +15,7 @@
 #import "RCUtilities.h"
 #import "RCConstants.h"
 #import "RCMenuTableCell.h"
+#import "UIImage+animatedGIF.h"
 
 @interface RCMainMenuViewController ()
 
@@ -60,6 +61,7 @@ BOOL    showLogOut;
     // Set table view background image
     UIImageView *backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"slideMenuBackground"]];
     [backgroundView setFrame:_menuTable.frame];
+    [_imgUserAvatar setImage:[UIImage standardLoadingImage]];
     [_menuTable setBackgroundView: backgroundView];
     [_menuTable reloadData];
     showLogOut = false;

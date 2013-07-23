@@ -236,6 +236,9 @@
 		BFCA787B174E1B1200666CBA /* SBJsonWriter.m in Sources */ = {isa = PBXBuildFile; fileRef = BFCA786F174E1B1200666CBA /* SBJsonWriter.m */; };
 		BFCCEFCE178C9B9700D2434C /* profileBtnFriendAction@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFCCEFCD178C9B9700D2434C /* profileBtnFriendAction@2x.png */; };
 		BFCCEFD0178CA38A00D2434C /* profileWorldMap.png in Resources */ = {isa = PBXBuildFile; fileRef = BFCCEFCF178CA38A00D2434C /* profileWorldMap.png */; };
+		BFD6530D179EE78E00D6A13D /* UIImage+animatedGIF.m in Sources */ = {isa = PBXBuildFile; fileRef = BFD6530C179EE78E00D6A13D /* UIImage+animatedGIF.m */; };
+		BFD6530F179EE7CD00D6A13D /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFD6530E179EE7CD00D6A13D /* ImageIO.framework */; };
+		BFD65310179EE8ED00D6A13D /* UIImage+animatedGIF.m in Sources */ = {isa = PBXBuildFile; fileRef = BFD6530C179EE78E00D6A13D /* UIImage+animatedGIF.m */; };
 		BFE3073117953EE7000C9C58 /* profileWorldMapSpot.png in Resources */ = {isa = PBXBuildFile; fileRef = BFE3073017953EE7000C9C58 /* profileWorldMapSpot.png */; };
 		BFE3073317957D05000C9C58 /* mapViewAddLandmark.png in Resources */ = {isa = PBXBuildFile; fileRef = BFE3073217957D04000C9C58 /* mapViewAddLandmark.png */; };
 		BFE307371795961C000C9C58 /* friendListFollow.png in Resources */ = {isa = PBXBuildFile; fileRef = BFE3073417959619000C9C58 /* friendListFollow.png */; };
@@ -549,6 +552,9 @@
 		BFCA786F174E1B1200666CBA /* SBJsonWriter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJsonWriter.m; sourceTree = "<group>"; };
 		BFCCEFCD178C9B9700D2434C /* profileBtnFriendAction@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "profileBtnFriendAction@2x.png"; sourceTree = "<group>"; };
 		BFCCEFCF178CA38A00D2434C /* profileWorldMap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profileWorldMap.png; sourceTree = "<group>"; };
+		BFD6530B179EE78E00D6A13D /* UIImage+animatedGIF.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+animatedGIF.h"; sourceTree = "<group>"; };
+		BFD6530C179EE78E00D6A13D /* UIImage+animatedGIF.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+animatedGIF.m"; sourceTree = "<group>"; };
+		BFD6530E179EE7CD00D6A13D /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		BFE3073017953EE7000C9C58 /* profileWorldMapSpot.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profileWorldMapSpot.png; sourceTree = "<group>"; };
 		BFE3073217957D04000C9C58 /* mapViewAddLandmark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mapViewAddLandmark.png; sourceTree = "<group>"; };
 		BFE3073417959619000C9C58 /* friendListFollow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = friendListFollow.png; sourceTree = "<group>"; };
@@ -565,6 +571,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFD6530F179EE7CD00D6A13D /* ImageIO.framework in Frameworks */,
 				64008048179EBA0F00C6B2B2 /* CoreText.framework in Frameworks */,
 				64D6D80D179995C500AA1161 /* SystemConfiguration.framework in Frameworks */,
 				6417B232179415C6007777E5 /* CoreMedia.framework in Frameworks */,
@@ -777,7 +784,6 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
-				64008047179EBA0F00C6B2B2 /* CoreText.framework */,
 				BFCA7821174DFD3F00666CBA /* Rolling Capsule */,
 				BFCA7845174DFD3F00666CBA /* Rolling CapsuleTests */,
 				BFCA781A174DFD3F00666CBA /* Frameworks */,
@@ -803,7 +809,9 @@
 				BFCA781F174DFD3F00666CBA /* CoreGraphics.framework */,
 				643EACEF175C1B5C002761D9 /* CoreLocation.framework */,
 				6417B231179415C6007777E5 /* CoreMedia.framework */,
+				64008047179EBA0F00C6B2B2 /* CoreText.framework */,
 				BFCA781D174DFD3F00666CBA /* Foundation.framework */,
+				BFD6530E179EE7CD00D6A13D /* ImageIO.framework */,
 				64FE8432176B9E0E00E561D8 /* libTestFlight.a */,
 				64FE84E4176BAAD800E561D8 /* libz.dylib */,
 				64FFD2CC17662D1B004337F8 /* MapKit.framework */,
@@ -922,6 +930,8 @@
 				64119A151784611700BF0B05 /* RCLightboxViewController.m */,
 				6490A90E1758E2D000E5048F /* RCSlideoutViewController.h */,
 				6490A90F1758E2D000E5048F /* RCSlideoutViewController.m */,
+				BFD6530B179EE78E00D6A13D /* UIImage+animatedGIF.h */,
+				BFD6530C179EE78E00D6A13D /* UIImage+animatedGIF.m */,
 				64EEBFC0178DC10400D2C968 /* UIViewController+RCCustomBackButtonViewController.h */,
 				64EEBFC1178DC10400D2C968 /* UIViewController+RCCustomBackButtonViewController.m */,
 			);
@@ -1280,6 +1290,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFD65310179EE8ED00D6A13D /* UIImage+animatedGIF.m in Sources */,
 				BFCA7828174DFD3F00666CBA /* main.m in Sources */,
 				BFCA782C174DFD3F00666CBA /* AppDelegate.m in Sources */,
 				BFCA7835174DFD3F00666CBA /* RCLoginViewController.m in Sources */,
@@ -1340,6 +1351,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BFCA784D174DFD3F00666CBA /* Rolling_CapsuleTests.m in Sources */,
+				BFD6530D179EE78E00D6A13D /* UIImage+animatedGIF.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -22,6 +22,7 @@
 #import "RCNotification.h"
 #import "RCAddLandmarkController.h"
 #import "Reachability.h"
+#import "UIImage+animatedGIF.h"
 #import <QuartzCore/QuartzCore.h>
 #import <MediaPlayer/MediaPlayer.h>
 #import "SBJson.h"
@@ -123,7 +124,6 @@
     //miscellaneous helper preparation
     [_connectionManager reset];
     
-    
     //reset view data
     [_chosenPosts removeAllObjects];
     _currentLandmarkID = -1;
@@ -142,10 +142,10 @@
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithCustomView:_postButton] ;
     self.navigationItem.rightBarButtonItem = rightButton;
     
-    
+    //initializing display elements
+    [_btnUserAvatar setImage:[UIImage standardLoadingImage] forState:UIControlStateNormal];
     
     //prepare collection view
-    
     UICollectionViewFlowLayout *flow =  (UICollectionViewFlowLayout *)_collectionView.collectionViewLayout;
     flow.minimumInteritemSpacing = 0.0;
     _refreshControl = [[UIRefreshControl alloc] init];//tableViewController.refreshControl;
@@ -211,6 +211,8 @@
     [formatter setDateFormat:RCInfoStringDateFormat];
     NSString *lastUpdated = [NSString stringWithFormat:RCInfoStringLastUpdatedOnFormat, [formatter  stringFromDate:[NSDate date] ] ];
     [_refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:lastUpdated]];
+    [self animateButtonRefresh:YES];
+    
 	[self asynchFetchFeeds:NUM_RETRY_MAIN_FEED];
 }
 
@@ -329,13 +331,15 @@
                     
                     [_mapView removeAnnotations:_mapView.annotations];
                     [_collectionView reloadData];
+                    [self animateButtonRefresh:NO];
                     
                     return;
                 } else {
                     NSLog(@"error: %@",error);
-                    if (nRetry == 0)
+                    if (nRetry == 0) {
                         alertStatus(RCErrorMessageFailedToGetFeed,RCAlertMessageServerError,self);
-                    else {
+                        [self animateButtonRefresh:NO];
+                    }else {
                         [self asynchFetchFeeds:nRetry];
                     }
                 }
@@ -605,6 +609,7 @@
     [[NSUserDefaults standardUserDefaults] setInteger:_nRows forKey:RCMainFeedRowCountSetting];
     float width = (_collectionView.frame.size.height-42) / _nRows;
     int numCell = [[UIScreen mainScreen] bounds].size.width / width + 0.5;
+    numCell++;
     showThreshold = numCell * _nRows;
 }
 
@@ -724,6 +729,16 @@
     //[self showMoreFeedButton:NO animate:NO];
     currentMaxDisplayedPostNumber = currentMaxPostNumber;
     [_collectionView reloadData];
+}
+
+- (void) animateButtonRefresh: (BOOL)animate {
+//    if (animate) {
+//        //NSURL *url = [[NSBundle mainBundle] URLForResource:@"mainFeedRefresh" withExtension:@"gif"];
+//        //[_btnRefresh setImage:[UIImage animatedImageWithAnimatedGIFURL:url] forState:UIControlStateNormal];
+//        //[_btnRefresh setImage:[UIImage animatedImageNamed:@"refresh" duration:1.0] forState:UIControlStateNormal];
+//    }else {
+//        [_btnRefresh setImage:[UIImage imageNamed:@"buttonRefresh"] forState:UIControlStateNormal];
+//    }
 }
 
 - (void) setCurrentUser: (RCUser*) user {

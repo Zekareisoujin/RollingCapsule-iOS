@@ -15,6 +15,7 @@
 #import "RCResourceCache.h"
 #import "RCFriendListViewController.h"
 #import "RCPostDetailsViewController.h"
+#import "UIImage+animatedGIF.h"
 #import <AWSRuntime/AWSRuntime.h>
 
 @interface RCUserProfileViewController ()
@@ -93,12 +94,22 @@
     if ([self.navigationController.viewControllers count] > 2)
         [self setupBackButton];
     
+    // Initialize display elements
     self.navigationItem.title = @" ";
     _lblName.text = _profileUser.name;
     _btnFriendAction.enabled = NO;
     _btnAvatarImg.enabled = NO;
+    //_userAvatarImage = [UIImage standardLoadingImage];
+    //[_btnAvatarImg setImage:[UIImage standardLoadingImage] forState:UIControlStateNormal];
     [_btnFriendAction setTitle:RCLoadingRelation forState:UIControlStateNormal];
-    [self getAvatarImageFromInternet];
+    
+    [_profileUser getUserAvatarAsync:_viewingUserID completionHandler:^(UIImage* img){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            _userAvatarImage = img;
+            [_btnAvatarImg setBackgroundImage:_userAvatarImage forState:UIControlStateNormal];
+            [_btnAvatarImg setBackgroundImage:_userAvatarImage forState:UIControlStateDisabled];
+        });
+    }];
     
     UICollectionViewFlowLayout *flow =  (UICollectionViewFlowLayout *)_collectionView.collectionViewLayout;
     flow.minimumInteritemSpacing = 0.0;
@@ -620,37 +631,32 @@
 }
 
 #pragma mark - Helper Methods
-
--(void) getAvatarImageFromInternet {
-    /*RCResourceCache *cache = [RCResourceCache centralCache];
-    NSString *key = [[NSString alloc] initWithFormat:@"%@/%d-avatar", RCUsersResource, _profileUser.userID];
-    
-    dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
-    dispatch_async(queue, ^{
-        UIImage *cachedImg = [cache getResourceForKey:key usingQuery:^{
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-            UIImage *image = [RCAmazonS3Helper getAvatarImage:_profileUser withLoggedinUserID:_viewingUserID];
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-            return image;
-        }];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (cachedImg == nil)
-                _userAvatarImage = [UIImage imageNamed:@"default_avatar.png"];
-            else
-                _userAvatarImage = cachedImg;
-            [_btnAvatarImg setBackgroundImage:_userAvatarImage forState:UIControlStateDisabled];
-            
-        });
-    });*/
-    
-    [_profileUser getUserAvatarAsync:_viewingUserID completionHandler:^(UIImage* img){
-        dispatch_async(dispatch_get_main_queue(), ^{
-            _userAvatarImage = img;
-            [_btnAvatarImg setBackgroundImage:_userAvatarImage forState:UIControlStateDisabled];
-        });
-    }];
-}
+// To be removed, old code
+//-(void) getAvatarImageFromInternet {
+//    /*RCResourceCache *cache = [RCResourceCache centralCache];
+//    NSString *key = [[NSString alloc] initWithFormat:@"%@/%d-avatar", RCUsersResource, _profileUser.userID];
+//    
+//    dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
+//    dispatch_async(queue, ^{
+//        UIImage *cachedImg = [cache getResourceForKey:key usingQuery:^{
+//            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+//            UIImage *image = [RCAmazonS3Helper getAvatarImage:_profileUser withLoggedinUserID:_viewingUserID];
+//            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+//            return image;
+//        }];
+//        
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            if (cachedImg == nil)
+//                _userAvatarImage = [UIImage imageNamed:@"default_avatar.png"];
+//            else
+//                _userAvatarImage = cachedImg;
+//            [_btnAvatarImg setBackgroundImage:_userAvatarImage forState:UIControlStateDisabled];
+//            
+//        });
+//    });*/
+//    
+//    
+//}
 
 #pragma mark - UICollectionView Datasource
 
