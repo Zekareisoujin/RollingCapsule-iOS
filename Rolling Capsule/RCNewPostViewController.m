@@ -371,11 +371,8 @@ NSData *_thumbnailData;
         addArgumentToQueryString(dataSt, @"post[subject]", postSubject);
         if (_currentTopic != nil)
             addArgumentToQueryString(dataSt, @"post[topic]", _currentTopic);
-        if (_datePickerView != nil) {
-            NSString* releaseDate = [_datePickerView dateTimeString];
-            if (releaseDate != nil) {
-                addArgumentToQueryString(dataSt, @"post[release]", releaseDate);
-            }
+        if (_isTimedRelease) {
+            addArgumentToQueryString(dataSt, @"post[release]", [_datePickerView dateTimeString]);
         }
         if (_currentLandmark != nil) {
             addArgumentToQueryString(dataSt, @"landmark_id", [NSString stringWithFormat:@"%d",_currentLandmark.landmarkID]);
@@ -569,7 +566,8 @@ NSData *_thumbnailData;
             //save photo if newly taken
             if ([picker sourceType] == UIImagePickerControllerSourceTypeCamera)
                 UIImageWriteToSavedPhotosAlbum(_postImage, self, nil, nil);
-            _postImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+            //_postImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+            _postImage = [info objectForKey:UIImagePickerControllerEditedImage];
             NSLog(@"image size %f %f",_postImage.size.width, _postImage.size.height);
             if (_postImage.size.width > 800 && _postImage.size.height > 800) {
                 float division = MIN(_postImage.size.width/(800.0-1.0), _postImage.size.height/(800-1.0));
@@ -724,6 +722,7 @@ NSData *_thumbnailData;
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
         imagePicker.delegate = self;
+        imagePicker.allowsEditing = YES;
         
         [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
         [_txtViewPostContent resignFirstResponder];
@@ -738,7 +737,7 @@ NSData *_thumbnailData;
         UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
         imagePicker.delegate = self;
         imagePicker.videoQuality = UIImagePickerControllerQualityTypeMedium;
-        //imagePicker.allowsEditing = YES;
+        imagePicker.allowsEditing = YES;
         imagePicker.videoMaximumDuration = RCMaxVideoLength;
         NSMutableArray *currentMediaTypesArray = [[NSMutableArray alloc] initWithArray:imagePicker.mediaTypes];
         [currentMediaTypesArray addObject:(NSString *) kUTTypeMovie];
@@ -758,7 +757,6 @@ NSData *_thumbnailData;
         imagePicker.delegate = self;
         imagePicker.videoQuality = UIImagePickerControllerQualityTypeMedium;
         imagePicker.mediaTypes =[[NSArray alloc] initWithObjects: (NSString *) kUTTypeMovie, nil];
-        //imagePicker.allowsEditing = YES;
         imagePicker.videoMaximumDuration = RCMaxVideoLength;
         [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
         [_txtViewPostContent resignFirstResponder];
