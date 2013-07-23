@@ -96,9 +96,7 @@ static NSMutableDictionary* RCPostPostCollection = nil;
     }
     [RCPostPostCollection setObject:self forKey:[NSNumber numberWithInt:_postID]];
     RCPhotoDownloadOperation *op = [[RCPhotoDownloadOperation alloc] initWithPhotokey:self.thumbnailUrl withOwnerID:[RCUser currentUser].userID];
-    //[op start];
     op.delegate = self;
-    //[_landmarks setObject:op forKey:[NSNumber numberWithInt:post.postID]];
     [RCOperationsManager addOperation:op];
     return self;
 }

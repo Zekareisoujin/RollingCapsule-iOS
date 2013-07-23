@@ -468,7 +468,7 @@
     RCMainFeedCell *cell = [cv dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
     RCPost *post;
     post = [_posts objectAtIndex:indexPath.row];
-    [cell getPostContentImageFromInternet:_user withPostContent:post usingCollection:nil completion:nil];
+    [cell initCellAppearanceForPost:post];
     if ([_chosenPosts count] != 0) {
         if ([_chosenPosts containsObject:[[NSNumber alloc] initWithInt:post.postID]]) {
             [cell changeCellState:RCCellStateFloat];

@@ -73,7 +73,7 @@ return staticRCLoadingImage;
 }
 */
 
-- (void)getPostContentImageFromInternet:(RCUser *) user withPostContent:(RCPost *) post usingCollection:(NSMutableDictionary*)postCache completion:(void (^)(void))callback {
+- (void)initCellAppearanceForPost:(RCPost *) post {
     _currentPostID = post.postID;
     [self.layer setShadowPath:[[UIBezierPath
                                 bezierPathWithRect:self.bounds] CGPath]];
@@ -83,48 +83,6 @@ return staticRCLoadingImage;
         [ self.imageView setImage:post.thumbnailImage];
     else
         [post registerUIUpdateAction:self action:@selector(updateUIWithPost:)];
-    /*RCResourceCache *cache = [RCResourceCache centralCache];
-    NSString *key = [NSString stringWithFormat:@"%@/%@", RCMediaResource, post.thumbnailUrl];
-    dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
-    dispatch_async(queue, ^{
-        RCUser *owner = [[RCUser alloc] init];
-        owner.userID = post.userID;
-        owner.email = post.authorEmail;
-        owner.name = post.authorName;
-        UIImage* cachedImg = nil;
-        
-        cachedImg = [cache getResourceForKey:key usingQuery:^{
-            UIImage *image = [RCAmazonS3Helper getUserMediaImage:owner withLoggedinUserID:user.userID withImageUrl:post.thumbnailUrl];
-            return image;
-            }];
-        
-        dispatch_async(dispatch_get_main_queue(), ^{    
-            if (post.postID == _currrentPostID) {
-                if (cachedImg == nil)
-                    [_imageView setImage:[UIImage imageNamed:@"default_avatar.jpg"]];
-                else
-                    [_imageView setImage:cachedImg];
-            }
-            if (callback != nil)
-                callback();
-        });
-        
-    });*/
-    
-    /*[RCUser getUserWithIDAsync:post.userID completionHandler:^(RCUser* owner){
-        UIImage* cachedImg = (UIImage*)[cache getResourceForKey:key usingQuery:^{
-            UIImage *image = [RCAmazonS3Helper getUserMediaImage:owner withLoggedinUserID:user.userID withImageUrl:post.thumbnailUrl];
-            NSLog(@"downloading images");
-            return image;
-        }];
-        //dispatch_async(dispatch_get_main_queue(), ^{
-            if (cachedImg != nil)
-                [_imageView setImage:cachedImg];
-            else
-                NSLog(@"nil image");
-            callback();
-        //});
-    }];*/
 }
 
 - (void) updateUIWithPost:(RCPost*)post {
