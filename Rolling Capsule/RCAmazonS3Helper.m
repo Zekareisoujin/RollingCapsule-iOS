@@ -18,6 +18,57 @@
 @end
 
 @implementation RCAmazonS3Helper
+
++ (void) getS3ClientAsyncForUser:(int)userID forResource:(NSString *)resource completion:(void(^)(AmazonS3Client* s3)) useS3Function {
+    static NSMutableDictionary* clientPool = nil;
+    if (clientPool == nil) {
+        clientPool = [[NSMutableDictionary alloc] init];
+    }
+    
+    NSString*key= [NSString stringWithFormat:@"%d %@",userID, resource];
+    
+    RCS3CredentialsWithExpiration *s3 = nil;
+    [clientPool objectForKey:key];
+    if (s3 != nil) {
+        if ([s3.expiryDate compare:[NSDate date]] == NSOrderedDescending) {
+            useS3Function(s3.s3);
+            return;
+        }
+        [clientPool removeObjectForKey:key];
+    }
+    @try {
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/amazon_s3_temporary_credentials?mobile=1&resource=%@", RCServiceURL, RCUsersResource, userID, resource]];
+        NSURLRequest *request = CreateHttpGetRequest(url);
+        
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+         {
+             if (error != nil) {
+                 NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+                 SBJsonParser *jsonParser = [SBJsonParser new];
+                 NSDictionary *credsJson = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
+                 NSString* accessKey = [credsJson objectForKey:@"access_key_id"];
+                 NSString* secretKey = [credsJson objectForKey:@"secret_access_key"];
+                 NSString* sessionToken = [credsJson objectForKey:@"session_token"];
+                 if (accessKey == nil || secretKey == nil || sessionToken == nil) {
+                     useS3Function(nil);
+                 }
+                 AmazonS3Client* s3Client = nil;
+                 AmazonCredentials *creds = [[AmazonCredentials alloc] initWithAccessKey:accessKey withSecretKey:secretKey withSecurityToken:sessionToken];
+                 s3Client = [[AmazonS3Client alloc] initWithCredentials:creds];
+                 s3Client.endpoint = [AmazonEndpoints s3Endpoint:AP_SOUTHEAST_1];
+                 RCS3CredentialsWithExpiration *s3WithExpiration = [[RCS3CredentialsWithExpiration alloc] initWithAmazonS3Client:(AmazonS3Client*) s3Client];
+                 [clientPool setObject:s3WithExpiration forKey:key];
+                 useS3Function(s3Client);
+             }
+         }];
+    }@catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+        
+    }
+}
+
+
 + (AmazonS3Client *) s3:(int) userID  forResource:(NSString *)resource {
     static NSMutableDictionary* clientPool = nil;
     if (clientPool == nil) {
@@ -25,12 +76,14 @@
     }
 
     NSString*key= [NSString stringWithFormat:@"%d %@",userID, resource];
-    RCS3CredentialsWithExpiration *s3 = nil;/*[clientPool objectForKey:key];
+    
+    RCS3CredentialsWithExpiration *s3 = nil;
+    [clientPool objectForKey:key];
     if (s3 != nil) {
         if ([s3.expiryDate compare:[NSDate date]] == NSOrderedDescending)
             return s3.s3;
         [clientPool removeObjectForKey:key];
-    }*/
+    }
 
     AmazonS3Client* s3Client = nil;
     @try {

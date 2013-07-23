@@ -31,4 +31,5 @@
 - (void) prepareView;
 - (IBAction)pickDate:(id)sender;
 - (NSString*) dateTimeString;
+- (NSDate*) date;
 @end

@@ -7,7 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "RCMediaUploadOperation.h"
 
 @interface RCOperationsManager : NSObject
 + (void) addOperation:(NSOperation*) operation;
++ (void) addUploadMediaOperation:(NSOperation*) operation;
 @end

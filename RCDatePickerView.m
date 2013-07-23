@@ -203,6 +203,14 @@
         }
     }
 }
+
+- (NSDate*) date {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    //[dateFormatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
+    [dateFormatter setDateFormat:@"yyyy-MM-ddHH:mm:ss"];
+    return [dateFormatter dateFromString:[NSString stringWithFormat:@"%04d-%02d-%02d%02d:00:00",_year,_month,_day,_hour]];
+}
+
 - (IBAction)pickDate:(id)sender {
 
     [UIView animateWithDuration:0.5

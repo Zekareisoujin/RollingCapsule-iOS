@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		64008046179EB84200C6B2B2 /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 64008045179EB84200C6B2B2 /* TTTAttributedLabel.m */; };
 		64008048179EBA0F00C6B2B2 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64008047179EBA0F00C6B2B2 /* CoreText.framework */; };
+		6400804B179EEC6200C6B2B2 /* RCMediaUploadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6400804A179EEC6200C6B2B2 /* RCMediaUploadOperation.m */; };
+		6400804E179EF0E500C6B2B2 /* RCAsyncPhotoDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6400804D179EF0E400C6B2B2 /* RCAsyncPhotoDownloadOperation.m */; };
+		64008051179F001500C6B2B2 /* RCNewPostOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 64008050179F001500C6B2B2 /* RCNewPostOperation.m */; };
 		6401017D1797DC79002A6E2E /* RCNewPostViewController4.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6401017C1797DC79002A6E2E /* RCNewPostViewController4.xib */; };
 		640103491798041A002A6E2E /* buttonPost@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 640103471798041A002A6E2E /* buttonPost@2x.png */; };
 		6401034A1798041A002A6E2E /* buttonRefresh.png in Resources */ = {isa = PBXBuildFile; fileRef = 640103481798041A002A6E2E /* buttonRefresh.png */; };
@@ -261,6 +264,12 @@
 		64008044179EB84200C6B2B2 /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAttributedLabel.h; sourceTree = "<group>"; };
 		64008045179EB84200C6B2B2 /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAttributedLabel.m; sourceTree = "<group>"; };
 		64008047179EBA0F00C6B2B2 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		64008049179EEC6200C6B2B2 /* RCMediaUploadOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMediaUploadOperation.h; sourceTree = "<group>"; };
+		6400804A179EEC6200C6B2B2 /* RCMediaUploadOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMediaUploadOperation.m; sourceTree = "<group>"; };
+		6400804C179EF0E400C6B2B2 /* RCAsyncPhotoDownloadOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAsyncPhotoDownloadOperation.h; sourceTree = "<group>"; };
+		6400804D179EF0E400C6B2B2 /* RCAsyncPhotoDownloadOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAsyncPhotoDownloadOperation.m; sourceTree = "<group>"; };
+		6400804F179F001400C6B2B2 /* RCNewPostOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCNewPostOperation.h; sourceTree = "<group>"; };
+		64008050179F001500C6B2B2 /* RCNewPostOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNewPostOperation.m; sourceTree = "<group>"; };
 		6401017C1797DC79002A6E2E /* RCNewPostViewController4.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCNewPostViewController4.xib; sourceTree = "<group>"; };
 		640103471798041A002A6E2E /* buttonPost@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "buttonPost@2x.png"; path = "../buttonPost@2x.png"; sourceTree = "<group>"; };
 		640103481798041A002A6E2E /* buttonRefresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = buttonRefresh.png; path = ../buttonRefresh.png; sourceTree = "<group>"; };
@@ -599,8 +608,14 @@
 		6417B23317946A8C007777E5 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				6400804C179EF0E400C6B2B2 /* RCAsyncPhotoDownloadOperation.h */,
+				6400804D179EF0E400C6B2B2 /* RCAsyncPhotoDownloadOperation.m */,
 				643C0800179B0B0E002BD751 /* RCPhotoDownloadOperation.h */,
 				643C0801179B0B0E002BD751 /* RCPhotoDownloadOperation.m */,
+				64008049179EEC6200C6B2B2 /* RCMediaUploadOperation.h */,
+				6400804A179EEC6200C6B2B2 /* RCMediaUploadOperation.m */,
+				6400804F179F001400C6B2B2 /* RCNewPostOperation.h */,
+				64008050179F001500C6B2B2 /* RCNewPostOperation.m */,
 				64C62DE7179B007E005DFD8B /* RCOperationsManager.h */,
 				64C62DE8179B007E005DFD8B /* RCOperationsManager.m */,
 				649A869B175B0CC30016674F /* RCAmazonS3Helper.h */,
@@ -1332,6 +1347,9 @@
 				643C0802179B0B0E002BD751 /* RCPhotoDownloadOperation.m in Sources */,
 				649B424B179C51040019B1A7 /* RCLoadingLocationViewController.m in Sources */,
 				64008046179EB84200C6B2B2 /* TTTAttributedLabel.m in Sources */,
+				6400804B179EEC6200C6B2B2 /* RCMediaUploadOperation.m in Sources */,
+				6400804E179EF0E500C6B2B2 /* RCAsyncPhotoDownloadOperation.m in Sources */,
+				64008051179F001500C6B2B2 /* RCNewPostOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

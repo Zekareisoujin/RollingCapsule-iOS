@@ -12,13 +12,22 @@
 
 @implementation RCOperationsManager
 static NSOperationQueue* RCStaticOperationQueue = nil;
-
+static NSOperationQueue* RCStaticUploadQueue = nil;
 + (void) addOperation:(NSOperation*) operation {
     if (RCStaticOperationQueue == nil) {
         RCStaticOperationQueue = [[NSOperationQueue alloc] init];
         [RCStaticOperationQueue setMaxConcurrentOperationCount:6];
     }
     [RCStaticOperationQueue addOperation:operation];
+}
+
++ (void) addUploadMediaOperation:(NSOperation*) operation {
+    if (RCStaticUploadQueue == nil) {
+        RCStaticUploadQueue = [[NSOperationQueue alloc] init];
+        [RCStaticUploadQueue setMaxConcurrentOperationCount:6];
+    }
+    [RCStaticUploadQueue addOperation:operation];
+
 }
 
 @end

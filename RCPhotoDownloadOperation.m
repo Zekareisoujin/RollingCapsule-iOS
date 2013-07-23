@@ -25,38 +25,26 @@
 
 @synthesize key = _key;
 @synthesize delegate = _delegate;
-@synthesize ownerID = _ownerID;
 @synthesize s3 = _s3;
 
-- (id)initWithPhotokey:(NSString *)key withOwnerID:(int)ownerID
+- (id)initWithPhotokey:(NSString *)key
 {
     self = [super init];
     if (self == nil)
         return nil;
     
     _key = [key copy];
-    _ownerID = ownerID;
-    //_isExecuting = NO;
-    //_isFinished = NO;
     nRetry = RCPHOTODOWNLOADOPERATION_NUMRETRY;
     return self;
 }
+
 - (void)main {
     // a lengthy operation
     @autoreleasepool {
-        /*if (![NSThread isMainThread])
-        {
-            [self performSelectorOnMainThread:@selector(start) withObject:nil waitUntilDone:NO];
-            return;
-        }*/
         [RCConnectionManager startConnection];
 #if DEBUG==1
         //NSLog(@"download photo with started.", _key);
 #endif
-        
-        /*[self willChangeValueForKey:@"isExecuting"];
-        _isExecuting = YES;
-        [self didChangeValueForKey:@"isExecuting"];*/
         
         
         UIImage *image = [[RCResourceCache centralCache] getResourceForKey:[NSString stringWithFormat:@"media/%@",_key]];
@@ -73,7 +61,7 @@
 - (void) startS3DownloadRequest {
     while (nRetry--) {
         @try {
-            _s3 = [RCAmazonS3Helper s3:_ownerID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3UsersMediaBucket]];
+            _s3 = [RCAmazonS3Helper s3:[RCUser currentUser].userID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3UsersMediaBucket]];
             if (_s3 != nil) {
                 S3GetObjectRequest *downloadRequest = [[S3GetObjectRequest alloc] initWithKey:_key withBucket: RCAmazonS3UsersMediaBucket];
                 //[downloadRequest setDelegate: self];

@@ -14,6 +14,9 @@
 #import "RCKeyboardPushUpHandler.h"
 #import "RCConnectionManager.h"
 #import "RCLandmarkCell.h"
+#import "RCOperationsManager.h"
+#import "RCMediaUploadOperation.h"
+#import "RCNewPostOperation.h"
 #import <QuartzCore/QuartzCore.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <MediaPlayer/MediaPlayer.h>
@@ -34,10 +37,17 @@
 @property (nonatomic, strong) RCDatePickerView* datePickerView;
 @property (nonatomic, strong) NSString* currentTopic;
 @property (nonatomic, assign) BOOL viewFirstLoad;
-
+@property (nonatomic, strong) RCMediaUploadOperation *mediaUploadOp;
+@property (nonatomic, strong) RCNewPostOperation *postNewOp;
 @end
 
-@implementation RCNewPostViewController
+@implementation RCNewPostViewController {
+    S3PutObjectResponse *_putObjectResponse;
+    AmazonClientException *_amazonException;
+    RCConnectionManager *_connectionManager;
+    NSData *_uploadData;
+    NSData *_thumbnailData;
+}
 
 @synthesize postImage = _postImage;
 @synthesize videoUrl = _videoUrl;
@@ -59,6 +69,8 @@
 @synthesize viewFirstLoad = _viewFirstLoad;
 @synthesize activityIndicator = _activityIndicator;
 @synthesize currentTopic = _currentTopic;
+@synthesize mediaUploadOp = _mediaUploadOp;
+@synthesize postNewOp = _postNewOp;
 
 BOOL _isTapToCloseKeyboard = NO;
 BOOL _landmarkTableVisible = NO;
@@ -68,14 +80,6 @@ BOOL _didFinishUploadingImage = NO;
 BOOL _isMovie = NO;
 BOOL _isPosting = NO;
 BOOL _isTimedRelease = NO;
-
-
-
-S3PutObjectResponse *_putObjectResponse;
-AmazonClientException *_amazonException;
-RCConnectionManager *_connectionManager;
-NSData *_uploadData;
-NSData *_thumbnailData;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -227,7 +231,30 @@ NSData *_thumbnailData;
         [self showAlertMessage:@"Please choose a privacy option!" withTitle:@"Incomplete post!"];
         return;
     }
-    [_connectionManager startConnection];
+    
+    RCPost *post = [[RCPost alloc] init];
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    post.latitude = appDelegate.currentLocation.coordinate.latitude;
+    post.longitude = appDelegate.currentLocation.coordinate.longitude;
+    post.subject = _txtFieldPostSubject.text;
+    post.content = [_txtViewPostContent.text substringFromIndex:[_user.name length]+1];
+    post.fileUrl = _imageFileName;
+    post.thumbnailUrl = [NSString stringWithFormat:@"%@-thumbnail", _imageFileName];
+    post.privacyOption = _privacyOption;
+    post.topic = _currentTopic;
+    if (_datePickerView != nil && _isTimedRelease) {
+        post.releaseDate = [_datePickerView date];
+    }
+    _postNewOp = [[RCNewPostOperation alloc] initWithPost:post];
+    [_postNewOp addDependency:_mediaUploadOp];
+    [RCOperationsManager addUploadMediaOperation:_postNewOp];
+    [self dismissViewControllerAnimated:YES completion:^{
+        if (_postCancel != nil) {
+            _postCancel();
+        }
+    }];
+
+    /*[_connectionManager startConnection];
     _postButton.enabled = NO;
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
@@ -237,7 +264,7 @@ NSData *_thumbnailData;
             //NSLog(@"waiting for upload finish");
         }
         
-    });
+    });*/
 }
 
 - (void) uploadPostMetadata {
@@ -522,17 +549,6 @@ NSData *_thumbnailData;
     
     [picker dismissViewControllerAnimated:YES completion:nil];
     [self removePhotoSourceControlAndAddPrivacyControl];
-    /*[UIView animateWithDuration:0.6
-						  delay:0
-						options:UIViewAnimationOptionCurveEaseInOut
-					 animations:^{
-                         _btnCameraSource.alpha = 0.0;
-                         _btnPhotoLibrarySource.alpha = 0.0;
-                         _btnVideoSource.alpha = 0.0;
-					 }
-                     completion:^(BOOL finished) {
-                         [self removePhotoSourceControlAndAddPrivacyControl];
-					 }];*/
     if (_activityIndicator == nil)
         _activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:_scrollViewImage.frame];
     [self.view addSubview:_activityIndicator];
@@ -591,7 +607,7 @@ NSData *_thumbnailData;
         });
         
         UIImage *thumbnail;
-
+        UIImage *rescaledThumbnail;
         if (CFStringCompare ((__bridge CFStringRef) mediaType, kUTTypeMovie, 0)
             == kCFCompareEqualTo)
         {
@@ -599,22 +615,34 @@ NSData *_thumbnailData;
             thumbnail = [info objectForKey:UIImagePickerControllerEditedImage];
             if (thumbnail == nil)
                 thumbnail = [self generateSquareImageThumbnail:_postImage];
-            UIImage *rescaledThumbnail = imageWithImage(thumbnail, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
-            _thumbnailData = UIImageJPEGRepresentation(rescaledThumbnail,0.7);
+            rescaledThumbnail = imageWithImage(thumbnail, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
+            //_thumbnailData = UIImageJPEGRepresentation(rescaledThumbnail,0.7);
         } else {
             // Get the selected image
             _isMovie = NO;
             thumbnail = [self generateSquareImageThumbnail:_postImage];
             //generate thumbnail
-            UIImage *uploadThumbnailImage =imageWithImage(thumbnail, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));;
-            _thumbnailData = UIImageJPEGRepresentation(uploadThumbnailImage, 0.7);
+            rescaledThumbnail =imageWithImage(thumbnail, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));;
+            //_thumbnailData = UIImageJPEGRepresentation(uploadThumbnailImage, 0.7);
         }
         
         
         
         NSLog(@"before uploading image");
-        [self uploadImageToS3:_uploadData withThumbnail:_thumbnailData dataBeingMovie:_isMovie];
-        [self processCompletionOfDataUpload];
+        CFUUIDRef theUUID = CFUUIDCreate(NULL);
+        CFStringRef string = CFUUIDCreateString(NULL, theUUID);
+        CFRelease(theUUID);
+        _imageFileName = [(__bridge NSString*)string stringByReplacingOccurrencesOfString:@"-"withString:@""];
+        if (_mediaUploadOp != nil) {
+            [_mediaUploadOp cancel];
+        }
+        if (_isMovie) {
+            _imageFileName = [NSString stringWithFormat:@"%@.mov",_imageFileName];
+        }
+        _mediaUploadOp = [[RCMediaUploadOperation alloc] initWithKey:_imageFileName withUploadData:_uploadData withThumbnail:rescaledThumbnail withMediaType:_isMovie ? @"image/jpeg" : @"movie/mov"];
+        [RCOperationsManager addUploadMediaOperation:_mediaUploadOp];
+        //[self uploadImageToS3:_uploadData withThumbnail:_thumbnailData dataBeingMovie:_isMovie];
+        //[self processCompletionOfDataUpload];
     });
 
 }

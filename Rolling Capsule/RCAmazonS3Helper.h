@@ -14,4 +14,5 @@
 + (AmazonS3Client *) s3:(int) userID  forResource:(NSString *)resource;
 + (UIImage *) getAvatarImage:(RCUser*) user withLoggedinUserID:(int)loggedInUserID;
 + (UIImage *) getUserMediaImage:(RCUser *)user withLoggedinUserID:(int)loggedinUserID withImageUrl:(NSString*)url;
++ (void) getS3ClientAsyncForUser:(int)userID forResource:(NSString *)resource completion:(void(^)(AmazonS3Client* s3)) useS3Function;
 @end

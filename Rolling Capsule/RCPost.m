@@ -12,7 +12,6 @@
 #import "RCAmazonS3Helper.h"
 #import "RCResourceCache.h"
 #import "RCOperationsManager.h"
-#import "RCOperationsManager.h"
 
 @interface RCPost ()
 @property (nonatomic,strong) NSObject* objUIUpdate;
@@ -95,7 +94,7 @@ static NSMutableDictionary* RCPostPostCollection = nil;
         }
     }
     [RCPostPostCollection setObject:self forKey:[NSNumber numberWithInt:_postID]];
-    RCPhotoDownloadOperation *op = [[RCPhotoDownloadOperation alloc] initWithPhotokey:self.thumbnailUrl withOwnerID:[RCUser currentUser].userID];
+    RCPhotoDownloadOperation *op = [[RCPhotoDownloadOperation alloc] initWithPhotokey:self.thumbnailUrl];
     op.delegate = self;
     [RCOperationsManager addOperation:op];
     return self;
