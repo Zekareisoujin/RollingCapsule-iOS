@@ -11,7 +11,7 @@
 #import "RCPhotoDownloadOperation.h"
 #import "RCAsyncPhotoDownloadOperation.h"
 
-@interface RCPost : NSObject <MKAnnotation, RCPhotoDownloadOperationDelegate, RCAsyncPhotoDownloadOperationDelegate>
+@interface RCPost : NSObject <MKAnnotation, RCAsyncPhotoDownloadOperationDelegate>
 
 @property (nonatomic,retain)  NSString *content;
 @property (nonatomic,retain)  NSDate *createdTime;
@@ -35,9 +35,11 @@
 @property (nonatomic,strong) NSString *authorEmail;
 @property (nonatomic,strong) UIImage *thumbnailImage;
 
-- (MKMapItem*)mapItem;
-- (id) initWithNSDictionary:(NSDictionary *)userData;
 + (void) initPostDataModel;
-- (void) getThumbnailImageAsync: (int)viewingUserID completion:(void (^)(UIImage*)) completionFunc;
++ (id) getPostWithNSDictionary:(NSDictionary *)postData;
+
+- (id) initWithNSDictionary:(NSDictionary *)postData;
+//- (void) getThumbnailImageAsync: (int)viewingUserID completion:(void (^)(UIImage*)) completionFunc;
 - (void) registerUIUpdateAction:(NSObject*)target action:(SEL)sel;
+- (MKMapItem*)mapItem;
 @end

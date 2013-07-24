@@ -51,23 +51,25 @@
     NSString *key = [NSString stringWithFormat:@"%@/%@", RCMediaResource, post.thumbnailUrl];
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
-        RCUser *owner = [[RCUser alloc] init];
-        owner.userID = post.userID;
-        owner.email = post.authorEmail;
-        owner.name = post.authorName;
-        UIImage* cachedImg = (UIImage*)[cache getResourceForKey:key usingQuery:^{
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-            UIImage *image = [RCAmazonS3Helper getUserMediaImage:owner withLoggedinUserID:user.userID withImageUrl:post.thumbnailUrl];
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-            NSLog(@"downloading images");
+//        RCUser *owner = [[RCUser alloc] init];
+//        owner.userID = post.userID;
+//        owner.email = post.authorEmail;
+//        owner.name = post.authorName;
+        [RCUser getUserWithIDAsync:post.userID completionHandler:^(RCUser* owner){
+            UIImage* cachedImg = (UIImage*)[cache getResourceForKey:key usingQuery:^{
+                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+                UIImage *image = [RCAmazonS3Helper getUserMediaImage:owner withLoggedinUserID:user.userID withImageUrl:post.thumbnailUrl];
+                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                NSLog(@"downloading images");
 
-            return image;
+                return image;
+            }];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (post.postID == _currentPostID)
+                    [_imageView setImage:cachedImg];
+                callback();
+            });
         }];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (post.postID == _currentPostID)
-                [_imageView setImage:cachedImg];
-            callback();
-        });
     });
     
 

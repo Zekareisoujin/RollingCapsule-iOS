@@ -11,17 +11,13 @@
 #import <AWSS3/S3Request.h>
 #import <AWSRuntime/AWSRuntime.h>
 
-@protocol RCPhotoDownloadOperationDelegate
-
-- (void)downloadFinish:(NSObject*) object;
-
-@end
+typedef void (^ImageDownloadBlock)(UIImage*);
 
 @interface RCPhotoDownloadOperation  : NSOperation <AmazonServiceRequestDelegate>
 
-@property (nonatomic, strong) id<RCPhotoDownloadOperationDelegate> delegate;
 @property (nonatomic, strong) NSString* key;
 @property (nonatomic, strong) AmazonS3Client *s3;
+@property (nonatomic, copy)   ImageDownloadBlock completionHandler;
 
 - (id)initWithPhotokey:(NSString *)key;
 @end

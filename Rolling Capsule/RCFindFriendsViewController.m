@@ -110,7 +110,8 @@ RCConnectionManager *_connectionManager;
             if (usersJson != NULL) {
                 [_items removeAllObjects];
                 for (NSDictionary *userData in usersJson) {
-                    RCUser *user = [[RCUser alloc] initWithNSDictionary:userData];
+                    //RCUser *user = [[RCUser alloc] initWithNSDictionary:userData];
+                    RCUser *user = [RCUser getUserWithNSDictionary:userData];
                     [_items addObject:user];
                 }
                 [_tblViewFoundUsers reloadData];

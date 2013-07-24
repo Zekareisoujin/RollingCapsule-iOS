@@ -958,25 +958,27 @@
         //if index path for cell not found
         if (indexPath != nil ) {
             RCPost *post = [_postList objectAtIndex:indexPath.row];
-            RCUser *owner = [[RCUser alloc] init];
-            owner.userID = post.userID;
-            owner.name = post.authorName;
+//            RCUser *owner = [[RCUser alloc] init];
+//            owner.userID = post.userID;
+//            owner.name = post.authorName;
             
-            //[_collectionView removeGestureRecognizer:recognizer];
-            RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_viewingUser];
-            
-            /*if (post.landmarkID == -1)
-                postDetailsViewController.landmark = nil;
-            else
-                postDetailsViewController.landmark = [_landmarks objectForKey:[NSNumber numberWithInt:post.landmarkID]];*/
-            postDetailsViewController.deleteFunction = ^{
-                [_postList removeObjectAtIndex:indexPath.row];
-                [_collectionView reloadData];
-                [self hidePostPreview];
-            };
-            //postDetailsViewController.landmarkID = post.landmarkID;
-            
-            [self.navigationController pushViewController:postDetailsViewController animated:YES];
+            [RCUser getUserWithIDAsync:post.userID completionHandler:^(RCUser *owner){
+                //[_collectionView removeGestureRecognizer:recognizer];
+                RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_viewingUser];
+                
+                /*if (post.landmarkID == -1)
+                    postDetailsViewController.landmark = nil;
+                else
+                    postDetailsViewController.landmark = [_landmarks objectForKey:[NSNumber numberWithInt:post.landmarkID]];*/
+                postDetailsViewController.deleteFunction = ^{
+                    [_postList removeObjectAtIndex:indexPath.row];
+                    [_collectionView reloadData];
+                    [self hidePostPreview];
+                };
+                //postDetailsViewController.landmarkID = post.landmarkID;
+                
+                [self.navigationController pushViewController:postDetailsViewController animated:YES];
+            }];
             
         }
     }

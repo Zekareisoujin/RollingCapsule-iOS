@@ -243,7 +243,8 @@ NSMutableArray          *currentDisplayedItems;
                 if (usersJson != NULL) {
                     [_friends removeAllObjects];
                     for (NSDictionary *userData in usersJson) {
-                        RCUser *user = [[RCUser alloc] initWithNSDictionary:userData];
+                        //RCUser *user = [[RCUser alloc] initWithNSDictionary:userData];
+                        RCUser *user = [RCUser getUserWithNSDictionary:userData];
                         [_friends addObject:user];
                     }
                     
@@ -284,7 +285,8 @@ NSMutableArray          *currentDisplayedItems;
              if (usersJson != NULL) {
                  [_requested_friends removeAllObjects];
                  for (NSDictionary *userData in usersJson) {
-                     RCUser *user = [[RCUser alloc] initWithNSDictionary:userData];
+                     //RCUser *user = [[RCUser alloc] initWithNSDictionary:userData];
+                     RCUser *user = [RCUser getUserWithNSDictionary:userData];
                      [_requested_friends addObject:user];
                  }
                  
@@ -325,7 +327,8 @@ NSMutableArray          *currentDisplayedItems;
              if (usersJson != NULL) {
                  [_followees removeAllObjects];
                  for (NSDictionary *userData in usersJson) {
-                     RCUser *user = [[RCUser alloc] initWithNSDictionary:userData];
+                     //RCUser *user = [[RCUser alloc] initWithNSDictionary:userData];
+                     RCUser *user = [RCUser getUserWithNSDictionary:userData];
                      [_followees addObject:user];
                  }
                  if (_viewingMode == RCFriendListViewModeFollowees)

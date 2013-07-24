@@ -189,15 +189,21 @@ BOOL _didQueueOpenMainFeedOption;
         NSLog(@"%@",url.relativePath);
         if ([url.host hasPrefix:@"users"]) {
             NSLog(@"query-str: %@",url.query);
-            NSDictionary *params = [self parseQueryString:url.query];
+//            NSDictionary *params = [self parseQueryString:url.query];
             NSString* userIDStr = [url.relativePath substringFromIndex:[@"/" length]];
             if ([userIDStr intValue] != 0) {
-                RCUser *user = [[RCUser alloc] init];
-                user.userID = [userIDStr intValue];
-                user.name = [params objectForKey:@"user[name]"];
-                RCUserProfileViewController *userProfileViewController = [[RCUserProfileViewController alloc] initWithUser:user viewingUser:self.menuViewController.user];
-                [self.navigationController pushViewController:userProfileViewController animated:YES];
-                [self hideSideMenu];
+//                RCUser *user = [[RCUser alloc] init];
+//                user.userID = [userIDStr intValue];
+//                user.name = [params objectForKey:@"user[name]"];
+//                RCUserProfileViewController *userProfileViewController = [[RCUserProfileViewController alloc] initWithUser:user viewingUser:self.menuViewController.user];
+//                [self.navigationController pushViewController:userProfileViewController animated:YES];
+//                [self hideSideMenu];
+                
+                [RCUser getUserWithIDAsync:[userIDStr intValue] completionHandler:^(RCUser *user){
+                    RCUserProfileViewController *userProfileViewController = [[RCUserProfileViewController alloc] initWithUser:user viewingUser:[RCUser currentUser]];
+                    [self.navigationController pushViewController:userProfileViewController animated:YES];
+                    [self hideSideMenu];
+                }];
             }
         }
     }

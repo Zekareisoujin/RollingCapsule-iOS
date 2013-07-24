@@ -24,8 +24,8 @@
 }
 
 @synthesize key = _key;
-@synthesize delegate = _delegate;
 @synthesize s3 = _s3;
+@synthesize completionHandler = _completionHandler;
 
 - (id)initWithPhotokey:(NSString *)key
 {
@@ -49,7 +49,8 @@
         
         UIImage *image = [[RCResourceCache centralCache] getResourceForKey:[NSString stringWithFormat:@"media/%@",_key]];
         if (image != nil) {
-            [_delegate downloadFinish:image];
+            if (_completionHandler != nil)
+                _completionHandler(image);
             //[self finish];
             return;
         }
@@ -67,8 +68,11 @@
                 //[downloadRequest setDelegate: self];
                 S3GetObjectResponse *response = [_s3 getObject:downloadRequest];
                 UIImage *image = [UIImage imageWithData:response.body];
+                
+                [[RCResourceCache centralCache] putResourceInCache:image forKey:[NSString stringWithFormat:@"media/%@", _key]];
                 [RCConnectionManager endConnection];
-                [_delegate downloadFinish:image];
+                if (_completionHandler != nil)
+                    _completionHandler(image);
                 return;
             } else continue;
         } @catch (AmazonServiceException *e) {
@@ -78,52 +82,8 @@
         }
     }
     [RCConnectionManager endConnection];
-    [_delegate downloadFinish:nil];
+    if (_completionHandler != nil)
+        _completionHandler(nil);
 }
 
-- (void)request:(AmazonServiceRequest *)request didReceiveData:(NSData *)data {
-    UIImage *image = [UIImage imageWithData:data];
-    [[RCResourceCache centralCache] putResourceInCache:image forKey:[NSString stringWithFormat:@"media/%@",_key]];
-    [_delegate downloadFinish:image];
-}
-
-- (void)request:(AmazonServiceRequest *)request didFailWithServiceException:(NSException *)exception {
-    NSLog(@"failed to download key from s3 reason service exeption: %@",exception);
-    if (nRetry--)
-        [self startS3DownloadRequest];
-    else {
-        [_delegate downloadFinish:nil];
-        //[self finish];
-    }
-}
-
-- (void)request:(AmazonServiceRequest *)request didFailWithError:(NSError *)error {
-    NSLog(@"failed to download key from s3 reason network error: %@",error);
-    if (nRetry--)
-        [self startS3DownloadRequest];
-    else {
-        [_delegate downloadFinish:nil];
-        //[self finish];
-    }
-}
-
--(void)request: (S3Request *)request didCompleteWithResponse: (S3Response *) response {
-#if DEBUG==1
-    NSLog(@"Download finished (%d)",response.httpStatusCode);
-#endif
-    /* do something with response.body and response.httpStatusCode */
-    /* if you have multiple requests, you can check request arg */
-}
-
-/*
-- (void) finish {
-    [self willChangeValueForKey:@"isExecuting"];
-    [self willChangeValueForKey:@"isFinished"];
-    
-    _isExecuting = NO;
-    _isFinished = YES;
-    
-    [self didChangeValueForKey:@"isExecuting"];
-    [self didChangeValueForKey:@"isFinished"];
-}*/
 @end
