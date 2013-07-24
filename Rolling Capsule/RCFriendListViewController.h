@@ -28,7 +28,9 @@ typedef enum RCFriendListViewMode RCFriendListViewMode;
 @property (weak, nonatomic) IBOutlet UIButton *btnFriends;
 @property (weak, nonatomic) IBOutlet UIButton *btnFollowees;
 
+@property (weak, nonatomic) IBOutlet UIImageView *searchBarBackground;
 @property (weak, nonatomic) IBOutlet UITextField *searchBar;
+@property (weak, nonatomic) IBOutlet UIButton *btnSearchBarToggle;
 @property (weak, nonatomic) IBOutlet UIButton *btnSearchBarCancel;
 
 @property (weak, nonatomic) IBOutlet UIImageView *tableTitleBackground;
@@ -38,6 +40,7 @@ typedef enum RCFriendListViewMode RCFriendListViewMode;
 @property (strong,nonatomic) NSMutableArray *searchResultList;
 - (IBAction)btnBackgroundTap:(id)sender;
 - (IBAction)btnSearchBarCancelTouchUpInside:(id)sender;
+- (IBAction)btnSearchBarToggleTouchUpInside:(id)sender;
 
 - (IBAction)btnFriendTouchUpInside:(id)sender;
 - (IBAction)btnRequestsTouchUpInside:(id)sender;
