@@ -9,9 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
 #import "RCPhotoDownloadOperation.h"
-#import "RCAsyncPhotoDownloadOperation.h"
 
-@interface RCPost : NSObject <MKAnnotation, RCAsyncPhotoDownloadOperationDelegate>
+@interface RCPost : NSObject <MKAnnotation>
 
 @property (nonatomic,retain)  NSString *content;
 @property (nonatomic,retain)  NSDate *createdTime;

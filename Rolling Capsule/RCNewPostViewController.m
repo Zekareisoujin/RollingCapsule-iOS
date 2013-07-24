@@ -1098,7 +1098,7 @@ BOOL _isTimedRelease = NO;
             [cell.imgViewChosenMark setImage:[UIImage imageNamed:@"postLandmarkChosenBackground.png"]];
         else
             [cell.imgViewChosenMark setImage:nil];
-        [cell.imgViewCategory setImage:[UIImage imageNamed:@"buttonCancel.png"]];
+        [cell.imgViewCategory setImage:[UIImage imageNamed:@"topicCancel.png"]];
         cell.lblLandmarkTitle.text = @"No topic";        
     } else {
         NSString *topic = [_topics objectAtIndex:idx];

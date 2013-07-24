@@ -312,6 +312,9 @@
                     [_chosenPosts removeAllObjects];
 
                     NSArray *postList = (NSArray *) [jsonData objectForKey:@"post_list"];
+                    int numCapsules = [[jsonData objectForKey:@"unreleased_capsules_count"] intValue];
+                    [_lblCapsuleCount setHidden:NO];
+                    _lblCapsuleCount.text = [NSString stringWithFormat:@"%d",numCapsules];
                     NSDictionary *userDictionary = (NSDictionary *) [jsonData objectForKey:@"user"];
                     //_user = [[RCUser alloc] initWithNSDictionary:userDictionary];
                     _user = [RCUser getUserWithNSDictionary:userDictionary];
@@ -324,7 +327,6 @@
                              [_btnUserAvatar setImage:img forState:UIControlStateNormal];
                          });
                      }];
-                    //[_btnUserAvatar setImage:[_user getUserAvatar:_user.userID] forState:UIControlStateNormal];
                     
                     [appDelegate setCurrentUser:_user];
                     [_posts removeAllObjects];
@@ -701,18 +703,23 @@
 }
 
 - (IBAction)btnViewModeChosen:(UIButton *)sender {
+    
     if ([sender isEqual:_btnViewModePublic]) {
+        [_viewCapsuleCount setHidden:NO];
         _currentViewMode = RCMainFeedViewModePublic;
         _btnViewModeFriends.enabled = YES;
         _btnViewModeFollow.enabled = YES;
-    } else if ([sender isEqual:_btnViewModeFriends]) {
-        _currentViewMode = RCMainFeedViewModeFriends;
-        _btnViewModePublic.enabled = YES;
-        _btnViewModeFollow.enabled = YES;
-    } else if ([sender isEqual:_btnViewModeFollow]) {
-        _currentViewMode = RCMainFeedViewModeFollow;
-        _btnViewModeFriends.enabled = YES;
-        _btnViewModePublic.enabled = YES;
+    } else {
+        [_viewCapsuleCount setHidden:YES];
+        if ([sender isEqual:_btnViewModeFriends]) {
+            _currentViewMode = RCMainFeedViewModeFriends;
+            _btnViewModePublic.enabled = YES;
+            _btnViewModeFollow.enabled = YES;
+        } else if ([sender isEqual:_btnViewModeFollow]) {
+            _currentViewMode = RCMainFeedViewModeFollow;
+            _btnViewModeFriends.enabled = YES;
+            _btnViewModePublic.enabled = YES;
+        }
     }
     sender.enabled = NO;
     [self handleRefresh:_refreshControl];
