@@ -25,6 +25,7 @@ typedef enum RCMainFeedViewMode RCMainFeedViewMode;
 @property (weak, nonatomic) IBOutlet UITableView *tblFeedList;
 @property (weak, nonatomic) IBOutlet UIButton *btnViewModeFollow;
 @property (weak, nonatomic) IBOutlet UIView *viewCapsuleCount;
+@property (weak, nonatomic) IBOutlet UIImageView *imgViewCapsuleCount;
 @property (weak, nonatomic) IBOutlet TTTAttributedLabel *lblUsername;
 @property (weak, nonatomic) IBOutlet UILabel *lblCapsuleCount;
 @property (weak, nonatomic) IBOutlet UIButton *btnViewModeFriends;

@@ -181,10 +181,21 @@
     
     _mapView.showsUserLocation = YES;
     
+    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showNumberOfHiddenCapsules:)];
+    [_viewCapsuleCount addGestureRecognizer:tapGestureRecognizer];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleRefresh:) name:RCNotificationNameMediaUploaded object:nil];
     
 }
 
+- (void) showNumberOfHiddenCapsules:(UITapGestureRecognizer*) tapGestureRecognizer {
+    CGPoint point = [tapGestureRecognizer locationInView:_imgViewCapsuleCount];
+    if (CGRectContainsPoint(_imgViewCapsuleCount.frame,point) )
+        [_mapView selectAnnotation:[_mapView userLocation] animated:YES];
+}
+/*- (void) hideNumberOfHiddenCapsules {
+    
+}*/
 
 - (void)networkChanged:(NSNotification *)notification
 {
@@ -546,8 +557,14 @@
 
 -(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
-    if ([annotation isKindOfClass:[MKUserLocation class]])
+    if ([annotation isKindOfClass:[MKUserLocation class]]) {
+        if ([_lblCapsuleCount.text length] > 0 && !_lblCapsuleCount.hidden) {
+            NSString* countText = _lblCapsuleCount.text;
+            countText = [countText isEqualToString:@"0"] ? @"No" : countText;
+            [(MKUserLocation*)annotation setTitle: [NSString stringWithFormat:@"%@ hidden capsule(s)", countText]];
+        }
         return nil;
+    }
     
     if ([annotation isKindOfClass:[RCLandmark class]]) {
         RCLandmark *landmark = (RCLandmark*) annotation;
