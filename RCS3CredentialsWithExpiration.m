@@ -19,7 +19,7 @@
     self = [super init];
     if (self) {
         _s3 = s3;
-        _expiryDate = [[NSDate date] dateByAddingTimeInterval:3600];
+        _expiryDate = [[NSDate date] dateByAddingTimeInterval:600];
     }
     return self;
 }

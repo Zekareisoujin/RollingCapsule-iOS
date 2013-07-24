@@ -40,6 +40,8 @@
 		64119A13178460A500BF0B05 /* closeButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 64119A12178460A500BF0B05 /* closeButton.png */; };
 		64119A161784611700BF0B05 /* RCLightboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64119A151784611700BF0B05 /* RCLightboxViewController.m */; };
 		64119A1817849DBB00BF0B05 /* viewPostMainFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 64119A1717849DBB00BF0B05 /* viewPostMainFrame.png */; };
+		6416D11117A02C170017065A /* mainCapsuleCount.png in Resources */ = {isa = PBXBuildFile; fileRef = 6416D11017A02C170017065A /* mainCapsuleCount.png */; };
+		6416D11417A038BB0017065A /* RCCircleLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6416D11317A038BB0017065A /* RCCircleLabel.m */; };
 		6417B232179415C6007777E5 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6417B231179415C6007777E5 /* CoreMedia.framework */; };
 		64194AD61770AAF200822F9B /* RCMainFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 64194AD51770AAF100822F9B /* RCMainFeedCell.m */; };
 		642E71FE17639D9400B3464E /* RCConnectionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 642E71FD17639D9400B3464E /* RCConnectionManager.m */; };
@@ -301,6 +303,9 @@
 		64119A141784611700BF0B05 /* RCLightboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCLightboxViewController.h; path = ../RCLightboxViewController.h; sourceTree = "<group>"; };
 		64119A151784611700BF0B05 /* RCLightboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCLightboxViewController.m; path = ../RCLightboxViewController.m; sourceTree = "<group>"; };
 		64119A1717849DBB00BF0B05 /* viewPostMainFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostMainFrame.png; path = ../viewPostMainFrame.png; sourceTree = "<group>"; };
+		6416D11017A02C170017065A /* mainCapsuleCount.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mainCapsuleCount.png; path = ../mainCapsuleCount.png; sourceTree = "<group>"; };
+		6416D11217A038BB0017065A /* RCCircleLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCircleLabel.h; sourceTree = "<group>"; };
+		6416D11317A038BB0017065A /* RCCircleLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCircleLabel.m; sourceTree = "<group>"; };
 		6417B231179415C6007777E5 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		64194AD41770AAF100822F9B /* RCMainFeedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMainFeedCell.h; sourceTree = "<group>"; };
 		64194AD51770AAF100822F9B /* RCMainFeedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMainFeedCell.m; sourceTree = "<group>"; };
@@ -688,6 +693,7 @@
 				64E293BD17856F43009496FF /* loginTextfield.png */,
 				64D029901796F84C00E4AC7B /* magnifyingGlass@2x.png */,
 				64EA880317796D9F00011F3E /* mainBackground.png */,
+				6416D11017A02C170017065A /* mainCapsuleCount.png */,
 				64E293CB178587BE009496FF /* mainMapViewBackground.png */,
 				64E293C717857C25009496FF /* mainTopBanner.png */,
 				64E293CD178638AB009496FF /* mainViewOptionFollow.png */,
@@ -966,6 +972,8 @@
 				6407BBDF1754D81C000F29C5 /* RCUserTableCell.h */,
 				6407BBE01754D81C000F29C5 /* RCUserTableCell.m */,
 				6407BBDD1754D5EB000F29C5 /* RCUserTableCell.xib */,
+				6416D11217A038BB0017065A /* RCCircleLabel.h */,
+				6416D11317A038BB0017065A /* RCCircleLabel.m */,
 			);
 			name = Views;
 			path = ..;
@@ -1256,6 +1264,7 @@
 				BFE63147179D8020004992E1 /* friendListSearchBarBg.png in Resources */,
 				BF3E9827179EB4AC007EF258 /* friendListSearchBarCancel.png in Resources */,
 				BFD65334179F167B00D6A13D /* buttonRefresh.gif in Resources */,
+				6416D11117A02C170017065A /* mainCapsuleCount.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1343,6 +1352,7 @@
 				643C0802179B0B0E002BD751 /* RCPhotoDownloadOperation.m in Sources */,
 				649B424B179C51040019B1A7 /* RCLoadingLocationViewController.m in Sources */,
 				64008046179EB84200C6B2B2 /* TTTAttributedLabel.m in Sources */,
+				6416D11417A038BB0017065A /* RCCircleLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
