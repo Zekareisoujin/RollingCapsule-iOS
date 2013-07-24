@@ -101,8 +101,8 @@
                     _amazonException = exception;
                 }
             } else {
-#if DEBUG==1
                 NSString* errorString = @"Failed to obtain S3 credentails from backend";
+#if DEBUG==1
                 NSLog(@"New-Post: Error: %@", errorString);
 #endif
                 _amazonException = [AmazonServiceException exceptionWithMessage:errorString];
