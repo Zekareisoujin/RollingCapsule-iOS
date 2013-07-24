@@ -181,7 +181,17 @@
     
     [self showMoreFeedButton:NO animate:NO];
     
+    UITapGestureRecognizer* tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showHiddenCapsulesMessage:)];
+    [_viewCapsuleCount addGestureRecognizer: tapGestureRecognizer];
+    
     _mapView.showsUserLocation = YES;
+}
+
+- (void) showHiddenCapsulesMessage:(UITapGestureRecognizer*) recognizer{
+    CGPoint point = [recognizer locationOfTouch:0 inView:_imgViewCapsuleCount ];
+    if (CGRectContainsPoint(_imgViewCapsuleCount.frame, point)) {
+        [_mapView selectAnnotation:_mapView.userLocation animated:YES];
+    }
 }
 
 - (void)networkChanged:(NSNotification *)notification
@@ -309,6 +319,9 @@
                     NSLog(@"current annotations:%@",_mapView.annotations);
                     NSLog(@"currentlandmark %d",_currentLandmarkID);
                     NSArray *postList = (NSArray *) [jsonData objectForKey:@"post_list"];
+                    int numCapsules = [[jsonData objectForKey:@"unreleased_capsules_count"] intValue];
+                    [_lblCapsuleCount setHidden:NO];
+                    _lblCapsuleCount.text = [NSString stringWithFormat:@"%d",numCapsules];
                     NSDictionary *userDictionary = (NSDictionary *) [jsonData objectForKey:@"user"];
                     _user = [[RCUser alloc] initWithNSDictionary:userDictionary];
                     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
@@ -320,14 +333,12 @@
                              [_btnUserAvatar setImage:img forState:UIControlStateNormal];
                          });
                      }];
-                    //[_btnUserAvatar setImage:[_user getUserAvatar:_user.userID] forState:UIControlStateNormal];
                     
                     [appDelegate setCurrentUser:_user];
                     [_posts removeAllObjects];
                     for (NSDictionary *postData in postList) {
                         RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
                         [_posts addObject:post];
-                        //NSLog(@"%@ post coordinates %f %f",[RCMainFeedViewController debugTag], post.coordinate.latitude, post.coordinate.longitude);
                     }
                     willShowMoreFeeds = ([_posts count] == currentMaxPostNumber);
                     
@@ -534,8 +545,15 @@
 
 -(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
-    if ([annotation isKindOfClass:[MKUserLocation class]])
-        return nil;
+    if ([annotation isKindOfClass:[MKUserLocation class]]) {
+        if ([_lblCapsuleCount.text length] > 0 && !_lblCapsuleCount.hidden && !_viewCapsuleCount.hidden) {
+            NSString* countText = _lblCapsuleCount.text;
+            countText = [countText isEqualToString:@"0"] ? @"No" : countText;
+            [(MKUserLocation*)annotation setTitle: [NSString stringWithFormat:@"%@ hidden capsule(s)", countText]];
+        } else
+            [(MKUserLocation*)annotation setTitle:@"Current location"];
+        return nil;        
+    }
     
     if ([annotation isKindOfClass:[RCLandmark class]]) {
         RCLandmark *landmark = (RCLandmark*) annotation;
@@ -689,18 +707,23 @@
 }
 
 - (IBAction)btnViewModeChosen:(UIButton *)sender {
+    
     if ([sender isEqual:_btnViewModePublic]) {
+        [_viewCapsuleCount setHidden:NO];
         _currentViewMode = RCMainFeedViewModePublic;
         _btnViewModeFriends.enabled = YES;
         _btnViewModeFollow.enabled = YES;
-    } else if ([sender isEqual:_btnViewModeFriends]) {
-        _currentViewMode = RCMainFeedViewModeFriends;
-        _btnViewModePublic.enabled = YES;
-        _btnViewModeFollow.enabled = YES;
-    } else if ([sender isEqual:_btnViewModeFollow]) {
-        _currentViewMode = RCMainFeedViewModeFollow;
-        _btnViewModeFriends.enabled = YES;
-        _btnViewModePublic.enabled = YES;
+    } else {
+        [_viewCapsuleCount setHidden:YES];
+        if ([sender isEqual:_btnViewModeFriends]) {
+            _currentViewMode = RCMainFeedViewModeFriends;
+            _btnViewModePublic.enabled = YES;
+            _btnViewModeFollow.enabled = YES;
+        } else if ([sender isEqual:_btnViewModeFollow]) {
+            _currentViewMode = RCMainFeedViewModeFollow;
+            _btnViewModeFriends.enabled = YES;
+            _btnViewModePublic.enabled = YES;
+        }
     }
     sender.enabled = NO;
     [self handleRefresh:_refreshControl];

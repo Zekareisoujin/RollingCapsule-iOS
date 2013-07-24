@@ -93,9 +93,6 @@
 		6491DCF31755E096006FBCD8 /* RCUserProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6491DCF11755E096006FBCD8 /* RCUserProfileViewController.xib */; };
 		649A869D175B0CC30016674F /* RCAmazonS3Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 649A869C175B0CC30016674F /* RCAmazonS3Helper.m */; };
 		649B4240179C3AC90019B1A7 /* buttonTopic.png in Resources */ = {isa = PBXBuildFile; fileRef = 649B4238179C3AC80019B1A7 /* buttonTopic.png */; };
-		649B4241179C3AC90019B1A7 /* topicCategoryCafe.png in Resources */ = {isa = PBXBuildFile; fileRef = 649B4239179C3AC80019B1A7 /* topicCategoryCafe.png */; };
-		649B4242179C3AC90019B1A7 /* topicCategoryCinema.png in Resources */ = {isa = PBXBuildFile; fileRef = 649B423A179C3AC80019B1A7 /* topicCategoryCinema.png */; };
-		649B4243179C3AC90019B1A7 /* topicCategoryInterest.png in Resources */ = {isa = PBXBuildFile; fileRef = 649B423B179C3AC80019B1A7 /* topicCategoryInterest.png */; };
 		649B4244179C3AC90019B1A7 /* topicCategoryMall.png in Resources */ = {isa = PBXBuildFile; fileRef = 649B423C179C3AC90019B1A7 /* topicCategoryMall.png */; };
 		649B4245179C3AC90019B1A7 /* topicCategoryRestaurant.png in Resources */ = {isa = PBXBuildFile; fileRef = 649B423D179C3AC90019B1A7 /* topicCategoryRestaurant.png */; };
 		649B4246179C3AC90019B1A7 /* topicCategorySchool.png in Resources */ = {isa = PBXBuildFile; fileRef = 649B423E179C3AC90019B1A7 /* topicCategorySchool.png */; };
@@ -188,6 +185,17 @@
 		BF4DCC46175C82280081B5AC /* AWSRuntime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF4DCC44175C82280081B5AC /* AWSRuntime.framework */; };
 		BF4DCC47175C82280081B5AC /* AWSS3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF4DCC45175C82280081B5AC /* AWSS3.framework */; };
 		BF6563C617A03BEB00F6D940 /* friendListSearchBarToggle.png in Resources */ = {isa = PBXBuildFile; fileRef = BF6563C517A03BEB00F6D940 /* friendListSearchBarToggle.png */; };
+		BF6563D317A05C0000F6D940 /* mainCapsuleCount.png in Resources */ = {isa = PBXBuildFile; fileRef = BF6563C717A05C0000F6D940 /* mainCapsuleCount.png */; };
+		BF6563D417A05C0000F6D940 /* RCCircleLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = BF6563C917A05C0000F6D940 /* RCCircleLabel.m */; };
+		BF6563D517A05C0000F6D940 /* topicCancel.png in Resources */ = {isa = PBXBuildFile; fileRef = BF6563CA17A05C0000F6D940 /* topicCancel.png */; };
+		BF6563D617A05C0000F6D940 /* topicCategoryAirport.png in Resources */ = {isa = PBXBuildFile; fileRef = BF6563CB17A05C0000F6D940 /* topicCategoryAirport.png */; };
+		BF6563D717A05C0000F6D940 /* topicCategoryAquarium.png in Resources */ = {isa = PBXBuildFile; fileRef = BF6563CC17A05C0000F6D940 /* topicCategoryAquarium.png */; };
+		BF6563D817A05C0000F6D940 /* topicCategoryChurch.png in Resources */ = {isa = PBXBuildFile; fileRef = BF6563CD17A05C0000F6D940 /* topicCategoryChurch.png */; };
+		BF6563D917A05C0000F6D940 /* topicCategoryHotel.png in Resources */ = {isa = PBXBuildFile; fileRef = BF6563CE17A05C0000F6D940 /* topicCategoryHotel.png */; };
+		BF6563DA17A05C0000F6D940 /* topicCategoryMovie.png in Resources */ = {isa = PBXBuildFile; fileRef = BF6563CF17A05C0000F6D940 /* topicCategoryMovie.png */; };
+		BF6563DB17A05C0000F6D940 /* topicCategoryOthers.png in Resources */ = {isa = PBXBuildFile; fileRef = BF6563D017A05C0000F6D940 /* topicCategoryOthers.png */; };
+		BF6563DC17A05C0000F6D940 /* topicCategoryPark.png in Resources */ = {isa = PBXBuildFile; fileRef = BF6563D117A05C0000F6D940 /* topicCategoryPark.png */; };
+		BF6563DD17A05C0000F6D940 /* topicCategoryTemple.png in Resources */ = {isa = PBXBuildFile; fileRef = BF6563D217A05C0000F6D940 /* topicCategoryTemple.png */; };
 		BF68E7031756090200E5C1F4 /* RCMainFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BF68E7011756090200E5C1F4 /* RCMainFeedViewController.m */; };
 		BF68E7041756090200E5C1F4 /* RCMainFeedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF68E7021756090200E5C1F4 /* RCMainFeedViewController.xib */; };
 		BF8925EC1767697000F1978F /* icon114.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8925EB1767697000F1978F /* icon114.png */; };
@@ -369,9 +377,6 @@
 		649A869B175B0CC30016674F /* RCAmazonS3Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCAmazonS3Helper.h; path = "Rolling Capsule/RCAmazonS3Helper.h"; sourceTree = "<group>"; };
 		649A869C175B0CC30016674F /* RCAmazonS3Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCAmazonS3Helper.m; path = "Rolling Capsule/RCAmazonS3Helper.m"; sourceTree = "<group>"; };
 		649B4238179C3AC80019B1A7 /* buttonTopic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = buttonTopic.png; path = ../buttonTopic.png; sourceTree = "<group>"; };
-		649B4239179C3AC80019B1A7 /* topicCategoryCafe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = topicCategoryCafe.png; path = ../topicCategoryCafe.png; sourceTree = "<group>"; };
-		649B423A179C3AC80019B1A7 /* topicCategoryCinema.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = topicCategoryCinema.png; path = ../topicCategoryCinema.png; sourceTree = "<group>"; };
-		649B423B179C3AC80019B1A7 /* topicCategoryInterest.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = topicCategoryInterest.png; path = ../topicCategoryInterest.png; sourceTree = "<group>"; };
 		649B423C179C3AC90019B1A7 /* topicCategoryMall.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = topicCategoryMall.png; path = ../topicCategoryMall.png; sourceTree = "<group>"; };
 		649B423D179C3AC90019B1A7 /* topicCategoryRestaurant.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = topicCategoryRestaurant.png; path = ../topicCategoryRestaurant.png; sourceTree = "<group>"; };
 		649B423E179C3AC90019B1A7 /* topicCategorySchool.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = topicCategorySchool.png; path = ../topicCategorySchool.png; sourceTree = "<group>"; };
@@ -479,6 +484,18 @@
 		BF4DCC44175C82280081B5AC /* AWSRuntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSRuntime.framework; path = "Rolling Capsule/AWSRuntime.framework"; sourceTree = "<group>"; };
 		BF4DCC45175C82280081B5AC /* AWSS3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSS3.framework; path = "Rolling Capsule/AWSS3.framework"; sourceTree = "<group>"; };
 		BF6563C517A03BEB00F6D940 /* friendListSearchBarToggle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = friendListSearchBarToggle.png; sourceTree = "<group>"; };
+		BF6563C717A05C0000F6D940 /* mainCapsuleCount.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainCapsuleCount.png; sourceTree = "<group>"; };
+		BF6563C817A05C0000F6D940 /* RCCircleLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCircleLabel.h; sourceTree = "<group>"; };
+		BF6563C917A05C0000F6D940 /* RCCircleLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCircleLabel.m; sourceTree = "<group>"; };
+		BF6563CA17A05C0000F6D940 /* topicCancel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = topicCancel.png; sourceTree = "<group>"; };
+		BF6563CB17A05C0000F6D940 /* topicCategoryAirport.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = topicCategoryAirport.png; sourceTree = "<group>"; };
+		BF6563CC17A05C0000F6D940 /* topicCategoryAquarium.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = topicCategoryAquarium.png; sourceTree = "<group>"; };
+		BF6563CD17A05C0000F6D940 /* topicCategoryChurch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = topicCategoryChurch.png; sourceTree = "<group>"; };
+		BF6563CE17A05C0000F6D940 /* topicCategoryHotel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = topicCategoryHotel.png; sourceTree = "<group>"; };
+		BF6563CF17A05C0000F6D940 /* topicCategoryMovie.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = topicCategoryMovie.png; sourceTree = "<group>"; };
+		BF6563D017A05C0000F6D940 /* topicCategoryOthers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = topicCategoryOthers.png; sourceTree = "<group>"; };
+		BF6563D117A05C0000F6D940 /* topicCategoryPark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = topicCategoryPark.png; sourceTree = "<group>"; };
+		BF6563D217A05C0000F6D940 /* topicCategoryTemple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = topicCategoryTemple.png; sourceTree = "<group>"; };
 		BF68E7001756090200E5C1F4 /* RCMainFeedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCMainFeedViewController.h; path = ../RCMainFeedViewController.h; sourceTree = "<group>"; };
 		BF68E7011756090200E5C1F4 /* RCMainFeedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCMainFeedViewController.m; path = ../RCMainFeedViewController.m; sourceTree = "<group>"; };
 		BF68E7021756090200E5C1F4 /* RCMainFeedViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RCMainFeedViewController.xib; path = ../RCMainFeedViewController.xib; sourceTree = "<group>"; };
@@ -748,6 +765,18 @@
 				BFCCEFCF178CA38A00D2434C /* profileWorldMap.png */,
 				BFE3073017953EE7000C9C58 /* profileWorldMapSpot.png */,
 				6460E882178B274A0065D6BA /* registerMainFrame.png */,
+				BF6563C717A05C0000F6D940 /* mainCapsuleCount.png */,
+				BF6563C817A05C0000F6D940 /* RCCircleLabel.h */,
+				BF6563C917A05C0000F6D940 /* RCCircleLabel.m */,
+				BF6563CA17A05C0000F6D940 /* topicCancel.png */,
+				BF6563CB17A05C0000F6D940 /* topicCategoryAirport.png */,
+				BF6563CC17A05C0000F6D940 /* topicCategoryAquarium.png */,
+				BF6563CD17A05C0000F6D940 /* topicCategoryChurch.png */,
+				BF6563CE17A05C0000F6D940 /* topicCategoryHotel.png */,
+				BF6563CF17A05C0000F6D940 /* topicCategoryMovie.png */,
+				BF6563D017A05C0000F6D940 /* topicCategoryOthers.png */,
+				BF6563D117A05C0000F6D940 /* topicCategoryPark.png */,
+				BF6563D217A05C0000F6D940 /* topicCategoryTemple.png */,
 				6460E886178B2D3E0065D6BA /* registerMainFrame@2x.png */,
 				6460E883178B274A0065D6BA /* registerRegisterButton.png */,
 				6460E872178AE4070065D6BA /* slideMenuBackground.png */,
@@ -758,9 +787,6 @@
 				6460E876178AE4070065D6BA /* slideMenuProfile.png */,
 				6460E877178AE4070065D6BA /* slideMenuSettings.png */,
 				64EA880517796DAB00011F3E /* textField@2x.png */,
-				649B4239179C3AC80019B1A7 /* topicCategoryCafe.png */,
-				649B423A179C3AC80019B1A7 /* topicCategoryCinema.png */,
-				649B423B179C3AC80019B1A7 /* topicCategoryInterest.png */,
 				649B423C179C3AC90019B1A7 /* topicCategoryMall.png */,
 				649B423D179C3AC90019B1A7 /* topicCategoryRestaurant.png */,
 				649B423E179C3AC90019B1A7 /* topicCategorySchool.png */,
@@ -1241,9 +1267,6 @@
 				BF05D89D17995D0F00398929 /* postButtonTimeCapsuleActive.png in Resources */,
 				BF05D89E17995D0F00398929 /* postButtonTimeCapsuleInactive.png in Resources */,
 				649B4240179C3AC90019B1A7 /* buttonTopic.png in Resources */,
-				649B4241179C3AC90019B1A7 /* topicCategoryCafe.png in Resources */,
-				649B4242179C3AC90019B1A7 /* topicCategoryCinema.png in Resources */,
-				649B4243179C3AC90019B1A7 /* topicCategoryInterest.png in Resources */,
 				649B4244179C3AC90019B1A7 /* topicCategoryMall.png in Resources */,
 				649B4245179C3AC90019B1A7 /* topicCategoryRestaurant.png in Resources */,
 				649B4246179C3AC90019B1A7 /* topicCategorySchool.png in Resources */,
@@ -1260,6 +1283,16 @@
 				BF3E9827179EB4AC007EF258 /* friendListSearchBarCancel.png in Resources */,
 				BFD65334179F167B00D6A13D /* buttonRefresh.gif in Resources */,
 				BF6563C617A03BEB00F6D940 /* friendListSearchBarToggle.png in Resources */,
+				BF6563D317A05C0000F6D940 /* mainCapsuleCount.png in Resources */,
+				BF6563D517A05C0000F6D940 /* topicCancel.png in Resources */,
+				BF6563D617A05C0000F6D940 /* topicCategoryAirport.png in Resources */,
+				BF6563D717A05C0000F6D940 /* topicCategoryAquarium.png in Resources */,
+				BF6563D817A05C0000F6D940 /* topicCategoryChurch.png in Resources */,
+				BF6563D917A05C0000F6D940 /* topicCategoryHotel.png in Resources */,
+				BF6563DA17A05C0000F6D940 /* topicCategoryMovie.png in Resources */,
+				BF6563DB17A05C0000F6D940 /* topicCategoryOthers.png in Resources */,
+				BF6563DC17A05C0000F6D940 /* topicCategoryPark.png in Resources */,
+				BF6563DD17A05C0000F6D940 /* topicCategoryTemple.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1347,6 +1380,7 @@
 				643C0802179B0B0E002BD751 /* RCPhotoDownloadOperation.m in Sources */,
 				649B424B179C51040019B1A7 /* RCLoadingLocationViewController.m in Sources */,
 				64008046179EB84200C6B2B2 /* TTTAttributedLabel.m in Sources */,
+				BF6563D417A05C0000F6D940 /* RCCircleLabel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
