@@ -520,6 +520,7 @@
 
 - (IBAction)btnAvatarClicked:(id)sender {
     UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+    imagePicker.allowsEditing = YES;
     imagePicker.delegate = self;
     [self presentViewController:imagePicker animated:YES completion:nil];
 }
@@ -615,7 +616,8 @@
 {
     
     // Get the selected image.
-    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    //UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
     UIImage *resizedImage = imageWithImage(image, CGSizeMake(80,80));
     
     [_btnAvatarImg setBackgroundImage:resizedImage forState:UIControlStateNormal];
