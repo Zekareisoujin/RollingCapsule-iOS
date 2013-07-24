@@ -743,7 +743,7 @@
         NSURL *url = [[NSBundle mainBundle] URLForResource:@"buttonRefresh" withExtension:@"gif"];
         [_btnRefresh setImage:[UIImage animatedImageWithAnimatedGIFURL:url] forState:UIControlStateNormal];
     }else {
-        [_btnRefresh setImage:[UIImage imageNamed:@"buttonRefresh"] forState:UIControlStateNormal];
+        [_btnRefresh setImage:[UIImage imageNamed:@"buttonRefresh.gif"] forState:UIControlStateNormal];
     }
 }
 

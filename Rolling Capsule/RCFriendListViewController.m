@@ -41,7 +41,13 @@ RCFriendListViewMode    _viewingMode;
 RCConnectionManager     *_connectionManager;
 NSArray                 *controlButtonArray;
 NSMutableArray          *currentDisplayedItems;
-//BOOL                    isSearching;
+
+// Search bar animation
+BOOL    showSearchBar;
+CGRect  searchBarShowFrame;
+CGRect  searchBarHideFrame;
+CGRect  searchButtonShowFrame;
+CGRect  searchButtonHideFrame;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -105,8 +111,32 @@ NSMutableArray          *currentDisplayedItems;
     
     // Configure search bar
     [_searchBar setDelegate:self];
-    [_btnSearchBarCancel setHidden:YES];
-//    isSearching = NO;
+    
+    // Configure search bar BG frame
+    searchBarHideFrame = searchBarShowFrame = _searchBarBackground.frame;
+    searchBarHideFrame.origin.x += searchBarHideFrame.size.width*0.95;
+    searchBarHideFrame.size.width = 0;
+    
+    // Configure search bar search button frame
+    searchButtonHideFrame = _btnSearchBarCancel.frame;
+    searchButtonShowFrame = _btnSearchBarToggle.frame;
+    
+    [self toggleSearchBar:NO animateWithDuration:0.0];
+    
+    // Creating new button because auto layout keep interferring with settings:
+    UIButton* btnToggle = [[UIButton alloc] initWithFrame:searchButtonHideFrame];
+    [btnToggle setImage:[UIImage imageNamed:@"friendListSearchBarToggle.png"] forState:UIControlStateNormal];
+    [btnToggle addTarget:self action:@selector(btnSearchBarToggleTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
+    [_btnSearchBarToggle removeFromSuperview];
+    _btnSearchBarToggle = btnToggle;
+    [self.view addSubview:btnToggle];
+    
+    UIButton* btnCancel = [[UIButton alloc] initWithFrame:searchButtonHideFrame];
+    [btnCancel setImage:[UIImage imageNamed:@"friendListSearchBarCancel.png"] forState:UIControlStateNormal];
+    [btnCancel addTarget:self action:@selector(btnSearchBarCancelTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
+    [_btnSearchBarCancel removeFromSuperview];
+    _btnSearchBarCancel = btnCancel;
+    [self.view addSubview:btnCancel];
     
     // Load all lists once at the beginning, and default tab is friend tab:
     _viewingMode = RCFriendListViewModeFriends;
@@ -359,6 +389,37 @@ NSMutableArray          *currentDisplayedItems;
     _displayedItems = currentDisplayedItems;
     [self clearSearchBar];
 
+}
+
+- (IBAction)btnSearchBarToggleTouchUpInside:(id)sender {
+    [self toggleSearchBar:showSearchBar animateWithDuration:0.5];
+}
+
+- (void)toggleSearchBar: (BOOL)show animateWithDuration:(NSTimeInterval)duration {
+    if (!show) {
+        showSearchBar = YES;
+        [self btnSearchBarCancelTouchUpInside:self];
+        [UIView animateWithDuration:duration animations:^{
+            [_searchBarBackground setFrame:searchBarHideFrame];
+            [_btnSearchBarToggle setFrame:searchButtonHideFrame];
+            [_searchBarBackground.layer setOpacity:0.0];
+        } completion:^(BOOL success){
+            [_searchBarBackground setHidden:YES];
+            [_searchBar setHidden:YES];
+        }];
+    }else {
+        showSearchBar = NO;
+        [_searchBarBackground setFrame:searchBarHideFrame];
+        [_searchBarBackground setHidden:NO];
+        [_searchBar setHidden:NO];
+        [UIView animateWithDuration:duration animations:^{
+            [_searchBarBackground setFrame:searchBarShowFrame];
+            [_btnSearchBarToggle setFrame:searchButtonShowFrame];
+            [_searchBarBackground.layer setOpacity:1.0];
+        } completion:^(BOOL success){
+            
+        }];
+    }
 }
 
 - (IBAction)btnFriendTouchUpInside:(id)sender {
