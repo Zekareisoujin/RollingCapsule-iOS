@@ -558,11 +558,12 @@
 -(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
     if ([annotation isKindOfClass:[MKUserLocation class]]) {
-        if ([_lblCapsuleCount.text length] > 0 && !_lblCapsuleCount.hidden) {
+        if ([_lblCapsuleCount.text length] > 0 && !_lblCapsuleCount.hidden && !_viewCapsuleCount.hidden) {
             NSString* countText = _lblCapsuleCount.text;
             countText = [countText isEqualToString:@"0"] ? @"No" : countText;
             [(MKUserLocation*)annotation setTitle: [NSString stringWithFormat:@"%@ hidden capsule(s)", countText]];
-        }
+        } else
+            [(MKUserLocation*)annotation setTitle:@"Current location"];
         return nil;
     }
     
