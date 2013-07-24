@@ -28,6 +28,11 @@
 @synthesize displayAvatar = _displayAvatar;
 
 static RCUser* RCUserCurrentUser =  nil;
+static NSMutableDictionary* RCUserUserCollection = nil;
+
++ (void) initUserDataModel {
+    RCUserUserCollection = [[NSMutableDictionary alloc] init];
+}
 
 + (RCUser*) currentUser {
     return RCUserCurrentUser;
@@ -37,14 +42,65 @@ static RCUser* RCUserCurrentUser =  nil;
     RCUserCurrentUser = user;
 }
 
++ (id) getUserWithNSDictionary: (NSDictionary*)userData {
+    int newID = [[userData objectForKey:@"id"] intValue];
+    RCUser* cachedUser = [RCUserUserCollection objectForKey:[NSNumber numberWithInt:newID]];
+    if (cachedUser != nil) {
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
+        [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
+        NSDate* newUpdatedTime = [formatter dateFromString:(NSString*)[userData objectForKey:@"updated_at"]];
+        
+        if ([newUpdatedTime compare:cachedUser.updatedTime] != NSOrderedDescending)
+            return cachedUser;
+    }
+    
+    RCUser *newUser = [[RCUser alloc] initWithNSDictionary:userData];
+    return newUser;
+}
+
++ (void) getUserWithIDAsync: (int)userID completionHandler:(void (^)(RCUser*))completionFunc {
+    RCUser* cachedUser = [RCUserUserCollection objectForKey:[NSNumber numberWithInt:userID]];
+    
+    if (cachedUser == nil) {
+        NSURL *url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%d/details", RCServiceURL, RCUsersResource, userID]];
+        NSURLRequest *request = CreateHttpGetRequest(url);
+        
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+         {
+             NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+             
+             SBJsonParser *jsonParser = [SBJsonParser new];
+             NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
+             
+             if (jsonData != NULL) {
+                  RCUser *newUser = [RCUser getUserWithNSDictionary:jsonData];
+                 completionFunc(newUser);
+             }else {
+                 alertStatus(@"Failed to retrieve user info", @"Error", nil);
+             }
+             
+         }];
+    }else
+        completionFunc(cachedUser);
+}
+
 - (id) initWithNSDictionary:(NSDictionary *)userData {
     self = [super init];
     if (self) {
         _name = (NSString *)[userData objectForKey:@"name"];
         _email = (NSString *)[userData objectForKey:@"email"];
         _userID = [[userData objectForKey:@"id"] intValue];
+        _displayAvatar = nil;
         
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
+        [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
+        _updatedTime = [formatter dateFromString:(NSString*)[userData objectForKey:@"updated_at"]];
     }
+    [RCUserUserCollection setObject:self forKey:[NSNumber numberWithInt:_userID]];
+    
     return self;
 }
 
@@ -85,10 +141,7 @@ static RCUser* RCUserCurrentUser =  nil;
                 alertStatus(error,RCAlertMessageUploadError,self);
                 completionFunc(NO, nil);
             }else {
-                RCResourceCache *cache = [RCResourceCache centralCache];
-                NSString *key = [[NSString alloc] initWithFormat:@"%@/%d/avatar", RCUsersResource, _userID];
-                [cache invalidateKey:key];
-                [cache putResourceInCache:key forKey:avatar];
+                [[RCResourceCache centralCache] putResourceInCache:[[NSString alloc] initWithFormat:@"%@/%d/avatar", RCUsersResource, _userID] forKey:avatar];
                 completionFunc(YES, avatar);
             }
         }
@@ -340,34 +393,4 @@ static RCUser* RCUserCurrentUser =  nil;
     }
 }
 
-+ (void) getUserWithIDAsync: (int)userID completionHandler:(void (^)(RCUser*))completionFunc {
-    RCResourceCache *cache = [RCResourceCache centralCache];
-    NSString *key = [NSString stringWithFormat:@"%@/%d", RCUsersResource, userID];
-    RCUser *retUser = [cache getResourceForKey:key];
-    
-    if (retUser == nil) {
-        NSURL *url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%d/details", RCServiceURL, RCUsersResource, userID]];
-        NSURLRequest *request = CreateHttpGetRequest(url);
-        
-        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
-                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
-         {
-             NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-             
-             SBJsonParser *jsonParser = [SBJsonParser new];
-             NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
-             
-             RCUser *newUser;
-             if (jsonData != NULL) {
-                 newUser = [[RCUser alloc] initWithNSDictionary:jsonData];
-                 completionFunc(newUser);
-             }else {
-                 alertStatus(@"Failed to retrieve user info", @"Error", nil);
-             }
-             [cache putResourceInCache:newUser forKey:key];
-             
-         }];
-    } else
-        completionFunc(retUser);
-}
 @end

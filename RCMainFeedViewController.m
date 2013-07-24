@@ -7,7 +7,7 @@
 //
 
 #import "RCMainFeedViewController.h"
-#import "RCPostCommentCell.h"
+//#import "RCPostCommentCell.h"
 #import "RCUser.h"
 #import "RCPost.h"
 #import "RCConstants.h"
@@ -324,7 +324,8 @@
 
                     NSArray *postList = (NSArray *) [jsonData objectForKey:@"post_list"];
                     NSDictionary *userDictionary = (NSDictionary *) [jsonData objectForKey:@"user"];
-                    _user = [[RCUser alloc] initWithNSDictionary:userDictionary];
+                    //_user = [[RCUser alloc] initWithNSDictionary:userDictionary];
+                    _user = [RCUser getUserWithNSDictionary:userDictionary];
                     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                     [_lblUsername setText: _user.name];
                     [_lblUsername addLinkToURL:[NSURL URLWithString:[NSString stringWithFormat:@"memcap:/%@/%d?user[name]=%@",RCUsersResource,_user.userID, urlEncodeValue(_user.name)]] withRange:NSMakeRange(0,[_lblUsername.text length])];
@@ -687,22 +688,24 @@
         if (indexPath != nil ) {
             RCPost *post;
             post = [_posts objectAtIndex:indexPath.row];
-            RCUser *owner = [[RCUser alloc] init];
-            owner.userID = post.userID;
-            owner.name = post.authorName;
+//            RCUser *owner = [[RCUser alloc] init];
+//            owner.userID = post.userID;
+//            owner.name = post.authorName;
             
-            //[_collectionView removeGestureRecognizer:recognizer];
-            RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user];
-            if (post.landmarkID == -1)
-                postDetailsViewController.landmark = nil;
-            else
-                postDetailsViewController.landmark = [_landmarks objectForKey:[NSNumber numberWithInt:post.landmarkID]];
-            postDetailsViewController.deleteFunction = ^{
-                [self handleRefresh:_refreshControl];
-            };
-            postDetailsViewController.landmarkID = post.landmarkID;
-            //[self presentViewController:postDetailsViewController animated:YES completion:nil];
-            [self.navigationController pushViewController:postDetailsViewController animated:YES];
+            [RCUser getUserWithIDAsync:post.userID completionHandler:^(RCUser* owner){
+                //[_collectionView removeGestureRecognizer:recognizer];
+                RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user];
+                if (post.landmarkID == -1)
+                    postDetailsViewController.landmark = nil;
+                else
+                    postDetailsViewController.landmark = [_landmarks objectForKey:[NSNumber numberWithInt:post.landmarkID]];
+                postDetailsViewController.deleteFunction = ^{
+                    [self handleRefresh:_refreshControl];
+                };
+                postDetailsViewController.landmarkID = post.landmarkID;
+                //[self presentViewController:postDetailsViewController animated:YES completion:nil];
+                [self.navigationController pushViewController:postDetailsViewController animated:YES];
+            }];
             
         }
     }
