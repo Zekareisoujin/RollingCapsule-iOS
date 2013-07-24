@@ -181,7 +181,17 @@
     
     [self showMoreFeedButton:NO animate:NO];
     
+    UITapGestureRecognizer* tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showHiddenCapsulesMessage:)];
+    [_viewCapsuleCount addGestureRecognizer: tapGestureRecognizer];
+    
     _mapView.showsUserLocation = YES;
+}
+
+- (void) showHiddenCapsulesMessage:(UITapGestureRecognizer*) recognizer{
+    CGPoint point = [recognizer locationOfTouch:0 inView:_imgViewCapsuleCount ];
+    if (CGRectContainsPoint(_imgViewCapsuleCount.frame, point)) {
+        [_mapView selectAnnotation:_mapView.userLocation animated:YES];
+    }
 }
 
 - (void)networkChanged:(NSNotification *)notification
@@ -539,8 +549,14 @@
 
 -(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
-    if ([annotation isKindOfClass:[MKUserLocation class]])
-        return nil;
+    if ([annotation isKindOfClass:[MKUserLocation class]]) {
+        if ([_lblCapsuleCount.text length] > 0 && !_lblCapsuleCount.hidden) {
+            NSString* countText = _lblCapsuleCount.text;
+            countText = [countText isEqualToString:@"0"] ? @"No" : countText;
+            [(MKUserLocation*)annotation setTitle: [NSString stringWithFormat:@"%@ hidden capsule(s)", countText]];
+        }
+        return nil;        
+    }
     
     if ([annotation isKindOfClass:[RCLandmark class]]) {
         RCLandmark *landmark = (RCLandmark*) annotation;
