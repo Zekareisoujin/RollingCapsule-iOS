@@ -38,4 +38,17 @@ static RCUploadManager*  RCStaticUploadManager = nil;
     [RCStaticUploadManager addNewPostOperation:operation];
 }
 
++ (void) suspendUpload {
+    if (RCStaticUploadManager == nil) {
+        RCStaticUploadManager = [[RCUploadManager alloc] init];
+    }
+    [RCStaticUploadManager.uploadQueue setSuspended:YES];
+}
+
++ (void) resumeUpload {
+    if (RCStaticUploadManager == nil) {
+        RCStaticUploadManager = [[RCUploadManager alloc] init];
+    }
+    [RCStaticUploadManager.uploadQueue setSuspended:NO];
+}
 @end

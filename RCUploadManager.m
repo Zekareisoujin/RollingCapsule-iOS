@@ -16,6 +16,7 @@
     self = [super init];
     if (self) {
         _uploadQueue = [[NSOperationQueue alloc] init];
+        [_uploadQueue setMaxConcurrentOperationCount:1];
         _uploadList = [[NSMutableArray alloc] init];
     }
     return self;

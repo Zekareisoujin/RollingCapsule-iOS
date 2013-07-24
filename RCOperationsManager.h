@@ -14,5 +14,5 @@
 + (void) addOperation:(NSOperation*) operation;
 + (void) addUploadMediaOperation:(RCMediaUploadOperation*) operation;
 + (void) addUploadOperation:(RCNewPostOperation*) operation;
-
++ (void) suspendUpload;
 @end
