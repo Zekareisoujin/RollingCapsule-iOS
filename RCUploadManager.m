@@ -47,8 +47,8 @@
             [_uploadQueue addOperation:retryOperation];
         } else {
             [_uploadList removeObject:operation];
-            AppDelegate *appDelegate = (AppDelegate*) [[UIApplication sharedApplication] delegate];
-            appDelegate.needRefresh = YES;
+            NSNotification *notification = [NSNotification notificationWithName:RCNotificationNameMediaUploaded object:self];
+            [[NSNotificationCenter defaultCenter] postNotification:notification];
         }
     }
 }

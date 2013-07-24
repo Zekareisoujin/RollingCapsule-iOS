@@ -137,7 +137,7 @@
         case 3:
             //[self btnActionSetting:self];
             //[self btnActionLogOutDropDown:self];
-            if (plusRows ==0) {
+            if (plusRows == 0) {
                 plusRows = 1;
                 [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:4 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
             } else {
