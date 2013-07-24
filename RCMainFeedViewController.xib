@@ -381,6 +381,7 @@
 								<string key="NSFrame">{{42, 20}, {23, 23}}</string>
 								<reference key="NSSuperview" ref="573438233"/>
 								<reference key="NSWindow"/>
+								<reference key="NSNextKeyView"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="358641606"/>
 								<bool key="IBUIOpaque">NO</bool>
@@ -2396,9 +2397,6 @@
 						<string key="btnRefreshTouchUpInside:">id</string>
 						<string key="btnUserAvatarTouchUpInside:">id</string>
 						<string key="btnViewModeChosen:">UIButton</string>
-						<string key="handleLongPress:">UILongPressGestureRecognizer</string>
-						<string key="handlePinch:">UIPinchGestureRecognizer</string>
-						<string key="handleTap:">UITapGestureRecognizer</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="actionAddLandmark:">
@@ -2424,18 +2422,6 @@
 						<object class="IBActionInfo" key="btnViewModeChosen:">
 							<string key="name">btnViewModeChosen:</string>
 							<string key="candidateClassName">UIButton</string>
-						</object>
-						<object class="IBActionInfo" key="handleLongPress:">
-							<string key="name">handleLongPress:</string>
-							<string key="candidateClassName">UILongPressGestureRecognizer</string>
-						</object>
-						<object class="IBActionInfo" key="handlePinch:">
-							<string key="name">handlePinch:</string>
-							<string key="candidateClassName">UIPinchGestureRecognizer</string>
-						</object>
-						<object class="IBActionInfo" key="handleTap:">
-							<string key="name">handleTap:</string>
-							<string key="candidateClassName">UITapGestureRecognizer</string>
 						</object>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
@@ -2537,14 +2523,6 @@
 					<object class="IBClassDescriptionSource" key="sourceIdentifier">
 						<string key="majorKey">IBProjectSource</string>
 						<string key="minorKey">./Classes/UICollectionViewFlowLayout.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">UICollectionViewLayout</string>
-					<string key="superclassName">NSObject</string>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/UICollectionViewLayout.h</string>
 					</object>
 				</object>
 			</array>
