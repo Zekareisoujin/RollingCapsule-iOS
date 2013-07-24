@@ -27,9 +27,15 @@
     return self;
 }
 
-- (NSOperation*) generateOperation {
-    NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(main) object:nil];
-    return operation;
+- (RCNewPostOperation*) generateRetryOperation {
+    RCNewPostOperation *retry;
+    if (_mediaUploadOperation.successfulUpload)
+        retry = [[RCNewPostOperation alloc] initWithPost:_post withMediaUploadOperation:_mediaUploadOperation ];
+    else {
+        RCMediaUploadOperation *mediaUploadRetry = [[RCMediaUploadOperation alloc] initWithKey:_mediaUploadOperation.key withUploadData:_mediaUploadOperation.uploadData withThumbnail:_mediaUploadOperation.thumbnailImage withMediaType:_mediaUploadOperation.mediaType];
+        retry = [[RCNewPostOperation alloc] initWithPost:_post withMediaUploadOperation:mediaUploadRetry ];
+    }
+    return retry;
 }
 
 - (void) main {
@@ -63,7 +69,6 @@
         [RCConnectionManager startConnection];
         NSLog(@"before sending post data");
         NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-        [RCConnectionManager endConnection];
         NSLog(@"received post data");
         NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
         int responseStatusCode = [httpResponse statusCode];

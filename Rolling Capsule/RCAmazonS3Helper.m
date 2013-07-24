@@ -78,7 +78,7 @@
     NSString*key= [NSString stringWithFormat:@"%d %@",userID, resource];
     
     RCS3CredentialsWithExpiration *s3 = nil;
-    [clientPool objectForKey:key];
+    s3 = [clientPool objectForKey:key];
     if (s3 != nil) {
         if ([s3.expiryDate compare:[NSDate date]] == NSOrderedDescending)
             return s3.s3;

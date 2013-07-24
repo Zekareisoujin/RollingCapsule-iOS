@@ -13,6 +13,6 @@
 @interface RCOperationsManager : NSObject
 + (void) addOperation:(NSOperation*) operation;
 + (void) addUploadMediaOperation:(RCMediaUploadOperation*) operation;
-+ (void) addUploadOperation:(RCNewPostOperation*) operation;
++ (void) addUploadOperation:(RCNewPostOperation*) operation shouldStartMediaUpload:(BOOL)startMediaUpload;
 + (void) suspendUpload;
 @end

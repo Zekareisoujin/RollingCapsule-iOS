@@ -16,5 +16,5 @@
 @property (nonatomic, assign) BOOL successfulPost;
 @property (nonatomic, strong) RCMediaUploadOperation *mediaUploadOperation;
 - (id) initWithPost:(RCPost*) post withMediaUploadOperation:(RCMediaUploadOperation*) mediaUploadOperation;
-- (NSOperation*) generateOperation;
+- (RCNewPostOperation*) generateRetryOperation;
 @end

@@ -71,7 +71,9 @@ static NSMutableURLRequest* CreateHttpDeleteRequest (NSURL* url) {
 
 static void alertStatus(NSString *msg, NSString *title, id delegateObject)
 {
-    UILabel *lblAlert = [[UILabel alloc] init];
+    UILabel *lblAlert = nil;
+    if (lblAlert == nil)
+        lblAlert = [[UILabel alloc] init];
     lblAlert.text = msg;
     lblAlert.textAlignment = NSTextAlignmentCenter;
     lblAlert.textColor = [ UIColor whiteColor];
@@ -85,12 +87,9 @@ static void alertStatus(NSString *msg, NSString *title, id delegateObject)
         frame2.size.height += 20;
         lblAlert.frame = frame2;
     }];
-    [navigationController.view bringSubviewToFront:navigationController.navigationBar];
-    [NSTimer scheduledTimerWithTimeInterval:2 block:^(NSTimeInterval time) {
-            [UIView animateWithDuration:1.0 animations:^{
-                CGRect frame2 = lblAlert.frame;
-                frame2.origin.y -= frame2.size.height;
-                lblAlert.frame = frame2;
+    [NSTimer scheduledTimerWithTimeInterval:1 block:^(NSTimeInterval time) {
+            [UIView animateWithDuration:0.5 animations:^{
+                lblAlert.alpha = 0.0;
             } completion:^(BOOL finished){
                 [lblAlert removeFromSuperview];
             }];

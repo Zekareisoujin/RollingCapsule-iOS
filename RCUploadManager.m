@@ -22,31 +22,22 @@
     return self;
 }
 
-- (void) addUploadMediaOperation:(RCMediaUploadOperation*) operation {
-    [_uploadQueue addOperation:operation];
-}
-
-- (void) addNewPostOperation: (RCNewPostOperation*)operation {
+- (void) addNewPostOperation: (RCNewPostOperation*)operation shouldStartMediaUpload:(BOOL)startMediaUpload {
     [_uploadList addObject:operation];
+    if (!operation.mediaUploadOperation.successfulUpload && startMediaUpload)
+        [_uploadQueue addOperation:operation.mediaUploadOperation];
     [_uploadQueue addOperation:operation];
-    alertStatus(@"Uploading media",@"",nil);
     [operation addObserver:self forKeyPath:@"isFinished" options:NSKeyValueObservingOptionNew context:nil];
 }
 
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([object isKindOfClass:[RCNewPostOperation class]]) {
         RCNewPostOperation *operation = (RCNewPostOperation*)object;
+        [_uploadList removeObject:operation];
         if (!operation.successfulPost) {
-            NSOperation *retryOperation = [operation generateOperation];
-            if (!operation.mediaUploadOperation.successfulUpload) {
-                NSOperation* mediaUploadRetryOperation = [operation.mediaUploadOperation generateOperation];
-                [retryOperation addDependency:mediaUploadRetryOperation];
-                [_uploadQueue addOperation:mediaUploadRetryOperation];
-            } else {
-            }
-            [_uploadQueue addOperation:retryOperation];
-        } else {
-            [_uploadList removeObject:operation];
+            RCNewPostOperation *retry = [operation generateRetryOperation];
+            [self addNewPostOperation:retry shouldStartMediaUpload:YES];
+        } else {     
             NSNotification *notification = [NSNotification notificationWithName:RCNotificationNameMediaUploaded object:self];
             [[NSNotificationCenter defaultCenter] postNotification:notification];
         }

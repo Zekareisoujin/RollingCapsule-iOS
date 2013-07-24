@@ -92,7 +92,7 @@
                         continue;
                     }
                     _successfulUpload = YES;
-                    break;
+                    return;
                 }@catch (AmazonServiceException *exception) {
 #if DEBUG==1
                     NSLog(@"New-Post: Error: %@", exception);
