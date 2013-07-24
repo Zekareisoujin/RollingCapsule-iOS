@@ -12,6 +12,7 @@
 #import "RCConstants.h"
 #import "RCAmazonS3Helper.h"
 #import "RCConnectionManager.h"
+#import "UIImage+animatedGIF.h"
 
 @implementation RCMainFeedCell {
     int _currentPostID;
@@ -22,12 +23,17 @@
 @synthesize currentFileUrl = _currentFileUrl;
 
 + (UIImage*) loadingImage {
-    static UIImage* staticRCLoadingImage = nil;
-    if (staticRCLoadingImage == nil) {
-        staticRCLoadingImage = [UIImage imageNamed:@"loading.gif"];
-    }
-return staticRCLoadingImage;
+//    static UIImage* staticRCLoadingImage = nil;
+//    if (staticRCLoadingImage == nil) {
+//        //staticRCLoadingImage = [UIImage imageNamed:@"loading2.gif"];
+//        
+//        NSURL *url = [[NSBundle mainBundle] URLForResource:@"loading2" withExtension:@"gif"];
+//        staticRCLoadingImage = [UIImage animatedImageWithAnimatedGIFURL:url];
+//    }
+//    return staticRCLoadingImage;
+    return [UIImage standardLoadingImage];
 }
+
 + (NSString*) cellIdentifier {
     return @"RCMainFeedCell";
 }

@@ -10,6 +10,7 @@
 #import "RCConstants.h"
 #import "RCAmazonS3Helper.h"
 #import "RCResourceCache.h"
+#import "UIImage+animatedGIF.h"
 #import <QuartzCore/QuartzCore.h>
 
 @implementation RCUserTableCell
@@ -30,10 +31,11 @@
     // Configure the view for the selected state
 }
 
--(void) populateCellData:(RCUser *) user withLoggedInUserID:(int)loggedInUserID completion:(void (^)(void))callback {
+- (void)populateCellData:(RCUser *) user withLoggedInUserID:(int)loggedInUserID completion:(void (^)(void))callback {
     [_lblName setText:user.name];
     [_imgViewAvatar.layer setCornerRadius:10.0];
     [_imgViewAvatar setClipsToBounds:YES];
+    [_imgViewAvatar setImage:[UIImage standardLoadingImage]];
     
     /*RCResourceCache *cache = [RCResourceCache centralCache];
     NSString *key = [NSString stringWithFormat:@"%@/%d", RCUsersResource, user.userID];

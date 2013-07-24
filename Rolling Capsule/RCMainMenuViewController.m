@@ -15,6 +15,7 @@
 #import "RCUtilities.h"
 #import "RCConstants.h"
 #import "RCMenuTableCell.h"
+#import "UIImage+animatedGIF.h"
 
 @interface RCMainMenuViewController ()
 
@@ -67,6 +68,7 @@
     // Set table view background image
     UIImageView *backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"slideMenuBackground"]];
     [backgroundView setFrame:_menuTable.frame];
+    [_btnUserAvatar setImage:[UIImage standardLoadingImage] forState:UIControlStateNormal];
     [_menuTable setBackgroundView: backgroundView];
     [_menuTable reloadData];
     showLogOut = false;
@@ -234,12 +236,14 @@
 
 - (void) refreshUserAvatar {
     [_lblUserName setText:_user.name];
-    _lblUserName.linkAttributes = [[_lblUserName attributedText] attributesAtIndex:0 effectiveRange:nil];
+    [_lblUserName setLinkAttributes:[[_lblUserName attributedText] attributesAtIndex:0 effectiveRange:nil]];
+    [_lblUserName setActiveLinkAttributes:[[_lblUserName attributedText] attributesAtIndex:0 effectiveRange:nil]];
     [_lblUserName addLinkToURL:[NSURL URLWithString:[NSString stringWithFormat:@"memcap:/%@/%d?user[name]=%@",RCUsersResource,_user.userID, urlEncodeValue(_user.name)]] withRange:NSMakeRange(0,[_lblUserName.text length])];
-    _lblUserName.delegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    [_lblUserName setDelegate:(AppDelegate*)[[UIApplication sharedApplication] delegate]];
+    
     [_user getUserAvatarAsync:_user.userID completionHandler:^(UIImage* img){
         dispatch_async(dispatch_get_main_queue(), ^{
-            [_imgUserAvatar setImage:img];
+            [_btnUserAvatar setImage:img forState:UIControlStateNormal];
         });
     }];
 }

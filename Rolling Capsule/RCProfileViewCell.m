@@ -11,6 +11,7 @@
 #import "RCUser.h"
 #import "RCConstants.h"
 #import "RCAmazonS3Helper.h"
+#import "UIImage+animatedGIF.h"
 
 @implementation RCProfileViewCell {
     int _currentPostID;
@@ -36,6 +37,7 @@
     _currentPostID = post.postID;
     [self.imageView.layer setCornerRadius:10.0];
     [self.imageView setClipsToBounds:YES];
+    [self.imageView setImage:[UIImage standardLoadingImage]];
     
     [self.layer setMasksToBounds:NO];
     [self.layer setShadowColor:[UIColor whiteColor].CGColor];
