@@ -22,4 +22,5 @@
 @property (nonatomic, assign) BOOL successfulUpload;
 
 - (id) initWithKey:(NSString*)key withUploadData:(NSData*)uploadData withThumbnail:(UIImage*)thumbnailImage withMediaType:(NSString*)mediaType;
+- (NSOperation*) generateOperation;
 @end

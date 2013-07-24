@@ -14,18 +14,28 @@
 
 @synthesize  post = _post;
 @synthesize successfulPost = _successfulPost;
+@synthesize mediaUploadOperation = _mediaUploadOperation;
 
-- (id) initWithPost:(RCPost*) post {
+- (id) initWithPost:(RCPost*) post withMediaUploadOperation:(RCMediaUploadOperation*) mediaUploadOperation {
     self = [super init];
     if (self) {
         _post = post;
         _successfulPost = NO;
+        _mediaUploadOperation = mediaUploadOperation;
     }
+    [self addDependency:_mediaUploadOperation];
     return self;
+}
+
+- (NSOperation*) generateOperation {
+    NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(main) object:nil];
+    return operation;
 }
 
 - (void) main {
     @autoreleasepool {
+        if (!_mediaUploadOperation.successfulUpload)
+            return;
         NSMutableString *dataSt = initQueryString(@"post[content]", _post.content);
         NSString* latSt = [NSString stringWithFormat:@"%f",_post.latitude];
         NSString* longSt = [NSString stringWithFormat:@"%f",_post.longitude];

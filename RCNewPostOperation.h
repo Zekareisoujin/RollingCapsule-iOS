@@ -8,11 +8,13 @@
 
 #import <Foundation/Foundation.h>
 #import "RCPost.h"
+#import "RCMediaUploadOperation.h"
 
 @interface RCNewPostOperation : NSOperation
 
 @property (nonatomic, strong) RCPost* post;
 @property (nonatomic, assign) BOOL successfulPost;
-- (id) initWithPost: (RCPost*) post;
-
+@property (nonatomic, strong) RCMediaUploadOperation *mediaUploadOperation;
+- (id) initWithPost:(RCPost*) post withMediaUploadOperation:(RCMediaUploadOperation*) mediaUploadOperation;
+- (NSOperation*) generateOperation;
 @end

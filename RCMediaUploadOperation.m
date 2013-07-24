@@ -41,6 +41,11 @@
     return self;
 }
 
+- (NSOperation*) generateOperation {
+    NSInvocationOperation *operation = [[NSInvocationOperation alloc] initWithTarget:self selector:@selector(main) object:nil];
+    return operation;
+}
+
 - (void)main {
     // a lengthy operation
     @autoreleasepool {
@@ -73,26 +78,33 @@
                     }
                     if (thumbnailData != nil)
                     {
-                        NSLog(@"before calling thumbnail s3 putObject");
                         _putObjectResponse = [_s3 putObject:porThumbnail];
+#if DEBUG==1
                         NSLog(@"done uploading thumbnail to s3 result %@",_putObjectResponse);
+#endif
                     }
                     if (_putObjectResponse.error != nil)
                     {
+#if DEBUG==1
                         NSLog(@"Error: %@", _putObjectResponse.error);
+#endif
                         _uploadError = _putObjectResponse.error;
                         continue;
                     }
                     _successfulUpload = YES;
                     break;
                 }@catch (AmazonServiceException *exception) {
+#if DEBUG==1
                     NSLog(@"New-Post: Error: %@", exception);
                     NSLog(@"New-Post: Debug Description: %@",exception.debugDescription);
+#endif
                     _amazonException = exception;
                 }
             } else {
+#if DEBUG==1
                 NSString* errorString = @"Failed to obtain S3 credentails from backend";
                 NSLog(@"New-Post: Error: %@", errorString);
+#endif
                 _amazonException = [AmazonServiceException exceptionWithMessage:errorString];
             }
         }

@@ -155,7 +155,12 @@ static NSMutableDictionary* RCPostPostCollection = nil;
 - (void)downloadFinish:(NSObject *)object {
     if ([object isKindOfClass:[UIImage class]]) {
         _thumbnailImage = (UIImage*) object;
-        [_objUIUpdate performSelectorOnMainThread:_selUIUPdate withObject:self waitUntilDone:NO];
+        dispatch_async(dispatch_get_main_queue(), ^{
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+            [_objUIUpdate performSelector:_selUIUPdate withObject:self];
+#pragma clang diagnostic pop
+        });
     }
 }
 - (void) registerUIUpdateAction:(NSObject*)target action:(SEL)sel {

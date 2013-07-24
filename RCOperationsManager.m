@@ -7,12 +7,15 @@
 //
 
 #import "RCOperationsManager.h"
+#import "RCUploadManager.h"
 
 #define MAXIMUM_NUMBER_OF_PHOTO_UPLOADS 10
 
 @implementation RCOperationsManager
+
 static NSOperationQueue* RCStaticOperationQueue = nil;
-static NSOperationQueue* RCStaticUploadQueue = nil;
+static RCUploadManager*  RCStaticUploadManager = nil;
+
 + (void) addOperation:(NSOperation*) operation {
     if (RCStaticOperationQueue == nil) {
         RCStaticOperationQueue = [[NSOperationQueue alloc] init];
@@ -21,13 +24,18 @@ static NSOperationQueue* RCStaticUploadQueue = nil;
     [RCStaticOperationQueue addOperation:operation];
 }
 
-+ (void) addUploadMediaOperation:(NSOperation*) operation {
-    if (RCStaticUploadQueue == nil) {
-        RCStaticUploadQueue = [[NSOperationQueue alloc] init];
-        [RCStaticUploadQueue setMaxConcurrentOperationCount:6];
++ (void) addUploadMediaOperation:(RCMediaUploadOperation*) operation {
+    if (RCStaticUploadManager == nil) {
+        RCStaticUploadManager = [[RCUploadManager alloc] init];
     }
-    [RCStaticUploadQueue addOperation:operation];
+    [RCStaticUploadManager addUploadMediaOperation:operation];
 
+}
++ (void) addUploadOperation:(RCNewPostOperation*) operation {
+    if (RCStaticUploadManager == nil) {
+        RCStaticUploadManager = [[RCUploadManager alloc] init];
+    }
+    [RCStaticUploadManager addNewPostOperation:operation];
 }
 
 @end

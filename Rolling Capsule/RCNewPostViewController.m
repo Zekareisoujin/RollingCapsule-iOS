@@ -245,9 +245,8 @@ BOOL _isTimedRelease = NO;
     if (_datePickerView != nil && _isTimedRelease) {
         post.releaseDate = [_datePickerView date];
     }
-    _postNewOp = [[RCNewPostOperation alloc] initWithPost:post];
-    [_postNewOp addDependency:_mediaUploadOp];
-    [RCOperationsManager addUploadMediaOperation:_postNewOp];
+    _postNewOp = [[RCNewPostOperation alloc] initWithPost:post withMediaUploadOperation:_mediaUploadOp];
+    [RCOperationsManager addUploadOperation:_postNewOp];
     [self dismissViewControllerAnimated:YES completion:^{
         if (_postCancel != nil) {
             _postCancel();
