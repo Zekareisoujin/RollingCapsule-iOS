@@ -80,7 +80,7 @@
         //TODO open main news feed page
         dispatch_async(dispatch_get_main_queue(), ^{
             if (_successfulPost) {
-                alertStatus(@"Image posted successfully!" , @"Success!", nil);
+                alertStatus(@"Media posted successfully!" , @"Success!", nil);
             }else {
                 alertStatus([NSString stringWithFormat:@"Failed posting %@, trying again later", responseData], @"Post Failed!", self);
             }

@@ -140,7 +140,6 @@ BOOL _isTimedRelease = NO;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [_connectionManager reset];
     
     //initialize tap gesture that would be used either by background image or by
     //the whole view to handle keyboard pushing up/down
@@ -268,7 +267,7 @@ BOOL _isTimedRelease = NO;
 
 - (void) uploadPostMetadata {
     if (_amazonException != nil) {
-        [_connectionManager endConnection];
+        [RCConnectionManager endConnection];
         _postButton.enabled = YES;
         [self showAlertMessage:@"Failed to upload image, please try again later!" withTitle:RCUploadError];
         [self resetUploadStatus];
@@ -281,7 +280,7 @@ BOOL _isTimedRelease = NO;
     }
     else if (_putObjectResponse.error != nil) {
         
-        [_connectionManager endConnection];
+        [RCConnectionManager endConnection];
         _postButton.enabled = YES;
         [self showAlertMessage:_putObjectResponse.error.description withTitle:@"Upload Error"];
         [self resetUploadStatus];
@@ -417,7 +416,7 @@ BOOL _isTimedRelease = NO;
                 _successfulPost = NO;
             } else _successfulPost = YES;
             
-            [_connectionManager endConnection];
+            [RCConnectionManager endConnection];
             _postButton.enabled = YES;
             
             NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
@@ -454,7 +453,7 @@ BOOL _isTimedRelease = NO;
 
 - (void) asynchGetLandmarkRequest {
     @try {
-        [_connectionManager startConnection];
+        [RCConnectionManager startConnection];
         AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
         CLLocationCoordinate2D zoomLocation = appDelegate.currentLocation.coordinate;
         
@@ -463,7 +462,7 @@ BOOL _isTimedRelease = NO;
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
          {
-             [_connectionManager endConnection];
+             [RCConnectionManager endConnection];
              NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
              
              NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
@@ -484,7 +483,7 @@ BOOL _isTimedRelease = NO;
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        [_connectionManager endConnection];
+        [RCConnectionManager endConnection];
         self.navigationItem.rightBarButtonItem.enabled = YES;
         alertStatus(@"Post Failed.",@"Post Failed!",self);
     }

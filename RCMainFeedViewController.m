@@ -123,9 +123,6 @@
     if ([self.navigationController.viewControllers count] > 2)
         [self setupBackButton];
     
-    //miscellaneous helper preparation
-    [_connectionManager reset];
-    
     //reset view data
     [_chosenPosts removeAllObjects];
     _currentLandmarkID = -1;
@@ -183,6 +180,21 @@
     [self showMoreFeedButton:NO animate:NO];
     
     _mapView.showsUserLocation = YES;
+    
+    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    [appDelegate addObserver:self forKeyPath:@"needRefresh" options:0 context:nil];
+}
+
+- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+    if ([object isKindOfClass:[AppDelegate class]]) {
+        if ([keyPath isEqualToString:@"needRefresh"]) {
+            AppDelegate *appDelegate = (AppDelegate*)object;
+            if (appDelegate.needRefresh) {
+                appDelegate.needRefresh = NO;
+                [self handleRefresh:nil];
+            }
+        }
+    }
 }
 
 - (void)networkChanged:(NSNotification *)notification

@@ -31,6 +31,7 @@
 @synthesize currentLocation = _currentLocation;
 @synthesize userNotifications = _userNotifications;
 @synthesize didUpdateLocation = _didUpdateLocation;
+@synthesize needRefresh = _needRefresh;
 
 BOOL _didQueueOpenMainFeedOption;
 
@@ -44,6 +45,7 @@ BOOL _didQueueOpenMainFeedOption;
     [RCPost initPostDataModel];
     _didUpdateLocation = NO;
     _didQueueOpenMainFeedOption = NO;
+    _needRefresh = NO;
     
     //set up location listening
     _locationManager = [[CLLocationManager alloc] init];

@@ -12,7 +12,7 @@
 #import "RCResourceCache.h"
 #import "RCConnectionManager.h"
 
-#define RCPHOTODOWNLOADOPERATION_NUMRETRY 3
+#define RCPHOTODOWNLOADOPERATION_NUMRETRY 2
 
 @interface RCPhotoDownloadOperation ()
 

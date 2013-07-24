@@ -28,6 +28,7 @@
 @property (strong, nonatomic) CLLocation        *currentLocation;
 @property (strong, nonatomic) NSArray           *userNotifications;
 @property (assign, nonatomic) BOOL               didUpdateLocation;
+@property (assign, nonatomic) BOOL               needRefresh;
 - (void) showSideMenu;
 - (void) hideSideMenu;
 - (void) enableSideMenu;

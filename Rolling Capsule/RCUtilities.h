@@ -13,6 +13,7 @@
 #define IS_IPHONE_5 ( fabs( ( double )[ [ UIScreen mainScreen ] bounds ].size.height - ( double )568 ) < DBL_EPSILON )
 #import "RCConnectionManager.h"
 #import "RCConstants.h"
+#import "NSTimer+BlocksKit.h"
 
 typedef void (^VoidBlock)();
 
@@ -70,14 +71,38 @@ static NSMutableURLRequest* CreateHttpDeleteRequest (NSURL* url) {
 
 static void alertStatus(NSString *msg, NSString *title, id delegateObject)
 {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
+    UILabel *lblAlert = [[UILabel alloc] init];
+    lblAlert.text = msg;
+    lblAlert.textAlignment = NSTextAlignmentCenter;
+    lblAlert.textColor = [ UIColor whiteColor];
+    [lblAlert setBackgroundColor:[UIColor colorWithRed:50.0/255.0 green:200.0/255.0 blue:50.0/255.0 alpha:0.9]];
+    AppDelegate *appDelegate = (AppDelegate*) [[UIApplication sharedApplication] delegate];
+    UINavigationController *navigationController = appDelegate.navigationController;
+    [navigationController.view addSubview:lblAlert];
+    lblAlert.frame = CGRectMake(0,42,navigationController.view.frame.size.width,0);
+    [UIView animateWithDuration:0.5 animations:^{
+        CGRect frame2 = lblAlert.frame;
+        frame2.size.height += 20;
+        lblAlert.frame = frame2;
+    }];
+    [navigationController.view bringSubviewToFront:navigationController.navigationBar];
+    [NSTimer scheduledTimerWithTimeInterval:2 block:^(NSTimeInterval time) {
+            [UIView animateWithDuration:1.0 animations:^{
+                CGRect frame2 = lblAlert.frame;
+                frame2.origin.y -= frame2.size.height;
+                lblAlert.frame = frame2;
+            } completion:^(BOOL finished){
+                [lblAlert removeFromSuperview];
+            }];
+    } repeats:NO];
+    /*UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
                                                         message:msg
                                                        delegate:nil
                                               cancelButtonTitle:@"Ok"
                                               otherButtonTitles:nil, nil];
     
     // delegateObject is unnecessary, but lazy to refractor all the code that use this
-    [alertView show];
+    [alertView show];*/
 }
 
 static void confirmationDialog(NSString *msg, NSString *title, id delegate){

@@ -13,6 +13,7 @@
 		6400804E179EF0E500C6B2B2 /* RCAsyncPhotoDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6400804D179EF0E400C6B2B2 /* RCAsyncPhotoDownloadOperation.m */; };
 		64008051179F001500C6B2B2 /* RCNewPostOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 64008050179F001500C6B2B2 /* RCNewPostOperation.m */; };
 		64008054179FAD3600C6B2B2 /* RCUploadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 64008053179FAD3500C6B2B2 /* RCUploadManager.m */; };
+		64008057179FC32400C6B2B2 /* NSTimer+BlocksKits.m in Sources */ = {isa = PBXBuildFile; fileRef = 64008056179FC32400C6B2B2 /* NSTimer+BlocksKits.m */; };
 		6401017D1797DC79002A6E2E /* RCNewPostViewController4.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6401017C1797DC79002A6E2E /* RCNewPostViewController4.xib */; };
 		640103491798041A002A6E2E /* buttonPost@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 640103471798041A002A6E2E /* buttonPost@2x.png */; };
 		6401034D17981D10002A6E2E /* postButtonTimeCapsule-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 6401034B17981D10002A6E2E /* postButtonTimeCapsule-highlighted.png */; };
@@ -276,6 +277,9 @@
 		64008050179F001500C6B2B2 /* RCNewPostOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNewPostOperation.m; sourceTree = "<group>"; };
 		64008052179FAD3100C6B2B2 /* RCUploadManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCUploadManager.h; sourceTree = "<group>"; };
 		64008053179FAD3500C6B2B2 /* RCUploadManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCUploadManager.m; sourceTree = "<group>"; };
+		64008055179FC32400C6B2B2 /* NSTimer+BlocksKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTimer+BlocksKit.h"; sourceTree = "<group>"; };
+		64008056179FC32400C6B2B2 /* NSTimer+BlocksKits.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTimer+BlocksKits.m"; sourceTree = "<group>"; };
+		64008058179FC41800C6B2B2 /* BKGlobals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BKGlobals.h; sourceTree = "<group>"; };
 		6401017C1797DC79002A6E2E /* RCNewPostViewController4.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCNewPostViewController4.xib; sourceTree = "<group>"; };
 		640103471798041A002A6E2E /* buttonPost@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "buttonPost@2x.png"; path = "../buttonPost@2x.png"; sourceTree = "<group>"; };
 		6401034B17981D10002A6E2E /* postButtonTimeCapsule-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "postButtonTimeCapsule-highlighted.png"; path = "../postButtonTimeCapsule-highlighted.png"; sourceTree = "<group>"; };
@@ -936,6 +940,9 @@
 				64D6D80817998E7B00AA1161 /* Reachability.h */,
 				64D6D80A17998ECF00AA1161 /* Reachability.m */,
 				64FE84E3176B9E4E00E561D8 /* TestFlight.h */,
+				64008055179FC32400C6B2B2 /* NSTimer+BlocksKit.h */,
+				64008056179FC32400C6B2B2 /* NSTimer+BlocksKits.m */,
+				64008058179FC41800C6B2B2 /* BKGlobals.h */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -1368,6 +1375,7 @@
 				6400804E179EF0E500C6B2B2 /* RCAsyncPhotoDownloadOperation.m in Sources */,
 				64008051179F001500C6B2B2 /* RCNewPostOperation.m in Sources */,
 				64008054179FAD3600C6B2B2 /* RCUploadManager.m in Sources */,
+				64008057179FC32400C6B2B2 /* NSTimer+BlocksKits.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

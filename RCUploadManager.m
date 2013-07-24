@@ -7,7 +7,7 @@
 //
 
 #import "RCUploadManager.h"
-
+#import "RCUtilities.h"
 
 @implementation RCUploadManager
 @synthesize uploadQueue = _uploadQueue;
@@ -29,6 +29,7 @@
 - (void) addNewPostOperation: (RCNewPostOperation*)operation {
     [_uploadList addObject:operation];
     [_uploadQueue addOperation:operation];
+    alertStatus(@"Uploading media",@"",nil);
     [operation addObserver:self forKeyPath:@"isFinished" options:NSKeyValueObservingOptionNew context:nil];
 }
 
@@ -44,7 +45,11 @@
             } else {
             }
             [_uploadQueue addOperation:retryOperation];
-        } else [_uploadList removeObject:operation];
+        } else {
+            [_uploadList removeObject:operation];
+            AppDelegate *appDelegate = (AppDelegate*) [[UIApplication sharedApplication] delegate];
+            appDelegate.needRefresh = YES;
+        }
     }
 }
 @end
