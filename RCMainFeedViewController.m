@@ -19,7 +19,7 @@
 #import "RCMainFeedCell.h"
 #import "RCMainMenuViewController.h"
 #import "RCConnectionManager.h"
-#import "RCNotification.h"
+#import "RCUploadManager.h"
 #import "RCAddLandmarkController.h"
 #import "Reachability.h"
 #import "UIImage+animatedGIF.h"
@@ -181,21 +181,10 @@
     
     _mapView.showsUserLocation = YES;
     
-    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-    [appDelegate addObserver:self forKeyPath:@"needRefresh" options:0 context:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleRefresh:) name:RCNotificationNameMediaUploaded object:nil];
+    
 }
 
-- (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
-    if ([object isKindOfClass:[AppDelegate class]]) {
-        if ([keyPath isEqualToString:@"needRefresh"]) {
-            AppDelegate *appDelegate = (AppDelegate*)object;
-            if (appDelegate.needRefresh) {
-                appDelegate.needRefresh = NO;
-                [self handleRefresh:nil];
-            }
-        }
-    }
-}
 
 - (void)networkChanged:(NSNotification *)notification
 {

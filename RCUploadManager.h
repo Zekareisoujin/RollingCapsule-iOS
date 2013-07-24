@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "RCNewPostOperation.h"
 
+#define RCNotificationNameMediaUploaded @"RCNotificationNameMediaUploaded"
+
 @interface RCUploadManager : NSObject
 
 @property (nonatomic, strong) NSOperationQueue* uploadQueue;
