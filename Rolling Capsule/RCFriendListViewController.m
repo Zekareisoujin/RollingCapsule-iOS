@@ -14,11 +14,13 @@
 #import "RCFindFriendsViewController.h"
 #import "RCConnectionManager.h"
 #import "RCUserProfileViewController.h"
+#import "RCNewPostViewController.h"
 #import "AppDelegate.h"
 
 @interface RCFriendListViewController ()
 
 @property (nonatomic, strong) UIRefreshControl *refreshControl;
+@property (nonatomic, strong) UIButton* postButton;
 @property (nonatomic, weak) NSMutableArray* displayedItems;
 @property (nonatomic, strong) NSMutableArray *friends;
 @property (nonatomic, strong) NSMutableArray *requested_friends;
@@ -27,6 +29,7 @@
 
 @implementation RCFriendListViewController
 
+@synthesize postButton = _postButton;
 @synthesize displayedItems = _displayedItems;
 @synthesize friends = _friends;
 @synthesize requested_friends = _requested_friends;
@@ -84,14 +87,13 @@ CGRect  searchButtonHideFrame;
     _tblViewFriendList.tableFooterView = [[UIView alloc] init];
     _searchResultList = [[NSMutableArray alloc] init];
     
-    UIImage *image = [UIImage imageNamed:@"profileBtnFriendAction.png"];//resizableImageWithCapInsets:UIEdgeInsetsMake(0,20,0,10)];
-    UIButton *findFriendsButton = [[UIButton alloc] initWithFrame:CGRectMake(0,0,image.size.width, image.size.height)];
-    [findFriendsButton setTitle:@"Find friends" forState:UIControlStateNormal];
-    [findFriendsButton setBackgroundImage:image forState:UIControlStateNormal];
-    [findFriendsButton addTarget:self action:@selector(openFindFriendsView) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc]
-                                    initWithCustomView:findFriendsButton];
-    
+    //add post button to navigation bar
+    UIImage *postButtonImage = [UIImage imageNamed:@"buttonPost.png"];
+    _postButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [_postButton setFrame:CGRectMake(0,0,postButtonImage.size.width, postButtonImage.size.height)];
+    [_postButton setBackgroundImage:postButtonImage forState:UIControlStateNormal];
+    [_postButton addTarget:self action:@selector(switchToNewPostScreen) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithCustomView:_postButton] ;
     self.navigationItem.rightBarButtonItem = rightButton;
     
     controlButtonArray = [[NSArray alloc] initWithObjects:_btnFriends, _btnRequests, _btnFollowees, nil];
@@ -504,18 +506,6 @@ CGRect  searchButtonHideFrame;
         _displayedItems = _searchResultList;
         [_btnSearchBarCancel setHidden:NO];
     }
-    
-//    if (!isSearching) {
-//        isSearching = YES;
-//        [self filterContentForSearchText:searchText fromList:currentDisplayedItems withScope:nil];
-//        _displayedItems = _searchResultList;
-//    }else if ([searchText isEqualToString:@""]) {
-//        _displayedItems = currentDisplayedItems;
-//        isSearching = NO;
-//    }else {
-//        [self filterContentForSearchText:searchText fromList:currentDisplayedItems withScope:nil];
-//        _displayedItems = _searchResultList;
-//    }
     [_tblViewFriendList reloadData];
     return YES;
 }
@@ -529,41 +519,22 @@ CGRect  searchButtonHideFrame;
     [_tblViewFriendList reloadData];
 }
 
-/*#pragma mark - UISearchDisplayController Delegate Methods
-- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchString:(NSString *)searchString {
-    // Tells the table data source to reload when text changes
-    [self filterContentForSearchText:searchString scope:
-     [[self.searchDisplayController.searchBar scopeButtonTitles] objectAtIndex:[self.searchDisplayController.searchBar selectedScopeButtonIndex]]];
-    // Return YES to cause the search result table view to be reloaded.
-    return YES;
+- (void) switchToNewPostScreen {
+    [_postButton setEnabled:NO];
+    RCNewPostViewController *newPostController;
+    if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height)
+        newPostController = [[RCNewPostViewController alloc] initWithUser:_user withNibName:@"RCNewPostViewController4" bundle:nil];
+    else
+        newPostController = [[RCNewPostViewController alloc] initWithUser:_user withNibName:@"RCNewPostViewController" bundle:nil];
+    newPostController.postComplete = ^{
+        [_postButton setEnabled:YES];
+    };
+    newPostController.postCancel = ^{
+        [_postButton setEnabled:YES];
+    };
+    
+    [self presentViewController:newPostController animated:YES completion:nil];
 }
 
-- (BOOL)searchDisplayController:(UISearchDisplayController *)controller shouldReloadTableForSearchScope:(NSInteger)searchOption {
-    // Tells the table data source to reload when scope bar selection changes
-    [self filterContentForSearchText:self.searchDisplayController.searchBar.text scope:
-     [[self.searchDisplayController.searchBar scopeButtonTitles] objectAtIndex:searchOption]];
-    // Return YES to cause the search result table view to be reloaded.
-    return YES;
-}
-
-- (void)searchDisplayControllerDidBeginSearch:(UISearchDisplayController *)controller {
-    UITableView *searchView = controller.searchResultsTableView;
-    [searchView setBackgroundColor:[UIColor clearColor]];
-}
-
-- (void)searchDisplayController:(UISearchDisplayController *)controller didShowSearchResultsTableView:(UITableView *)tableView {
-    [tableView setBackgroundView:[[UIImageView alloc] initWithImage:[UIImage imageNamed:@"friendListTableBackground"]]];
-    [tableView setFrame:_tblViewFriendList.frame];
-    [tableView setBackgroundColor:[UIColor colorWithRed:243.0/255.0 green:236.0/255.0 blue:212.0/255.0 alpha:1]];
-}
-
-- (void)searchDisplayControllerWillBeginSearch:(UISearchDisplayController *)controller {
-    [self performSelector:@selector(removeOverlay) withObject:nil afterDelay:.01f];
-}
-
-- (void)removeOverlay
-{
-    [[self.view.subviews lastObject] setHidden:YES];
-}*/
 
 @end

@@ -444,10 +444,6 @@
     };
 
     [self presentViewController:newPostController animated:YES completion:nil];
-    /*[self addChildViewController:newPostController];
-    newPostController.view.frame = self.view.frame;
-        [self.view addSubview:newPostController.view];
-    [newPostController didMoveToParentViewController:self];*/
 }
 
 #pragma mark - UICollectionView Datasource
