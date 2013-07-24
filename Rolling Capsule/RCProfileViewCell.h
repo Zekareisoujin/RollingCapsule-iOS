@@ -14,7 +14,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 
 + (NSString*) cellIdentifier;
-- (void) getPostContentImageFromInternet:(RCUser *) user withPostContent:(RCPost *) post usingCollection:(NSMutableDictionary*)postCache completion:(void (^)(void))callback;
 - (void) setHighlightShadow: (BOOL)highlight;
+- (void)initCellAppearanceForPost:(RCPost *) post;
 
 @end

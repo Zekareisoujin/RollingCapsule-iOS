@@ -115,10 +115,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //[_connectionManager reset];
     
-    //[_keyboardPushHandler reset];
-    //_keyboardPushHandler.view = self.view;
     _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     
     UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -186,10 +183,6 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
             if (!isFollowing)
                 _btnFollow.enabled = YES;
         } withFailureFunction:nil];
-        /*[_loggedInUser getUserFriendRelationAsync:_postOwner completion:^(BOOL isFriend) {
-            if (!isFriend)
-                _btnFriendsWith.enabled = YES;
-        } withFailureFunction:nil];*/
     }
     
     //prepare comment button for drag

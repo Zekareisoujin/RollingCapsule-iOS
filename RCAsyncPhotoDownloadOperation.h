@@ -14,7 +14,7 @@
 
 @protocol RCAsyncPhotoDownloadOperationDelegate
 
-- (void)downloadFinish:(NSObject*) object;
+- (void)updateThumbnailImage:(NSObject*) object;
 
 @end
 

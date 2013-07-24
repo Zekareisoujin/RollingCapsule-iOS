@@ -87,7 +87,7 @@ static void alertStatus(NSString *msg, NSString *title, id delegateObject)
         frame2.size.height += 20;
         lblAlert.frame = frame2;
     }];
-    [NSTimer scheduledTimerWithTimeInterval:1 block:^(NSTimeInterval time) {
+    [NSTimer scheduledTimerWithTimeInterval:1.3 block:^(NSTimeInterval time) {
             [UIView animateWithDuration:0.5 animations:^{
                 lblAlert.alpha = 0.0;
             } completion:^(BOOL finished){

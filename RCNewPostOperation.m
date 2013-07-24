@@ -70,13 +70,13 @@
         NSLog(@"before sending post data");
         NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
         NSLog(@"received post data");
+        [RCConnectionManager endConnection];
         NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
         int responseStatusCode = [httpResponse statusCode];
         if (responseStatusCode != RCHttpOkStatusCode) {
             _successfulPost = NO;
         } else _successfulPost = YES;
         
-        [RCConnectionManager endConnection];
         NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
         NSLog(@"%@",responseData);
         
@@ -86,8 +86,6 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             if (_successfulPost) {
                 alertStatus(@"Media posted successfully!" , @"Success!", nil);
-            }else {
-                alertStatus([NSString stringWithFormat:@"Failed posting %@, trying again later", responseData], @"Post Failed!", self);
             }
         });
         

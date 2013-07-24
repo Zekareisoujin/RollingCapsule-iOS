@@ -32,6 +32,33 @@
     return @"RCProfileViewCell";
 }
 
+- (void)initCellAppearanceForPost:(RCPost *) post {
+    _currentPostID = post.postID;
+    [self.imageView.layer setCornerRadius:10.0];
+    [self.imageView setClipsToBounds:YES];
+    [self.imageView setImage:[UIImage standardLoadingImage]];
+    
+    [self.layer setMasksToBounds:NO];
+    [self.layer setShadowColor:[UIColor whiteColor].CGColor];
+    [self.layer setShadowRadius:5.0];
+    [self.layer setShadowOffset:CGSizeZero];
+    [self.layer setShadowPath:[[UIBezierPath
+                                bezierPathWithRect:self.bounds] CGPath]];
+    [self.imageView setImage:[UIImage imageNamed:@"loading.gif"]];
+    if ([post.thumbnailUrl isKindOfClass:[NSNull class]]) return;
+    _currentPostID = post.postID;
+    if (post.thumbnailImage != nil)
+        [ self.imageView setImage:post.thumbnailImage];
+    else
+        [post registerUIUpdateAction:self action:@selector(updateUIWithPost:)];
+}
+
+- (void) updateUIWithPost:(RCPost*)post {
+    if (post.postID == _currentPostID)
+        [_imageView setImage:post.thumbnailImage];
+}
+
+
 - (void)getPostContentImageFromInternet:(RCUser *) user withPostContent:(RCPost *) post usingCollection:(NSMutableDictionary*)postCache completion:(void (^)(void))callback {
     
     _currentPostID = post.postID;

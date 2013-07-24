@@ -124,6 +124,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Not sure of a better way to do this at the moment
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
     switch (indexPath.row) {
         case 0:
             [self btnActionMainFeedNav:self];

@@ -118,7 +118,7 @@ static NSMutableDictionary* RCPostPostCollection = nil;
     if (_thumbnailImage == nil) {
         RCPhotoDownloadOperation *op = [[RCPhotoDownloadOperation alloc] initWithPhotokey:self.thumbnailUrl];
         [op setCompletionHandler:^(UIImage* img){
-            [self downloadFinish:img];
+            [self updateThumbnailImage:img];
         }];
         [RCOperationsManager addOperation:op];
     }
@@ -178,7 +178,7 @@ static NSMutableDictionary* RCPostPostCollection = nil;
     
     return mapItem;
 }
-- (void)downloadFinish:(UIImage *)img {
+- (void)updateThumbnailImage:(UIImage *)img {
     _thumbnailImage = img;
     dispatch_async(dispatch_get_main_queue(), ^{
 #pragma clang diagnostic push

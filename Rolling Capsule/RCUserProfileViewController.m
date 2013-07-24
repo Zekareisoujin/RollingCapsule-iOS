@@ -675,8 +675,7 @@
     
     //RCPost *post = [[RCPost alloc] initWithNSDictionary:[_postList objectAtIndex:indexPath.row]];
     RCPost *post = [_postList objectAtIndex:indexPath.row];
-
-    [cell getPostContentImageFromInternet:_viewingUser withPostContent:post usingCollection:nil completion:^{}];
+    [cell initCellAppearanceForPost:post];
     
     // Pulling next page if necessary:
     if (indexPath.row == (currentMaxPostNumber - 1)) {

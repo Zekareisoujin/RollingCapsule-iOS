@@ -69,7 +69,7 @@
     UIImage *image = [UIImage imageWithData:data];
     if (image != nil)
         [[RCResourceCache centralCache] putResourceInCache:image forKey:[NSString stringWithFormat:@"media/%@",_key]];
-    [_delegate downloadFinish:image];
+    [_delegate updateThumbnailImage:image];
     [self finish];
 }
 
@@ -78,7 +78,7 @@
     if (nRetry--)
         [self startPhotoDownload];
     else {
-        [_delegate downloadFinish:nil];
+        [_delegate updateThumbnailImage:nil];
         [self finish];
     }
 }
@@ -88,7 +88,7 @@
     if (nRetry--)
         [self startPhotoDownload];
     else {
-        [_delegate downloadFinish:nil];
+        [_delegate updateThumbnailImage:nil];
         [self finish];
     }
 }
