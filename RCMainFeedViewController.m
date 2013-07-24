@@ -339,7 +339,8 @@
                     [appDelegate setCurrentUser:_user];
                     [_posts removeAllObjects];
                     for (NSDictionary *postData in postList) {
-                        RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
+                        //RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
+                        RCPost *post = [RCPost getPostWithNSDictionary:postData];
                         [_posts addObject:post];
                     }
                     willShowMoreFeeds = ([_posts count] == currentMaxPostNumber);
@@ -415,7 +416,8 @@
                  }
                  
                  for (NSDictionary *postData in postList) {
-                     RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
+                     //RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
+                     RCPost *post = [RCPost getPostWithNSDictionary:postData];
                      [_posts addObject:post];
                  }
                  

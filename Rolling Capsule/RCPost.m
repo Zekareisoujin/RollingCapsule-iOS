@@ -49,6 +49,23 @@ static NSMutableDictionary* RCPostPostCollection = nil;
     RCPostPostCollection = [[NSMutableDictionary alloc] init];
 }
 
++ (id) getPostWithNSDictionary:(NSDictionary *)postData {
+    int newID = [[postData objectForKey:@"id"] intValue];
+    RCPost* cachedPost = [RCPostPostCollection objectForKey:[NSNumber numberWithInt:newID]];
+    if (cachedPost != nil) {
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
+        [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
+        NSDate* newUpdatedTime = [formatter dateFromString:(NSString*)[postData objectForKey:@"updated_at"]];
+        
+        if ([newUpdatedTime compare:cachedPost.updatedTime] != NSOrderedDescending)
+            return cachedPost;
+    }
+    
+    RCPost *newPost = [[RCPost alloc] initWithNSDictionary:postData];
+    return newPost;
+}
+
 - (id) initWithNSDictionary:(NSDictionary *)postData {
     self = [super init];
     if (self) {
@@ -94,36 +111,43 @@ static NSMutableDictionary* RCPostPostCollection = nil;
         }
     }
     [RCPostPostCollection setObject:self forKey:[NSNumber numberWithInt:_postID]];
-    RCPhotoDownloadOperation *op = [[RCPhotoDownloadOperation alloc] initWithPhotokey:self.thumbnailUrl];
-    op.delegate = self;
-    [RCOperationsManager addOperation:op];
+    
+    _thumbnailImage = [[RCResourceCache centralCache] getResourceForKey:[NSString stringWithFormat:@"media/%@", _thumbnailUrl]];
+    if (_thumbnailImage == nil) {
+        RCPhotoDownloadOperation *op = [[RCPhotoDownloadOperation alloc] initWithPhotokey:self.thumbnailUrl];
+        [op setCompletionHandler:^(UIImage* img){
+            [self downloadFinish:img];
+        }];
+        [RCOperationsManager addOperation:op];
+    }
+    
     return self;
 }
 
-- (void) getThumbnailImageAsync:(int)viewingUserID completion:(void (^)(UIImage *))completionFunc {
-    /*RCResourceCache *cache = [RCResourceCache centralCache];
-    NSString *key = [NSString stringWithFormat:@"%@/%d-thumbnail", RCPostsResource, _postID];
-    dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
-    dispatch_async(queue, ^{
-        RCUser *owner = [[RCUser alloc] init];
-        owner.userID = post.userID;
-        owner.email = post.authorEmail;
-        owner.name = post.authorName;
-        UIImage* cachedImg = (UIImage*)[cache getResourceForKey:key usingQuery:^{
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-            UIImage *image = [RCAmazonS3Helper getUserMediaImage:owner withLoggedinUserID:user.userID withImageUrl:post.thumbnailUrl];
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-            NSLog(@"downloading images");
-
-            return image;
-        }];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (cachedImg != nil)
-                [_imageView setImage:cachedImg];
-            callback();
-        });
-    });*/
-}
+//- (void) getThumbnailImageAsync:(int)viewingUserID completion:(void (^)(UIImage *))completionFunc {
+//    RCResourceCache *cache = [RCResourceCache centralCache];
+//    NSString *key = [NSString stringWithFormat:@"%@/%d-thumbnail", RCPostsResource, _postID];
+//    dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
+//    dispatch_async(queue, ^{
+//        RCUser *owner = [[RCUser alloc] init];
+//        owner.userID = post.userID;
+//        owner.email = post.authorEmail;
+//        owner.name = post.authorName;
+//        UIImage* cachedImg = (UIImage*)[cache getResourceForKey:key usingQuery:^{
+//            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+//            UIImage *image = [RCAmazonS3Helper getUserMediaImage:owner withLoggedinUserID:user.userID withImageUrl:post.thumbnailUrl];
+//            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+//            NSLog(@"downloading images");
+//
+//            return image;
+//        }];
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            if (cachedImg != nil)
+//                [_imageView setImage:cachedImg];
+//            callback();
+//        });
+//    });
+//}
 
 - (NSString *)title {
     return @"";
@@ -152,16 +176,14 @@ static NSMutableDictionary* RCPostPostCollection = nil;
     
     return mapItem;
 }
-- (void)downloadFinish:(NSObject *)object {
-    if ([object isKindOfClass:[UIImage class]]) {
-        _thumbnailImage = (UIImage*) object;
-        dispatch_async(dispatch_get_main_queue(), ^{
+- (void)downloadFinish:(UIImage *)img {
+    _thumbnailImage = img;
+    dispatch_async(dispatch_get_main_queue(), ^{
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-            [_objUIUpdate performSelector:_selUIUPdate withObject:self];
+        [_objUIUpdate performSelector:_selUIUPdate withObject:self];
 #pragma clang diagnostic pop
-        });
-    }
+    });
 }
 - (void) registerUIUpdateAction:(NSObject*)target action:(SEL)sel {
     _objUIUpdate = target;
