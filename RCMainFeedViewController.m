@@ -62,7 +62,7 @@
     BOOL        _firstRefresh;
     BOOL        _willRefresh;
     BOOL        _haveScreenshot;
-
+    BOOL        _userCalloutVisible;
 }
 
 @synthesize refreshControl = _refreshControl;
@@ -179,23 +179,20 @@
     
     [self showMoreFeedButton:NO animate:NO];
     
+    //set up visual components for displaying hidden capsule
+    _userCalloutVisible = NO;
     _mapView.showsUserLocation = YES;
-    
-    UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showNumberOfHiddenCapsules:)];
-    [_viewCapsuleCount addGestureRecognizer:tapGestureRecognizer];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(handleRefresh:) name:RCNotificationNameMediaUploaded object:nil];
     
 }
 
-- (void) showNumberOfHiddenCapsules:(UITapGestureRecognizer*) tapGestureRecognizer {
-    CGPoint point = [tapGestureRecognizer locationInView:_imgViewCapsuleCount];
-    if (CGRectContainsPoint(_imgViewCapsuleCount.frame,point) )
-        [_mapView selectAnnotation:[_mapView userLocation] animated:YES];
+- (IBAction) showHiddenCapsulesMessage:(id) sender{
+    if (_userCalloutVisible)
+        [_mapView deselectAnnotation:_mapView.userLocation animated:YES];
+    else
+        [_mapView selectAnnotation:_mapView.userLocation animated:YES];
 }
-/*- (void) hideNumberOfHiddenCapsules {
-    
-}*/
 
 - (void)networkChanged:(NSNotification *)notification
 {
@@ -324,8 +321,10 @@
 
                     NSArray *postList = (NSArray *) [jsonData objectForKey:@"post_list"];
                     int numCapsules = [[jsonData objectForKey:@"unreleased_capsules_count"] intValue];
-                    [_lblCapsuleCount setHidden:NO];
-                    _lblCapsuleCount.text = [NSString stringWithFormat:@"%d",numCapsules];
+                    if (numCapsules > 0) {
+                        [self showCapsuleCounter];
+                        _lblCapsuleCount.text = [NSString stringWithFormat:@"%d",numCapsules];
+                    }
                     NSDictionary *userDictionary = (NSDictionary *) [jsonData objectForKey:@"user"];
                     //_user = [[RCUser alloc] initWithNSDictionary:userDictionary];
                     _user = [RCUser getUserWithNSDictionary:userDictionary];
@@ -543,6 +542,9 @@
 
 #pragma mark - MKMapViewDelegate
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
+    if ([view.annotation isKindOfClass:[MKUserLocation class]]){
+        _userCalloutVisible = YES;
+    }
     if ([view.annotation isKindOfClass:[RCLandmark class]]){
         RCLandmark *landmark = (RCLandmark *)view.annotation;
         _currentLandmarkID = landmark.landmarkID;
@@ -551,6 +553,9 @@
 }
 
 - (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
+    if ([view.annotation isKindOfClass:[MKUserLocation class]]){
+        _userCalloutVisible = NO;
+    }
     _currentLandmarkID = -1;
     [_collectionView reloadData];
 }
@@ -728,7 +733,7 @@
         _btnViewModeFriends.enabled = YES;
         _btnViewModeFollow.enabled = YES;
     } else {
-        [_viewCapsuleCount setHidden:YES];
+        [self hideCapsuleCounter];
         if ([sender isEqual:_btnViewModeFriends]) {
             _currentViewMode = RCMainFeedViewModeFriends;
             _btnViewModePublic.enabled = YES;
@@ -800,6 +805,16 @@
                 [_btnMoreFeed setHidden:show];
         }];
     }
+}
+
+- (void) showCapsuleCounter {
+    [_viewCapsuleCount setHidden:NO];
+    [_btnShowHiddenCapsulesMessage setHidden:NO];
+}
+
+- (void) hideCapsuleCounter {
+    [_viewCapsuleCount setHidden:YES];
+    [_btnShowHiddenCapsulesMessage setHidden:YES];
 }
 
 @end

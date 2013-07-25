@@ -83,6 +83,7 @@ BOOL _menuVisible;
 }
 
 - (void) showSideMenu {
+    [self.view endEditing:YES];
     [UIView animateWithDuration:0.15
 						  delay:0
 						options:UIViewAnimationOptionCurveEaseInOut
