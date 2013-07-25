@@ -12,12 +12,13 @@
 
 @interface RCPost : NSObject <MKAnnotation>
 
-@property (nonatomic,retain)  NSString *content;
-@property (nonatomic,retain)  NSDate *createdTime;
-@property (nonatomic,retain)  NSDate *updatedTime;
-@property (nonatomic,retain)  NSString *fileUrl;
+@property (nonatomic, strong)  NSString *content;
+@property (nonatomic, strong)  NSDate *createdTime;
+@property (nonatomic, strong)  NSDate *updatedTime;
+@property (nonatomic, strong)  NSDate *postedTime;
+@property (nonatomic, strong)  NSString *fileUrl;
 @property (nonatomic, strong) NSString *thumbnailUrl;
-@property (nonatomic,retain)  NSString *privacyOption;
+@property (nonatomic, strong)  NSString *privacyOption;
 @property (nonatomic, assign) int     likeCount;
 @property (nonatomic, assign) int     viewCount;
 @property (nonatomic, assign) double  longitude;

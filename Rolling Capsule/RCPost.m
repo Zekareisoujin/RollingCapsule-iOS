@@ -42,6 +42,7 @@
 @synthesize topic = _topic;
 @synthesize objUIUpdate = _objUIUpdate;
 @synthesize selUIUPdate = _selUIUPdate;
+@synthesize postedTime = _postedTime;
 
 static NSMutableDictionary* RCPostPostCollection = nil;
 
@@ -103,7 +104,11 @@ static NSMutableDictionary* RCPostPostCollection = nil;
         [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
         _createdTime = [formatter dateFromString:(NSString*)[postData objectForKey:@"created_at"]];
         _updatedTime = [formatter dateFromString:(NSString*)[postData objectForKey:@"updated_at"]];
-        
+        NSObject* postedTimeObj = [postData objectForKey:@"updated_at"];
+        if ([postedTimeObj isKindOfClass:[NSString class]] )
+            _postedTime = [formatter dateFromString:(NSString*)postedTimeObj];
+        else
+            _postedTime = nil;
         NSString *releaseTime = [postData objectForKey:@"release"];
         if ((NSNull*)releaseTime == [NSNull null]){
             _isTimeCapsule = NO;

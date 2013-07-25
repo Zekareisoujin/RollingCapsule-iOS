@@ -241,6 +241,7 @@ BOOL _isTimedRelease = NO;
     post.thumbnailUrl = [NSString stringWithFormat:@"%@-thumbnail", _imageFileName];
     post.privacyOption = _privacyOption;
     post.topic = _currentTopic;
+    post.postedTime = [NSDate date];
     if (_datePickerView != nil && _isTimedRelease) {
         post.releaseDate = [_datePickerView date];
     }

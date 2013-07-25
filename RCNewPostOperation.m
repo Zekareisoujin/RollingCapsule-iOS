@@ -54,10 +54,13 @@
         addArgumentToQueryString(dataSt, @"post[subject]", _post.subject);
         if (_post.topic != nil)
             addArgumentToQueryString(dataSt, @"post[topic]", _post.topic);
+        NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss ZZZ"];
         if (_post.releaseDate != nil) {
-            NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-            [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss ZZZ"];
             addArgumentToQueryString(dataSt, @"post[release]", [dateFormatter stringFromDate:_post.releaseDate ]);
+        }
+        if (_post.postedTime != nil) {
+            addArgumentToQueryString(dataSt, @"post[posted_at]", [dateFormatter stringFromDate:_post.postedTime ]);
         }
         NSData *postData = [dataSt dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:NO];
         
