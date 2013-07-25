@@ -93,7 +93,7 @@ CGRect  searchButtonHideFrame;
     [_postButton setFrame:CGRectMake(0,0,postButtonImage.size.width, postButtonImage.size.height)];
     [_postButton setBackgroundImage:postButtonImage forState:UIControlStateNormal];
     [_postButton addTarget:self action:@selector(switchToNewPostScreen) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithCustomView:_postButton] ;
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithCustomView:_postButton];
     self.navigationItem.rightBarButtonItem = rightButton;
     
     controlButtonArray = [[NSArray alloc] initWithObjects:_btnFriends, _btnRequests, _btnFollowees, nil];
