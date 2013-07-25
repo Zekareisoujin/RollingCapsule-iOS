@@ -74,13 +74,16 @@
 }
 - (void) cleanupMemory {
     [_uploadQueue setSuspended:YES];
-    for (RCNewPostOperation *newPostOp in _uploadList) {
-        if (![newPostOp.mediaUploadOperation isExecuting]) {
-            if (newPostOp.successfulPost)
-                [_uploadList removeObject:newPostOp];
-            else {
-                newPostOp.mediaUploadOperation.uploadData = nil;
-                newPostOp.mediaUploadOperation.thumbnailImage = nil;
+    NSLog(@"cleaning up upload data in memory");
+    @synchronized(_uploadList) {
+        for (RCNewPostOperation *newPostOp in _uploadList) {
+            if (![newPostOp.mediaUploadOperation isExecuting]) {
+                if (newPostOp.successfulPost)
+                    [_uploadList removeObject:newPostOp];
+                else {
+                    newPostOp.mediaUploadOperation.uploadData = nil;
+                    newPostOp.mediaUploadOperation.thumbnailImage = nil;
+                }
             }
         }
     }
