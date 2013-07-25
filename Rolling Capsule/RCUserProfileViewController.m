@@ -518,7 +518,7 @@
             if (errorMsg == nil) {
                 _friendStatus = RCFriendStatusPending;
                 _friendshipID = friendshipID;
-                [self setFriendActionButton];
+                postNotification([NSString stringWithFormat:@"You have sent a friend request to %@", _profileUser.name]);
             }else
                 postNotification(errorMsg);
         }];
@@ -526,7 +526,7 @@
         [RCUser removeFriendRelationAsync:_friendshipID completionhandler:^(NSString* errorMsg) {
             if (errorMsg == nil) {
                 _friendStatus = RCFriendStatusNull;
-                [self setFriendActionButton];
+                postNotification([NSString stringWithFormat:@"You have removed %@ from your friend list", _profileUser.name]);
             }else
                 postNotification(errorMsg);
         }];
@@ -534,11 +534,12 @@
         [RCUser acceptFriendRelationAsync:_friendshipID completionhandler:^(NSString* errorMsg) {
             if (errorMsg == nil) {
                 _friendStatus = RCFriendStatusAccepted;
-                [self setFriendActionButton];
+                postNotification([NSString stringWithFormat:@"%@ is now your friend", _profileUser.name]);
             }else
                 postNotification(errorMsg);
         }];
     }
+    [self setFriendActionButton];
 }
 
 - (void)setFriendActionButton {
@@ -584,6 +585,7 @@
                 _isFollowing = YES;
                 _followID = followID;
                 [_btnFollow setTitle:@"Unfollow" forState:UIControlStateNormal];
+                postNotification([NSString stringWithFormat:@"You are now following %@", _profileUser.name]);
             }else
                 postNotification(errorMsg);
         }];
@@ -592,6 +594,7 @@
             if (errorMsg == nil) {
                 _isFollowing = NO;
                 [_btnFollow setTitle:@"Follow" forState:UIControlStateNormal];
+                postNotification([NSString stringWithFormat:@"You do not follow %@ anymore", _profileUser.name]);
             }else
                 postNotification(errorMsg);
         }];

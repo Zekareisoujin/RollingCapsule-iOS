@@ -756,7 +756,7 @@ BOOL _isTimedRelease = NO;
         [_txtViewPostContent resignFirstResponder];
         [self presentViewController:imagePicker animated:YES completion:nil];
     } else {
-        postNotification(@"Camera not available");
+        showAlertDialog(@"Camera not available", @"Error");
     }
 }
 
@@ -774,7 +774,7 @@ BOOL _isTimedRelease = NO;
         [_txtViewPostContent resignFirstResponder];
         [self presentViewController:imagePicker animated:YES completion:nil];
     } else {
-        postNotification(@"Photo library not available");
+        showAlertDialog(@"Photo library not available", @"Error");
     }
 
 }
@@ -790,7 +790,7 @@ BOOL _isTimedRelease = NO;
         [_txtViewPostContent resignFirstResponder];
         [self presentViewController:imagePicker animated:YES completion:nil];
     } else {
-        postNotification(@"Camera not available");
+        showAlertDialog(@"Camera not available", @"Error");
     }
 }
 
@@ -835,7 +835,7 @@ BOOL _isTimedRelease = NO;
     }else {
         _isTimedRelease = NO;
         [_timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsuleInactive.png"] forState:UIControlStateNormal];
-        postNotification(@"You have deactivated capsule release mode for this post");
+        showAlertDialog(@"You have deactivated capsulre release mode for this post", @"Notice");
     }
 }
 
@@ -1187,9 +1187,9 @@ handler:(void (^)(AVAssetExportSession*))handler
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"HH:mm, dd/MM/yyyy"];
         
-        postNotification([NSString stringWithFormat:@"You have scheduled your post to be released at %@", [dateFormatter stringFromDate:pickedDateTime]]);
+        showAlertDialog([NSString stringWithFormat:@"You have scheduled your post to be released at %@", [dateFormatter stringFromDate:pickedDateTime]], @"Notice");
     }else {
-        postNotification(@"The release date has already passed");
+        showAlertDialog(@"The release date has already passed", @"Notice");
     }
 }
 @end

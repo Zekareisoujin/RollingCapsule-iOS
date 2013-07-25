@@ -405,7 +405,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 }
 #pragma mark - delete post
 - (IBAction)deletePost:(id)sender {
-    confirmationDialog(@"Are you sure you want to delete this post?", @"Confirmation", self);
+    showConfirmationDialog(@"Are you sure you want to delete this post?", @"Confirmation", self);
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {

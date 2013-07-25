@@ -76,8 +76,9 @@ static void postNotification(NSString *msg)
         lblAlert = [[UILabel alloc] init];
     lblAlert.text = msg;
     lblAlert.textAlignment = NSTextAlignmentCenter;
-    lblAlert.textColor = [ UIColor whiteColor];
-    [lblAlert setBackgroundColor:[UIColor colorWithRed:50.0/255.0 green:200.0/255.0 blue:50.0/255.0 alpha:0.9]];
+    lblAlert.textColor = [UIColor whiteColor];
+    lblAlert.backgroundColor = [UIColor colorWithRed:50.0/255.0 green:200.0/255.0 blue:50.0/255.0 alpha:0.9];
+    lblAlert.adjustsFontSizeToFitWidth = YES;
     AppDelegate *appDelegate = (AppDelegate*) [[UIApplication sharedApplication] delegate];
     UINavigationController *navigationController = appDelegate.navigationController;
     [navigationController.view addSubview:lblAlert];
@@ -96,7 +97,17 @@ static void postNotification(NSString *msg)
     } repeats:NO];
 }
 
-static void confirmationDialog(NSString *msg, NSString *title, id delegate){
+// Alert is different from notification for the fact that it requires user's acknowledgement
+static void showAlertDialog(NSString *msg, NSString *title){
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
+                                                        message:msg
+                                                       delegate:nil
+                                              cancelButtonTitle:@"Ok"
+                                              otherButtonTitles:nil, nil];
+    [alertView show];
+}
+
+static void showConfirmationDialog(NSString *msg, NSString *title, id delegate){
     UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:title
                                                        message:msg
                                                       delegate:delegate

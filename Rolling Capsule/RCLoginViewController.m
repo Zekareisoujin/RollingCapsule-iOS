@@ -58,7 +58,7 @@
     @try {
         
         if([[_txtFieldUsername text] isEqualToString:@""] || [[_txtFieldPassword text] isEqualToString:@""] ) {
-            postNotification(RCErrorMessageUsernameAndPasswordMissing);
+            showAlertDialog(RCErrorMessageUsernameAndPasswordMissing, @"Error");
             [self setUIBusy:NO];
         } else {
             //[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
