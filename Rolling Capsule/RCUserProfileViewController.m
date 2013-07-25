@@ -217,30 +217,12 @@
              if ([jsonData count] > 0) {
                  for (NSDictionary* elem in jsonData){
                      [_postList addObject:[[RCPost alloc] initWithNSDictionary:elem]];
-                     
-                     /*RCPost *test = [[RCPost alloc] initWithNSDictionary:elem];
-                     CLLocationCoordinate2D coord = CLLocationCoordinate2DMake(test.latitude, test.longitude);
-                     MKMapPoint point = MKMapPointForCoordinate(coord);
-                     NSLog(@"Long & lat: %.2f and %.2f; producing: %.2f and %.2f", test.longitude, test.latitude, point.x, point.y);*/
                  }
                  
                  [_collectionView reloadData];
                  [self drawMinimap];
              }
              willShowMoreFeeds = ([_postList count] == currentMaxPostNumber);
-             
-             /*if (jsonData != NULL) {
-                 //NSLog(@"Profile View: fetched feeds: %@", jsonData);
-                 NSArray *jsonDataArray = (NSArray *) [jsonData objectForKey:@"post_list"];
-                 //NSLog(@"Profile View: post lists: %@", jsonDataArray);
-                 for (NSDictionary* elem in jsonDataArray){
-                     [_postList addObject:[[RCPost alloc] initWithNSDictionary:elem]];
-                 }
-                 
-                 [_collectionView reloadData];
-             }else {
-                 alertStatus([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetFeed, responseData], RCAlertMessageConnectionFailed, self);
-             }*/
          }];
     }
     @catch (NSException * e) {
@@ -280,19 +262,6 @@
              }
              
               [self drawMinimap];
-             
-             /*if (jsonData != NULL) {
-              //NSLog(@"Profile View: fetched feeds: %@", jsonData);
-              NSArray *jsonDataArray = (NSArray *) [jsonData objectForKey:@"post_list"];
-              //NSLog(@"Profile View: post lists: %@", jsonDataArray);
-              for (NSDictionary* elem in jsonDataArray){
-              [_postList addObject:[[RCPost alloc] initWithNSDictionary:elem]];
-              }
-              
-              [_collectionView reloadData];
-              }else {
-              alertStatus([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetFeed, responseData], RCAlertMessageConnectionFailed, self);
-              }*/
          }];
     }
     @catch (NSException * e) {
@@ -552,9 +521,9 @@
     //                       withObject:avatarImage];
     
     __unsafe_unretained typeof(self) weakSelf = self;
-    [_profileUser setUserAvatarAsync:avatarImage completionHandler:^(BOOL success, UIImage* retAvatar){
+    [_profileUser setUserAvatarAsync:avatarImage completionHandler:^(UIImage* retAvatar){
         dispatch_async(dispatch_get_main_queue(),^{
-            if (success) {
+            if (retAvatar != nil) {
                 weakSelf.userAvatarImage = retAvatar;
                 alertStatus(RCInfoStringPostSuccess, RCAlertMessageUploadSuccess, nil);
                 [weakSelf.btnAvatarImg setBackgroundImage:retAvatar forState:UIControlStateDisabled];
@@ -563,50 +532,50 @@
     }];
 }
 
-- (void)processBackgroundThreadUploadInBackground:(UIImage *)avatarImage
-{
-    // Convert the image to JPEG data.
-    NSData *imageData = UIImageJPEGRepresentation(avatarImage, 1.0);
-    
-    // Upload image data.  Remember to set the content type.
-    S3PutObjectRequest *por = [[S3PutObjectRequest alloc] initWithKey:self.profileUser.email
-                                                          inBucket:RCAmazonS3AvatarPictureBucket];
-    por.contentType = @"image/jpeg";
-    por.data        = imageData;
-    
-    // Put the image data into the specified s3 bucket and object.
-     AmazonS3Client *s3 = [RCAmazonS3Helper s3:_viewingUserID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3AvatarPictureBucket]];
-    NSString *error = @"Couldn't connect to server, please try again later";
-    if (s3 != nil) {
-        S3PutObjectResponse *putObjectResponse = [s3 putObject:por];
-        error = putObjectResponse.error.description;
-        if(putObjectResponse.error != nil) {
-            NSLog(@"Error: %@", putObjectResponse.error);
-        }
-    }
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self showCheckErrorMessage:error image:avatarImage];
-    });
-}
+//- (void)processBackgroundThreadUploadInBackground:(UIImage *)avatarImage
+//{
+//    // Convert the image to JPEG data.
+//    NSData *imageData = UIImageJPEGRepresentation(avatarImage, 1.0);
+//    
+//    // Upload image data.  Remember to set the content type.
+//    S3PutObjectRequest *por = [[S3PutObjectRequest alloc] initWithKey:self.profileUser.email
+//                                                          inBucket:RCAmazonS3AvatarPictureBucket];
+//    por.contentType = @"image/jpeg";
+//    por.data        = imageData;
+//    
+//    // Put the image data into the specified s3 bucket and object.
+//     AmazonS3Client *s3 = [RCAmazonS3Helper s3:_viewingUserID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3AvatarPictureBucket]];
+//    NSString *error = @"Couldn't connect to server, please try again later";
+//    if (s3 != nil) {
+//        S3PutObjectResponse *putObjectResponse = [s3 putObject:por];
+//        error = putObjectResponse.error.description;
+//        if(putObjectResponse.error != nil) {
+//            NSLog(@"Error: %@", putObjectResponse.error);
+//        }
+//    }
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        [self showCheckErrorMessage:error image:avatarImage];
+//    });
+//}
 
-- (void)showCheckErrorMessage:(NSString *)error image:(UIImage *)image
-{
-    if(error != nil)
-    {
-        NSLog(@"Error: %@", error);
-        alertStatus(error,RCAlertMessageUploadError,self);
-    }
-    else
-    {
-        RCResourceCache *cache = [RCResourceCache centralCache];
-        NSString *key = [[NSString alloc] initWithFormat:@"%@/%d/avatar", RCUsersResource, _profileUser.userID];
-        [cache invalidateKey:key];
-        _userAvatarImage = image;
-        alertStatus(RCInfoStringPostSuccess, RCAlertMessageUploadSuccess,self);
-        [_btnAvatarImg setBackgroundImage:_userAvatarImage forState:UIControlStateDisabled];
-    }
-    [RCConnectionManager endConnection];
-}
+//- (void)showCheckErrorMessage:(NSString *)error image:(UIImage *)image
+//{
+//    if(error != nil)
+//    {
+//        NSLog(@"Error: %@", error);
+//        alertStatus(error,RCAlertMessageUploadError,self);
+//    }
+//    else
+//    {
+//        RCResourceCache *cache = [RCResourceCache centralCache];
+//        NSString *key = [[NSString alloc] initWithFormat:@"%@/%d/avatar", RCUsersResource, _profileUser.userID];
+//        [cache invalidateKey:key];
+//        _userAvatarImage = image;
+//        alertStatus(RCInfoStringPostSuccess, RCAlertMessageUploadSuccess,self);
+//        [_btnAvatarImg setBackgroundImage:_userAvatarImage forState:UIControlStateDisabled];
+//    }
+//    [RCConnectionManager endConnection];
+//}
 
 
 

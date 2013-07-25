@@ -126,7 +126,7 @@ static NSMutableDictionary* RCPostPostCollection = nil;
     return self;
 }
 
-//- (void) getThumbnailImageAsync:(int)viewingUserID completion:(void (^)(UIImage *))completionFunc {
+//- (void) getThumbnailImageAsync:(int)viewingUserID completion:(void (^)(UIImage *))completionHandle {
 //    RCResourceCache *cache = [RCResourceCache centralCache];
 //    NSString *key = [NSString stringWithFormat:@"%@/%d-thumbnail", RCPostsResource, _postID];
 //    dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);

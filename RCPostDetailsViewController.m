@@ -802,7 +802,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 }
 
 - (IBAction)btnFriendsWithTouchUpInside:(id)sender {
-    [RCUser addFriendAsync:_postOwner withSuccessfulFunction:^(int friendID) {
+    [RCUser addFriendAsCurrentUserAsync:_postOwner withSuccessfulFunction:^(int friendID) {
         _btnFriendsWith.enabled = NO;
     } withFailureFunction:^(NSString *errorMessage) {
         alertStatus(errorMessage, @"Error adding user as friend", nil);
@@ -810,7 +810,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 }
 
 - (IBAction)btnFollowTouchUpInside:(id)sender {
-    [RCUser followUserAsync:_postOwner withSuccessfulFunction:^(int followID) {
+    [RCUser followUserAsCurrentUserAsync:_postOwner withSuccessfulFunction:^(int followID) {
         _btnFollow.enabled = NO;
     } withFailureFunction:^(NSString *errorMessage) {
         alertStatus(errorMessage, @"Error following user", nil);

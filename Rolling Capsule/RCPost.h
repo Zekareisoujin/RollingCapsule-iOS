@@ -38,7 +38,7 @@
 + (id) getPostWithNSDictionary:(NSDictionary *)postData;
 
 - (id) initWithNSDictionary:(NSDictionary *)postData;
-//- (void) getThumbnailImageAsync: (int)viewingUserID completion:(void (^)(UIImage*)) completionFunc;
+//- (void) getThumbnailImageAsync: (int)viewingUserID completion:(void (^)(UIImage*)) completionHandle;
 - (void) registerUIUpdateAction:(NSObject*)target action:(SEL)sel;
 - (MKMapItem*)mapItem;
 @end

@@ -59,7 +59,7 @@ static NSMutableDictionary* RCUserUserCollection = nil;
     return newUser;
 }
 
-+ (void) getUserWithIDAsync: (int)userID completionHandler:(void (^)(RCUser*))completionFunc {
++ (void) getUserWithIDAsync: (int)userID completionHandler:(void (^)(RCUser*))completionHandle {
     RCUser* cachedUser = [RCUserUserCollection objectForKey:[NSNumber numberWithInt:userID]];
     
     if (cachedUser == nil) {
@@ -76,14 +76,14 @@ static NSMutableDictionary* RCUserUserCollection = nil;
              
              if (jsonData != NULL) {
                   RCUser *newUser = [RCUser getUserWithNSDictionary:jsonData];
-                 completionFunc(newUser);
+                 completionHandle(newUser);
              }else {
                  alertStatus(@"Failed to retrieve user info", @"Error", nil);
              }
              
          }];
     }else
-        completionFunc(cachedUser);
+        completionHandle(cachedUser);
 }
 
 - (id) initWithNSDictionary:(NSDictionary *)userData {
@@ -112,7 +112,7 @@ static NSMutableDictionary* RCUserUserCollection = nil;
     return retval;
 }
 
-- (void) setUserAvatarAsync: (UIImage*)avatar completionHandler:(void (^)(BOOL, UIImage*))completionFunc {
+- (void) setUserAvatarAsync: (UIImage*)avatar completionHandler:(void (^)(UIImage*))completionHandle {
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
         [RCConnectionManager startConnection];
@@ -139,10 +139,10 @@ static NSMutableDictionary* RCUserUserCollection = nil;
             if(error != nil) {
                 NSLog(@"Error: %@", error);
                 alertStatus(error,RCAlertMessageUploadError,self);
-                completionFunc(NO, nil);
+                completionHandle(nil);
             }else {
                 [[RCResourceCache centralCache] putResourceInCache:[[NSString alloc] initWithFormat:@"%@/%d/avatar", RCUsersResource, _userID] forKey:avatar];
-                completionFunc(YES, avatar);
+                completionHandle(avatar);
             }
         }
         
@@ -168,7 +168,7 @@ static NSMutableDictionary* RCUserUserCollection = nil;
     return _displayAvatar;
 }
 
-- (void) getUserAvatarAsync: (int)viewingUserID completionHandler:(void (^)(UIImage*)) completionFunc {
+- (void) getUserAvatarAsync: (int)viewingUserID completionHandler:(void (^)(UIImage*)) completionHandle {
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
         if (_displayAvatar == nil) {
@@ -185,7 +185,7 @@ static NSMutableDictionary* RCUserUserCollection = nil;
             else
                 _displayAvatar = cachedImg;
         }
-        completionFunc(_displayAvatar);
+        completionHandle(_displayAvatar);
     });
 }
 
@@ -212,7 +212,7 @@ static NSMutableDictionary* RCUserUserCollection = nil;
     } else alertStatus(@"Could not connect to server to upload user info, please try again", RCAlertMessageConnectionFailed, nil);
 }
 
-+ (void) followUserAsync:(RCUser*) otherUser withSuccessfulFunction:(void (^)(int)) successFunction withFailureFunction:(void (^)(NSString*)) failureFunction {
++ (void) followUserAsCurrentUserAsync:(RCUser*) otherUser withSuccessfulFunction:(void (^)(int)) successFunction withFailureFunction:(void (^)(NSString*)) failureFunction {
     @try {
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@?mobile=1", RCServiceURL, RCFollowResource]];
         NSMutableString* dataSt = initQueryString(@"follow[followee_id]",
@@ -302,51 +302,7 @@ static NSMutableDictionary* RCUserUserCollection = nil;
     }
 }
 
-- (void) getUserFriendRelationAsync:(RCUser*) otherUser completion:(void (^)(BOOL))processFunction withFailureFunction:(void (^)(NSString*)) failureFunction {
-    //Asynchronous Request
-    @try {
-        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/relation?mobile=1&other_user=%d", RCServiceURL, RCUsersResource, _userID, otherUser.userID]];
-        NSURLRequest *request = CreateHttpGetRequest(url);
-        
-        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
-                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
-         {
-             [RCConnectionManager endConnection];
-             if (error == nil) {
-                 NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-                 
-                 SBJsonParser *jsonParser = [SBJsonParser new];
-                 NSDictionary *friendJson = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
-                 NSLog(@"%@",friendJson);
-                 BOOL isFriend;
-                 if (friendJson != NULL) {
-                     NSDictionary *statusObj = [friendJson objectForKey:@"status"];
-                     if ((NSNull*) statusObj == [NSNull null]) {
-                         isFriend = NO;
-                     }else {
-                         isFriend = YES;
-                     }
-                     processFunction(isFriend);
-                 } else {
-                     if (failureFunction != nil)
-                         failureFunction(@"Server error, please try again later");
-                 }
-             } else {
-                 NSLog(@"connection error: %@", error);
-                 if (failureFunction != nil)
-                     failureFunction(RCAlertMessageConnectionFailed);
-             }
-
-         }];
-    }
-    @catch (NSException * e) {
-        NSLog(@"Exception: %@", e);
-        if (failureFunction != nil)
-            failureFunction(RCAlertMessageConnectionFailed);
-    }
-}
-
-+ (void) addFriendAsync:(RCUser*) otherUser withSuccessfulFunction:(void (^)(int)) successFunction withFailureFunction:(void (^)(NSString*)) failureFunction {
++ (void) addFriendAsCurrentUserAsync:(RCUser*) otherUser withSuccessfulFunction:(void (^)(int)) successFunction withFailureFunction:(void (^)(NSString*)) failureFunction {
     @try {
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCFriendshipsResource]];
         NSMutableString* dataSt = initQueryString(@"friendship[friend_id]",
@@ -392,5 +348,51 @@ static NSMutableDictionary* RCUserUserCollection = nil;
             failureFunction(RCAlertMessageConnectionFailed);
     }
 }
+
+- (void) getUserFriendRelationAsync:(RCUser*) otherUser completion:(void (^)(BOOL))processFunction withFailureFunction:(void (^)(NSString*)) failureFunction {
+    //Asynchronous Request
+    @try {
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/relation?mobile=1&other_user=%d", RCServiceURL, RCUsersResource, _userID, otherUser.userID]];
+        NSURLRequest *request = CreateHttpGetRequest(url);
+        
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+         {
+             [RCConnectionManager endConnection];
+             if (error == nil) {
+                 NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+                 
+                 SBJsonParser *jsonParser = [SBJsonParser new];
+                 NSDictionary *friendJson = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
+                 NSLog(@"%@",friendJson);
+                 BOOL isFriend;
+                 if (friendJson != NULL) {
+                     NSDictionary *statusObj = [friendJson objectForKey:@"status"];
+                     if ((NSNull*) statusObj == [NSNull null]) {
+                         isFriend = NO;
+                     }else {
+                         isFriend = YES;
+                     }
+                     processFunction(isFriend);
+                 } else {
+                     if (failureFunction != nil)
+                         failureFunction(@"Server error, please try again later");
+                 }
+             } else {
+                 NSLog(@"connection error: %@", error);
+                 if (failureFunction != nil)
+                     failureFunction(RCAlertMessageConnectionFailed);
+             }
+
+         }];
+    }
+    @catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+        if (failureFunction != nil)
+            failureFunction(RCAlertMessageConnectionFailed);
+    }
+}
+
+
 
 @end
