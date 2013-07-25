@@ -33,14 +33,57 @@
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([object isKindOfClass:[RCNewPostOperation class]]) {
         RCNewPostOperation *operation = (RCNewPostOperation*)object;
-        [_uploadList removeObject:operation];
-        if (!operation.successfulPost) {
-            RCNewPostOperation *retry = [operation generateRetryOperation];
-            [self addNewPostOperation:retry shouldStartMediaUpload:YES];
-        } else {     
-            NSNotification *notification = [NSNotification notificationWithName:RCNotificationNameMediaUploaded object:self];
-            [[NSNotificationCenter defaultCenter] postNotification:notification];
+        if ([keyPath isEqualToString:@"isFinished"]) {
+            if (!operation.successfulPost) {
+                //only add to retry queue if the data of the media is still there
+                //i.e. the fileURL is there or the upload data is there
+                if (operation.mediaUploadOperation.fileURL != nil
+                    || (   operation.mediaUploadOperation.uploadData != nil
+                        && operation.mediaUploadOperation.thumbnailImage != nil)) {
+                        [_uploadList removeObject:operation];
+                        RCNewPostOperation *retry = [operation generateRetryOperation];
+                        [self addNewPostOperation:retry shouldStartMediaUpload:YES];
+                    } else {
+                        [operation.mediaUploadOperation addObserver:self forKeyPath:@"fileURL" options:0 context:nil];
+                    }
+            } else {
+                operation.mediaUploadOperation.uploadData = nil;
+                NSNotification *notification = [NSNotification notificationWithName:RCNotificationNameMediaUploaded object:self];
+                [[NSNotificationCenter defaultCenter] postNotification:notification];
+            }
+        }
+    } else if ([object isKindOfClass:[RCMediaUploadOperation class]]) {
+        RCMediaUploadOperation *operation = (RCMediaUploadOperation*)object;
+        if ([keyPath isEqualToString:@"fileURL"]) {
+            //if a mediaupload operation just gain the file URL needed to upload image
+            //and failed the prevous upload then retry it
+            if (operation.fileURL != nil && operation.uploadData == nil && operation.isFinished && !operation.successfulUpload) {
+                //search for the new post operation associated with the media upload operation
+                //that just gained update
+                for (RCNewPostOperation* newPostOp in _uploadList) {
+                    if (newPostOp.mediaUploadOperation == operation) {
+                        [_uploadList removeObject:operation];
+                        RCNewPostOperation *retry = [newPostOp generateRetryOperation];
+                        [self addNewPostOperation:retry shouldStartMediaUpload:YES];
+                    }
+                }
+                [operation removeObserver:self forKeyPath:@"fileURL"];
+            }
         }
     }
+}
+- (void) cleanupMemory {
+    [_uploadQueue setSuspended:YES];
+    for (RCNewPostOperation *newPostOp in _uploadList) {
+        if (![newPostOp.mediaUploadOperation isExecuting]) {
+            if (newPostOp.successfulPost)
+                [_uploadList removeObject:newPostOp];
+            else {
+                newPostOp.mediaUploadOperation.uploadData = nil;
+                newPostOp.mediaUploadOperation.thumbnailImage = nil;
+            }
+        }
+    }
+    [_uploadQueue setSuspended:NO];
 }
 @end

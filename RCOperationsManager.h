@@ -15,4 +15,5 @@
 + (void) addUploadMediaOperation:(RCMediaUploadOperation*) operation;
 + (void) addUploadOperation:(RCNewPostOperation*) operation shouldStartMediaUpload:(BOOL)startMediaUpload;
 + (void) suspendUpload;
++ (void) cleanupUploadData;
 @end

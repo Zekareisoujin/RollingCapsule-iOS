@@ -17,5 +17,5 @@
 @property (nonatomic,strong) NSMutableArray* uploadList;
 
 - (void) addNewPostOperation: (RCNewPostOperation*)operation shouldStartMediaUpload:(BOOL)startMediaUpload;
-
+- (void) cleanupMemory;
 @end

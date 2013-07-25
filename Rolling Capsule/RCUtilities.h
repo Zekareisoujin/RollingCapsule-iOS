@@ -226,5 +226,47 @@ static NSValue* createMapReferencePoint(double longitude, double lattitude, doub
     point.y = refY;
     return [NSValue valueWithBytes:&point objCType:@encode(struct RCMapReferencePoint)];
 }
+static UIImage* generateSquareImageThumbnail(UIImage* largeImage) {
+    CGFloat squareSize = MIN(largeImage.size.width, largeImage.size.height);
+    CGFloat x,y;
+    //largeImage.size.
+    if (squareSize == largeImage.size.width) {
+        x = 0;
+        y = (largeImage.size.height - squareSize)/2.0;
+    } else {
+        y = 0;
+        x = (largeImage.size.width  - squareSize)/2.0;
+    }
+    NSLog(@"crop coordinates x=%f y=%f size=%f",x,y,squareSize);
+    CGRect cropRect = CGRectMake(0,0,squareSize,squareSize);
+    
+    CGImageRef imageRef = CGImageCreateWithImageInRect([largeImage CGImage], cropRect);
+    // or use the UIImage wherever you like
+    UIImage *croppedImage = [UIImage imageWithCGImage:imageRef scale:largeImage.scale orientation:largeImage.imageOrientation];
+    CGImageRelease(imageRef);
+    return croppedImage;
+}
 
+static UIImage* resizeImageIfTooBig(UIImage *image) {
+    if (image.size.width > 800 && image.size.height > 800) {
+        float division = MIN(image.size.width/(800.0-1.0), image.size.height/(800-1.0));
+        UIImage *rescaledPostImage = imageWithImage(image, CGSizeMake(image.size.width/division,image.size.height/division));
+        return rescaledPostImage;
+    }
+    return image;
+}
+#import <AVFoundation/AVFoundation.h>
+
+static UIImage* generateVideoThumbnail(NSURL *videoURL) {
+    AVURLAsset *sourceAsset = [AVURLAsset URLAssetWithURL:videoURL options:nil];
+    CMTime duration = sourceAsset.duration;
+    AVAssetImageGenerator* generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:sourceAsset];
+    generator.appliesPreferredTrackTransform = YES;
+    //Get the 1st frame 3 seconds in
+    int frameTimeStart = (int)(CMTimeGetSeconds(duration) / 2.0);
+    int frameLocation = 1;
+    //Snatch a frame
+    CGImageRef frameRef = [generator copyCGImageAtTime:CMTimeMake(frameTimeStart,frameLocation) actualTime:nil error:nil];
+    return [UIImage imageWithCGImage:frameRef];
+}
 #endif
