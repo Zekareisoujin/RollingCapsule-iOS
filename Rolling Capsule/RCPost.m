@@ -53,7 +53,7 @@ static NSMutableDictionary* RCPostPostCollection = nil;
     int newID = [[postData objectForKey:@"id"] intValue];
     RCPost* cachedPost = [RCPostPostCollection objectForKey:[NSNumber numberWithInt:newID]];
     if (cachedPost != nil) {
-        //if (cachedPost.isTimeCapsule && [cachedPost.releaseDate compare:[NSDate date]] != NSOrderedDescending) {
+        if (cachedPost.isTimeCapsule && [cachedPost.releaseDate compare:[NSDate date]] != NSOrderedDescending) {
             NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
             [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
             [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
@@ -61,7 +61,7 @@ static NSMutableDictionary* RCPostPostCollection = nil;
             
             if ([newUpdatedTime compare:cachedPost.updatedTime] != NSOrderedDescending)
                 return cachedPost;
-        //}
+        }
     }
     
     RCPost *newPost = [[RCPost alloc] initWithNSDictionary:postData];
