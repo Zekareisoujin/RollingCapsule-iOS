@@ -26,6 +26,7 @@ typedef enum RCMainFeedViewMode RCMainFeedViewMode;
 @property (weak, nonatomic) IBOutlet UIButton *btnViewModeFollow;
 @property (weak, nonatomic) IBOutlet UIView *viewCapsuleCount;
 @property (weak, nonatomic) IBOutlet UIImageView *imgViewCapsuleCount;
+@property (weak, nonatomic) IBOutlet UIButton *btnShowHiddenCapsulesMessage;
 @property (weak, nonatomic) IBOutlet TTTAttributedLabel *lblUsername;
 @property (weak, nonatomic) IBOutlet UILabel *lblCapsuleCount;
 @property (weak, nonatomic) IBOutlet UIButton *btnViewModeFriends;
@@ -43,6 +44,6 @@ typedef enum RCMainFeedViewMode RCMainFeedViewMode;
 - (IBAction)btnCenterMapTouchUpInside:(id)sender;
 - (IBAction)btnRefreshTouchUpInside:(id)sender;
 - (IBAction)btnMoreFeedClicked:(id)sender;
-
+- (IBAction) showHiddenCapsulesMessage:(id) sender;
 - (void) setCurrentUser: (RCUser*) user;
 @end
