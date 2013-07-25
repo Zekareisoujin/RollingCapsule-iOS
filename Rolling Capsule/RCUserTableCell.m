@@ -24,44 +24,6 @@
     return self;
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
-}
-
-- (void)populateCellData:(RCUser *) user withLoggedInUserID:(int)loggedInUserID completion:(void (^)(void))callback {
-    [_lblName setText:user.name];
-    [_imgViewAvatar.layer setCornerRadius:10.0];
-    [_imgViewAvatar setClipsToBounds:YES];
-    [_imgViewAvatar setImage:[UIImage standardLoadingImage]];
-    
-    /*RCResourceCache *cache = [RCResourceCache centralCache];
-    NSString *key = [NSString stringWithFormat:@"%@/%d", RCUsersResource, user.userID];
-    dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
-    dispatch_async(queue, ^{
-        UIImage* cachedImg = (UIImage*)[cache getResourceForKey:key usingQuery:^{
-            UIImage *cachedImg = [RCAmazonS3Helper getAvatarImage:user withLoggedinUserID:loggedInUserID];
-            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-            return cachedImg;
-        }];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (cachedImg != nil)
-                [_imgViewAvatar setImage:cachedImg];
-            else
-                [_imgViewAvatar setImage:[UIImage imageNamed:@"default_avatar"]];
-            callback();
-        });
-    });*/
-    
-    [user getUserAvatarAsync:loggedInUserID completionHandler:^(UIImage* img){
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [_imgViewAvatar setImage:img];
-        });
-    }];
-}
-
 + (RCUserTableCell *) getFriendListTableCell:(UITableView *)tableView {
     static NSString *CellIdentifier = @"RCUserTableCell";
     RCUserTableCell *cell;
@@ -77,5 +39,26 @@
 + (CGFloat) cellHeight {
     return 60;
 }
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+    [super setSelected:selected animated:animated];
+
+    // Configure the view for the selected state
+}
+
+- (void)populateCellData:(RCUser *) user withLoggedInUserID:(int)loggedInUserID completion:(void (^)(void))callback {
+    [_lblName setText:user.name];
+    [_imgViewAvatar.layer setCornerRadius:10.0];
+    [_imgViewAvatar setClipsToBounds:YES];
+    [_imgViewAvatar setImage:[UIImage standardLoadingImage]];
+    
+    [user getUserAvatarAsync:loggedInUserID completionHandler:^(UIImage* img){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_imgViewAvatar setImage:img];
+        });
+    }];
+}
+
 
 @end

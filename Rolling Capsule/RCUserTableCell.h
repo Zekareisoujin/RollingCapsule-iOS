@@ -16,7 +16,9 @@
 //@property (nonatomic, weak) IBOutlet UILabel *lblEmail;
 @property (nonatomic, weak) IBOutlet UIImageView *imgViewAvatar;
 
-- (void) populateCellData:(RCUser *) user withLoggedInUserID:(int)loggedInUserID completion:(void (^)(void))callback;
 + (RCUserTableCell *) getFriendListTableCell:(UITableView *)tableView;
 + (CGFloat) cellHeight;
+
+- (void) populateCellData:(RCUser *) user withLoggedInUserID:(int)loggedInUserID completion:(void (^)(void))callback;
+
 @end
