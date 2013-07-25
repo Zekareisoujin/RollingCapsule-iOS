@@ -179,7 +179,6 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     [_btnFollow setHidden:YES];
     _btnFriendsWith.enabled = NO;
     if (_loggedInUser.userID != _postOwner.userID) {
-<<<<<<< HEAD
         [_loggedInUser getUserFollowRelationAsync:_postOwner completionHandler:^(BOOL isFollowing, int followID, NSString* errorMsg) {
             if (errorMsg == nil) {
                 if (!isFollowing)
@@ -187,16 +186,6 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
             }else
                 alertStatus(errorMsg, @"Error getting user relation", nil);
         }];
-=======
-        
-        [_loggedInUser getUserFriendRelationAsync:_postOwner completion:^(BOOL isFriend) {
-            if (!isFriend)
-                [_loggedInUser getUserFollowRelationAsync:_postOwner completion:^(BOOL isFollowing) {
-                    if (!isFollowing)
-                        [_btnFollow setHidden:NO];
-                } withFailureFunction:nil];
-        } withFailureFunction:nil];
->>>>>>> e546690b57cd08af5ad57968492bd712c55a39a8
     }
     
     //prepare comment button for drag
