@@ -27,11 +27,11 @@
 - (NSDictionary*) getDictionaryObject;
 - (void) updateNewName : (NSString*) newName;
 
-+ (void) followUserAsCurrentUserAsync:(RCUser*) otherUser withSuccessfulFunction:(void (^)(int)) successFunction withFailureFunction:(void (^)(NSString*)) failureFunction;
-- (void) getUserFollowRelationAsync:(RCUser*) otherUser completion:(void (^)(BOOL))processFunction withFailureFunction:(void (^)(NSString*)) failureFunction;
++ (void) followUserAsCurrentUserAsync:(RCUser*) otherUser completionHandler:(void (^)(int, NSString*))completionHandle;
+- (void) getUserFollowRelationAsync:(RCUser*) otherUser completionHandler:(void (^)(BOOL, int, NSString*))completionHandle;
 
-+ (void) addFriendAsCurrentUserAsync:(RCUser*) otherUser withSuccessfulFunction:(void (^)(int)) successFunction withFailureFunction:(void (^)(NSString*)) failureFunction;
-- (void) getUserFriendRelationAsync:(RCUser*) otherUser completion:(void (^)(BOOL))processFunction withFailureFunction:(void (^)(NSString*)) failureFunction;
++ (void) addFriendAsCurrentUserAsync:(RCUser*) otherUser completionHandler:(void (^)(int, NSString*))completionHandle;
+- (void) getUserFriendRelationAsync:(RCUser*) otherUser completionHandler:(void (^)(BOOL, int, NSString*))completionHandle;
 
 - (void) setUserAvatarAsync: (UIImage*)avatar completionHandler:(void (^)(UIImage*))completionHandle;
 - (UIImage*) getUserAvatar: (int)viewingUserID;
