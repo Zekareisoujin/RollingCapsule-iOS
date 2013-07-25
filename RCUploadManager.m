@@ -75,14 +75,15 @@
 - (void) cleanupMemory {
     [_uploadQueue setSuspended:YES];
     for (RCNewPostOperation *newPostOp in _uploadList) {
-        if (newPostOp.successfulPost)
-            [_uploadList removeObject:newPostOp];
-        else {
-            if (![newPostOp.mediaUploadOperation isExecuting]) {
+        if (![newPostOp.mediaUploadOperation isExecuting]) {
+            if (newPostOp.successfulPost)
+                [_uploadList removeObject:newPostOp];
+            else {
                 newPostOp.mediaUploadOperation.uploadData = nil;
                 newPostOp.mediaUploadOperation.thumbnailImage = nil;
             }
         }
     }
+    [_uploadQueue setSuspended:NO];
 }
 @end
