@@ -441,7 +441,7 @@ CGRect  searchButtonHideFrame;
     _displayedItems = _requested_friends;
     //[_searchBar setPlaceholder:@"Search for pending requests"];
     [_tableTitleBackground setImage:[UIImage imageNamed:@"friendListBarPending"]];
-    [_tableTitleLabel setText:@"Pending requests"];
+    [_tableTitleLabel setText:@"Find friends"];
     
     currentDisplayedItems = _displayedItems;
     [self clearSearchBar];
