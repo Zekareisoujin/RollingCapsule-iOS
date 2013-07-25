@@ -16,4 +16,5 @@
 + (void) addUploadOperation:(RCNewPostOperation*) operation shouldStartMediaUpload:(BOOL)startMediaUpload;
 + (void) suspendUpload;
 + (void) cleanupUploadData;
++ (NSMutableArray*) uploadTasks;
 @end

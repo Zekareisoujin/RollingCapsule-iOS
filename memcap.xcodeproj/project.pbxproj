@@ -145,6 +145,8 @@
 		64D6D80D179995C500AA1161 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64D6D80C179995C500AA1161 /* SystemConfiguration.framework */; };
 		64D6EC1317A13A1F00663AE3 /* friendListSearchBarBg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D6EC1217A13A1F00663AE3 /* friendListSearchBarBg@2x.png */; };
 		64D6EC1517A1AAD500663AE3 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64D6EC1417A1AAD500663AE3 /* AssetsLibrary.framework */; };
+		64D6EC1917A1CE1900663AE3 /* RCOutboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64D6EC1717A1CE1900663AE3 /* RCOutboxViewController.m */; };
+		64D6EC1A17A1CE1900663AE3 /* RCOutboxViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64D6EC1817A1CE1900663AE3 /* RCOutboxViewController.xib */; };
 		64E293101784A84B009496FF /* viewPostCommentButton-normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */; };
 		64E293121784A8C8009496FF /* viewPostCommentButton-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */; };
 		64E293161784ABEE009496FF /* viewPostFollowLabel.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293131784ABEE009496FF /* viewPostFollowLabel.png */; };
@@ -448,6 +450,9 @@
 		64D6D80C179995C500AA1161 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		64D6EC1217A13A1F00663AE3 /* friendListSearchBarBg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "friendListSearchBarBg@2x.png"; sourceTree = "<group>"; };
 		64D6EC1417A1AAD500663AE3 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		64D6EC1617A1CE1900663AE3 /* RCOutboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCOutboxViewController.h; sourceTree = SOURCE_ROOT; };
+		64D6EC1717A1CE1900663AE3 /* RCOutboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCOutboxViewController.m; sourceTree = SOURCE_ROOT; };
+		64D6EC1817A1CE1900663AE3 /* RCOutboxViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCOutboxViewController.xib; sourceTree = SOURCE_ROOT; };
 		64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "viewPostCommentButton-normal.png"; path = "../viewPostCommentButton-normal.png"; sourceTree = "<group>"; };
 		64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "viewPostCommentButton-highlighted.png"; path = "../viewPostCommentButton-highlighted.png"; sourceTree = "<group>"; };
 		64E293131784ABEE009496FF /* viewPostFollowLabel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostFollowLabel.png; path = ../viewPostFollowLabel.png; sourceTree = "<group>"; };
@@ -1066,6 +1071,9 @@
 				6491DCEF1755E092006FBCD8 /* RCUserProfileViewController.h */,
 				6491DCF01755E096006FBCD8 /* RCUserProfileViewController.m */,
 				6491DCF11755E096006FBCD8 /* RCUserProfileViewController.xib */,
+				64D6EC1617A1CE1900663AE3 /* RCOutboxViewController.h */,
+				64D6EC1717A1CE1900663AE3 /* RCOutboxViewController.m */,
+				64D6EC1817A1CE1900663AE3 /* RCOutboxViewController.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -1314,6 +1322,7 @@
 				6416D12617A046A40017065A /* topicCategoryTemple.png in Resources */,
 				647265C117A05FF9002E654A /* friendListSearchBarToggle.png in Resources */,
 				64D6EC1317A13A1F00663AE3 /* friendListSearchBarBg@2x.png in Resources */,
+				64D6EC1A17A1CE1900663AE3 /* RCOutboxViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1407,6 +1416,7 @@
 				647265B817A04CDF002E654A /* RCNewPostOperation.m in Sources */,
 				647265BB17A04D37002E654A /* RCUploadManager.m in Sources */,
 				647265BF17A04D84002E654A /* NSTimer+BlocksKits.m in Sources */,
+				64D6EC1917A1CE1900663AE3 /* RCOutboxViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

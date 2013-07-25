@@ -57,5 +57,9 @@ static RCUploadManager*  RCStaticUploadManager = nil;
     if (RCStaticUploadManager != nil)
         [RCStaticUploadManager cleanupMemory];
 }
-
++ (NSMutableArray*) uploadTasks {
+    if (RCStaticUploadManager != nil)
+        return RCStaticUploadManager.uploadList;
+    return nil;
+}
 @end

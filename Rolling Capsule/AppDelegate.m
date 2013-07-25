@@ -20,7 +20,7 @@
 #import "RCLoadingLocationViewController.h"
 #import "RCUserProfileViewController.h"
 #import "RCConstants.h"
-
+#import "RCOperationsManager.h"
 
 @implementation AppDelegate
 
@@ -222,5 +222,8 @@ BOOL _didQueueOpenMainFeedOption;
         }
     }
     return NO;
+}
++ (void) cleanupMemory {
+    [RCOperationsManager cleanupUploadData];
 }
 @end
