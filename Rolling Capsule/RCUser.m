@@ -293,6 +293,40 @@ static NSMutableDictionary* RCUserUserCollection = nil;
     }
 }
 
++ (void) removeFollowRelationAsync: (int)followID completionHandler:(void (^)(NSString*))completionHandle {
+    @try {
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/?mobile=1", RCServiceURL, RCFollowResource, followID]];
+        NSURLRequest *request = CreateHttpDeleteRequest(url);
+        
+        [RCConnectionManager startConnection];
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+         {
+             [RCConnectionManager endConnection];
+             NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+             
+             SBJsonParser *jsonParser = [SBJsonParser new];
+             NSDictionary *followJson = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
+             NSLog(@"%@",followJson);
+             
+             if (followJson != NULL) {
+                 NSDictionary *followObj = [followJson objectForKey:@"follow"];
+                 if ((NSNull*) followObj == [NSNull null]) {
+                     completionHandle(nil);
+                 }else
+                     completionHandle(@"Server error, please try again later");
+             }else {
+                 NSLog(@"connection error: %@", error);
+                 completionHandle(RCAlertMessageConnectionFailed);
+             }
+         }];
+    }
+    @catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+        completionHandle(RCAlertMessageConnectionFailed);
+    }
+}
+
 + (void) addFriendAsCurrentUserAsync:(RCUser*) otherUser completionHandler:(void (^)(int, NSString*))completionHandle {
     @try {
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCFriendshipsResource]];
@@ -313,7 +347,7 @@ static NSMutableDictionary* RCUserUserCollection = nil;
                  NSLog(@"%@",friendJson);
 
                  if (friendJson != NULL) {
-                     NSDictionary *statusObj = [friendJson objectForKey:@"status"];
+                     NSString *statusObj = [friendJson objectForKey:@"status"];
                      if ((NSNull*) statusObj == [NSNull null]) {
                          completionHandle(0, @"Server error, please try again later");
                      }else {
@@ -334,12 +368,91 @@ static NSMutableDictionary* RCUserUserCollection = nil;
     }
 }
 
-- (void) getUserFriendRelationAsync:(RCUser*) otherUser completionHandler:(void (^)(BOOL, int, NSString*))completionHandle {
+- (void) getUserFriendRelationAsync:(RCUser*) otherUser completionHandler:(void (^)(BOOL, int, NSString*, NSString*))completionHandle {
     //Asynchronous Request
     @try {
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/relation?mobile=1&other_user=%d", RCServiceURL, RCUsersResource, _userID, otherUser.userID]];
         NSURLRequest *request = CreateHttpGetRequest(url);
         
+        [RCConnectionManager startConnection];
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+         {
+             [RCConnectionManager endConnection];
+             if (error == nil) {
+                 NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+                 
+                 SBJsonParser *jsonParser = [SBJsonParser new];
+                 NSDictionary *friendJson = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
+                 NSLog(@"%@",friendJson);
+                 
+                 if (friendJson != NULL) {
+                     NSString *statusObj = [friendJson objectForKey:@"status"];
+                     if ((NSNull*) statusObj == [NSNull null]) {
+                         completionHandle(NO, 0, nil, nil);
+                     }else {
+                         NSNumber *num = [friendJson objectForKey:@"id"];
+                         completionHandle(YES, [num intValue], statusObj, nil);
+                     }
+                 } else
+                     completionHandle(NO, 0, nil, @"Server error, please try again later");
+             } else {
+                 NSLog(@"connection error: %@", error);
+                 completionHandle(NO, 0, nil, RCAlertMessageConnectionFailed);
+             }
+
+         }];
+    }
+    @catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+        completionHandle(NO, 0, nil, RCAlertMessageConnectionFailed);
+    }
+}
+
++ (void) acceptFriendRelationAsync: (int)friendshipID completionhandler:(void (^)(NSString*))completionHandle {
+    //Asynchronous Request
+    @try {
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d", RCServiceURL, RCFriendshipsResource, friendshipID]];
+        NSMutableString* dataSt = initEmptyQueryString();
+        NSData *putData = [dataSt dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+        NSURLRequest *request = CreateHttpPutRequest(url, putData);
+        
+        [RCConnectionManager startConnection];
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+         {
+             [RCConnectionManager endConnection];
+             if (error == nil) {
+                 NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+                 
+                 SBJsonParser *jsonParser = [SBJsonParser new];
+                 NSDictionary *friendJson = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
+                 NSLog(@"%@",friendJson);
+                 
+                 if (friendJson != NULL) {
+                     completionHandle(nil);
+                 } else
+                     completionHandle(@"Server error, please try again later");
+             } else {
+                 NSLog(@"connection error: %@", error);
+                 completionHandle(RCAlertMessageConnectionFailed);
+             }
+         }];
+    }
+    @catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+        completionHandle(RCErrorMessageFailedToEditFriendStatus);
+    }
+    
+}
+
++ (void) removeFriendRelationAsync: (int)friendshipID completionhandler:(void (^)(NSString*))completionHandle {
+    //Asynchronous Request
+    @try {
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/?mobile=1", RCServiceURL, RCFriendshipsResource, friendshipID]];
+        NSURLRequest *request = CreateHttpDeleteRequest(url);
+        
+        [RCConnectionManager startConnection];
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
          {
@@ -354,26 +467,24 @@ static NSMutableDictionary* RCUserUserCollection = nil;
                  if (friendJson != NULL) {
                      NSDictionary *statusObj = [friendJson objectForKey:@"status"];
                      if ((NSNull*) statusObj == [NSNull null]) {
-                         completionHandle(NO, 0, nil);
+                         completionHandle(nil);
                      }else {
-                         NSNumber *num = [friendJson objectForKey:@"id"];
-                         completionHandle(YES, [num intValue], nil);
+                         completionHandle(@"Server error, please try again later");
                      }
                  } else
-                     completionHandle(NO, 0, @"Server error, please try again later");
+                     completionHandle(@"Server error, please try again later");
              } else {
                  NSLog(@"connection error: %@", error);
-                 completionHandle(NO, 0, RCAlertMessageConnectionFailed);
+                 completionHandle(RCAlertMessageConnectionFailed);
              }
-
          }];
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        completionHandle(NO, 0, RCAlertMessageConnectionFailed);
+        completionHandle(RCErrorMessageFailedToEditFriendStatus);
     }
-}
 
+}
 
 
 @end

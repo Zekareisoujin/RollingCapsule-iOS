@@ -107,6 +107,7 @@ CGRect  searchButtonHideFrame;
         [_imgUserAvatar setImage:img];
     }];
     [_lblTableTitle setText:_user.name];
+    [_tableTitleLabel setAdjustsFontSizeToFitWidth:YES];
     
     // Configure search bar
     [_searchBar setDelegate:self];
@@ -142,8 +143,12 @@ CGRect  searchButtonHideFrame;
     _displayedItems = _friends;
     [self asynchGetFriendsRequest];
     [self asynchGetFolloweesRequest];
-    [self asynchGetRequestedFriendsRequest];
     [self btnFriendTouchUpInside:self];
+    
+    if (_user != _loggedinUser) {
+        [_btnRequests setHidden:YES];
+    }else
+        [self asynchGetRequestedFriendsRequest];
 }
 
 - (void) handleRefresh:(UIRefreshControl *) refreshControl {
@@ -226,29 +231,29 @@ CGRect  searchButtonHideFrame;
     [self.navigationController pushViewController:detailViewController animated:YES];
 }
 
-/*- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    NSString *sectionName;
-    switch (section)
-    {
-        default:
-            switch (_viewingMode) {
-                case RCFriendListViewModeFriends:
-                    sectionName = @"Friends";
-                    break;
-                case RCFriendListViewModePendingFriends:
-                    sectionName = @"Pending Requests";
-                    break;
-                case RCFriendListViewModeFollowees:
-                    sectionName = @"People you follow";
-                    break;
-                default:
-                    break;
-            }
-            break;
-    }
-    return sectionName;
-}*/
+//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+//{
+//    NSString *sectionName;
+//    switch (section)
+//    {
+//        default:
+//            switch (_viewingMode) {
+//                case RCFriendListViewModeFriends:
+//                    sectionName = @"Friends";
+//                    break;
+//                case RCFriendListViewModePendingFriends:
+//                    sectionName = @"Pending Requests";
+//                    break;
+//                case RCFriendListViewModeFollowees:
+//                    sectionName = @"People you follow";
+//                    break;
+//                default:
+//                    break;
+//            }
+//            break;
+//    }
+//    return sectionName;
+//}
 
 #pragma mark - web request
 - (void)asynchGetFriendsRequest {
@@ -474,9 +479,14 @@ CGRect  searchButtonHideFrame;
 - (IBAction)btnFriendTouchUpInside:(id)sender {
     _viewingMode = RCFriendListViewModeFriends;
     _displayedItems = _friends;
-    [_searchBar setPlaceholder:@"Search for friends"];
     [_tableTitleBackground setImage:[UIImage imageNamed:@"friendListBarFriends"]];
-    [_tableTitleLabel setText:@"Friends"];
+    if (_user == _loggedinUser) {
+        [_searchBar setPlaceholder:@"Search for friends"];
+        [_tableTitleLabel setText:@"Friends"];
+    }else {
+        [_searchBar setPlaceholder:[NSString stringWithFormat:@"Search for %@'s friends", _user.name]];
+        [_tableTitleLabel setText:[NSString stringWithFormat:@"%@'s friends", _user.name]];
+    }
     
     currentDisplayedItems = _displayedItems;
     [self clearSearchBar];
@@ -486,8 +496,8 @@ CGRect  searchButtonHideFrame;
 - (IBAction)btnRequestsTouchUpInside:(id)sender {
     _viewingMode = RCFriendListViewModePendingFriends;
     _displayedItems = _requested_friends;
-    [_searchBar setPlaceholder:@"Search for new friends"];
     [_tableTitleBackground setImage:[UIImage imageNamed:@"friendListBarPending"]];
+    [_searchBar setPlaceholder:@"Search for new friends"];
     [_tableTitleLabel setText:@"Find friends"];
     
     currentDisplayedItems = _displayedItems;
@@ -498,9 +508,14 @@ CGRect  searchButtonHideFrame;
 - (IBAction)btnFolloweeTouchUpInside:(id)sender {
     _viewingMode = RCFriendListViewModeFollowees;
     _displayedItems = _followees;
-    [_searchBar setPlaceholder:@"Search for people you follow"];
     [_tableTitleBackground setImage:[UIImage imageNamed:@"friendListBarFollows"]];
-    [_tableTitleLabel setText:@"People you follow"];
+    if (_user == _loggedinUser) {
+        [_searchBar setPlaceholder:@"Search for people you follow"];
+        [_tableTitleLabel setText:@"People you follow"];
+    }else {
+        [_searchBar setPlaceholder:[NSString stringWithFormat:@"Search for people %@ follows", _user.name]];
+        [_tableTitleLabel setText:[NSString stringWithFormat:@"People %@ follows", _user.name]];
+    }
     
     currentDisplayedItems = _displayedItems;
     [self clearSearchBar];

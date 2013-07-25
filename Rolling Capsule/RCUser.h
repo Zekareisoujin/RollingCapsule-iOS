@@ -29,9 +29,12 @@
 
 + (void) followUserAsCurrentUserAsync:(RCUser*) otherUser completionHandler:(void (^)(int, NSString*))completionHandle;
 - (void) getUserFollowRelationAsync:(RCUser*) otherUser completionHandler:(void (^)(BOOL, int, NSString*))completionHandle;
++ (void) removeFollowRelationAsync: (int)followID completionHandler:(void (^)(NSString*))completionHandle;
 
 + (void) addFriendAsCurrentUserAsync:(RCUser*) otherUser completionHandler:(void (^)(int, NSString*))completionHandle;
-- (void) getUserFriendRelationAsync:(RCUser*) otherUser completionHandler:(void (^)(BOOL, int, NSString*))completionHandle;
+- (void) getUserFriendRelationAsync:(RCUser*) otherUser completionHandler:(void (^)(BOOL, int, NSString*, NSString*))completionHandle;
++ (void) acceptFriendRelationAsync: (int)friendshipID completionhandler:(void (^)(NSString*))completionHandle;
++ (void) removeFriendRelationAsync: (int)friendshipID completionhandler:(void (^)(NSString*))completionHandle;
 
 - (void) setUserAvatarAsync: (UIImage*)avatar completionHandler:(void (^)(UIImage*))completionHandle;
 - (UIImage*) getUserAvatar: (int)viewingUserID;
