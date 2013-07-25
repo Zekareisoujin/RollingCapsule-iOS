@@ -137,8 +137,9 @@
         [_btnEditProfile setHidden:YES];
         [_btnEditProfile setEnabled:NO];
 
-        [self asynchGetUserRelationRequest];
-        [self asynchCheckUserFollowRequest];
+//        [self asynchGetUserRelationRequest];
+//        [self asynchCheckUserFollowRequest];
+        [self getUserRelations];
         
         UIImage *buttonImage = [UIImage imageNamed:@"profileBtnFriendAction"];
         UIButton *postButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -190,6 +191,32 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (void)getUserRelations {
+    [_viewingUser getUserFriendRelationAsync:_profileUser completionHandler:^(BOOL isFriend, int friendshipID, NSString* friendStatus, NSString* errorMsg) {
+        if (errorMsg == nil) {
+            if (isFriend) {
+                _friendshipID = friendshipID;
+                _friendStatus = friendStatus;
+            }else
+                _friendStatus = RCFriendStatusNull;
+            [self setFriendActionButton];
+        }else
+            alertStatus(errorMsg, @"Whatever", nil);
+    }];
+    
+    [_viewingUser getUserFollowRelationAsync:_profileUser completionHandler:^(BOOL isFollowing, int followID, NSString* errorMsg) {
+        if (errorMsg == nil) {
+            _isFollowing = isFollowing;
+            _followID = followID;
+            if (!_isFollowing)
+                [_btnFollow setTitle:@"Follow" forState:UIControlStateNormal];
+            else
+                [_btnFollow setTitle:@"Unfollow" forState:UIControlStateNormal];
+        }else
+            alertStatus(errorMsg, @"Whatever", nil);
+    }];
+}
+
 #pragma mark - web requests
 
 // Feed requests
@@ -217,30 +244,12 @@
              if ([jsonData count] > 0) {
                  for (NSDictionary* elem in jsonData){
                      [_postList addObject:[[RCPost alloc] initWithNSDictionary:elem]];
-                     
-                     /*RCPost *test = [[RCPost alloc] initWithNSDictionary:elem];
-                     CLLocationCoordinate2D coord = CLLocationCoordinate2DMake(test.latitude, test.longitude);
-                     MKMapPoint point = MKMapPointForCoordinate(coord);
-                     NSLog(@"Long & lat: %.2f and %.2f; producing: %.2f and %.2f", test.longitude, test.latitude, point.x, point.y);*/
                  }
                  
                  [_collectionView reloadData];
                  [self drawMinimap];
              }
              willShowMoreFeeds = ([_postList count] == currentMaxPostNumber);
-             
-             /*if (jsonData != NULL) {
-                 //NSLog(@"Profile View: fetched feeds: %@", jsonData);
-                 NSArray *jsonDataArray = (NSArray *) [jsonData objectForKey:@"post_list"];
-                 //NSLog(@"Profile View: post lists: %@", jsonDataArray);
-                 for (NSDictionary* elem in jsonDataArray){
-                     [_postList addObject:[[RCPost alloc] initWithNSDictionary:elem]];
-                 }
-                 
-                 [_collectionView reloadData];
-             }else {
-                 alertStatus([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetFeed, responseData], RCAlertMessageConnectionFailed, self);
-             }*/
          }];
     }
     @catch (NSException * e) {
@@ -280,19 +289,6 @@
              }
              
               [self drawMinimap];
-             
-             /*if (jsonData != NULL) {
-              //NSLog(@"Profile View: fetched feeds: %@", jsonData);
-              NSArray *jsonDataArray = (NSArray *) [jsonData objectForKey:@"post_list"];
-              //NSLog(@"Profile View: post lists: %@", jsonDataArray);
-              for (NSDictionary* elem in jsonDataArray){
-              [_postList addObject:[[RCPost alloc] initWithNSDictionary:elem]];
-              }
-              
-              [_collectionView reloadData];
-              }else {
-              alertStatus([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetFeed, responseData], RCAlertMessageConnectionFailed, self);
-              }*/
          }];
     }
     @catch (NSException * e) {
@@ -301,220 +297,276 @@
     }
 }
 
-// Friend relation requests
-- (void)asynchGetUserRelationRequest{
-    //Asynchronous Request
-    @try {
-        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/relation?mobile=1&other_user=%d", RCServiceURL, RCUsersResource, self.viewingUserID, _profileUser.userID]];
-        NSURLRequest *request = CreateHttpGetRequest(url);
-        
-        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
-                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
-         {
-             [self completeFriendshipRequest:data];
-         }];
-    }
-    @catch (NSException * e) {
-        NSLog(@"Exception: %@", e);
-        alertStatus(RCErrorMessageFailedToGetUsersRelation, RCAlertMessageConnectionFailed,self);
-    }
-}
-
-- (void)asynchCreateFriendshipRequest{
-    //Asynchronous Request
-    @try {
-        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCFriendshipsResource]];
-        NSMutableString* dataSt = initQueryString(@"friendship[friend_id]",
-                                                  [[NSString alloc] initWithFormat:@"%d",_profileUser.userID]);
-        NSData *postData = [dataSt dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-        NSURLRequest *request = CreateHttpPostRequest(url, postData);
-        
-        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
-                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
-         {
-             [self completeFriendshipRequest:data];
-         }];
-    }
-    @catch (NSException * e) {
-        NSLog(@"Exception: %@", e);
-        alertStatus(RCErrorMessageFailedToEditFriendStatus,RCAlertMessageConnectionFailed,self);
-    }
-}
-
-- (void)asynchEditFriendshipRequest{
-    //Asynchronous Request
-    @try {
-        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d", RCServiceURL, RCFriendshipsResource, _friendshipID]];
-        NSMutableString* dataSt = initEmptyQueryString();
-        NSData *putData = [dataSt dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-        NSURLRequest *request = CreateHttpPutRequest(url, putData);
-        
-        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
-                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
-         {
-             [self completeFriendshipRequest:data];
-         }];
-    }
-    @catch (NSException * e) {
-        NSLog(@"Exception: %@", e);
-        alertStatus(RCErrorMessageFailedToEditFriendStatus,RCAlertMessageConnectionFailed,self);
-    }
-}
-
-- (void)asynchDeleteFriendshipRequest{
-    //Asynchronous Request
-    @try {
-        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/?mobile=1", RCServiceURL, RCFriendshipsResource, _friendshipID]];
-        NSURLRequest *request = CreateHttpDeleteRequest(url);
-
-        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
-                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
-        {
-            [self completeFriendshipRequest:data];
-        }];
-    }
-    @catch (NSException * e) {
-        NSLog(@"Exception: %@", e);
-        alertStatus(RCErrorMessageFailedToEditFriendStatus,RCAlertMessageConnectionFailed,self);
-    }
-}
-
-- (void)completeFriendshipRequest:(NSData *)data {
-    NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-    
-    SBJsonParser *jsonParser = [SBJsonParser new];
-    NSDictionary *friendshipJson = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
-    NSLog(@"%@",friendshipJson);
-    
-    if (friendshipJson != NULL) {
-        _friendStatus = [friendshipJson objectForKey:@"status"];
-        if ((NSNull *)_friendStatus == [NSNull null]) {
-            _friendStatus = RCFriendStatusNull;
-            [_btnFriendAction setTitle:RCFriendStatusActionRequestFriend forState:UIControlStateNormal];
-            _btnFriendAction.enabled = YES;
-            if (_btnDeclineRequest != nil)
-                [_btnDeclineRequest removeFromSuperview];
-        } else {
-            NSNumber *num = [friendshipJson objectForKey:@"id"];
-            _friendshipID = [num intValue];
-            if ([_friendStatus isEqualToString:RCFriendStatusAccepted]) {
-                [_btnFriendAction setTitle:RCFriendStatusActionUnfriend forState:UIControlStateNormal];
-                _btnFriendAction.enabled = YES;
-                if (_btnDeclineRequest != nil)
-                    [_btnDeclineRequest removeFromSuperview];
-            } else if ([_friendStatus isEqualToString:RCFriendStatusPending]) {
-                [_btnFriendAction setTitle:RCFriendStatusActionRequestSent forState:UIControlStateNormal];
-                _btnFriendAction.enabled = NO;
-                if (_btnDeclineRequest != nil)
-                    [_btnDeclineRequest removeFromSuperview];
-            } else if ([_friendStatus isEqualToString:RCFriendStatusRequested]) {
-                [_btnFriendAction setTitle:RCFriendStatusActionRequestAccept forState:UIControlStateNormal];
-                CGRect baseFrame = _btnFriendAction.frame;
-                if (_btnDeclineRequest != nil)
-                    _btnDeclineRequest = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-                _btnDeclineRequest.frame = CGRectMake(baseFrame.origin.x, baseFrame.origin.y + baseFrame.size.height + 10, baseFrame.size.width, baseFrame.size.height);
-                [_btnDeclineRequest setTitle:RCDeclineRequest forState:UIControlStateNormal];
-                [_btnDeclineRequest addTarget:self action:@selector(asynchDeleteFriendshipRequest) forControlEvents:UIControlEventTouchUpInside];
-                [self.view addSubview:_btnDeclineRequest];
-                _btnFriendAction.enabled = YES;
-                
-            }
-        }
-            
-    }else {
-        alertStatus([NSString stringWithFormat:@"Failed to obtain friend status, please try again! %@", responseData], @"Connection Failed!", nil);
-    }
-}
-
-// Follow relation requests
-- (void) asynchCheckUserFollowRequest {
-    //Asynchronous Request
-    @try {
-        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/relation_follow?mobile=1&other_user=%d", RCServiceURL, RCUsersResource, self.viewingUserID, _profileUser.userID]];
-        NSURLRequest *request = CreateHttpGetRequest(url);
-        
-        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
-                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
-         {
-             [self completeFollowRequest:data];
-         }];
-    }
-    @catch (NSException * e) {
-        NSLog(@"Exception: %@", e);
-        alertStatus(RCErrorMessageFailedToGetUsersRelation, RCAlertMessageConnectionFailed,self);
-    }
-}
-
-- (void) asynchCreateFollowRequest {
-    //Asynchronous Request
-    @try {
-        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@?mobile=1", RCServiceURL, RCFollowResource]];
-        NSMutableString* dataSt = initQueryString(@"follow[followee_id]",
-                                                  [[NSString alloc] initWithFormat:@"%d",_profileUser.userID]);
-        NSData *postData = [dataSt dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-        NSURLRequest *request = CreateHttpPostRequest(url, postData);
-        
-        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
-                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
-         {
-             [self completeFollowRequest:data];
-         }];
-    }
-    @catch (NSException * e) {
-        NSLog(@"Exception: %@", e);
-        alertStatus(RCErrorMessageFailedToEditFriendStatus,RCAlertMessageConnectionFailed,self);
-    }
-}
-
-- (void)asynchDeleteFollowRequest{
-    //Asynchronous Request
-    @try {
-        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/?mobile=1", RCServiceURL, RCFollowResource, _followID]];
-        NSURLRequest *request = CreateHttpDeleteRequest(url);
-        
-        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
-                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
-         {
-             [self completeFollowRequest:data];
-         }];
-    }
-    @catch (NSException * e) {
-        NSLog(@"Exception: %@", e);
-        alertStatus(RCErrorMessageFailedToEditFriendStatus,RCAlertMessageConnectionFailed,self);
-    }
-}
-
-- (void) completeFollowRequest: (NSData*) data {
-    NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-    
-    SBJsonParser *jsonParser = [SBJsonParser new];
-    NSDictionary *followJson = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
-    NSLog(@"%@",followJson);
-    
-    if (followJson != NULL) {
-        NSDictionary *followObj = [followJson objectForKey:@"follow"];
-        if ((NSNull*) followObj == [NSNull null]) {
-            _isFollowing = NO;
-            [_btnFollow setTitle:@"Follow" forState:UIControlStateNormal];
-        }else {
-            NSNumber *num = [followObj objectForKey:@"id"];
-            _followID = [num intValue];
-            _isFollowing = YES;
-            [_btnFollow setTitle:@"Unfollow" forState:UIControlStateNormal];
-        }
-    }else {
-        alertStatus(@"Failed to obtain follow status, please try again!", @"Connection Failed", nil);
-    }
-}
+//// Friend relation requests
+//- (void)asynchGetUserRelationRequest{
+//    //Asynchronous Request
+//    @try {
+//        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/relation?mobile=1&other_user=%d", RCServiceURL, RCUsersResource, self.viewingUserID, _profileUser.userID]];
+//        NSURLRequest *request = CreateHttpGetRequest(url);
+//        
+//        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+//                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+//         {
+//             [self completeFriendshipRequest:data];
+//         }];
+//    }
+//    @catch (NSException * e) {
+//        NSLog(@"Exception: %@", e);
+//        alertStatus(RCErrorMessageFailedToGetUsersRelation, RCAlertMessageConnectionFailed,self);
+//    }
+//}
+//
+//- (void)asynchCreateFriendshipRequest{
+//    //Asynchronous Request
+//    @try {
+//        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCFriendshipsResource]];
+//        NSMutableString* dataSt = initQueryString(@"friendship[friend_id]",
+//                                                  [[NSString alloc] initWithFormat:@"%d",_profileUser.userID]);
+//        NSData *postData = [dataSt dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+//        NSURLRequest *request = CreateHttpPostRequest(url, postData);
+//        
+//        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+//                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+//         {
+//             [self completeFriendshipRequest:data];
+//         }];
+//    }
+//    @catch (NSException * e) {
+//        NSLog(@"Exception: %@", e);
+//        alertStatus(RCErrorMessageFailedToEditFriendStatus,RCAlertMessageConnectionFailed,self);
+//    }
+//}
+//
+//- (void)asynchEditFriendshipRequest{
+//    //Asynchronous Request
+//    @try {
+//        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d", RCServiceURL, RCFriendshipsResource, _friendshipID]];
+//        NSMutableString* dataSt = initEmptyQueryString();
+//        NSData *putData = [dataSt dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+//        NSURLRequest *request = CreateHttpPutRequest(url, putData);
+//        
+//        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+//                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+//         {
+//             [self completeFriendshipRequest:data];
+//         }];
+//    }
+//    @catch (NSException * e) {
+//        NSLog(@"Exception: %@", e);
+//        alertStatus(RCErrorMessageFailedToEditFriendStatus,RCAlertMessageConnectionFailed,self);
+//    }
+//}
+//
+//- (void)asynchDeleteFriendshipRequest{
+//    //Asynchronous Request
+//    @try {
+//        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/?mobile=1", RCServiceURL, RCFriendshipsResource, _friendshipID]];
+//        NSURLRequest *request = CreateHttpDeleteRequest(url);
+//
+//        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+//                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+//        {
+//            [self completeFriendshipRequest:data];
+//        }];
+//    }
+//    @catch (NSException * e) {
+//        NSLog(@"Exception: %@", e);
+//        alertStatus(RCErrorMessageFailedToEditFriendStatus,RCAlertMessageConnectionFailed,self);
+//    }
+//}
+//
+//- (void)completeFriendshipRequest:(NSData *)data {
+//    NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+//    
+//    SBJsonParser *jsonParser = [SBJsonParser new];
+//    NSDictionary *friendshipJson = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
+//    NSLog(@"%@",friendshipJson);
+//    
+//    if (friendshipJson != NULL) {
+//        _friendStatus = [friendshipJson objectForKey:@"status"];
+//        if ((NSNull *)_friendStatus == [NSNull null]) {
+//            _friendStatus = RCFriendStatusNull;
+//            [_btnFriendAction setTitle:RCFriendStatusActionRequestFriend forState:UIControlStateNormal];
+//            _btnFriendAction.enabled = YES;
+//            if (_btnDeclineRequest != nil)
+//                [_btnDeclineRequest removeFromSuperview];
+//        } else {
+//            NSNumber *num = [friendshipJson objectForKey:@"id"];
+//            _friendshipID = [num intValue];
+//            if ([_friendStatus isEqualToString:RCFriendStatusAccepted]) {
+//                [_btnFriendAction setTitle:RCFriendStatusActionUnfriend forState:UIControlStateNormal];
+//                _btnFriendAction.enabled = YES;
+//                if (_btnDeclineRequest != nil)
+//                    [_btnDeclineRequest removeFromSuperview];
+//            } else if ([_friendStatus isEqualToString:RCFriendStatusPending]) {
+//                [_btnFriendAction setTitle:RCFriendStatusActionRequestSent forState:UIControlStateNormal];
+//                _btnFriendAction.enabled = NO;
+//                if (_btnDeclineRequest != nil)
+//                    [_btnDeclineRequest removeFromSuperview];
+//            } else if ([_friendStatus isEqualToString:RCFriendStatusRequested]) {
+//                [_btnFriendAction setTitle:RCFriendStatusActionRequestAccept forState:UIControlStateNormal];
+//                CGRect baseFrame = _btnFriendAction.frame;
+//                if (_btnDeclineRequest != nil)
+//                    _btnDeclineRequest = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+//                _btnDeclineRequest.frame = CGRectMake(baseFrame.origin.x, baseFrame.origin.y + baseFrame.size.height + 10, baseFrame.size.width, baseFrame.size.height);
+//                [_btnDeclineRequest setTitle:RCDeclineRequest forState:UIControlStateNormal];
+//                [_btnDeclineRequest addTarget:self action:@selector(asynchDeleteFriendshipRequest) forControlEvents:UIControlEventTouchUpInside];
+//                [self.view addSubview:_btnDeclineRequest];
+//                _btnFriendAction.enabled = YES;
+//                
+//            }
+//        }
+//            
+//    }else {
+//        alertStatus([NSString stringWithFormat:@"Failed to obtain friend status, please try again! %@", responseData], @"Connection Failed!", nil);
+//    }
+//}
+//
+//// Follow relation requests
+//- (void) asynchCheckUserFollowRequest {
+//    //Asynchronous Request
+//    @try {
+//        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/relation_follow?mobile=1&other_user=%d", RCServiceURL, RCUsersResource, self.viewingUserID, _profileUser.userID]];
+//        NSURLRequest *request = CreateHttpGetRequest(url);
+//        
+//        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+//                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+//         {
+//             [self completeFollowRequest:data];
+//         }];
+//    }
+//    @catch (NSException * e) {
+//        NSLog(@"Exception: %@", e);
+//        alertStatus(RCErrorMessageFailedToGetUsersRelation, RCAlertMessageConnectionFailed,self);
+//    }
+//}
+//
+//- (void) asynchCreateFollowRequest {
+//    //Asynchronous Request
+//    @try {
+//        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@?mobile=1", RCServiceURL, RCFollowResource]];
+//        NSMutableString* dataSt = initQueryString(@"follow[followee_id]",
+//                                                  [[NSString alloc] initWithFormat:@"%d",_profileUser.userID]);
+//        NSData *postData = [dataSt dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+//        NSURLRequest *request = CreateHttpPostRequest(url, postData);
+//        
+//        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+//                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+//         {
+//             [self completeFollowRequest:data];
+//         }];
+//    }
+//    @catch (NSException * e) {
+//        NSLog(@"Exception: %@", e);
+//        alertStatus(RCErrorMessageFailedToEditFriendStatus,RCAlertMessageConnectionFailed,self);
+//    }
+//}
+//
+//- (void)asynchDeleteFollowRequest{
+//    //Asynchronous Request
+//    @try {
+//        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/?mobile=1", RCServiceURL, RCFollowResource, _followID]];
+//        NSURLRequest *request = CreateHttpDeleteRequest(url);
+//        
+//        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+//                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+//         {
+//             [self completeFollowRequest:data];
+//         }];
+//    }
+//    @catch (NSException * e) {
+//        NSLog(@"Exception: %@", e);
+//        alertStatus(RCErrorMessageFailedToEditFriendStatus,RCAlertMessageConnectionFailed,self);
+//    }
+//}
+//
+//- (void) completeFollowRequest: (NSData*) data {
+//    NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+//    
+//    SBJsonParser *jsonParser = [SBJsonParser new];
+//    NSDictionary *followJson = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
+//    NSLog(@"%@",followJson);
+//    
+//    if (followJson != NULL) {
+//        NSDictionary *followObj = [followJson objectForKey:@"follow"];
+//        if ((NSNull*) followObj == [NSNull null]) {
+//            _isFollowing = NO;
+//            [_btnFollow setTitle:@"Follow" forState:UIControlStateNormal];
+//        }else {
+//            NSNumber *num = [followObj objectForKey:@"id"];
+//            _followID = [num intValue];
+//            _isFollowing = YES;
+//            [_btnFollow setTitle:@"Unfollow" forState:UIControlStateNormal];
+//        }
+//    }else {
+//        alertStatus(@"Failed to obtain follow status, please try again!", @"Connection Failed", nil);
+//    }
+//}
 
 #pragma mark - UI events
 - (IBAction)btnFriendActionClicked:(id)sender {
+//    if ([_friendStatus isEqualToString:RCFriendStatusNull]) {
+//        [self asynchCreateFriendshipRequest];
+//    } else if ([_friendStatus isEqualToString:RCFriendStatusAccepted]) {
+//        [self asynchDeleteFriendshipRequest];
+//    } else if ([_friendStatus isEqualToString:RCFriendStatusPending] || [_friendStatus isEqualToString:RCFriendStatusRequested] ) {
+//        [self asynchEditFriendshipRequest];
+//    }
+    
     if ([_friendStatus isEqualToString:RCFriendStatusNull]) {
-        [self asynchCreateFriendshipRequest];
+        [RCUser addFriendAsCurrentUserAsync:_profileUser completionHandler:^(int friendshipID, NSString* errorMsg) {
+            if (errorMsg == nil) {
+                _friendStatus = RCFriendStatusPending;
+                _friendshipID = friendshipID;
+                [self setFriendActionButton];
+            }else
+                alertStatus(errorMsg, @"Whatever", nil);
+        }];
     } else if ([_friendStatus isEqualToString:RCFriendStatusAccepted]) {
-        [self asynchDeleteFriendshipRequest];
-    } else if ([_friendStatus isEqualToString:RCFriendStatusPending] || [_friendStatus isEqualToString:RCFriendStatusRequested] ) {
-        [self asynchEditFriendshipRequest];
+        [RCUser removeFriendRelationAsync:_friendshipID completionhandler:^(NSString* errorMsg) {
+            if (errorMsg == nil) {
+                _friendStatus = RCFriendStatusNull;
+                [self setFriendActionButton];
+            }else
+                alertStatus(errorMsg, @"Whatever", nil);
+        }];
+    } else if ([_friendStatus isEqualToString:RCFriendStatusRequested] ) {
+        [RCUser acceptFriendRelationAsync:_friendshipID completionhandler:^(NSString* errorMsg) {
+            if (errorMsg == nil) {
+                _friendStatus = RCFriendStatusAccepted;
+                [self setFriendActionButton];
+            }else
+                alertStatus(errorMsg, @"Whatever", nil);
+        }];
+    }
+}
+
+- (void)setFriendActionButton {
+    if ([_friendStatus isEqualToString:RCFriendStatusNull]) {
+        [_btnFriendAction setTitle:RCFriendStatusActionRequestFriend forState:UIControlStateNormal];
+        _btnFriendAction.enabled = YES;
+        if (_btnDeclineRequest != nil)
+            [_btnDeclineRequest removeFromSuperview];
+    }else if ([_friendStatus isEqualToString:RCFriendStatusAccepted]) {
+        [_btnFriendAction setTitle:RCFriendStatusActionUnfriend forState:UIControlStateNormal];
+        _btnFriendAction.enabled = YES;
+        if (_btnDeclineRequest != nil)
+            [_btnDeclineRequest removeFromSuperview];
+    } else if ([_friendStatus isEqualToString:RCFriendStatusPending]) {
+        [_btnFriendAction setTitle:RCFriendStatusActionRequestSent forState:UIControlStateNormal];
+        _btnFriendAction.enabled = NO;
+        if (_btnDeclineRequest != nil)
+            [_btnDeclineRequest removeFromSuperview];
+    } else if ([_friendStatus isEqualToString:RCFriendStatusRequested]) {
+        [_btnFriendAction setTitle:RCFriendStatusActionRequestAccept forState:UIControlStateNormal];
+        CGRect baseFrame = _btnFriendAction.frame;
+        if (_btnDeclineRequest != nil)
+            _btnDeclineRequest = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        _btnDeclineRequest.frame = CGRectMake(baseFrame.origin.x, baseFrame.origin.y + baseFrame.size.height + 10, baseFrame.size.width, baseFrame.size.height);
+        [_btnDeclineRequest setTitle:RCDeclineRequest forState:UIControlStateNormal];
+        [_btnDeclineRequest addTarget:self action:@selector(asynchDeleteFriendshipRequest) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview:_btnDeclineRequest];
+        _btnFriendAction.enabled = YES;
     }
 }
 
@@ -526,10 +578,23 @@
 }
 
 - (IBAction)btnFollowClicked:(id)sender {
-    if (_isFollowing) {
-        [self asynchDeleteFollowRequest];
+    if (!_isFollowing) {
+        [RCUser followUserAsCurrentUserAsync:_profileUser completionHandler:^(int followID, NSString* errorMsg){
+            if (errorMsg == nil) {
+                _isFollowing = YES;
+                _followID = followID;
+                [_btnFollow setTitle:@"Unfollow" forState:UIControlStateNormal];
+            }else
+                alertStatus(errorMsg, @"Whatever", nil);
+        }];
     }else {
-        [self asynchCreateFollowRequest];
+        [RCUser removeFollowRelationAsync:_followID completionHandler:^(NSString* errorMsg){
+            if (errorMsg == nil) {
+                _isFollowing = NO;
+                [_btnFollow setTitle:@"Follow" forState:UIControlStateNormal];
+            }else
+                alertStatus(errorMsg, @"Whatever", nil);
+        }];
     }
 }
 
@@ -552,9 +617,9 @@
     //                       withObject:avatarImage];
     
     __unsafe_unretained typeof(self) weakSelf = self;
-    [_profileUser setUserAvatarAsync:avatarImage completionHandler:^(BOOL success, UIImage* retAvatar){
+    [_profileUser setUserAvatarAsync:avatarImage completionHandler:^(UIImage* retAvatar){
         dispatch_async(dispatch_get_main_queue(),^{
-            if (success) {
+            if (retAvatar != nil) {
                 weakSelf.userAvatarImage = retAvatar;
                 alertStatus(RCInfoStringPostSuccess, RCAlertMessageUploadSuccess, nil);
                 [weakSelf.btnAvatarImg setBackgroundImage:retAvatar forState:UIControlStateDisabled];
@@ -563,50 +628,50 @@
     }];
 }
 
-- (void)processBackgroundThreadUploadInBackground:(UIImage *)avatarImage
-{
-    // Convert the image to JPEG data.
-    NSData *imageData = UIImageJPEGRepresentation(avatarImage, 1.0);
-    
-    // Upload image data.  Remember to set the content type.
-    S3PutObjectRequest *por = [[S3PutObjectRequest alloc] initWithKey:self.profileUser.email
-                                                          inBucket:RCAmazonS3AvatarPictureBucket];
-    por.contentType = @"image/jpeg";
-    por.data        = imageData;
-    
-    // Put the image data into the specified s3 bucket and object.
-     AmazonS3Client *s3 = [RCAmazonS3Helper s3:_viewingUserID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3AvatarPictureBucket]];
-    NSString *error = @"Couldn't connect to server, please try again later";
-    if (s3 != nil) {
-        S3PutObjectResponse *putObjectResponse = [s3 putObject:por];
-        error = putObjectResponse.error.description;
-        if(putObjectResponse.error != nil) {
-            NSLog(@"Error: %@", putObjectResponse.error);
-        }
-    }
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self showCheckErrorMessage:error image:avatarImage];
-    });
-}
+//- (void)processBackgroundThreadUploadInBackground:(UIImage *)avatarImage
+//{
+//    // Convert the image to JPEG data.
+//    NSData *imageData = UIImageJPEGRepresentation(avatarImage, 1.0);
+//    
+//    // Upload image data.  Remember to set the content type.
+//    S3PutObjectRequest *por = [[S3PutObjectRequest alloc] initWithKey:self.profileUser.email
+//                                                          inBucket:RCAmazonS3AvatarPictureBucket];
+//    por.contentType = @"image/jpeg";
+//    por.data        = imageData;
+//    
+//    // Put the image data into the specified s3 bucket and object.
+//     AmazonS3Client *s3 = [RCAmazonS3Helper s3:_viewingUserID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3AvatarPictureBucket]];
+//    NSString *error = @"Couldn't connect to server, please try again later";
+//    if (s3 != nil) {
+//        S3PutObjectResponse *putObjectResponse = [s3 putObject:por];
+//        error = putObjectResponse.error.description;
+//        if(putObjectResponse.error != nil) {
+//            NSLog(@"Error: %@", putObjectResponse.error);
+//        }
+//    }
+//    dispatch_async(dispatch_get_main_queue(), ^{
+//        [self showCheckErrorMessage:error image:avatarImage];
+//    });
+//}
 
-- (void)showCheckErrorMessage:(NSString *)error image:(UIImage *)image
-{
-    if(error != nil)
-    {
-        NSLog(@"Error: %@", error);
-        alertStatus(error,RCAlertMessageUploadError,self);
-    }
-    else
-    {
-        RCResourceCache *cache = [RCResourceCache centralCache];
-        NSString *key = [[NSString alloc] initWithFormat:@"%@/%d/avatar", RCUsersResource, _profileUser.userID];
-        [cache invalidateKey:key];
-        _userAvatarImage = image;
-        alertStatus(RCInfoStringPostSuccess, RCAlertMessageUploadSuccess,self);
-        [_btnAvatarImg setBackgroundImage:_userAvatarImage forState:UIControlStateDisabled];
-    }
-    [RCConnectionManager endConnection];
-}
+//- (void)showCheckErrorMessage:(NSString *)error image:(UIImage *)image
+//{
+//    if(error != nil)
+//    {
+//        NSLog(@"Error: %@", error);
+//        alertStatus(error,RCAlertMessageUploadError,self);
+//    }
+//    else
+//    {
+//        RCResourceCache *cache = [RCResourceCache centralCache];
+//        NSString *key = [[NSString alloc] initWithFormat:@"%@/%d/avatar", RCUsersResource, _profileUser.userID];
+//        [cache invalidateKey:key];
+//        _userAvatarImage = image;
+//        alertStatus(RCInfoStringPostSuccess, RCAlertMessageUploadSuccess,self);
+//        [_btnAvatarImg setBackgroundImage:_userAvatarImage forState:UIControlStateDisabled];
+//    }
+//    [RCConnectionManager endConnection];
+//}
 
 
 

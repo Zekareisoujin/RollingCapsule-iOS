@@ -179,14 +179,13 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     [_btnFollow setHidden:YES];
     _btnFriendsWith.enabled = NO;
     if (_loggedInUser.userID != _postOwner.userID) {
-        
-        [_loggedInUser getUserFriendRelationAsync:_postOwner completion:^(BOOL isFriend) {
-            if (!isFriend)
-                [_loggedInUser getUserFollowRelationAsync:_postOwner completion:^(BOOL isFollowing) {
-                    if (!isFollowing)
-                        [_btnFollow setHidden:NO];
-                } withFailureFunction:nil];
-        } withFailureFunction:nil];
+        [_loggedInUser getUserFollowRelationAsync:_postOwner completionHandler:^(BOOL isFollowing, int followID, NSString* errorMsg) {
+            if (errorMsg == nil) {
+                if (!isFollowing)
+                    [_btnFollow setEnabled:YES];
+            }else
+                alertStatus(errorMsg, @"Error getting user relation", nil);
+        }];
     }
     
     //prepare comment button for drag
@@ -806,18 +805,20 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 }
 
 - (IBAction)btnFriendsWithTouchUpInside:(id)sender {
-    [RCUser addFriendAsync:_postOwner withSuccessfulFunction:^(int friendID) {
-        _btnFriendsWith.enabled = NO;
-    } withFailureFunction:^(NSString *errorMessage) {
-        alertStatus(errorMessage, @"Error adding user as friend", nil);
+    [RCUser addFriendAsCurrentUserAsync:_postOwner completionHandler:^(int friendID, NSString *errorMsg) {
+        if (errorMsg == nil) {
+            [_btnFriendsWith setEnabled:NO];
+        }else
+            alertStatus(errorMsg, @"Error adding user as friend", nil);
     }];
 }
 
 - (IBAction)btnFollowTouchUpInside:(id)sender {
-    [RCUser followUserAsync:_postOwner withSuccessfulFunction:^(int followID) {
-        _btnFollow.enabled = NO;
-    } withFailureFunction:^(NSString *errorMessage) {
-        alertStatus(errorMessage, @"Error following user", nil);
+    [RCUser followUserAsCurrentUserAsync:_postOwner completionHandler:^(int followID, NSString *errorMsg) {
+        if (errorMsg == nil) {
+            [_btnFollow setEnabled:NO];
+        }else
+            alertStatus(errorMsg, @"Error following user", nil);
     }];
 }
 

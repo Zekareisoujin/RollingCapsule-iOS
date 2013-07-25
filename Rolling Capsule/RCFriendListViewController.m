@@ -39,11 +39,10 @@
 @synthesize refreshControl = _refreshControl;
 @synthesize searchResultList = _searchResultList;
 
-BOOL                    _firstRefresh;
 RCFriendListViewMode    _viewingMode;
-RCConnectionManager     *_connectionManager;
 NSArray                 *controlButtonArray;
 NSMutableArray          *currentDisplayedItems;
+NSDate                  *strangerListLastUpdate;
 
 // Search bar animation
 BOOL    showSearchBar;
@@ -66,8 +65,6 @@ CGRect  searchButtonHideFrame;
     if (self) {
         _user = user;
         _loggedinUser = loggedinUser;
-        _connectionManager = [[RCConnectionManager alloc] init];
-
     }
     return self;
 }
@@ -79,13 +76,13 @@ CGRect  searchButtonHideFrame;
     if ([self.navigationController.viewControllers count] > 2)
         [self setupBackButton];
     
-    //[_connectionManager reset];
-    
     _friends = [[NSMutableArray alloc] init];
     _requested_friends = [[NSMutableArray alloc] init];
     _followees = [[NSMutableArray alloc] init];
     _tblViewFriendList.tableFooterView = [[UIView alloc] init];
     _searchResultList = [[NSMutableArray alloc] init];
+
+    strangerListLastUpdate = [NSDate date];
     
     //add post button to navigation bar
     UIImage *postButtonImage = [UIImage imageNamed:@"buttonPost.png"];
@@ -109,7 +106,8 @@ CGRect  searchButtonHideFrame;
     [_user getUserAvatarAsync:_user.userID completionHandler:^(UIImage* img){
         [_imgUserAvatar setImage:img];
     }];
-    [_lblTableTitle setText:_user.name];
+    [_lblUserName setText:_user.name];
+    [_tableTitleLabel setAdjustsFontSizeToFitWidth:YES];
     
     // Configure search bar
     [_searchBar setDelegate:self];
@@ -145,8 +143,12 @@ CGRect  searchButtonHideFrame;
     _displayedItems = _friends;
     [self asynchGetFriendsRequest];
     [self asynchGetFolloweesRequest];
-    [self asynchGetRequestedFriendsRequest];
     [self btnFriendTouchUpInside:self];
+    
+    if (_user != _loggedinUser) {
+        [_btnRequests setHidden:YES];
+    }else
+        [self asynchGetRequestedFriendsRequest];
 }
 
 - (void) handleRefresh:(UIRefreshControl *) refreshControl {
@@ -229,29 +231,29 @@ CGRect  searchButtonHideFrame;
     [self.navigationController pushViewController:detailViewController animated:YES];
 }
 
-/*- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    NSString *sectionName;
-    switch (section)
-    {
-        default:
-            switch (_viewingMode) {
-                case RCFriendListViewModeFriends:
-                    sectionName = @"Friends";
-                    break;
-                case RCFriendListViewModePendingFriends:
-                    sectionName = @"Pending Requests";
-                    break;
-                case RCFriendListViewModeFollowees:
-                    sectionName = @"People you follow";
-                    break;
-                default:
-                    break;
-            }
-            break;
-    }
-    return sectionName;
-}*/
+//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+//{
+//    NSString *sectionName;
+//    switch (section)
+//    {
+//        default:
+//            switch (_viewingMode) {
+//                case RCFriendListViewModeFriends:
+//                    sectionName = @"Friends";
+//                    break;
+//                case RCFriendListViewModePendingFriends:
+//                    sectionName = @"Pending Requests";
+//                    break;
+//                case RCFriendListViewModeFollowees:
+//                    sectionName = @"People you follow";
+//                    break;
+//                default:
+//                    break;
+//            }
+//            break;
+//    }
+//    return sectionName;
+//}
 
 #pragma mark - web request
 - (void)asynchGetFriendsRequest {
@@ -379,6 +381,54 @@ CGRect  searchButtonHideFrame;
     }
 }
 
+- (void)asynchFindUsersRequest:(NSString *)searchString {
+    //Asynchronous Request
+    [RCConnectionManager startConnection];
+    @try {
+        NSDate *currentSearchTime = [NSDate date];
+        NSString *escapedSearchString = (NSString *)CFBridgingRelease
+        (CFURLCreateStringByAddingPercentEscapes(NULL,
+                                                 (__bridge CFStringRef) searchString,
+                                                 NULL,
+                                                 CFSTR("!*'();:@&=+$,/?%#[]"),
+                                                 kCFStringEncodingUTF8));
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/find_users?mobile=1&search_string=%@", RCServiceURL, RCUsersResource, _user.userID, escapedSearchString]];
+        
+        NSURLRequest *request = CreateHttpGetRequest(url);
+        
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+         {
+             [RCConnectionManager endConnection];
+             
+             if ([strangerListLastUpdate compare:currentSearchTime] == NSOrderedAscending) {
+                 NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+                 
+                 SBJsonParser *jsonParser = [SBJsonParser new];
+                 NSArray *usersJson = (NSArray *) [jsonParser objectWithString:responseData error:nil];
+                 NSLog(@"%@",usersJson);
+                 
+                 if (usersJson != NULL) {
+                     [_searchResultList removeAllObjects];
+                     for (NSDictionary *userData in usersJson) {
+                         //RCUser *user = [[RCUser alloc] initWithNSDictionary:userData];
+                         RCUser *user = [RCUser getUserWithNSDictionary:userData];
+                         [_searchResultList addObject:user];
+                     }
+                     if (_viewingMode == RCFriendListViewModePendingFriends)
+                         [_tblViewFriendList reloadData];
+                 }else {
+                     alertStatus([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetUsers, responseData], RCAlertMessageConnectionFailed, self);
+                 }
+             }
+         }];
+    }
+    @catch (NSException * e) {
+        NSLog(@"Exception: %@", e);
+        alertStatus(RCErrorMessageFailedToGetUsers,RCAlertMessageConnectionFailed,self);
+    }
+}
+
 #pragma mark - open new view
 
 - (void) openFindFriendsView {
@@ -401,8 +451,20 @@ CGRect  searchButtonHideFrame;
 }
 
 - (void)toggleSearchBar: (BOOL)show animateWithDuration:(NSTimeInterval)duration {
-    if (!show) {
+    if (show) {
+        showSearchBar = NO;
+        [_searchBarBackground setFrame:searchBarHideFrame];
+        [_searchBarBackground setHidden:NO];
+        [UIView animateWithDuration:duration animations:^{
+            [_searchBarBackground setFrame:searchBarShowFrame];
+            [_btnSearchBarToggle setFrame:searchButtonShowFrame];
+            [_searchBarBackground.layer setOpacity:1.0];
+        } completion:^(BOOL success){
+            [_searchBar setHidden:NO];
+        }];
+    }else {
         showSearchBar = YES;
+        [_searchBar setHidden:YES];
         [self btnSearchBarCancelTouchUpInside:self];
         [UIView animateWithDuration:duration animations:^{
             [_searchBarBackground setFrame:searchBarHideFrame];
@@ -410,19 +472,6 @@ CGRect  searchButtonHideFrame;
             [_searchBarBackground.layer setOpacity:0.0];
         } completion:^(BOOL success){
             [_searchBarBackground setHidden:YES];
-            [_searchBar setHidden:YES];
-        }];
-    }else {
-        showSearchBar = NO;
-        [_searchBarBackground setFrame:searchBarHideFrame];
-        [_searchBarBackground setHidden:NO];
-        [_searchBar setHidden:NO];
-        [UIView animateWithDuration:duration animations:^{
-            [_searchBarBackground setFrame:searchBarShowFrame];
-            [_btnSearchBarToggle setFrame:searchButtonShowFrame];
-            [_searchBarBackground.layer setOpacity:1.0];
-        } completion:^(BOOL success){
-            
         }];
     }
 }
@@ -430,9 +479,14 @@ CGRect  searchButtonHideFrame;
 - (IBAction)btnFriendTouchUpInside:(id)sender {
     _viewingMode = RCFriendListViewModeFriends;
     _displayedItems = _friends;
-    //[_searchBar setPlaceholder:@"Search for friends"];
     [_tableTitleBackground setImage:[UIImage imageNamed:@"friendListBarFriends"]];
-    [_tableTitleLabel setText:@"Friends"];
+    if (_user == _loggedinUser) {
+        [_searchBar setPlaceholder:@"Search for friends"];
+        [_tableTitleLabel setText:@"Friends"];
+    }else {
+        [_searchBar setPlaceholder:[NSString stringWithFormat:@"Search for %@'s friends", _user.name]];
+        [_tableTitleLabel setText:[NSString stringWithFormat:@"%@'s friends", _user.name]];
+    }
     
     currentDisplayedItems = _displayedItems;
     [self clearSearchBar];
@@ -442,8 +496,8 @@ CGRect  searchButtonHideFrame;
 - (IBAction)btnRequestsTouchUpInside:(id)sender {
     _viewingMode = RCFriendListViewModePendingFriends;
     _displayedItems = _requested_friends;
-    //[_searchBar setPlaceholder:@"Search for pending requests"];
     [_tableTitleBackground setImage:[UIImage imageNamed:@"friendListBarPending"]];
+    [_searchBar setPlaceholder:@"Search for new friends"];
     [_tableTitleLabel setText:@"Find friends"];
     
     currentDisplayedItems = _displayedItems;
@@ -454,9 +508,14 @@ CGRect  searchButtonHideFrame;
 - (IBAction)btnFolloweeTouchUpInside:(id)sender {
     _viewingMode = RCFriendListViewModeFollowees;
     _displayedItems = _followees;
-    //[_searchBar setPlaceholder:@"Search for people you follow"];
     [_tableTitleBackground setImage:[UIImage imageNamed:@"friendListBarFollows"]];
-    [_tableTitleLabel setText:@"People you follow"];
+    if (_user == _loggedinUser) {
+        [_searchBar setPlaceholder:@"Search for people you follow"];
+        [_tableTitleLabel setText:@"People you follow"];
+    }else {
+        [_searchBar setPlaceholder:[NSString stringWithFormat:@"Search for people %@ follows", _user.name]];
+        [_tableTitleLabel setText:[NSString stringWithFormat:@"People %@ follows", _user.name]];
+    }
     
     currentDisplayedItems = _displayedItems;
     [self clearSearchBar];
@@ -505,7 +564,10 @@ CGRect  searchButtonHideFrame;
         _displayedItems = currentDisplayedItems;
         [_btnSearchBarCancel setHidden:YES];
     }else {
-        [self filterContentForSearchText:searchText fromList:currentDisplayedItems withScope:nil];
+        if (_viewingMode == RCFriendListViewModePendingFriends)
+            [self asynchFindUsersRequest:searchText];
+        else
+            [self filterContentForSearchText:searchText fromList:currentDisplayedItems withScope:nil];
         _displayedItems = _searchResultList;
         [_btnSearchBarCancel setHidden:NO];
     }

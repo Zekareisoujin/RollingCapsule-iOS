@@ -68,7 +68,7 @@ static NSString* const RCMainFeedRowCountSetting = @"MainFeedRowCount";
 #define RCUploadImageSizeHeight 225
 #define RCIphone5Height         568
 #define RCPostPerPage           30
-#define RCMaxVideoLength        15
+#define RCMaxVideoLength        30
 
 //Displayed strings
 static NSString* const RCImageSourcePhotoLibrary = @"Photo Library";
