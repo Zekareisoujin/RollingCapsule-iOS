@@ -35,4 +35,5 @@
 - (void) disableSideMenu;
 - (void) setCurrentUser:(RCUser*)user;
 - (void) setNotificationList:(NSArray*)notifications;
++ (void) cleanupMemory;
 @end

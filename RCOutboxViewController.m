@@ -86,6 +86,7 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+    [AppDelegate cleanupMemory];
     // Dispose of any resources that can be recreated.
 }
 
