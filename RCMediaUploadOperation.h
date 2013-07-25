@@ -11,8 +11,11 @@
 #import <AWSS3/AWSS3.h>
 
 @interface RCMediaUploadOperation : NSOperation
+
+@property (atomic, strong) UIImage*  thumbnailImage;
+@property (atomic, strong) NSURL* fileURL;
+
 @property (nonatomic, strong) NSData*   uploadData;
-@property (nonatomic, strong) UIImage*  thumbnailImage;
 @property (nonatomic, strong) NSString* key;
 @property (nonatomic, strong) NSString* mediaType;
 @property (nonatomic, assign) BOOL isCancel;
@@ -20,7 +23,7 @@
 @property (nonatomic, strong) NSException *uploadException;
 @property (nonatomic, strong) NSError *uploadError;
 @property (nonatomic, assign) BOOL successfulUpload;
-@property (nonatomic, strong) NSURL* fileURL;
+
 
 - (id) initWithKey:(NSString*)key withMediaType:(NSString*)mediaType withURL:(NSURL*) fileURL;
 - (NSOperation*) generateOperation;

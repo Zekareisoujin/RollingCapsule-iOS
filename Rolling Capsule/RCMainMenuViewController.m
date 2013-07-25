@@ -15,6 +15,7 @@
 #import "RCUtilities.h"
 #import "RCConstants.h"
 #import "RCMenuTableCell.h"
+#import "RCOutboxViewController.h"
 #import "UIImage+animatedGIF.h"
 
 @interface RCMainMenuViewController ()
@@ -59,9 +60,10 @@
     [_menuTable setSeparatorColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.3]];
     // Do any additional setup after loading the view from its nib.
     
-    menuItemLabel = [[NSArray alloc] initWithObjects:@"Main Feeds", @"Profile", @"Friends", @"Settings", nil];
+    menuItemLabel = [[NSArray alloc] initWithObjects:@"Main Feeds", @"Profile", @"Friends", @"Outbox", @"Settings", nil];
     menuItemIcon = [[NSArray alloc] initWithObjects:[UIImage imageNamed:@"menuIconMainFeeds"],
                                                     [UIImage imageNamed:@"menuIconProfile"],
+                                                    [UIImage imageNamed:@"menuIconFriends"],
                                                     [UIImage imageNamed:@"menuIconFriends"],
                                                     [UIImage imageNamed:@"menuIconSettings"], nil];
     
@@ -136,6 +138,9 @@
             [self btnActionFriendViewNav:self];
             break;
         case 3:
+            [self btnActionOutboxNav:self];
+            break;
+        case 4:
             //[self btnActionSetting:self];
             //[self btnActionLogOutDropDown:self];
             if (plusRows == 0) {
@@ -164,7 +169,10 @@
     [mainFeedViewController setCurrentUser:_user];
     [self navigateToViewControllerFromMenu:mainFeedViewController];
 }
-
+- (IBAction)btnActionOutboxNav:(id)sender {
+    RCOutboxViewController*outboxViewController = [[RCOutboxViewController alloc] init];
+    [self navigateToViewControllerFromMenu:outboxViewController];
+}
 - (IBAction)btnActionUserProfileNav:(id)sender {
     RCUserProfileViewController *userProfileViewController = [[RCUserProfileViewController alloc] initWithUser:_user viewingUser:_user];
     [self navigateToViewControllerFromMenu:userProfileViewController];
