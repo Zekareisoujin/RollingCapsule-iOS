@@ -107,7 +107,7 @@
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        alertStatus(@"Failure getting friends from web service",@"Connection Failed!",self);
+        postNotification(@"Failure getting friends from web service");
     }
     s3 = [[RCS3CredentialsWithExpiration alloc] initWithAmazonS3Client:(AmazonS3Client*) s3Client];
     [clientPool setObject:s3 forKey:key];

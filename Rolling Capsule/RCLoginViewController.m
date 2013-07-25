@@ -58,7 +58,7 @@
     @try {
         
         if([[_txtFieldUsername text] isEqualToString:@""] || [[_txtFieldPassword text] isEqualToString:@""] ) {
-            alertStatus(RCErrorMessageUsernameAndPasswordMissing,RCAlertMessageLoginFailed,self);
+            postNotification(RCErrorMessageUsernameAndPasswordMissing);
             [self setUIBusy:NO];
         } else {
             //[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
@@ -82,7 +82,7 @@
                     RCUser *user = [[RCUser alloc] initWithNSDictionary:(NSDictionary*)[jsonData objectForKey:@"user"]];
                     [delegate userDidLogIn:user];
                 }else {
-                    alertStatus([NSString stringWithFormat:RCErrorMessagePleaseTryAgain], RCAlertMessageLoginFailed, self);
+                    postNotification([NSString stringWithFormat:RCErrorMessagePleaseTryAgain]);
                 }
                 [self setUIBusy:NO];
             }];
@@ -90,7 +90,7 @@
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        alertStatus(RCAlertMessageLoginFailed,RCAlertMessageLoginFailed, self);
+        postNotification(RCAlertMessageLoginFailed);
     }
 }
 
@@ -118,7 +118,7 @@
 }
 
 - (IBAction)btnForgotPassword:(id)sender {
-    alertStatus(@"Not yet implemented!", @"Error", nil);
+    postNotification(@"Not yet implemented!");
 }
 
 - (void)viewWillAppear:(BOOL)animated

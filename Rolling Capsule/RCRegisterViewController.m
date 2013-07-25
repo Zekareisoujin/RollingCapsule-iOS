@@ -42,7 +42,7 @@ BOOL        _willMoveKeyboardUp;
         
         if([[_txtFieldName text] isEqualToString:@""] || [[_txtFieldPassword text] isEqualToString:@""] 
            || [[_txtFieldEmail text] isEqualToString:@""] || [[_txtFieldPasswordConfirmation text] isEqualToString:@""] ) {
-            alertStatus(RCErrorMessageInformationMissing, RCAlertMessageLoginFailed,self);
+            postNotification(RCErrorMessageInformationMissing);
         } else {
             NSMutableString *dataSt = initQueryString(@"user[email]", [_txtFieldEmail text]);
             addArgumentToQueryString(dataSt, @"user[password]", [_txtFieldPassword text]);
@@ -65,9 +65,9 @@ BOOL        _willMoveKeyboardUp;
                 if (jsonData != NULL) {
                     NSDictionary *userData = (NSDictionary *) [jsonData objectForKey: @"user"];
                     NSString *name = (NSString *) [userData objectForKey:@"name"];
-                    alertStatus([NSString stringWithFormat:@"Welcome, %@!",name], RCAlertMessageRegistrationSuccess, self);
+                    postNotification([NSString stringWithFormat:@"Welcome, %@!",name]);
                 }else {
-                    alertStatus([NSString stringWithFormat:@"%@ %@",RCErrorMessagePleaseTryAgain, responseData], RCAlertMessageRegistrationFailed, self);
+                    postNotification([NSString stringWithFormat:@"%@ %@",RCErrorMessagePleaseTryAgain, responseData]);
                 }
 
             }];
@@ -76,7 +76,7 @@ BOOL        _willMoveKeyboardUp;
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        alertStatus(RCAlertMessageRegistrationFailed,RCAlertMessageRegistrationFailed,self);
+        postNotification(RCAlertMessageRegistrationFailed);
     }
 }
 

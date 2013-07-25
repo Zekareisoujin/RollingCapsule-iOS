@@ -69,7 +69,7 @@ static NSMutableURLRequest* CreateHttpDeleteRequest (NSURL* url) {
     return request;
 }
 
-static void alertStatus(NSString *msg, NSString *title, id delegateObject)
+static void postNotification(NSString *msg)
 {
     UILabel *lblAlert = nil;
     if (lblAlert == nil)
@@ -87,21 +87,13 @@ static void alertStatus(NSString *msg, NSString *title, id delegateObject)
         frame2.size.height += 20;
         lblAlert.frame = frame2;
     }];
-    [NSTimer scheduledTimerWithTimeInterval:1.5 block:^(NSTimeInterval time) {
+    [NSTimer scheduledTimerWithTimeInterval:2.0 block:^(NSTimeInterval time) {
             [UIView animateWithDuration:0.5 animations:^{
                 lblAlert.alpha = 0.0;
             } completion:^(BOOL finished){
                 [lblAlert removeFromSuperview];
             }];
     } repeats:NO];
-    /*UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
-                                                        message:msg
-                                                       delegate:nil
-                                              cancelButtonTitle:@"Ok"
-                                              otherButtonTitles:nil, nil];
-    
-    // delegateObject is unnecessary, but lazy to refractor all the code that use this
-    [alertView show];*/
 }
 
 static void confirmationDialog(NSString *msg, NSString *title, id delegate){

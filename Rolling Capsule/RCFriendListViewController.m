@@ -286,7 +286,7 @@ CGRect  searchButtonHideFrame;
                         [_tblViewFriendList reloadData];
                     
                 }else {
-                    alertStatus([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetFriends, responseData], RCAlertMessageConnectionFailed, self);
+                    postNotification([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetFriends, responseData]);
                     
                 }
                 [_refreshControl endRefreshing];
@@ -294,7 +294,7 @@ CGRect  searchButtonHideFrame;
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        alertStatus(RCErrorMessageFailedToGetFriends,RCAlertMessageConnectionFailed,self);
+        postNotification(RCErrorMessageFailedToGetFriends);
     }
 }
 
@@ -328,7 +328,7 @@ CGRect  searchButtonHideFrame;
                     [_tblViewFriendList reloadData];
                  
              }else {
-                 alertStatus([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetFriends, responseData], RCAlertMessageConnectionFailed, self);
+                 postNotification([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetFriends, responseData]);
                  
              }
              [_refreshControl endRefreshing];
@@ -336,7 +336,7 @@ CGRect  searchButtonHideFrame;
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        alertStatus(RCErrorMessageFailedToGetFriends,RCAlertMessageConnectionFailed,self);
+        postNotification(RCErrorMessageFailedToGetFriends);
     }
 }
 
@@ -369,7 +369,7 @@ CGRect  searchButtonHideFrame;
                      [_tblViewFriendList reloadData];
                  
              }else {
-                 alertStatus([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetFriends, responseData], RCAlertMessageConnectionFailed, self);
+                 postNotification([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetFriends, responseData]);
                  
              }
              [_refreshControl endRefreshing];
@@ -377,7 +377,7 @@ CGRect  searchButtonHideFrame;
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        alertStatus(RCErrorMessageFailedToGetFriends,RCAlertMessageConnectionFailed,self);
+        postNotification(RCErrorMessageFailedToGetFriends);
     }
 }
 
@@ -418,14 +418,14 @@ CGRect  searchButtonHideFrame;
                      if (_viewingMode == RCFriendListViewModePendingFriends)
                          [_tblViewFriendList reloadData];
                  }else {
-                     alertStatus([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetUsers, responseData], RCAlertMessageConnectionFailed, self);
+                     postNotification([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetUsers, responseData]);
                  }
              }
          }];
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        alertStatus(RCErrorMessageFailedToGetUsers,RCAlertMessageConnectionFailed,self);
+        postNotification(RCErrorMessageFailedToGetUsers);
     }
 }
 

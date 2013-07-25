@@ -291,7 +291,7 @@
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        alertStatus(@"Log Out Failed.", @"Log Out Failed!", self);
+        postNotification(@"Log Out Failed.");
     }
 }
 

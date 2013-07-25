@@ -201,7 +201,7 @@
                 _friendStatus = RCFriendStatusNull;
             [self setFriendActionButton];
         }else
-            alertStatus(errorMsg, @"Whatever", nil);
+            postNotification(errorMsg);
     }];
     
     [_viewingUser getUserFollowRelationAsync:_profileUser completionHandler:^(BOOL isFollowing, int followID, NSString* errorMsg) {
@@ -213,7 +213,7 @@
             else
                 [_btnFollow setTitle:@"Unfollow" forState:UIControlStateNormal];
         }else
-            alertStatus(errorMsg, @"Whatever", nil);
+            postNotification(errorMsg);
     }];
 }
 
@@ -254,7 +254,7 @@
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        alertStatus(RCErrorMessageFailedToGetUsersRelation, RCAlertMessageConnectionFailed,self);
+        postNotification(RCErrorMessageFailedToGetUsersRelation);
     }
 }
 
@@ -293,7 +293,7 @@
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        alertStatus(RCErrorMessageFailedToGetUsersRelation, RCAlertMessageConnectionFailed,self);
+        postNotification(RCErrorMessageFailedToGetUsersRelation);
     }
 }
 
@@ -520,7 +520,7 @@
                 _friendshipID = friendshipID;
                 [self setFriendActionButton];
             }else
-                alertStatus(errorMsg, @"Whatever", nil);
+                postNotification(errorMsg);
         }];
     } else if ([_friendStatus isEqualToString:RCFriendStatusAccepted]) {
         [RCUser removeFriendRelationAsync:_friendshipID completionhandler:^(NSString* errorMsg) {
@@ -528,7 +528,7 @@
                 _friendStatus = RCFriendStatusNull;
                 [self setFriendActionButton];
             }else
-                alertStatus(errorMsg, @"Whatever", nil);
+                postNotification(errorMsg);
         }];
     } else if ([_friendStatus isEqualToString:RCFriendStatusRequested] ) {
         [RCUser acceptFriendRelationAsync:_friendshipID completionhandler:^(NSString* errorMsg) {
@@ -536,7 +536,7 @@
                 _friendStatus = RCFriendStatusAccepted;
                 [self setFriendActionButton];
             }else
-                alertStatus(errorMsg, @"Whatever", nil);
+                postNotification(errorMsg);
         }];
     }
 }
@@ -585,7 +585,7 @@
                 _followID = followID;
                 [_btnFollow setTitle:@"Unfollow" forState:UIControlStateNormal];
             }else
-                alertStatus(errorMsg, @"Whatever", nil);
+                postNotification(errorMsg);
         }];
     }else {
         [RCUser removeFollowRelationAsync:_followID completionHandler:^(NSString* errorMsg){
@@ -593,7 +593,7 @@
                 _isFollowing = NO;
                 [_btnFollow setTitle:@"Follow" forState:UIControlStateNormal];
             }else
-                alertStatus(errorMsg, @"Whatever", nil);
+                postNotification(errorMsg);
         }];
     }
 }
@@ -621,7 +621,7 @@
         dispatch_async(dispatch_get_main_queue(),^{
             if (retAvatar != nil) {
                 weakSelf.userAvatarImage = retAvatar;
-                alertStatus(RCInfoStringPostSuccess, RCAlertMessageUploadSuccess, nil);
+                postNotification(RCInfoStringPostSuccess);
                 [weakSelf.btnAvatarImg setBackgroundImage:retAvatar forState:UIControlStateDisabled];
             }
         });
