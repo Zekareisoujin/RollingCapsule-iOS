@@ -52,4 +52,10 @@ static RCUploadManager*  RCStaticUploadManager = nil;
     }
     [RCStaticUploadManager.uploadQueue setSuspended:NO];
 }
+
++ (void) cleanupUploadData {
+    if (RCStaticUploadManager != nil)
+        [RCStaticUploadManager cleanupMemory];
+}
+
 @end

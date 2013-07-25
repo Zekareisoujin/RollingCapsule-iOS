@@ -7,7 +7,7 @@
 //
 
 #import "RCMainFeedViewController.h"
-//#import "RCPostCommentCell.h"
+#import "RCOperationsManager.h"
 #import "RCUser.h"
 #import "RCPost.h"
 #import "RCConstants.h"
@@ -230,6 +230,7 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
+    [RCOperationsManager cleanupUploadData];
     // Dispose of any resources that can be recreated.
 }
 

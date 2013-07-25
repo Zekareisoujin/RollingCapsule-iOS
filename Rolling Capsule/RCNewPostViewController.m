@@ -20,6 +20,7 @@
 #import <QuartzCore/QuartzCore.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <MediaPlayer/MediaPlayer.h>
+#import <AssetsLibrary/AssetsLibrary.h>
 #import <AVFoundation/AVFoundation.h>
 #import <CoreMedia/CoreMedia.h>
 #import "SBJson.h"
@@ -549,49 +550,67 @@ BOOL _isTimedRelease = NO;
         _activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:_scrollViewImage.frame];
     [self.view addSubview:_activityIndicator];
     [_activityIndicator startAnimating];
+    _videoUrl = nil;
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
-        NSLog(@"inside data upload");
-        NSLog(@"generating thumbnail");
-        //after succesful thumbnail generation start uploading data
-        NSLog(@"begin uploading data");
-        NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
+        NSLog(@"background processing before data upload");
         //check if media is a video
+        NSString *mediaType = [info objectForKey: UIImagePickerControllerMediaType];
+        _isMovie = CFStringCompare ((__bridge CFStringRef) mediaType, kUTTypeMovie, 0)
+        == kCFCompareEqualTo;
+        
 
-        if (CFStringCompare ((__bridge CFStringRef) mediaType, kUTTypeMovie, 0)
-            == kCFCompareEqualTo)
+        NSLog(@"creating media upload operation");
+        CFUUIDRef theUUID = CFUUIDCreate(NULL);
+        CFStringRef string = CFUUIDCreateString(NULL, theUUID);
+        CFRelease(theUUID);
+        _imageFileName = [(__bridge NSString*)string stringByReplacingOccurrencesOfString:@"-"withString:@""];
+        if (_mediaUploadOp != nil) {
+            [_mediaUploadOp cancel];
+        }
+        if (_isMovie) {
+            _imageFileName = [NSString stringWithFormat:@"%@.mov",_imageFileName];
+        }
+        RCMediaUploadOperation *localMediaUploadOp = [[RCMediaUploadOperation alloc] initWithKey:_imageFileName withMediaType:_isMovie ? @"movie/mov" :  @"image/jpeg" withURL:nil];
+        _mediaUploadOp = localMediaUploadOp;
+        if (_isMovie)
         {
-            NSString *moviePath = [[info objectForKey:UIImagePickerControllerMediaURL] path];
-            if ([picker sourceType] == UIImagePickerControllerSourceTypeCamera)
-                UISaveVideoAtPathToSavedPhotosAlbum (moviePath, nil, nil, nil);
-            _videoUrl=(NSURL*)[info objectForKey:UIImagePickerControllerMediaURL];
-            AVURLAsset *sourceAsset = [AVURLAsset URLAssetWithURL:_videoUrl options:nil];
-            CMTime duration = sourceAsset.duration;
-            AVAssetImageGenerator* generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:sourceAsset];
-            generator.appliesPreferredTrackTransform = YES;
-            //Get the 1st frame 3 seconds in
-            int frameTimeStart = (int)(CMTimeGetSeconds(duration) / 2.0);
-            int frameLocation = 1;
-            //Snatch a frame
-            CGImageRef frameRef = [generator copyCGImageAtTime:CMTimeMake(frameTimeStart,frameLocation) actualTime:nil error:nil];
-            _postImage = [UIImage imageWithCGImage:frameRef];
+            _videoUrl =(NSURL*)[info objectForKey:UIImagePickerControllerMediaURL];
+            if ([picker sourceType] == UIImagePickerControllerSourceTypeCamera) {
+                ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+                // Request to save the video to camera roll
+                [library writeVideoAtPathToSavedPhotosAlbum:_videoUrl completionBlock:^(NSURL *assetURL, NSError *error){
+                    if (error) {
+                        NSLog(@"error");
+                    } else {
+                        NSLog(@"url %@", assetURL);
+                        localMediaUploadOp.fileURL = assetURL;
+                    }
+                }];
+            } else
+                localMediaUploadOp.fileURL = [info objectForKey:UIImagePickerControllerReferenceURL];
+            _postImage = generateVideoThumbnail(_videoUrl);
             _uploadData = [NSData dataWithContentsOfURL:_videoUrl];
             NSLog(@"obtained thumbnail and upload data");
         } else {
             //save photo if newly taken
-            if ([picker sourceType] == UIImagePickerControllerSourceTypeCamera)
-                UIImageWriteToSavedPhotosAlbum(_postImage, self, nil, nil);
-            //_postImage = [info objectForKey:UIImagePickerControllerOriginalImage];
-            _postImage = [info objectForKey:UIImagePickerControllerEditedImage];
+            _postImage = [info objectForKey:UIImagePickerControllerOriginalImage];
+            if ([picker sourceType] == UIImagePickerControllerSourceTypeCamera) {
+                ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
+                // Request to save the image to camera roll
+                [library writeImageToSavedPhotosAlbum:[_postImage CGImage] orientation:(ALAssetOrientation)[_postImage imageOrientation] completionBlock:^(NSURL *assetURL, NSError *error){
+                    if (error) {
+                        NSLog(@"error");
+                    } else {
+                        localMediaUploadOp.fileURL = assetURL;
+                    }  
+                }];
+            } else
+                localMediaUploadOp.fileURL = [info objectForKey:UIImagePickerControllerReferenceURL];
             NSLog(@"image size %f %f",_postImage.size.width, _postImage.size.height);
-            if (_postImage.size.width > 800 && _postImage.size.height > 800) {
-                float division = MIN(_postImage.size.width/(800.0-1.0), _postImage.size.height/(800-1.0));
-                UIImage *rescaledPostImage = imageWithImage(_postImage, CGSizeMake(_postImage.size.width/division,_postImage.size.height/division));
-                _postImage = rescaledPostImage;
-                _uploadData = UIImageJPEGRepresentation(rescaledPostImage, 1.0);
-            } else {
-                _uploadData = UIImageJPEGRepresentation(_postImage, 1.0);
-            }
+            _postImage = resizeImageIfTooBig(_postImage);
+            _uploadData = UIImageJPEGRepresentation(_postImage, 1.0);
+            
             NSLog(@"number of bytes %d",[_uploadData length]);
             
         }
@@ -605,41 +624,23 @@ BOOL _isTimedRelease = NO;
         
         UIImage *thumbnail;
         UIImage *rescaledThumbnail;
-        if (CFStringCompare ((__bridge CFStringRef) mediaType, kUTTypeMovie, 0)
-            == kCFCompareEqualTo)
+        if (_isMovie)
         {
-            _isMovie = YES;
             thumbnail = [info objectForKey:UIImagePickerControllerEditedImage];
             if (thumbnail == nil)
-                thumbnail = [self generateSquareImageThumbnail:_postImage];
+                thumbnail = generateSquareImageThumbnail(_postImage);
             rescaledThumbnail = imageWithImage(thumbnail, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
             //_thumbnailData = UIImageJPEGRepresentation(rescaledThumbnail,0.7);
         } else {
             // Get the selected image
-            _isMovie = NO;
-            thumbnail = [self generateSquareImageThumbnail:_postImage];
+            thumbnail = generateSquareImageThumbnail(_postImage);
             //generate thumbnail
-            rescaledThumbnail =imageWithImage(thumbnail, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));;
-            //_thumbnailData = UIImageJPEGRepresentation(uploadThumbnailImage, 0.7);
+            rescaledThumbnail =imageWithImage(thumbnail, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
         }
         
-        
-        
-        NSLog(@"before uploading image");
-        CFUUIDRef theUUID = CFUUIDCreate(NULL);
-        CFStringRef string = CFUUIDCreateString(NULL, theUUID);
-        CFRelease(theUUID);
-        _imageFileName = [(__bridge NSString*)string stringByReplacingOccurrencesOfString:@"-"withString:@""];
-        if (_mediaUploadOp != nil) {
-            [_mediaUploadOp cancel];
-        }
-        if (_isMovie) {
-            _imageFileName = [NSString stringWithFormat:@"%@.mov",_imageFileName];
-        }
-        _mediaUploadOp = [[RCMediaUploadOperation alloc] initWithKey:_imageFileName withUploadData:_uploadData withThumbnail:rescaledThumbnail withMediaType:_isMovie ? @"image/jpeg" : @"movie/mov"];
+        localMediaUploadOp.uploadData = _uploadData;
+        localMediaUploadOp.thumbnailImage = rescaledThumbnail;
         [RCOperationsManager addUploadMediaOperation:_mediaUploadOp];
-        //[self uploadImageToS3:_uploadData withThumbnail:_thumbnailData dataBeingMovie:_isMovie];
-        //[self processCompletionOfDataUpload];
     });
 
 }
@@ -1175,27 +1176,6 @@ handler:(void (^)(AVAssetExportSession*))handler
      {
          handler(exportSession);
      }];
-}
-
-- (UIImage*) generateSquareImageThumbnail: (UIImage*) largeImage {
-    CGFloat squareSize = MIN(largeImage.size.width, largeImage.size.height);
-    CGFloat x,y;
-    //largeImage.size.
-    if (squareSize == largeImage.size.width) {
-        x = 0;
-        y = (largeImage.size.height - squareSize)/2.0;
-    } else {
-        y = 0;
-        x = (largeImage.size.width  - squareSize)/2.0;
-    }
-    NSLog(@"crop coordinates x=%f y=%f size=%f",x,y,squareSize);
-    CGRect cropRect = CGRectMake(0,0,squareSize,squareSize);
-    
-    CGImageRef imageRef = CGImageCreateWithImageInRect([largeImage CGImage], cropRect);
-    // or use the UIImage wherever you like
-    UIImage *croppedImage = [UIImage imageWithCGImage:imageRef scale:largeImage.scale orientation:largeImage.imageOrientation];
-    CGImageRelease(imageRef);
-    return croppedImage;
 }
 
 #pragma mark - RCDatePickerDelegate

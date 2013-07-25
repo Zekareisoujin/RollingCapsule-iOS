@@ -9,11 +9,14 @@
 #import "RCMediaUploadOperation.h"
 #import "RCAmazonS3Helper.h"
 #import "RCConstants.h"
+#import "RCUtilities.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
 @implementation RCMediaUploadOperation {
     int nRetry;
     NSData*thumbnailData;
     S3PutObjectResponse *_putObjectResponse;
+    BOOL finishedProcessingLibrary;
 }
 
 @synthesize key = _key;
@@ -22,17 +25,19 @@
 @synthesize isCancel = _isCancel;
 @synthesize mediaType = _mediaType;
 @synthesize s3 = _s3;
-@synthesize amazonException = _amazonException;
+@synthesize uploadException = _uploadException;
 @synthesize uploadError = _uploadError;
 @synthesize successfulUpload = _successfulUpload;
+@synthesize fileURL = _fileURL;
 
-- (id) initWithKey:(NSString*)key withUploadData:(NSData*)uploadData withThumbnail:(UIImage*)thumbnailImage withMediaType:(NSString*)mediaType {
+- (id) initWithKey:(NSString*)key withMediaType:(NSString*)mediaType withURL:(NSURL*) fileURL{
     self = [super init];
     if (self) {
         _key = key;
-        _uploadData = uploadData;
-        _thumbnailImage = thumbnailImage;
+        //_uploadData = uploadData;
+        //_thumbnailImage = thumbnailImage;
         _mediaType = mediaType;
+        _fileURL = fileURL;
         _isCancel = NO;
         nRetry = 3;
         _s3 = nil;
@@ -49,9 +54,50 @@
 - (void)main {
     // a lengthy operation
     @autoreleasepool {
+        if (_uploadData == nil) {
+            if (_fileURL == nil) return;
+            dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+            ALAssetsLibrary *assetLibrary=[[ALAssetsLibrary alloc] init];
+            [assetLibrary assetForURL:_fileURL resultBlock:^(ALAsset *asset){
+                ALAssetRepresentation *rep = [asset defaultRepresentation];
+                Byte *buffer = (Byte*)malloc(rep.size);
+                NSUInteger buffered = [rep getBytes:buffer fromOffset:0.0 length:rep.size error:nil];
+                _uploadData = [NSData dataWithBytesNoCopy:buffer length:buffered freeWhenDone:YES];
+                if (_thumbnailImage == nil && ![_mediaType hasSuffix:@"mov"]) {
+                    // Retrieve the image orientation from the ALAsset
+                    UIImageOrientation orientation = UIImageOrientationUp;
+                    NSNumber* orientationValue = [asset valueForProperty:@"ALAssetPropertyOrientation"];
+                    if (orientationValue != nil) {
+                        orientation = [orientationValue intValue];
+                    }
+                    UIImage *image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullResolutionImage] scale:1.0 orientation:orientation];
+                    image = generateSquareImageThumbnail(image);
+                    _thumbnailImage = imageWithImage(image, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
+                }
+                dispatch_semaphore_signal(sema);
+            } failureBlock:^(NSError *err){
+                [self cancel];
+                dispatch_semaphore_signal(sema);
+            }];
+            dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
+            //wait till we finished getting asset from file url
+            /*while (!self.isCancelled && !finishedProcessingLibrary) {
+                ;//sleep(100);
+            };*/
+            if (self.isCancelled) return;
+        }
+        if (_thumbnailImage == nil) {
+            
+            if ([_mediaType hasSuffix:@"mov"]) {
+                UIImage *image;
+                image = generateVideoThumbnail(_fileURL);
+                image = generateSquareImageThumbnail(image);
+                _thumbnailImage = imageWithImage(image, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
+            } else return;
+        }
         thumbnailData = UIImageJPEGRepresentation(_thumbnailImage, 1.0);
         while (nRetry-- && ![self isCancelled]) {
-            _amazonException = nil;
+            _uploadException = nil;
             _s3 = [RCAmazonS3Helper s3:[RCUser currentUser].userID forResource:[NSString stringWithFormat:@"%@/*", RCAmazonS3UsersMediaBucket]];
             if (_s3 != nil) {
                 // Upload image data.  Remember to set the content type.
@@ -94,18 +140,26 @@
                     _successfulUpload = YES;
                     return;
                 }@catch (AmazonServiceException *exception) {
-#if DEBUG==1
-                    NSLog(@"New-Post: Error: %@", exception);
+                    NSLog(@"New-Post: AmazonServiceException: %@", exception);
                     NSLog(@"New-Post: Debug Description: %@",exception.debugDescription);
-#endif
-                    _amazonException = exception;
+                    _uploadException = exception;
+                } @catch (AmazonClientException *clientException) {
+                    
+                    NSLog(@"New-Post: AmazonClientException: %@", clientException);
+                    NSLog(@"New-Post: Debug Description: %@",clientException.debugDescription);
+                    _uploadException = clientException;
+                } @catch (NSException *unknownException) {
+                    
+                    NSLog(@"New-Post: unknown exception: %@", unknownException);
+                    NSLog(@"New-Post: Debug Description: %@",unknownException.debugDescription);
+                    _uploadException = unknownException;
                 }
             } else {
                 NSString* errorString = @"Failed to obtain S3 credentails from backend";
 #if DEBUG==1
                 NSLog(@"New-Post: Error: %@", errorString);
 #endif
-                _amazonException = [AmazonServiceException exceptionWithMessage:errorString];
+                _uploadException = [AmazonServiceException exceptionWithMessage:errorString];
             }
         }
     }

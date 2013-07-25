@@ -17,10 +17,11 @@
 @property (nonatomic, strong) NSString* mediaType;
 @property (nonatomic, assign) BOOL isCancel;
 @property (nonatomic, strong) AmazonS3Client* s3;
-@property (nonatomic, strong) AmazonServiceException *amazonException;
+@property (nonatomic, strong) NSException *uploadException;
 @property (nonatomic, strong) NSError *uploadError;
 @property (nonatomic, assign) BOOL successfulUpload;
+@property (nonatomic, strong) NSURL* fileURL;
 
-- (id) initWithKey:(NSString*)key withUploadData:(NSData*)uploadData withThumbnail:(UIImage*)thumbnailImage withMediaType:(NSString*)mediaType;
+- (id) initWithKey:(NSString*)key withMediaType:(NSString*)mediaType withURL:(NSURL*) fileURL;
 - (NSOperation*) generateOperation;
 @end

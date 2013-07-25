@@ -144,6 +144,7 @@
 		64D6D80B17998ECF00AA1161 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 64D6D80A17998ECF00AA1161 /* Reachability.m */; };
 		64D6D80D179995C500AA1161 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64D6D80C179995C500AA1161 /* SystemConfiguration.framework */; };
 		64D6EC1317A13A1F00663AE3 /* friendListSearchBarBg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D6EC1217A13A1F00663AE3 /* friendListSearchBarBg@2x.png */; };
+		64D6EC1517A1AAD500663AE3 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64D6EC1417A1AAD500663AE3 /* AssetsLibrary.framework */; };
 		64E293101784A84B009496FF /* viewPostCommentButton-normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */; };
 		64E293121784A8C8009496FF /* viewPostCommentButton-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */; };
 		64E293161784ABEE009496FF /* viewPostFollowLabel.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293131784ABEE009496FF /* viewPostFollowLabel.png */; };
@@ -448,6 +449,7 @@
 		64D6D80A17998ECF00AA1161 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = ../Reachability.m; sourceTree = "<group>"; };
 		64D6D80C179995C500AA1161 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		64D6EC1217A13A1F00663AE3 /* friendListSearchBarBg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "friendListSearchBarBg@2x.png"; sourceTree = "<group>"; };
+		64D6EC1417A1AAD500663AE3 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "viewPostCommentButton-normal.png"; path = "../viewPostCommentButton-normal.png"; sourceTree = "<group>"; };
 		64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "viewPostCommentButton-highlighted.png"; path = "../viewPostCommentButton-highlighted.png"; sourceTree = "<group>"; };
 		64E293131784ABEE009496FF /* viewPostFollowLabel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostFollowLabel.png; path = ../viewPostFollowLabel.png; sourceTree = "<group>"; };
@@ -608,6 +610,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				64D6EC1517A1AAD500663AE3 /* AssetsLibrary.framework in Frameworks */,
 				BFD6530F179EE7CD00D6A13D /* ImageIO.framework in Frameworks */,
 				64008048179EBA0F00C6B2B2 /* CoreText.framework in Frameworks */,
 				64D6D80D179995C500AA1161 /* SystemConfiguration.framework in Frameworks */,
@@ -838,6 +841,7 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
+				64D6EC1417A1AAD500663AE3 /* AssetsLibrary.framework */,
 				BFCA7821174DFD3F00666CBA /* Rolling Capsule */,
 				BFCA7845174DFD3F00666CBA /* Rolling CapsuleTests */,
 				BFCA781A174DFD3F00666CBA /* Frameworks */,

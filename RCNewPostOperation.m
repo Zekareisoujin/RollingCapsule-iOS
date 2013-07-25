@@ -32,7 +32,12 @@
     if (_mediaUploadOperation.successfulUpload)
         retry = [[RCNewPostOperation alloc] initWithPost:_post withMediaUploadOperation:_mediaUploadOperation ];
     else {
-        RCMediaUploadOperation *mediaUploadRetry = [[RCMediaUploadOperation alloc] initWithKey:_mediaUploadOperation.key withUploadData:_mediaUploadOperation.uploadData withThumbnail:_mediaUploadOperation.thumbnailImage withMediaType:_mediaUploadOperation.mediaType];
+        RCMediaUploadOperation *mediaUploadRetry = [[RCMediaUploadOperation alloc]
+                                                    initWithKey:_mediaUploadOperation.key
+                                                  withMediaType:_mediaUploadOperation.mediaType
+                                                        withURL:_mediaUploadOperation.fileURL];
+        mediaUploadRetry.uploadData = _mediaUploadOperation.uploadData;
+        mediaUploadRetry.thumbnailImage = _mediaUploadOperation.thumbnailImage;
         retry = [[RCNewPostOperation alloc] initWithPost:_post withMediaUploadOperation:mediaUploadRetry ];
     }
     return retry;
