@@ -106,7 +106,7 @@ CGRect  searchButtonHideFrame;
     [_user getUserAvatarAsync:_user.userID completionHandler:^(UIImage* img){
         [_imgUserAvatar setImage:img];
     }];
-    [_lblTableTitle setText:_user.name];
+    [_lblUserName setText:_user.name];
     [_tableTitleLabel setAdjustsFontSizeToFitWidth:YES];
     
     // Configure search bar
