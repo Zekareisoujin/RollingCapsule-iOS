@@ -49,7 +49,7 @@
 		6416D12217A046A40017065A /* topicCategoryHotel.png in Resources */ = {isa = PBXBuildFile; fileRef = 6416D11917A046A30017065A /* topicCategoryHotel.png */; };
 		6416D12317A046A40017065A /* topicCategoryMovie.png in Resources */ = {isa = PBXBuildFile; fileRef = 6416D11A17A046A40017065A /* topicCategoryMovie.png */; };
 		6416D12417A046A40017065A /* topicCategoryOthers.png in Resources */ = {isa = PBXBuildFile; fileRef = 6416D11B17A046A40017065A /* topicCategoryOthers.png */; };
-		6416D12517A046A40017065A /* topicCategoryPark.png in Resources */ = {isa = PBXBuildFile; fileRef = 6416D11C17A046A40017065A /* topicCategoryPark.png */; };
+		6416D12517A046A40017065A /* topicCategoryTropic Of Cancer.png in Resources */ = {isa = PBXBuildFile; fileRef = 6416D11C17A046A40017065A /* topicCategoryTropic Of Cancer.png */; };
 		6416D12617A046A40017065A /* topicCategoryTemple.png in Resources */ = {isa = PBXBuildFile; fileRef = 6416D11D17A046A40017065A /* topicCategoryTemple.png */; };
 		6417B232179415C6007777E5 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6417B231179415C6007777E5 /* CoreMedia.framework */; };
 		64194AD61770AAF200822F9B /* RCMainFeedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 64194AD51770AAF100822F9B /* RCMainFeedCell.m */; };
@@ -326,7 +326,7 @@
 		6416D11917A046A30017065A /* topicCategoryHotel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = topicCategoryHotel.png; path = ../topicCategoryHotel.png; sourceTree = "<group>"; };
 		6416D11A17A046A40017065A /* topicCategoryMovie.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = topicCategoryMovie.png; path = ../topicCategoryMovie.png; sourceTree = "<group>"; };
 		6416D11B17A046A40017065A /* topicCategoryOthers.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = topicCategoryOthers.png; path = ../topicCategoryOthers.png; sourceTree = "<group>"; };
-		6416D11C17A046A40017065A /* topicCategoryPark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = topicCategoryPark.png; path = ../topicCategoryPark.png; sourceTree = "<group>"; };
+		6416D11C17A046A40017065A /* topicCategoryTropic Of Cancer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "topicCategoryTropic Of Cancer.png"; path = "../topicCategoryTropic Of Cancer.png"; sourceTree = "<group>"; };
 		6416D11D17A046A40017065A /* topicCategoryTemple.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = topicCategoryTemple.png; path = ../topicCategoryTemple.png; sourceTree = "<group>"; };
 		6417B231179415C6007777E5 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		64194AD41770AAF100822F9B /* RCMainFeedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMainFeedCell.h; sourceTree = "<group>"; };
@@ -447,7 +447,7 @@
 		64D6D80817998E7B00AA1161 /* Reachability.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = Reachability.h; path = ../Reachability.h; sourceTree = "<group>"; };
 		64D6D80A17998ECF00AA1161 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Reachability.m; path = ../Reachability.m; sourceTree = "<group>"; };
 		64D6D80C179995C500AA1161 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		64D6EC1217A13A1F00663AE3 /* friendListSearchBarBg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "friendListSearchBarBg@2x.png"; path = "Rolling Capsule/friendListSearchBarBg@2x.png"; sourceTree = "<group>"; };
+		64D6EC1217A13A1F00663AE3 /* friendListSearchBarBg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "friendListSearchBarBg@2x.png"; sourceTree = "<group>"; };
 		64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "viewPostCommentButton-normal.png"; path = "../viewPostCommentButton-normal.png"; sourceTree = "<group>"; };
 		64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "viewPostCommentButton-highlighted.png"; path = "../viewPostCommentButton-highlighted.png"; sourceTree = "<group>"; };
 		64E293131784ABEE009496FF /* viewPostFollowLabel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostFollowLabel.png; path = ../viewPostFollowLabel.png; sourceTree = "<group>"; };
@@ -707,6 +707,7 @@
 				BFE307351795961A000C9C58 /* friendListFriend.png */,
 				BFE307361795961B000C9C58 /* friendListPending.png */,
 				BFE63146179D8020004992E1 /* friendListSearchBarBg.png */,
+				64D6EC1217A13A1F00663AE3 /* friendListSearchBarBg@2x.png */,
 				BF3E9826179EB4AC007EF258 /* friendListSearchBarCancel.png */,
 				647265C017A05FF9002E654A /* friendListSearchBarToggle.png */,
 				64EEBFC5178DFE2800D2C968 /* friendListTableBackground.png */,
@@ -810,7 +811,7 @@
 				649B423C179C3AC90019B1A7 /* topicCategoryMall.png */,
 				6416D11A17A046A40017065A /* topicCategoryMovie.png */,
 				6416D11B17A046A40017065A /* topicCategoryOthers.png */,
-				6416D11C17A046A40017065A /* topicCategoryPark.png */,
+				6416D11C17A046A40017065A /* topicCategoryTropic Of Cancer.png */,
 				649B423D179C3AC90019B1A7 /* topicCategoryRestaurant.png */,
 				649B423E179C3AC90019B1A7 /* topicCategorySchool.png */,
 				649B423F179C3AC90019B1A7 /* topicCategoryShop.png */,
@@ -837,7 +838,6 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
-				64D6EC1217A13A1F00663AE3 /* friendListSearchBarBg@2x.png */,
 				BFCA7821174DFD3F00666CBA /* Rolling Capsule */,
 				BFCA7845174DFD3F00666CBA /* Rolling CapsuleTests */,
 				BFCA781A174DFD3F00666CBA /* Frameworks */,
@@ -1320,7 +1320,7 @@
 				6416D12217A046A40017065A /* topicCategoryHotel.png in Resources */,
 				6416D12317A046A40017065A /* topicCategoryMovie.png in Resources */,
 				6416D12417A046A40017065A /* topicCategoryOthers.png in Resources */,
-				6416D12517A046A40017065A /* topicCategoryPark.png in Resources */,
+				6416D12517A046A40017065A /* topicCategoryTropic Of Cancer.png in Resources */,
 				6416D12617A046A40017065A /* topicCategoryTemple.png in Resources */,
 				647265C117A05FF9002E654A /* friendListSearchBarToggle.png in Resources */,
 				64D6EC1317A13A1F00663AE3 /* friendListSearchBarBg@2x.png in Resources */,
