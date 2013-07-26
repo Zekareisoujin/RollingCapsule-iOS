@@ -207,6 +207,8 @@
 		BF4DCC47175C82280081B5AC /* AWSS3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BF4DCC45175C82280081B5AC /* AWSS3.framework */; };
 		BF68E7031756090200E5C1F4 /* RCMainFeedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BF68E7011756090200E5C1F4 /* RCMainFeedViewController.m */; };
 		BF68E7041756090200E5C1F4 /* RCMainFeedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF68E7021756090200E5C1F4 /* RCMainFeedViewController.xib */; };
+		BF7FAFB317A2971A0010CD95 /* btnAccept.png in Resources */ = {isa = PBXBuildFile; fileRef = BF7FAFB117A2971A0010CD95 /* btnAccept.png */; };
+		BF7FAFB417A2971A0010CD95 /* btnReject.png in Resources */ = {isa = PBXBuildFile; fileRef = BF7FAFB217A2971A0010CD95 /* btnReject.png */; };
 		BF8DDD471796E8E600803CE1 /* RCMenuTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF8DDD461796E8E600803CE1 /* RCMenuTableCell.xib */; };
 		BF8DDD4A1796E91000803CE1 /* RCMenuTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BF8DDD491796E91000803CE1 /* RCMenuTableCell.m */; };
 		BF8DDD4D1796EAEC00803CE1 /* menuButtonNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8DDD4B1796EAEC00803CE1 /* menuButtonNormal.png */; };
@@ -522,6 +524,8 @@
 		BF68E7001756090200E5C1F4 /* RCMainFeedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCMainFeedViewController.h; path = ../RCMainFeedViewController.h; sourceTree = "<group>"; };
 		BF68E7011756090200E5C1F4 /* RCMainFeedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCMainFeedViewController.m; path = ../RCMainFeedViewController.m; sourceTree = "<group>"; };
 		BF68E7021756090200E5C1F4 /* RCMainFeedViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RCMainFeedViewController.xib; path = ../RCMainFeedViewController.xib; sourceTree = "<group>"; };
+		BF7FAFB117A2971A0010CD95 /* btnAccept.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btnAccept.png; sourceTree = "<group>"; };
+		BF7FAFB217A2971A0010CD95 /* btnReject.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btnReject.png; sourceTree = "<group>"; };
 		BF8DDD461796E8E600803CE1 /* RCMenuTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RCMenuTableCell.xib; path = "Rolling Capsule/RCMenuTableCell.xib"; sourceTree = "<group>"; };
 		BF8DDD481796E91000803CE1 /* RCMenuTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCMenuTableCell.h; path = "Rolling Capsule/RCMenuTableCell.h"; sourceTree = "<group>"; };
 		BF8DDD491796E91000803CE1 /* RCMenuTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCMenuTableCell.m; path = "Rolling Capsule/RCMenuTableCell.m"; sourceTree = "<group>"; };
@@ -680,6 +684,8 @@
 		643EACE9175BBE0D002761D9 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				BF7FAFB117A2971A0010CD95 /* btnAccept.png */,
+				BF7FAFB217A2971A0010CD95 /* btnReject.png */,
 				6460E869178AE3EA0065D6BA /* appIcon.png */,
 				6460E86A178AE3EA0065D6BA /* appIcon@2x.png */,
 				643EACE7175BACC0002761D9 /* back_button.png */,
@@ -1323,6 +1329,8 @@
 				647265C117A05FF9002E654A /* friendListSearchBarToggle.png in Resources */,
 				64D6EC1317A13A1F00663AE3 /* friendListSearchBarBg@2x.png in Resources */,
 				64D6EC1A17A1CE1900663AE3 /* RCOutboxViewController.xib in Resources */,
+				BF7FAFB317A2971A0010CD95 /* btnAccept.png in Resources */,
+				BF7FAFB417A2971A0010CD95 /* btnReject.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -39,6 +39,8 @@
 @synthesize refreshControl = _refreshControl;
 @synthesize searchResultList = _searchResultList;
 
+NSMutableArray          *requestLists;
+
 RCFriendListViewMode    _viewingMode;
 NSArray                 *controlButtonArray;
 NSMutableArray          *currentDisplayedItems;
@@ -82,6 +84,7 @@ CGRect  searchButtonHideFrame;
     _tblViewFriendList.tableFooterView = [[UIView alloc] init];
     _searchResultList = [[NSMutableArray alloc] init];
 
+    requestLists = [[NSMutableArray alloc] init];
     strangerListLastUpdate = [NSDate date];
     
     //add post button to navigation bar
@@ -207,11 +210,16 @@ CGRect  searchButtonHideFrame;
     } else {
         user = [_displayedItems objectAtIndex:indexPath.row];
     }
-    //[RCConnectionManager startConnection];
-    [cell populateCellData:user
-                  withLoggedInUserID:_loggedinUser.userID
-                completion:^ { ;//[RCConnectionManager endConnection];
-                }];
+
+    BOOL isRequestCell = (_viewingMode == RCFriendListViewModePendingFriends && [_searchBar.text isEqualToString:@""]);
+    [cell populateCellData:user withLoggedInUserID:_loggedinUser.userID requestCell:isRequestCell];
+    if (isRequestCell) {
+        [cell setFriendshipID:[(NSNumber*)[requestLists objectAtIndex:indexPath.row] intValue]];
+        [cell setCompletionHandler:^(BOOL accept) {
+            [_displayedItems removeObjectAtIndex:indexPath.row];
+            [_tblViewFriendList deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }];
+    }
     
     return cell;
 }
@@ -319,10 +327,13 @@ CGRect  searchButtonHideFrame;
              
              if (usersJson != NULL) {
                  [_requested_friends removeAllObjects];
+                 [requestLists removeAllObjects];
                  for (NSDictionary *userData in usersJson) {
                      //RCUser *user = [[RCUser alloc] initWithNSDictionary:userData];
                      RCUser *user = [RCUser getUserWithNSDictionary:userData];
                      [_requested_friends addObject:user];
+                     NSLog(@"ID IS: %d", (int)[userData objectForKey:@"friendship_id"]);
+                     [requestLists addObject:[[NSNumber alloc] initWithInt:[[userData objectForKey:@"friendship_id"] intValue]]];
                  }
                  
                  if (_viewingMode == RCFriendListViewModePendingFriends)
