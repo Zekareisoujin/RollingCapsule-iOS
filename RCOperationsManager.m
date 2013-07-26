@@ -7,7 +7,6 @@
 //
 
 #import "RCOperationsManager.h"
-#import "RCUploadManager.h"
 #import "RCUtilities.h"
 #define MAXIMUM_NUMBER_OF_PHOTO_UPLOADS 10
 
@@ -37,6 +36,13 @@ static RCUploadManager*  RCStaticUploadManager = nil;
     }
     postNotification(@"Uploading media");
     [RCStaticUploadManager addNewPostOperation:operation shouldStartMediaUpload:startMediaUpload willSaveToDisk:YES];
+}
+
++(RCUploadManager*) defaultUploadManager {
+    if (RCStaticUploadManager == nil) {
+        RCStaticUploadManager = [[RCUploadManager alloc] init];
+    }
+    return RCStaticUploadManager;
 }
 
 + (void) suspendUpload {

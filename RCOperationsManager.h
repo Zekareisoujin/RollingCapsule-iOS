@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "RCNewPostOperation.h"
 #import "RCMediaUploadOperation.h"
+#import "RCUploadManager.h"
 
 @interface RCOperationsManager : NSObject
 + (void) addOperation:(NSOperation*) operation;
@@ -17,4 +18,5 @@
 + (void) suspendUpload;
 + (void) cleanupUploadData;
 + (NSMutableArray*) uploadList;
++ (RCUploadManager*) defaultUploadManager;
 @end

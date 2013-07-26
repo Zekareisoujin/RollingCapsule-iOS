@@ -9,6 +9,7 @@
 #import "RCUploadManager.h"
 #import "RCUtilities.h"
 #import "RCUploadTask.h"
+#import "RCUser.h"
 #import <CoreData/CoreData.h>
 
 @implementation RCUploadManager
@@ -25,23 +26,32 @@
     return self;
 }
 
-- (void) readUploadTasksFromCoreData {
++ (NSArray*) getListOfUploadTasksFromCoreData {
     AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate] ;
     NSManagedObjectContext *context = [appDelegate managedObjectContext];
     NSFetchRequest *request = [[NSFetchRequest alloc] init];
     [request setEntity:[NSEntityDescription entityForName:@"RCUploadTask" inManagedObjectContext:context]];
     NSError *error = nil;
     NSArray *results = [context executeFetchRequest:request error:&error];
-    if (error == nil) {
-        for (RCUploadTask *task in results) {
+    if (error != nil)
+        NSLog(@"error fetching from core data:%@", [error localizedDescription]);
+    return results;
+}
+
+- (void) readUploadTasksFromCoreData {
+    NSArray *results = [RCUploadManager getListOfUploadTasksFromCoreData];
+    for (RCUploadTask *task in results) {
+        if ([task.userID intValue] == [RCUser currentUser].userID) {
             RCNewPostOperation *postOperation = [RCNewPostOperation newPostOperationFromUploadTask:task];
+            if (task.fileURL == nil || [task.fileURL isKindOfClass:[NSNull class]]) {
+                [self deletePostingTask:postOperation];
+                continue;
+            }
             if (!postOperation.successfulPost) {
                 [self addNewPostOperation:postOperation shouldStartMediaUpload:YES willSaveToDisk:NO];
             } else
                 [_uploadList addObject:postOperation];
         }
-    } else {
-        
     }
 }
 
@@ -72,6 +82,60 @@
         NSLog(@"CoreData, couldn't save: %@", [error localizedDescription]);
     }
 }
+
+- (void) cleanupFinishedOperation {
+    NSMutableArray* tobeDeleted = [[NSMutableArray alloc] init];
+    @synchronized(_uploadList) {
+        for (RCNewPostOperation *newPostOp in _uploadList) {
+            if (newPostOp.successfulPost)
+                [tobeDeleted addObject:newPostOp];
+        }
+        for (RCNewPostOperation *newPostOp in tobeDeleted)
+            [_uploadList removeObject:newPostOp];
+    }
+    
+}
+
+- (void) cancelNewPostOperation:(RCNewPostOperation*) operation {
+    [operation cancel];
+    [self deletePostingTask:operation];
+}
+
+- (void) pauseNewPostOperation:(RCNewPostOperation*) operation {
+    operation.paused = YES;
+    [operation cancel];
+}
+
+- (void) unpauseNewPostOperation:(RCNewPostOperation*) operation {
+    operation.paused = NO;
+    if (operation.isFinished && !operation.successfulPost) {
+        [_uploadList removeObject:operation];
+        RCNewPostOperation *retry = [operation generateRetryOperation];
+        [self addNewPostOperation:retry shouldStartMediaUpload:YES willSaveToDisk:NO];
+    }
+}
+
+- (void) deletePostingTask:(RCNewPostOperation*) operation {
+    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate] ;
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    NSFetchRequest *request = [[NSFetchRequest alloc] init];
+    [request setEntity:[NSEntityDescription entityForName:@"RCUploadTask" inManagedObjectContext:context]];
+    NSPredicate *predicate = [NSPredicate predicateWithFormat:@"key == %@", operation.post.fileUrl];
+    [request setPredicate:predicate];
+    NSError *error = nil;
+    NSArray *results = [context executeFetchRequest:request error:&error];
+    if (error == nil) {
+        for (RCUploadTask *task in results) {
+            [context deleteObject:task];
+        }
+        if (![context save:&error]) {
+            NSLog(@"CoreData, couldn't save: %@", [error localizedDescription]);
+        }
+    } else {
+        NSLog(@"CoreData, couldn't load with key %@: %@", operation.post.fileUrl, [error localizedDescription]);
+    }
+}
+
 - (void) updatePostingTask:(RCNewPostOperation*) operation {
     AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate] ;
     NSManagedObjectContext *context = [appDelegate managedObjectContext];
@@ -113,7 +177,7 @@
     if ([object isKindOfClass:[RCNewPostOperation class]]) {
         RCNewPostOperation *operation = (RCNewPostOperation*)object;
         if ([keyPath isEqualToString:@"isFinished"]) {
-            if (!operation.successfulPost) {
+            if (!operation.successfulPost && !operation.paused) {
                 //only add to retry queue if the data of the media is still there
                 //i.e. the fileURL is there or the upload data is there
                 if (operation.mediaUploadOperation.fileURL != nil
@@ -133,40 +197,41 @@
     } else if ([object isKindOfClass:[RCMediaUploadOperation class]]) {
         RCMediaUploadOperation *operation = (RCMediaUploadOperation*)object;
         if ([keyPath isEqualToString:@"fileURL"]) {
+            
             //if a mediaupload operation just gain the file URL needed to upload image
             //and failed the prevous upload then retry it
             if (operation.fileURL != nil) {
                 
                 //search for the new post operation associated with the media upload operation
                 //that just gained update
-                for (RCNewPostOperation* newPostOp in _uploadList) {
-                    if (newPostOp.mediaUploadOperation == operation) {
-                        [self writeUploadTaskToCoreData:newPostOp];
-                        if (operation.isFinished && !operation.successfulUpload) {
-                            [_uploadList removeObject:operation];
-                            RCNewPostOperation *retry = [newPostOp generateRetryOperation];
-                            [self addNewPostOperation:retry shouldStartMediaUpload:YES willSaveToDisk:YES];
-                        }
-                    }
-                } 
-                
+                int nOps = [_uploadList count];
+                int i;
+                RCNewPostOperation* newPostOp;
+                for (i = 0; i < nOps; i++) {
+                    newPostOp = [_uploadList objectAtIndex:i];
+                    if (newPostOp.mediaUploadOperation == operation) break;
+                }
+                [self writeUploadTaskToCoreData:newPostOp];
+                if (operation.isFinished && !operation.successfulUpload) {
+                    [_uploadList removeObject:operation];
+                    RCNewPostOperation *retry = [newPostOp generateRetryOperation];
+                    [self addNewPostOperation:retry shouldStartMediaUpload:YES willSaveToDisk:NO];
+                }
+
                 [operation removeObserver:self forKeyPath:@"fileURL"];
             } // if fileURL is not nil
         }
     }
 }
+
 - (void) cleanupMemory {
     [_uploadQueue setSuspended:YES];
     NSLog(@"cleaning up upload data in memory");
     @synchronized(_uploadList) {
         for (RCNewPostOperation *newPostOp in _uploadList) {
             if (![newPostOp.mediaUploadOperation isExecuting]) {
-                if (newPostOp.successfulPost)
-                    [_uploadList removeObject:newPostOp];
-                else {
-                    newPostOp.mediaUploadOperation.uploadData = nil;
-                    newPostOp.mediaUploadOperation.thumbnailImage = nil;
-                }
+                newPostOp.mediaUploadOperation.uploadData = nil;
+                newPostOp.mediaUploadOperation.thumbnailImage = nil;
             }
         }
     }

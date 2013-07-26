@@ -22,6 +22,7 @@
         _post = post;
         _successfulPost = NO;
         _mediaUploadOperation = mediaUploadOperation;
+        _paused = NO;
     }
     [self addDependency:_mediaUploadOperation];
     return self;
@@ -116,6 +117,7 @@
     post.fileUrl = uploadTask.key;
     post.thumbnailUrl = [NSString stringWithFormat:@"%@-thumbnail",post.fileUrl];
     NSString* mediaType = [post.fileUrl hasSuffix:@"mov"] ? @"movie/mov" : @"image/jpeg";
+    NSLog(@"task url is %@",uploadTask.fileURL);
     RCMediaUploadOperation *mediaUploadOperation = [[RCMediaUploadOperation alloc] initWithKey:post.fileUrl withMediaType:mediaType withURL:[NSURL URLWithString:uploadTask.fileURL]];
     RCNewPostOperation* newPostOperation = [[RCNewPostOperation alloc] initWithPost:post withMediaUploadOperation:mediaUploadOperation];
     newPostOperation.successfulPost = [uploadTask.successful boolValue];

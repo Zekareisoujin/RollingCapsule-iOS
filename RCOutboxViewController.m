@@ -11,12 +11,15 @@
 #import "RCOperationsManager.h"
 #import "RCNewPostOperation.h"
 #import "RCMediaUploadOperation.h"
+#import "RCUtilities.h"
 
 @interface RCOutboxViewController ()
 
 @end
 
-@implementation RCOutboxViewController
+@implementation RCOutboxViewController {
+    NSMutableDictionary* thumbnailImages;
+}
 
 @synthesize uploadTasks = _uploadTasks;
 
@@ -25,6 +28,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        thumbnailImages = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -38,13 +42,16 @@
 }
 
 - (void) refreshData {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSMutableArray* uploadList = [RCOperationsManager uploadList];
         @synchronized(uploadList)
         {
             _uploadTasks = [uploadList copy];
         }
-        [_tblViewUploadTasks reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_tblViewUploadTasks reloadData];
+        });
+        
     });
 }
 
@@ -63,12 +70,26 @@
     RCMenuTableCell *cell = [RCMenuTableCell createMenuTableCell:tableView];
     RCNewPostOperation* op = [_uploadTasks objectAtIndex:indexPath.row];
     if (op.mediaUploadOperation.thumbnailImage != nil)
-        [cell.imageView setImage:op.mediaUploadOperation.thumbnailImage];
+        [cell.imgCellIcon setImage:op.mediaUploadOperation.thumbnailImage];
     else {
-        [op.mediaUploadOperation generateThumbnailImage:^(UIImage *image) {
-            [cell.imageView setImage:image];
-        }];
+        UIImage *image = [thumbnailImages objectForKey:op.mediaUploadOperation.fileURL];
+        if (image != nil)
+            [cell.imgCellIcon setImage:image];
+        else {
+            [cell.imgCellIcon setImage:[UIImage imageNamed:@"loading.gif"]];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+                generateThumbnailImage(op.mediaUploadOperation.fileURL, op.mediaUploadOperation.mediaType, ^(UIImage *image) {
+                    NSLog(@"set image for cell");
+                    if (op.mediaUploadOperation.fileURL != nil)
+                        [thumbnailImages setObject:image forKey:op.mediaUploadOperation.fileURL];
+                    dispatch_async(dispatch_get_main_queue(), ^ {
+                        [cell.imgCellIcon setImage:image];
+                    });
+                });
+            });
+        }
     }
+    
     NSString *status = @"";
     if (op.successfulPost) status = @"Done";
     else if (op.isExecuting || op.mediaUploadOperation.isExecuting) status = @"Uploading";
@@ -96,4 +117,13 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)btnCleanupTouchUpInside:(id)sender {
+    RCUploadManager* defaultUM = [RCOperationsManager defaultUploadManager];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [defaultUM cleanupFinishedOperation];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self refreshData];
+        });
+    });
+}
 @end
