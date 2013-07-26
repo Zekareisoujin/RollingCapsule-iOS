@@ -41,7 +41,7 @@
 - (void) readUploadTasksFromCoreData {
     NSArray *results = [RCUploadManager getListOfUploadTasksFromCoreData];
     for (RCUploadTask *task in results) {
-        if ([task.userID intValue] == [RCUser currentUser].userID) {
+        //if ([task.userID intValue] == [RCUser currentUser].userID) {
             RCNewPostOperation *postOperation = [RCNewPostOperation newPostOperationFromUploadTask:task];
             if (task.fileURL == nil || [task.fileURL isKindOfClass:[NSNull class]]) {
                 continue;
@@ -50,7 +50,7 @@
                 [self addNewPostOperation:postOperation shouldStartMediaUpload:YES willSaveToDisk:NO];
             } else
                 [_uploadList addObject:postOperation];
-        }
+        //}
     }
 }
 
@@ -61,7 +61,7 @@
                                        insertNewObjectForEntityForName:@"RCUploadTask"
                                        inManagedObjectContext:context];
     RCPost* post = operation.post;
-    [uploadTask setValue:[NSNumber numberWithInt:post.userID] forKey:@"userID"];
+    [uploadTask setValue:[NSNumber numberWithInt:[RCUser currentUser].userID] forKey:@"userID"];
     [uploadTask setValue:post.fileUrl forKey:@"key"];
     [uploadTask setValue:[operation.mediaUploadOperation.fileURL absoluteString] forKey:@"fileURL"];
     [uploadTask setValue:post.content forKey:@"content"];
@@ -188,7 +188,7 @@
                     }
             } else {
                 operation.mediaUploadOperation.uploadData = nil;
-                [self updatePostingTask:operation];
+                [self deletePostingTask:operation];
                 NSNotification *notification = [NSNotification notificationWithName:RCNotificationNameMediaUploaded object:self];
                 [[NSNotificationCenter defaultCenter] postNotification:notification];
             }

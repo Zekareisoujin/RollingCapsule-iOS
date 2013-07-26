@@ -77,7 +77,7 @@
             [cell.imgCellIcon setImage:image];
         else {
             [cell.imgCellIcon setImage:[UIImage imageNamed:@"loading.gif"]];
-            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            /*dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
                 generateThumbnailImage(op.mediaUploadOperation.fileURL, op.mediaUploadOperation.mediaType, ^(UIImage *image) {
                     NSLog(@"set image for cell");
                     if (op.mediaUploadOperation.fileURL != nil)
@@ -86,7 +86,7 @@
                         [cell.imgCellIcon setImage:image];
                     });
                 });
-            });
+            });*/
         }
     }
     
