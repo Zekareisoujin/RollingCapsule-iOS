@@ -215,6 +215,8 @@
 		BF7FAFB617A2F9240010CD95 /* outboxTableBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = BF7FAFB517A2F9240010CD95 /* outboxTableBackground.png */; };
 		BF7FAFB817A2FC650010CD95 /* outboxBar.png in Resources */ = {isa = PBXBuildFile; fileRef = BF7FAFB717A2FC650010CD95 /* outboxBar.png */; };
 		BF7FAFBA17A2FD630010CD95 /* menuIconOutbox.png in Resources */ = {isa = PBXBuildFile; fileRef = BF7FAFB917A2FD630010CD95 /* menuIconOutbox.png */; };
+		BF7FAFBC17A2FE170010CD95 /* RCOutboxTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF7FAFBB17A2FE160010CD95 /* RCOutboxTableCell.xib */; };
+		BF7FAFBF17A2FE370010CD95 /* RCOutboxTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BF7FAFBE17A2FE370010CD95 /* RCOutboxTableCell.m */; };
 		BF8DDD471796E8E600803CE1 /* RCMenuTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF8DDD461796E8E600803CE1 /* RCMenuTableCell.xib */; };
 		BF8DDD4A1796E91000803CE1 /* RCMenuTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BF8DDD491796E91000803CE1 /* RCMenuTableCell.m */; };
 		BF8DDD4D1796EAEC00803CE1 /* menuButtonNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8DDD4B1796EAEC00803CE1 /* menuButtonNormal.png */; };
@@ -539,6 +541,9 @@
 		BF7FAFB517A2F9240010CD95 /* outboxTableBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = outboxTableBackground.png; sourceTree = "<group>"; };
 		BF7FAFB717A2FC650010CD95 /* outboxBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = outboxBar.png; sourceTree = "<group>"; };
 		BF7FAFB917A2FD630010CD95 /* menuIconOutbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menuIconOutbox.png; sourceTree = "<group>"; };
+		BF7FAFBB17A2FE160010CD95 /* RCOutboxTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCOutboxTableCell.xib; sourceTree = "<group>"; };
+		BF7FAFBD17A2FE370010CD95 /* RCOutboxTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCOutboxTableCell.h; sourceTree = "<group>"; };
+		BF7FAFBE17A2FE370010CD95 /* RCOutboxTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCOutboxTableCell.m; sourceTree = "<group>"; };
 		BF8DDD461796E8E600803CE1 /* RCMenuTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RCMenuTableCell.xib; path = "Rolling Capsule/RCMenuTableCell.xib"; sourceTree = "<group>"; };
 		BF8DDD481796E91000803CE1 /* RCMenuTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCMenuTableCell.h; path = "Rolling Capsule/RCMenuTableCell.h"; sourceTree = "<group>"; };
 		BF8DDD491796E91000803CE1 /* RCMenuTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCMenuTableCell.m; path = "Rolling Capsule/RCMenuTableCell.m"; sourceTree = "<group>"; };
@@ -1036,6 +1041,9 @@
 				BF8DDD481796E91000803CE1 /* RCMenuTableCell.h */,
 				BF8DDD491796E91000803CE1 /* RCMenuTableCell.m */,
 				BF8DDD461796E8E600803CE1 /* RCMenuTableCell.xib */,
+				BF7FAFBD17A2FE370010CD95 /* RCOutboxTableCell.h */,
+				BF7FAFBE17A2FE370010CD95 /* RCOutboxTableCell.m */,
+				BF7FAFBB17A2FE160010CD95 /* RCOutboxTableCell.xib */,
 				BF2CD6251754E60C00EF2E85 /* RCPostCommentCell.h */,
 				BF2CD6261754E60C00EF2E85 /* RCPostCommentCell.m */,
 				BF2CD6231754E12D00EF2E85 /* RCPostCommentCell.xib */,
@@ -1355,6 +1363,7 @@
 				BF7FAFB617A2F9240010CD95 /* outboxTableBackground.png in Resources */,
 				BF7FAFB817A2FC650010CD95 /* outboxBar.png in Resources */,
 				BF7FAFBA17A2FD630010CD95 /* menuIconOutbox.png in Resources */,
+				BF7FAFBC17A2FE170010CD95 /* RCOutboxTableCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1451,6 +1460,7 @@
 				64D6EC1917A1CE1900663AE3 /* RCOutboxViewController.m in Sources */,
 				64D6EC1D17A2536B00663AE3 /* RCUserData.xcdatamodeld in Sources */,
 				64D6EC2517A2A59600663AE3 /* RCUploadTask.m in Sources */,
+				BF7FAFBF17A2FE370010CD95 /* RCOutboxTableCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
