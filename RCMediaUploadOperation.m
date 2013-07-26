@@ -63,7 +63,7 @@
                 Byte *buffer = (Byte*)malloc(rep.size);
                 NSUInteger buffered = [rep getBytes:buffer fromOffset:0.0 length:rep.size error:nil];
                 _uploadData = [NSData dataWithBytesNoCopy:buffer length:buffered freeWhenDone:YES];
-                if (_thumbnailImage == nil && ![_mediaType hasSuffix:@"mov"]) {
+                if (self.thumbnailImage == nil && ![_mediaType hasSuffix:@"mov"]) {
                     // Retrieve the image orientation from the ALAsset
                     UIImageOrientation orientation = UIImageOrientationUp;
                     NSNumber* orientationValue = [asset valueForProperty:@"ALAssetPropertyOrientation"];
@@ -72,7 +72,7 @@
                     }
                     UIImage *image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullResolutionImage] scale:1.0 orientation:orientation];
                     image = generateSquareImageThumbnail(image);
-                    _thumbnailImage = imageWithImage(image, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
+                    self.thumbnailImage = imageWithImage(image, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
                 }
                 dispatch_semaphore_signal(sema);
             } failureBlock:^(NSError *err){
@@ -86,13 +86,13 @@
             };*/
             if (self.isCancelled) return;
         }
-        if (_thumbnailImage == nil) {
+        if (self.thumbnailImage == nil) {
             
             if ([_mediaType hasSuffix:@"mov"]) {
                 UIImage *image;
                 image = generateVideoThumbnail(_fileURL);
                 image = generateSquareImageThumbnail(image);
-                _thumbnailImage = imageWithImage(image, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
+                self.thumbnailImage = imageWithImage(image, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
             } else return;
         }
         thumbnailData = UIImageJPEGRepresentation(_thumbnailImage, 1.0);
@@ -162,6 +162,31 @@
                 _uploadException = [AmazonServiceException exceptionWithMessage:errorString];
             }
         }
+    }
+}
+- (void) generateThumbnailImage : (void(^)(UIImage*)) imageProcessBlock {
+    if ([_mediaType hasSuffix:@"mov"]) {
+        UIImage *image;
+        image = generateVideoThumbnail(_fileURL);
+        image = generateSquareImageThumbnail(image);
+        self.thumbnailImage = imageWithImage(image, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
+        imageProcessBlock(self.thumbnailImage);
+    } else {
+        ALAssetsLibrary *assetLibrary=[[ALAssetsLibrary alloc] init];
+        [assetLibrary assetForURL:_fileURL resultBlock:^(ALAsset *asset){
+                // Retrieve the image orientation from the ALAsset
+            UIImageOrientation orientation = UIImageOrientationUp;
+            NSNumber* orientationValue = [asset valueForProperty:@"ALAssetPropertyOrientation"];
+            if (orientationValue != nil) {
+                orientation = [orientationValue intValue];
+            }
+            UIImage *image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullResolutionImage] scale:1.0 orientation:orientation];
+            image = generateSquareImageThumbnail(image);
+            self.thumbnailImage = imageWithImage(image, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
+            imageProcessBlock(self.thumbnailImage);
+        } failureBlock:^(NSError *err){
+            imageProcessBlock(nil);
+        }];
     }
 }
 

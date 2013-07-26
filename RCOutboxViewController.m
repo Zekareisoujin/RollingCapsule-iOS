@@ -39,7 +39,7 @@
 
 - (void) refreshData {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
-        NSMutableArray* uploadList = [RCOperationsManager uploadTasks];
+        NSMutableArray* uploadList = [RCOperationsManager uploadList];
         @synchronized(uploadList)
         {
             _uploadTasks = [uploadList copy];
@@ -62,7 +62,13 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     RCMenuTableCell *cell = [RCMenuTableCell createMenuTableCell:tableView];
     RCNewPostOperation* op = [_uploadTasks objectAtIndex:indexPath.row];
-    [cell.imageView setImage:op.mediaUploadOperation.thumbnailImage];
+    if (op.mediaUploadOperation.thumbnailImage != nil)
+        [cell.imageView setImage:op.mediaUploadOperation.thumbnailImage];
+    else {
+        [op.mediaUploadOperation generateThumbnailImage:^(UIImage *image) {
+            [cell.imageView setImage:image];
+        }];
+    }
     NSString *status = @"";
     if (op.successfulPost) status = @"Done";
     else if (op.isExecuting || op.mediaUploadOperation.isExecuting) status = @"Uploading";

@@ -105,4 +105,21 @@
     }
 }
 
++ (RCNewPostOperation*) newPostOperationFromUploadTask:(RCUploadTask*) uploadTask {
+    RCPost *post = [[RCPost alloc] init];
+    post.content = uploadTask.content;
+    post.subject = uploadTask.subject;
+    post.releaseDate = uploadTask.releaseDate;
+    post.topic = uploadTask.topic;
+    post.latitude = [uploadTask.latitude doubleValue];
+    post.longitude = [uploadTask.longitude doubleValue];
+    post.fileUrl = uploadTask.key;
+    post.thumbnailUrl = [NSString stringWithFormat:@"%@-thumbnail",post.fileUrl];
+    NSString* mediaType = [post.fileUrl hasSuffix:@"mov"] ? @"movie/mov" : @"image/jpeg";
+    RCMediaUploadOperation *mediaUploadOperation = [[RCMediaUploadOperation alloc] initWithKey:post.fileUrl withMediaType:mediaType withURL:[NSURL URLWithString:uploadTask.fileURL]];
+    RCNewPostOperation* newPostOperation = [[RCNewPostOperation alloc] initWithPost:post withMediaUploadOperation:mediaUploadOperation];
+    newPostOperation.successfulPost = [uploadTask.successful boolValue];
+    return newPostOperation;
+}
+
 @end

@@ -17,10 +17,17 @@
 @class RCSlideoutViewController;
 @class RCUser;
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate, CLLocationManagerDelegate, TTTAttributedLabelDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, CLLocationManagerDelegate, TTTAttributedLabelDelegate> {
+    NSManagedObjectModel *managedObjectModel;
+    NSManagedObjectContext *managedObjectContext;
+    NSPersistentStoreCoordinator *persistentStoreCoordinator;
+}
+
+@property (nonatomic, strong, readonly) NSManagedObjectModel *managedObjectModel;
+@property (nonatomic, strong, readonly) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, strong, readonly) NSPersistentStoreCoordinator *persistentStoreCoordinator;
 
 @property (strong, nonatomic) UIWindow *window;
-
 @property (strong, nonatomic) UINavigationController *navigationController;
 @property (strong, nonatomic) RCMainMenuViewController *menuViewController;
 @property (strong, nonatomic) RCSlideoutViewController *mainViewController;
@@ -29,6 +36,7 @@
 @property (strong, nonatomic) NSArray           *userNotifications;
 @property (assign, nonatomic) BOOL               didUpdateLocation;
 
+- (NSString *)applicationDocumentsDirectory;
 - (void) showSideMenu;
 - (void) hideSideMenu;
 - (void) enableSideMenu;
