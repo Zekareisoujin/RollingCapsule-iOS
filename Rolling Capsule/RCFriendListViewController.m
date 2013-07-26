@@ -144,14 +144,9 @@ CGRect  searchButtonHideFrame;
     // Load all lists once at the beginning, and default tab is friend tab:
     _viewingMode = RCFriendListViewModeFriends;
     _displayedItems = _friends;
-    [self asynchGetFriendsRequest];
-    [self asynchGetFolloweesRequest];
     [self btnFriendTouchUpInside:self];
-    
-    if (_user != _loggedinUser) {
-        [_btnRequests setHidden:YES];
-    }else
-        [self asynchGetRequestedFriendsRequest];
+
+
 }
 
 - (void) handleRefresh:(UIRefreshControl *) refreshControl {
@@ -594,7 +589,12 @@ CGRect  searchButtonHideFrame;
 }
 
 - (void) viewWillAppear:(BOOL)animated {
-    [_tblViewFriendList reloadData];
+    [self asynchGetFriendsRequest];
+    [self asynchGetFolloweesRequest];
+    if (_user != _loggedinUser) {
+        [_btnRequests setHidden:YES];
+    }else
+        [self asynchGetRequestedFriendsRequest];
 }
 
 - (void) switchToNewPostScreen {
