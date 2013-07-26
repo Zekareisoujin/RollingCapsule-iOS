@@ -466,7 +466,8 @@ CGRect  searchButtonHideFrame;
     }else {
         showSearchBar = YES;
         [_searchBar setHidden:YES];
-        [self btnSearchBarCancelTouchUpInside:self];
+        if (![_searchBar.text isEqualToString:@""])
+            [self btnSearchBarCancelTouchUpInside:self];
         [UIView animateWithDuration:duration animations:^{
             [_searchBarBackground setFrame:searchBarHideFrame];
             [_btnSearchBarToggle setFrame:searchButtonHideFrame];
