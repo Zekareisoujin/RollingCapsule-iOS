@@ -153,10 +153,10 @@ RCConnectionManager *_connectionManager;
     
     RCUser *user = [_items objectAtIndex:indexPath.row];
     
-    [_connectionManager startConnection];
-    [cell populateCellData:user
-                  withLoggedInUserID:_user.userID
-                          completion:^{[_connectionManager endConnection];}];
+//    [_connectionManager startConnection];
+//    [cell populateCellData:user
+//                  withLoggedInUserID:_user.userID
+//                          completion:^{[_connectionManager endConnection];}];
     
     return cell;
 }

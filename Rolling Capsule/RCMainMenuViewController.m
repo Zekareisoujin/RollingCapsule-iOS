@@ -64,7 +64,7 @@
     menuItemIcon = [[NSArray alloc] initWithObjects:[UIImage imageNamed:@"menuIconMainFeeds"],
                                                     [UIImage imageNamed:@"menuIconProfile"],
                                                     [UIImage imageNamed:@"menuIconFriends"],
-                                                    [UIImage imageNamed:@"menuIconFriends"],
+                                                    [UIImage imageNamed:@"menuIconOutbox"],
                                                     [UIImage imageNamed:@"menuIconSettings"], nil];
     
     // Set table view background image

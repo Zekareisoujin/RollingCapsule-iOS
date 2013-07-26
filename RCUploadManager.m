@@ -44,7 +44,6 @@
         if ([task.userID intValue] == [RCUser currentUser].userID) {
             RCNewPostOperation *postOperation = [RCNewPostOperation newPostOperationFromUploadTask:task];
             if (task.fileURL == nil || [task.fileURL isKindOfClass:[NSNull class]]) {
-                [self deletePostingTask:postOperation];
                 continue;
             }
             if (!postOperation.successfulPost) {
