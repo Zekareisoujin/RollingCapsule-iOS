@@ -212,6 +212,9 @@
 		BF68E7041756090200E5C1F4 /* RCMainFeedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF68E7021756090200E5C1F4 /* RCMainFeedViewController.xib */; };
 		BF7FAFB317A2971A0010CD95 /* btnAccept.png in Resources */ = {isa = PBXBuildFile; fileRef = BF7FAFB117A2971A0010CD95 /* btnAccept.png */; };
 		BF7FAFB417A2971A0010CD95 /* btnReject.png in Resources */ = {isa = PBXBuildFile; fileRef = BF7FAFB217A2971A0010CD95 /* btnReject.png */; };
+		BF7FAFB617A2F9240010CD95 /* outboxTableBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = BF7FAFB517A2F9240010CD95 /* outboxTableBackground.png */; };
+		BF7FAFB817A2FC650010CD95 /* outboxBar.png in Resources */ = {isa = PBXBuildFile; fileRef = BF7FAFB717A2FC650010CD95 /* outboxBar.png */; };
+		BF7FAFBA17A2FD630010CD95 /* menuIconOutbox.png in Resources */ = {isa = PBXBuildFile; fileRef = BF7FAFB917A2FD630010CD95 /* menuIconOutbox.png */; };
 		BF8DDD471796E8E600803CE1 /* RCMenuTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF8DDD461796E8E600803CE1 /* RCMenuTableCell.xib */; };
 		BF8DDD4A1796E91000803CE1 /* RCMenuTableCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BF8DDD491796E91000803CE1 /* RCMenuTableCell.m */; };
 		BF8DDD4D1796EAEC00803CE1 /* menuButtonNormal.png in Resources */ = {isa = PBXBuildFile; fileRef = BF8DDD4B1796EAEC00803CE1 /* menuButtonNormal.png */; };
@@ -533,6 +536,9 @@
 		BF68E7021756090200E5C1F4 /* RCMainFeedViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RCMainFeedViewController.xib; path = ../RCMainFeedViewController.xib; sourceTree = "<group>"; };
 		BF7FAFB117A2971A0010CD95 /* btnAccept.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btnAccept.png; sourceTree = "<group>"; };
 		BF7FAFB217A2971A0010CD95 /* btnReject.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = btnReject.png; sourceTree = "<group>"; };
+		BF7FAFB517A2F9240010CD95 /* outboxTableBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = outboxTableBackground.png; sourceTree = "<group>"; };
+		BF7FAFB717A2FC650010CD95 /* outboxBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = outboxBar.png; sourceTree = "<group>"; };
+		BF7FAFB917A2FD630010CD95 /* menuIconOutbox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menuIconOutbox.png; sourceTree = "<group>"; };
 		BF8DDD461796E8E600803CE1 /* RCMenuTableCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RCMenuTableCell.xib; path = "Rolling Capsule/RCMenuTableCell.xib"; sourceTree = "<group>"; };
 		BF8DDD481796E91000803CE1 /* RCMenuTableCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCMenuTableCell.h; path = "Rolling Capsule/RCMenuTableCell.h"; sourceTree = "<group>"; };
 		BF8DDD491796E91000803CE1 /* RCMenuTableCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCMenuTableCell.m; path = "Rolling Capsule/RCMenuTableCell.m"; sourceTree = "<group>"; };
@@ -692,6 +698,9 @@
 		643EACE9175BBE0D002761D9 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				BF7FAFB917A2FD630010CD95 /* menuIconOutbox.png */,
+				BF7FAFB717A2FC650010CD95 /* outboxBar.png */,
+				BF7FAFB517A2F9240010CD95 /* outboxTableBackground.png */,
 				BF7FAFB117A2971A0010CD95 /* btnAccept.png */,
 				BF7FAFB217A2971A0010CD95 /* btnReject.png */,
 				6460E869178AE3EA0065D6BA /* appIcon.png */,
@@ -1343,6 +1352,9 @@
 				64D6EC1A17A1CE1900663AE3 /* RCOutboxViewController.xib in Resources */,
 				BF7FAFB317A2971A0010CD95 /* btnAccept.png in Resources */,
 				BF7FAFB417A2971A0010CD95 /* btnReject.png in Resources */,
+				BF7FAFB617A2F9240010CD95 /* outboxTableBackground.png in Resources */,
+				BF7FAFB817A2FC650010CD95 /* outboxBar.png in Resources */,
+				BF7FAFBA17A2FD630010CD95 /* menuIconOutbox.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
