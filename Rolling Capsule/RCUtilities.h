@@ -276,16 +276,17 @@ static UIImage* generateVideoThumbnail(NSURL *videoURL) {
 #import <AssetsLibrary/AssetsLibrary.h>
 
 static void generateThumbnailImage (NSURL *fileURL, NSString *mediaType, void(^imageProcessBlock)(UIImage*) ) {
-    if ([mediaType hasSuffix:@"mov"]) {
+    /*if ([mediaType hasSuffix:@"mov"]) {
         UIImage *image;
         image = generateVideoThumbnail(fileURL);
         image = generateSquareImageThumbnail(image);
         image = imageWithImage(image, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
         imageProcessBlock(image);
-    } else {
+    } else {*/
         ALAssetsLibrary *assetLibrary=[[ALAssetsLibrary alloc] init];
         [assetLibrary assetForURL:fileURL resultBlock:^(ALAsset *asset){
-            // Retrieve the image orientation from the ALAsset
+            UIImage *image = [UIImage imageWithCGImage:[asset thumbnail]];
+            /*// Retrieve the image orientation from the ALAsset
             UIImageOrientation orientation = UIImageOrientationUp;
             NSNumber* orientationValue = [asset valueForProperty:@"ALAssetPropertyOrientation"];
             if (orientationValue != nil) {
@@ -293,11 +294,11 @@ static void generateThumbnailImage (NSURL *fileURL, NSString *mediaType, void(^i
             }
             UIImage *image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullResolutionImage] scale:1.0 orientation:orientation];
             image = generateSquareImageThumbnail(image);
-            image = imageWithImage(image, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
+            image = imageWithImage(image, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));*/
             imageProcessBlock(image);
         } failureBlock:^(NSError *err){
             imageProcessBlock(nil);
         }];
-    }
+    //}
 }
 #endif
