@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "RCPost.h"
 #import "RCMediaUploadOperation.h"
+#import "RCUploadTask.h"
 
 @interface RCNewPostOperation : NSOperation
 
@@ -17,4 +18,5 @@
 @property (nonatomic, strong) RCMediaUploadOperation *mediaUploadOperation;
 - (id) initWithPost:(RCPost*) post withMediaUploadOperation:(RCMediaUploadOperation*) mediaUploadOperation;
 - (RCNewPostOperation*) generateRetryOperation;
++ (RCNewPostOperation*) newPostOperationFromUploadTask:(RCUploadTask*) uploadTask;
 @end

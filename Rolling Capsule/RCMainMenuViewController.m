@@ -146,10 +146,10 @@
             //[self btnActionLogOutDropDown:self];
             if (plusRows == 0) {
                 plusRows = 1;
-                [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:4 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
+                [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:[menuItemLabel count] inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
             } else {
                 plusRows = 0;
-                [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:4 inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
+                [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:[menuItemLabel count] inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
             }
             return;
             //[tableView reloadData];

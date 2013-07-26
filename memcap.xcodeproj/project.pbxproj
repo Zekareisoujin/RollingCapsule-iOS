@@ -147,6 +147,9 @@
 		64D6EC1517A1AAD500663AE3 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64D6EC1417A1AAD500663AE3 /* AssetsLibrary.framework */; };
 		64D6EC1917A1CE1900663AE3 /* RCOutboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64D6EC1717A1CE1900663AE3 /* RCOutboxViewController.m */; };
 		64D6EC1A17A1CE1900663AE3 /* RCOutboxViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64D6EC1817A1CE1900663AE3 /* RCOutboxViewController.xib */; };
+		64D6EC1D17A2536B00663AE3 /* RCUserData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 64D6EC1B17A2536A00663AE3 /* RCUserData.xcdatamodeld */; };
+		64D6EC2217A256F000663AE3 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64D6EC2117A256EF00663AE3 /* CoreData.framework */; };
+		64D6EC2517A2A59600663AE3 /* RCUploadTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 64D6EC2417A2A59600663AE3 /* RCUploadTask.m */; };
 		64E293101784A84B009496FF /* viewPostCommentButton-normal.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */; };
 		64E293121784A8C8009496FF /* viewPostCommentButton-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */; };
 		64E293161784ABEE009496FF /* viewPostFollowLabel.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E293131784ABEE009496FF /* viewPostFollowLabel.png */; };
@@ -455,6 +458,10 @@
 		64D6EC1617A1CE1900663AE3 /* RCOutboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCOutboxViewController.h; sourceTree = SOURCE_ROOT; };
 		64D6EC1717A1CE1900663AE3 /* RCOutboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCOutboxViewController.m; sourceTree = SOURCE_ROOT; };
 		64D6EC1817A1CE1900663AE3 /* RCOutboxViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCOutboxViewController.xib; sourceTree = SOURCE_ROOT; };
+		64D6EC1C17A2536B00663AE3 /* RCUserData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RCUserData.xcdatamodel; sourceTree = "<group>"; };
+		64D6EC2117A256EF00663AE3 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		64D6EC2317A2A59500663AE3 /* RCUploadTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCUploadTask.h; sourceTree = "<group>"; };
+		64D6EC2417A2A59600663AE3 /* RCUploadTask.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCUploadTask.m; sourceTree = "<group>"; };
 		64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "viewPostCommentButton-normal.png"; path = "../viewPostCommentButton-normal.png"; sourceTree = "<group>"; };
 		64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "viewPostCommentButton-highlighted.png"; path = "../viewPostCommentButton-highlighted.png"; sourceTree = "<group>"; };
 		64E293131784ABEE009496FF /* viewPostFollowLabel.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostFollowLabel.png; path = ../viewPostFollowLabel.png; sourceTree = "<group>"; };
@@ -615,6 +622,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				64D6EC2217A256F000663AE3 /* CoreData.framework in Frameworks */,
 				64D6EC1517A1AAD500663AE3 /* AssetsLibrary.framework in Frameworks */,
 				BFD6530F179EE7CD00D6A13D /* ImageIO.framework in Frameworks */,
 				64008048179EBA0F00C6B2B2 /* CoreText.framework in Frameworks */,
@@ -846,7 +854,9 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
-				64D6EC1417A1AAD500663AE3 /* AssetsLibrary.framework */,
+				64D6EC2317A2A59500663AE3 /* RCUploadTask.h */,
+				64D6EC2417A2A59600663AE3 /* RCUploadTask.m */,
+				64D6EC1B17A2536A00663AE3 /* RCUserData.xcdatamodeld */,
 				BFCA7821174DFD3F00666CBA /* Rolling Capsule */,
 				BFCA7845174DFD3F00666CBA /* Rolling CapsuleTests */,
 				BFCA781A174DFD3F00666CBA /* Frameworks */,
@@ -866,6 +876,8 @@
 		BFCA781A174DFD3F00666CBA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				64D6EC2117A256EF00663AE3 /* CoreData.framework */,
+				64D6EC1417A1AAD500663AE3 /* AssetsLibrary.framework */,
 				647E2FD017929BFC00AA6B9A /* AVFoundation.framework */,
 				BF4DCC44175C82280081B5AC /* AWSRuntime.framework */,
 				BF4DCC45175C82280081B5AC /* AWSS3.framework */,
@@ -1431,6 +1443,8 @@
 				647265BB17A04D37002E654A /* RCUploadManager.m in Sources */,
 				647265BF17A04D84002E654A /* NSTimer+BlocksKits.m in Sources */,
 				64D6EC1917A1CE1900663AE3 /* RCOutboxViewController.m in Sources */,
+				64D6EC1D17A2536B00663AE3 /* RCUserData.xcdatamodeld in Sources */,
+				64D6EC2517A2A59600663AE3 /* RCUploadTask.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1655,6 +1669,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		64D6EC1B17A2536A00663AE3 /* RCUserData.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				64D6EC1C17A2536B00663AE3 /* RCUserData.xcdatamodel */,
+			);
+			currentVersion = 64D6EC1C17A2536B00663AE3 /* RCUserData.xcdatamodel */;
+			path = RCUserData.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = BFCA7810174DFD3F00666CBA /* Project object */;
 }

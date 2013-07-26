@@ -728,7 +728,9 @@
 - (IBAction)btnViewModeChosen:(UIButton *)sender {
     
     if ([sender isEqual:_btnViewModePublic]) {
-        [_viewCapsuleCount setHidden:NO];
+        NSString* trimString = [_lblCapsuleCount.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet] ];
+        if ([trimString length] > 0)
+            [_viewCapsuleCount setHidden:NO];
         _currentViewMode = RCMainFeedViewModePublic;
         _btnViewModeFriends.enabled = YES;
         _btnViewModeFollow.enabled = YES;
