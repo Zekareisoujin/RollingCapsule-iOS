@@ -202,7 +202,7 @@
                 _friendStatus = RCFriendStatusNull;
             [self setFriendActionButton];
         }else
-            alertStatus(errorMsg, @"Whatever", nil);
+            postNotification(errorMsg);
     }];
     
     [_viewingUser getUserFollowRelationAsync:_profileUser completionHandler:^(BOOL isFollowing, int followID, NSString* errorMsg) {
@@ -214,7 +214,7 @@
             else
                 [_btnFollow setTitle:@"Unfollow" forState:UIControlStateNormal];
         }else
-            alertStatus(errorMsg, @"Whatever", nil);
+            postNotification(errorMsg);
     }];
 }
 
@@ -255,7 +255,7 @@
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        alertStatus(RCErrorMessageFailedToGetUsersRelation, RCAlertMessageConnectionFailed,self);
+        postNotification(RCErrorMessageFailedToGetUsersRelation);
     }
 }
 
@@ -294,7 +294,7 @@
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        alertStatus(RCErrorMessageFailedToGetUsersRelation, RCAlertMessageConnectionFailed,self);
+        postNotification(RCErrorMessageFailedToGetUsersRelation);
     }
 }
 
@@ -519,27 +519,28 @@
             if (errorMsg == nil) {
                 _friendStatus = RCFriendStatusPending;
                 _friendshipID = friendshipID;
-                [self setFriendActionButton];
+                postNotification([NSString stringWithFormat:@"You have sent a friend request to %@", _profileUser.name]);
             }else
-                alertStatus(errorMsg, @"Whatever", nil);
+                postNotification(errorMsg);
         }];
     } else if ([_friendStatus isEqualToString:RCFriendStatusAccepted]) {
         [RCUser removeFriendRelationAsync:_friendshipID completionhandler:^(NSString* errorMsg) {
             if (errorMsg == nil) {
                 _friendStatus = RCFriendStatusNull;
-                [self setFriendActionButton];
+                postNotification([NSString stringWithFormat:@"You have removed %@ from your friend list", _profileUser.name]);
             }else
-                alertStatus(errorMsg, @"Whatever", nil);
+                postNotification(errorMsg);
         }];
     } else if ([_friendStatus isEqualToString:RCFriendStatusRequested] ) {
         [RCUser acceptFriendRelationAsync:_friendshipID completionhandler:^(NSString* errorMsg) {
             if (errorMsg == nil) {
                 _friendStatus = RCFriendStatusAccepted;
-                [self setFriendActionButton];
+                postNotification([NSString stringWithFormat:@"%@ is now your friend", _profileUser.name]);
             }else
-                alertStatus(errorMsg, @"Whatever", nil);
+                postNotification(errorMsg);
         }];
     }
+    [self setFriendActionButton];
 }
 
 - (void)setFriendActionButton {
@@ -585,16 +586,18 @@
                 _isFollowing = YES;
                 _followID = followID;
                 [_btnFollow setTitle:@"Unfollow" forState:UIControlStateNormal];
+                postNotification([NSString stringWithFormat:@"You are now following %@", _profileUser.name]);
             }else
-                alertStatus(errorMsg, @"Whatever", nil);
+                postNotification(errorMsg);
         }];
     }else {
         [RCUser removeFollowRelationAsync:_followID completionHandler:^(NSString* errorMsg){
             if (errorMsg == nil) {
                 _isFollowing = NO;
                 [_btnFollow setTitle:@"Follow" forState:UIControlStateNormal];
+                postNotification([NSString stringWithFormat:@"You do not follow %@ anymore", _profileUser.name]);
             }else
-                alertStatus(errorMsg, @"Whatever", nil);
+                postNotification(errorMsg);
         }];
     }
 }
@@ -622,7 +625,7 @@
         dispatch_async(dispatch_get_main_queue(),^{
             if (retAvatar != nil) {
                 weakSelf.userAvatarImage = retAvatar;
-                alertStatus(RCInfoStringPostSuccess, RCAlertMessageUploadSuccess, nil);
+                postNotification(RCInfoStringPostSuccess);
                 [weakSelf.btnAvatarImg setBackgroundImage:retAvatar forState:UIControlStateDisabled];
             }
         });

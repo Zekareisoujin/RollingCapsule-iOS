@@ -116,14 +116,14 @@ RCConnectionManager *_connectionManager;
                 }
                 [_tblViewFoundUsers reloadData];
             }else {
-                alertStatus([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetUsers, responseData], RCAlertMessageConnectionFailed, self);
+                postNotification([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetUsers, responseData]);
             }
             [_refreshControl endRefreshing];
         }];
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        alertStatus(RCErrorMessageFailedToGetUsers,RCAlertMessageConnectionFailed,self);
+        postNotification(RCErrorMessageFailedToGetUsers);
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         [_refreshControl endRefreshing];
     }

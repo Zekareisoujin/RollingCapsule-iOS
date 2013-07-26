@@ -35,7 +35,7 @@ static RCUploadManager*  RCStaticUploadManager = nil;
     if (RCStaticUploadManager == nil) {
         RCStaticUploadManager = [[RCUploadManager alloc] init];
     }
-    alertStatus(@"Uploading media",@"",nil);
+    postNotification(@"Uploading media");
     [RCStaticUploadManager addNewPostOperation:operation shouldStartMediaUpload:startMediaUpload willSaveToDisk:YES];
 }
 

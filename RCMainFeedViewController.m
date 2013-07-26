@@ -355,7 +355,7 @@
                 } else {
                     NSLog(@"error: %@",error);
                     if (nRetry == 0) {
-                        alertStatus(RCErrorMessageFailedToGetFeed,RCAlertMessageServerError,self);
+                        postNotification(RCErrorMessageFailedToGetFeed);
                         [self animateButtonRefresh:NO];
                     }else {
                         [self asynchFetchFeeds:nRetry];
@@ -369,7 +369,7 @@
         }
     }
     if (failed)
-        alertStatus(RCErrorMessageFailedToGetFeed,RCAlertMessageConnectionFailed,self);
+        postNotification(RCErrorMessageFailedToGetFeed);
 }
 
 - (void) asynchFetchFeedNextPage {
@@ -425,13 +425,13 @@
                  
                  //[_collectionView reloadData];
              }else {
-                 alertStatus([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetFeed, responseData], RCAlertMessageConnectionFailed, self);
+                 postNotification([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetFeed, responseData]);
              }
          }];
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        alertStatus(RCErrorMessageFailedToGetFeed,RCAlertMessageConnectionFailed,self);
+        postNotification(RCErrorMessageFailedToGetFeed);
     }
 
 }

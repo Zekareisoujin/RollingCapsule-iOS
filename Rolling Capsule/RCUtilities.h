@@ -69,15 +69,16 @@ static NSMutableURLRequest* CreateHttpDeleteRequest (NSURL* url) {
     return request;
 }
 
-static void alertStatus(NSString *msg, NSString *title, id delegateObject)
+static void postNotification(NSString *msg)
 {
     UILabel *lblAlert = nil;
     if (lblAlert == nil)
         lblAlert = [[UILabel alloc] init];
     lblAlert.text = msg;
     lblAlert.textAlignment = NSTextAlignmentCenter;
-    lblAlert.textColor = [ UIColor whiteColor];
-    [lblAlert setBackgroundColor:[UIColor colorWithRed:50.0/255.0 green:200.0/255.0 blue:50.0/255.0 alpha:0.9]];
+    lblAlert.textColor = [UIColor whiteColor];
+    lblAlert.backgroundColor = [UIColor colorWithRed:50.0/255.0 green:200.0/255.0 blue:50.0/255.0 alpha:0.9];
+    lblAlert.adjustsFontSizeToFitWidth = YES;
     AppDelegate *appDelegate = (AppDelegate*) [[UIApplication sharedApplication] delegate];
     UINavigationController *navigationController = appDelegate.navigationController;
     [navigationController.view addSubview:lblAlert];
@@ -87,24 +88,26 @@ static void alertStatus(NSString *msg, NSString *title, id delegateObject)
         frame2.size.height += 20;
         lblAlert.frame = frame2;
     }];
-    [NSTimer scheduledTimerWithTimeInterval:1.5 block:^(NSTimeInterval time) {
+    [NSTimer scheduledTimerWithTimeInterval:2.0 block:^(NSTimeInterval time) {
             [UIView animateWithDuration:0.5 animations:^{
                 lblAlert.alpha = 0.0;
             } completion:^(BOOL finished){
                 [lblAlert removeFromSuperview];
             }];
     } repeats:NO];
-    /*UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
+}
+
+// Alert is different from notification for the fact that it requires user's acknowledgement
+static void showAlertDialog(NSString *msg, NSString *title){
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:title
                                                         message:msg
                                                        delegate:nil
                                               cancelButtonTitle:@"Ok"
                                               otherButtonTitles:nil, nil];
-    
-    // delegateObject is unnecessary, but lazy to refractor all the code that use this
-    [alertView show];*/
+    [alertView show];
 }
 
-static void confirmationDialog(NSString *msg, NSString *title, id delegate){
+static void showConfirmationDialog(NSString *msg, NSString *title, id delegate){
     UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:title
                                                        message:msg
                                                       delegate:delegate

@@ -93,7 +93,7 @@
         //TODO open main news feed page
         dispatch_async(dispatch_get_main_queue(), ^{
             if (_successfulPost) {
-                alertStatus(@"Media posted successfully!" , @"Success!", nil);
+                postNotification(@"Media posted successfully!");
             }
         });
         

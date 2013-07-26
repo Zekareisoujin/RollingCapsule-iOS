@@ -184,7 +184,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
                 if (!isFollowing)
                     [_btnFollow setEnabled:YES];
             }else
-                alertStatus(errorMsg, @"Error getting user relation", nil);
+                postNotification(errorMsg);
         }];
     }
     
@@ -406,7 +406,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 }
 #pragma mark - delete post
 - (IBAction)deletePost:(id)sender {
-    confirmationDialog(@"Are you sure you want to delete this post?", @"Confirmation", self);
+    showConfirmationDialog(@"Are you sure you want to delete this post?", @"Confirmation", self);
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -574,14 +574,14 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
                  _currentCommentID = [[commentJson objectForKey:@"id"] intValue];
                 [self asynchGetCommentsRequest];
              }else {
-                 alertStatus([NSString stringWithFormat:@"Please try again! %@", responseData], @"Comment Failed!", nil);
+                 postNotification([NSString stringWithFormat:@"Please try again! %@", responseData]);
              }
          }];
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        alertStatus(@"Post Failed.",@"Post Failed!",nil);
+        postNotification(@"Post Failed.");
     }
 }
 
@@ -616,7 +616,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        alertStatus(@"Failure getting friends from web service",@"Connection Failed!",nil);
+        postNotification(@"Failure getting friends from web service");
     }
 }
 
@@ -635,13 +635,13 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
              NSLog(@"Post deletion status string: %@", responseData);
              
              if ([responseData isEqualToString:@"ok"]){
-                 alertStatus(@"Post deleted successfully!", @"Success!", nil);
+                 postNotification(@"Post deleted successfully!");
                  [self.navigationController setNavigationBarHidden:NO animated:YES];
                  [self.navigationController popViewControllerAnimated:YES];
                  if (_deleteFunction != nil)
                      _deleteFunction();
              }else if ([responseData isEqualToString:@"error"]){
-                 alertStatus(@"Please try again!", @"Deletion Failed", nil);
+                 postNotification(@"Please try again!");
              }
              
               /*SBJsonParser *jsonParser = [SBJsonParser new];
@@ -652,7 +652,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        alertStatus(@"Failure deleting post.", @"Connection Failed!", nil);
+        postNotification(@"Failure deleting post.");
     }
 
 }
@@ -810,7 +810,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
         if (errorMsg == nil) {
             [_btnFriendsWith setEnabled:NO];
         }else
-            alertStatus(errorMsg, @"Error adding user as friend", nil);
+            postNotification(errorMsg);
     }];
 }
 
@@ -819,7 +819,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
         if (errorMsg == nil) {
             [_btnFollow setEnabled:NO];
         }else
-            alertStatus(errorMsg, @"Error following user", nil);
+            postNotification(errorMsg);
     }];
 }
 

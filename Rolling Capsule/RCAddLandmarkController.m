@@ -155,7 +155,7 @@ BOOL    didPickedCategory;
     //Asynchronous Request
     @try {
         if([[_txtFieldName text] isEqualToString:@""] || [[_txtFieldDescription text] isEqualToString:@""] || !didPickedCategory ) {
-            alertStatus(@"Please filled in all required field!",@"Posting failed",nil);
+            postNotification(@"Please filled in all required field!");
         } else {
             AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
             CLLocationDegrees latitude = appDelegate.currentLocation.coordinate.latitude;
@@ -193,17 +193,17 @@ BOOL    didPickedCategory;
                  //Temporary:
                  if (isSuccess) {
                      //TODO open main news feed page
-                     alertStatus(@"Landmark created successfully!", @"Success!", nil);
+                     postNotification(@"Landmark created successfully!");
                     [self.navigationController popViewControllerAnimated:YES];
                  }else {
-                     alertStatus([NSString stringWithFormat:@"Please try again! %@", responseData], @"Post Failed!", self);
+                     postNotification([NSString stringWithFormat:@"Please try again! %@", responseData]);
                  }
              }];
         }
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        alertStatus(@"Failed to connect to network",@"Connection Error", self);
+        postNotification(@"Failed to connect to network");
     }
 }
 

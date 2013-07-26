@@ -440,7 +440,7 @@ BOOL _isTimedRelease = NO;
                     [self removeFromParentViewController];
                 }];*/
             }else {
-                alertStatus([NSString stringWithFormat:@"Please try again! %@", responseData], @"Post Failed!", self);
+                postNotification([NSString stringWithFormat:@"Please try again! %@", responseData]);
                 _isPosting = NO;
             }
         }];
@@ -449,7 +449,7 @@ BOOL _isTimedRelease = NO;
         NSLog(@"Exception: %@", e);
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         self.navigationItem.rightBarButtonItem.enabled = YES;
-        alertStatus(@"Post Failed.",@"Post Failed!",self);
+        postNotification(@"Post Failed.");
         _isPosting = NO;
     }
 }
@@ -488,7 +488,7 @@ BOOL _isTimedRelease = NO;
         NSLog(@"Exception: %@", e);
         [RCConnectionManager endConnection];
         self.navigationItem.rightBarButtonItem.enabled = YES;
-        alertStatus(@"Post Failed.",@"Post Failed!",self);
+        postNotification(@"Post Failed.");
     }
 
 }
@@ -757,7 +757,7 @@ BOOL _isTimedRelease = NO;
         [_txtViewPostContent resignFirstResponder];
         [self presentViewController:imagePicker animated:YES completion:nil];
     } else {
-        alertStatus(@"Camera not available", @"Error!",nil);
+        showAlertDialog(@"Camera not available", @"Error");
     }
 }
 
@@ -775,7 +775,7 @@ BOOL _isTimedRelease = NO;
         [_txtViewPostContent resignFirstResponder];
         [self presentViewController:imagePicker animated:YES completion:nil];
     } else {
-        alertStatus(@"Photo library not available", @"Error!",nil);
+        showAlertDialog(@"Photo library not available", @"Error");
     }
 
 }
@@ -791,7 +791,7 @@ BOOL _isTimedRelease = NO;
         [_txtViewPostContent resignFirstResponder];
         [self presentViewController:imagePicker animated:YES completion:nil];
     } else {
-        alertStatus(@"Camera not available", @"Error!",nil);
+        showAlertDialog(@"Camera not available", @"Error");
     }
 }
 
@@ -836,7 +836,7 @@ BOOL _isTimedRelease = NO;
     }else {
         _isTimedRelease = NO;
         [_timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsuleInactive.png"] forState:UIControlStateNormal];
-        alertStatus(@"You have deactivated capsule release mode for this post", @"Notice", nil);
+        showAlertDialog(@"You have deactivated capsulre release mode for this post", @"Notice");
     }
 }
 
@@ -1188,9 +1188,9 @@ handler:(void (^)(AVAssetExportSession*))handler
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"HH:mm, dd/MM/yyyy"];
         
-        alertStatus([NSString stringWithFormat:@"You have scheduled your post to be released at %@", [dateFormatter stringFromDate:pickedDateTime]], @"Notice", nil);
+        showAlertDialog([NSString stringWithFormat:@"You have scheduled your post to be released at %@", [dateFormatter stringFromDate:pickedDateTime]], @"Notice");
     }else {
-        alertStatus(@"The release date has already passed", @"Notice", nil);
+        showAlertDialog(@"The release date has already passed", @"Notice");
     }
 }
 @end
