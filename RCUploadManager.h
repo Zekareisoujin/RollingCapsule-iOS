@@ -18,4 +18,8 @@
 
 - (void) addNewPostOperation: (RCNewPostOperation*)operation shouldStartMediaUpload:(BOOL)startMediaUpload willSaveToDisk:(BOOL)saveToDisk;
 - (void) cleanupMemory;
+- (void) cleanupFinishedOperation;
+- (void) cancelNewPostOperation:(RCNewPostOperation*) operation;
+
++ (NSArray*) getListOfUploadTasksFromCoreData;
 @end

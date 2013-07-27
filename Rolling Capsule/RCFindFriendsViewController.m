@@ -151,7 +151,7 @@ RCConnectionManager *_connectionManager;
     
     RCUserTableCell *cell = [RCUserTableCell getFriendListTableCell:tableView];
     
-    RCUser *user = [_items objectAtIndex:indexPath.row];
+//    RCUser *user = [_items objectAtIndex:indexPath.row];
     
 //    [_connectionManager startConnection];
 //    [cell populateCellData:user

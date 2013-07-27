@@ -48,6 +48,7 @@
     RCConnectionManager *_connectionManager;
     NSData *_uploadData;
     NSData *_thumbnailData;
+    UIImagePickerController *imagePicker;
 }
 
 @synthesize postImage = _postImage;
@@ -592,7 +593,7 @@ BOOL _isTimedRelease = NO;
                 localMediaUploadOp.fileURL = [info objectForKey:UIImagePickerControllerReferenceURL];
             _postImage = generateVideoThumbnail(_videoUrl);
             _uploadData = [NSData dataWithContentsOfURL:_videoUrl];
-            NSLog(@"obtained thumbnail and upload data");
+            NSLog(@"obtained upload data");
         } else {
             //save photo if newly taken
             _postImage = [info objectForKey:UIImagePickerControllerOriginalImage];
@@ -641,7 +642,7 @@ BOOL _isTimedRelease = NO;
         
         localMediaUploadOp.uploadData = _uploadData;
         localMediaUploadOp.thumbnailImage = rescaledThumbnail;
-        [RCOperationsManager addUploadMediaOperation:_mediaUploadOp];
+        [RCOperationsManager addUploadMediaOperation:localMediaUploadOp];
     });
 
 }
@@ -749,7 +750,7 @@ BOOL _isTimedRelease = NO;
 
 - (IBAction)btnActionChooseCameraSource:(id)sender {
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+        imagePicker = [[UIImagePickerController alloc] init];
         imagePicker.delegate = self;
         imagePicker.allowsEditing = YES;
         
@@ -763,7 +764,7 @@ BOOL _isTimedRelease = NO;
 
 - (IBAction)btnActionChoosePhotoLibrarySource:(id)sender {
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+        imagePicker = [[UIImagePickerController alloc] init];
         imagePicker.delegate = self;
         imagePicker.videoQuality = UIImagePickerControllerQualityTypeMedium;
         imagePicker.allowsEditing = YES;
@@ -782,7 +783,7 @@ BOOL _isTimedRelease = NO;
 
 - (IBAction)btnActionChooseVideSource:(id)sender {
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        UIImagePickerController *imagePicker = [[UIImagePickerController alloc] init];
+        imagePicker = [[UIImagePickerController alloc] init];
         imagePicker.delegate = self;
         imagePicker.videoQuality = UIImagePickerControllerQualityTypeMedium;
         imagePicker.mediaTypes =[[NSArray alloc] initWithObjects: (NSString *) kUTTypeMovie, nil];

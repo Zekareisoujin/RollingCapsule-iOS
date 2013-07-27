@@ -41,7 +41,7 @@
 - (void)main {
     // a lengthy operation
     @autoreleasepool {
-        [RCConnectionManager startConnection];
+        //[RCConnectionManager startConnection];
 #if DEBUG==1
         //NSLog(@"download photo with started.", _key);
 #endif
@@ -70,7 +70,7 @@
                 UIImage *image = [UIImage imageWithData:response.body];
                 
                 [[RCResourceCache centralCache] putResourceInCache:image forKey:[NSString stringWithFormat:@"media/%@", _key]];
-                [RCConnectionManager endConnection];
+                //[RCConnectionManager endConnection];
                 if (_completionHandler != nil)
                     _completionHandler(image);
                 return;
@@ -81,7 +81,7 @@
 #endif
         }
     }
-    [RCConnectionManager endConnection];
+    //[RCConnectionManager endConnection];
     if (_completionHandler != nil)
         _completionHandler(nil);
 }

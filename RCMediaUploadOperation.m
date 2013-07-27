@@ -54,11 +54,14 @@
 - (void)main {
     // a lengthy operation
     @autoreleasepool {
+        NSLog(@"started media upload operation");
         if (_uploadData == nil) {
-            if (_fileURL == nil) return;
+            NSLog(@"no data, generating data");
+            if (self.fileURL == nil) return;
             dispatch_semaphore_t sema = dispatch_semaphore_create(0);
             ALAssetsLibrary *assetLibrary=[[ALAssetsLibrary alloc] init];
-            [assetLibrary assetForURL:_fileURL resultBlock:^(ALAsset *asset){
+            [assetLibrary assetForURL:self.fileURL resultBlock:^(ALAsset *asset){
+                NSLog(@"done with asset");
                 ALAssetRepresentation *rep = [asset defaultRepresentation];
                 Byte *buffer = (Byte*)malloc(rep.size);
                 NSUInteger buffered = [rep getBytes:buffer fromOffset:0.0 length:rep.size error:nil];
@@ -72,13 +75,15 @@
                     }
                     UIImage *image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullResolutionImage] scale:1.0 orientation:orientation];
                     image = generateSquareImageThumbnail(image);
-                    self.thumbnailImage = imageWithImage(image, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
+                    image = imageWithImage(image, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
+                    self.thumbnailImage = image;
                 }
                 dispatch_semaphore_signal(sema);
             } failureBlock:^(NSError *err){
                 [self cancel];
                 dispatch_semaphore_signal(sema);
             }];
+            NSLog(@"wait till finish gen data");
             dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
             //wait till we finished getting asset from file url
             /*while (!self.isCancelled && !finishedProcessingLibrary) {
@@ -90,9 +95,10 @@
             
             if ([_mediaType hasSuffix:@"mov"]) {
                 UIImage *image;
-                image = generateVideoThumbnail(_fileURL);
+                image = generateVideoThumbnail(self.fileURL);
                 image = generateSquareImageThumbnail(image);
-                self.thumbnailImage = imageWithImage(image, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
+                image = imageWithImage(image, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
+                self.thumbnailImage = image;
             } else return;
         }
         thumbnailData = UIImageJPEGRepresentation(_thumbnailImage, 1.0);
@@ -164,30 +170,6 @@
         }
     }
 }
-- (void) generateThumbnailImage : (void(^)(UIImage*)) imageProcessBlock {
-    if ([_mediaType hasSuffix:@"mov"]) {
-        UIImage *image;
-        image = generateVideoThumbnail(_fileURL);
-        image = generateSquareImageThumbnail(image);
-        self.thumbnailImage = imageWithImage(image, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
-        imageProcessBlock(self.thumbnailImage);
-    } else {
-        ALAssetsLibrary *assetLibrary=[[ALAssetsLibrary alloc] init];
-        [assetLibrary assetForURL:_fileURL resultBlock:^(ALAsset *asset){
-                // Retrieve the image orientation from the ALAsset
-            UIImageOrientation orientation = UIImageOrientationUp;
-            NSNumber* orientationValue = [asset valueForProperty:@"ALAssetPropertyOrientation"];
-            if (orientationValue != nil) {
-                orientation = [orientationValue intValue];
-            }
-            UIImage *image = [UIImage imageWithCGImage:[[asset defaultRepresentation] fullResolutionImage] scale:1.0 orientation:orientation];
-            image = generateSquareImageThumbnail(image);
-            self.thumbnailImage = imageWithImage(image, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
-            imageProcessBlock(self.thumbnailImage);
-        } failureBlock:^(NSError *err){
-            imageProcessBlock(nil);
-        }];
-    }
-}
+
 
 @end

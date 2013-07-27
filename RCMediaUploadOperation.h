@@ -27,5 +27,4 @@
 
 - (id) initWithKey:(NSString*)key withMediaType:(NSString*)mediaType withURL:(NSURL*) fileURL;
 - (NSOperation*) generateOperation;
-- (void) generateThumbnailImage : (void(^)(UIImage*)) imageProcessBlock;
 @end

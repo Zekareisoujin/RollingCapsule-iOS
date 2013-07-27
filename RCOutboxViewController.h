@@ -10,5 +10,6 @@
 
 @interface RCOutboxViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tblViewUploadTasks;
+- (IBAction)btnCleanupTouchUpInside:(id)sender;
 @property (nonatomic, strong) NSMutableArray* uploadTasks;
 @end
