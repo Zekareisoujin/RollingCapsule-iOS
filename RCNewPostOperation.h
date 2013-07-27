@@ -19,5 +19,6 @@
 @property (nonatomic, strong) RCMediaUploadOperation *mediaUploadOperation;
 - (id) initWithPost:(RCPost*) post withMediaUploadOperation:(RCMediaUploadOperation*) mediaUploadOperation;
 - (RCNewPostOperation*) generateRetryOperation;
+- (void) writeOperationToCoreDataAsUploadTask;
 + (RCNewPostOperation*) newPostOperationFromUploadTask:(RCUploadTask*) uploadTask;
 @end

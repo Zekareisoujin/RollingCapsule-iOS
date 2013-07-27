@@ -9,6 +9,7 @@
 #import "RCNewPostOperation.h"
 #import "RCConstants.h"
 #import "RCUtilities.h"
+#import "RCUser.h"
 
 @implementation RCNewPostOperation
 
@@ -106,12 +107,46 @@
     }
 }
 
+- (void) writeOperationToCoreDataAsUploadTask {
+    NSLog(@"writing to core data");
+    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate] ;
+    NSManagedObjectContext *context = [appDelegate managedObjectContext];
+    NSManagedObject *uploadTask = [NSEntityDescription
+                                   insertNewObjectForEntityForName:@"RCUploadTask"
+                                   inManagedObjectContext:context];
+    RCPost* post = self.post;
+    [uploadTask setValue:[NSNumber numberWithInt:[RCUser currentUser].userID] forKey:@"userID"];
+    [uploadTask setValue:post.fileUrl forKey:@"key"];
+    [uploadTask setValue:[self.mediaUploadOperation.fileURL absoluteString] forKey:@"fileURL"];
+    [uploadTask setValue:post.content forKey:@"content"];
+    [uploadTask setValue:[NSNumber numberWithDouble:post.latitude] forKey:@"latitude"];
+    [uploadTask setValue:[NSNumber numberWithDouble:post.longitude] forKey:@"longitude"];
+    [uploadTask setValue:post.postedTime forKey:@"postedTime"];
+    [uploadTask setValue:post.privacyOption forKey:@"privacyOption"];
+    [uploadTask setValue:post.subject forKey:@"subject"];
+    
+    if (post.releaseDate != nil)
+        [uploadTask setValue:post.releaseDate forKey:@"releaseDate"];
+    if (post.topic != nil)
+        [uploadTask setValue:post.topic forKey:@"topic"];
+    
+    NSError *error;
+    if (![context save:&error]) {
+        NSLog(@"CoreData, couldn't save: %@", [error localizedDescription]);
+    }
+
+}
+
 + (RCNewPostOperation*) newPostOperationFromUploadTask:(RCUploadTask*) uploadTask {
     RCPost *post = [[RCPost alloc] init];
     post.content = uploadTask.content;
     post.subject = uploadTask.subject;
     post.releaseDate = uploadTask.releaseDate;
+    if ([post.releaseDate isKindOfClass:[NSNull class]])
+        post.releaseDate = nil;
     post.topic = uploadTask.topic;
+    if ([post.topic isKindOfClass:[NSNull class]])
+        post.topic = nil;
     post.latitude = [uploadTask.latitude doubleValue];
     post.longitude = [uploadTask.longitude doubleValue];
     post.fileUrl = uploadTask.key;

@@ -54,34 +54,6 @@
     }
 }
 
-- (void) writeUploadTaskToCoreData:(RCNewPostOperation*) operation {
-    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate] ;
-    NSManagedObjectContext *context = [appDelegate managedObjectContext];
-    NSManagedObject *uploadTask = [NSEntityDescription
-                                       insertNewObjectForEntityForName:@"RCUploadTask"
-                                       inManagedObjectContext:context];
-    RCPost* post = operation.post;
-    [uploadTask setValue:[NSNumber numberWithInt:[RCUser currentUser].userID] forKey:@"userID"];
-    [uploadTask setValue:post.fileUrl forKey:@"key"];
-    [uploadTask setValue:[operation.mediaUploadOperation.fileURL absoluteString] forKey:@"fileURL"];
-    [uploadTask setValue:post.content forKey:@"content"];
-    [uploadTask setValue:[NSNumber numberWithDouble:post.latitude] forKey:@"latitude"];
-    [uploadTask setValue:[NSNumber numberWithDouble:post.longitude] forKey:@"longitude"];
-    [uploadTask setValue:post.postedTime forKey:@"postedTime"];
-    [uploadTask setValue:post.privacyOption forKey:@"privacyOption"];
-    [uploadTask setValue:post.subject forKey:@"subject"];
-
-    if (post.releaseDate != nil)
-        [uploadTask setValue:post.releaseDate forKey:@"releaseDate"];
-    if (post.topic != nil)
-        [uploadTask setValue:post.topic forKey:@"topic"];
-    
-    NSError *error;
-    if (![context save:&error]) {
-        NSLog(@"CoreData, couldn't save: %@", [error localizedDescription]);
-    }
-}
-
 - (void) cleanupFinishedOperation {
     NSMutableArray* tobeDeleted = [[NSMutableArray alloc] init];
     @synchronized(_uploadList) {
@@ -162,7 +134,7 @@
     [_uploadList addObject:operation];
     if (saveToDisk) {
         if (operation.mediaUploadOperation.fileURL != nil)
-            [self writeUploadTaskToCoreData:operation];
+            [operation writeOperationToCoreDataAsUploadTask];
         else
             [operation.mediaUploadOperation addObserver:self forKeyPath:@"fileURL" options:0 context:nil];
     }
@@ -210,7 +182,7 @@
                     newPostOp = [_uploadList objectAtIndex:i];
                     if (newPostOp.mediaUploadOperation == operation) break;
                 }
-                [self writeUploadTaskToCoreData:newPostOp];
+                [newPostOp writeOperationToCoreDataAsUploadTask];
                 if (operation.isFinished && !operation.successfulUpload) {
                     [_uploadList removeObject:operation];
                     RCNewPostOperation *retry = [newPostOp generateRetryOperation];
