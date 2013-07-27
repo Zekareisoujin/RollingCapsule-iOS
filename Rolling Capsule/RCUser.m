@@ -115,6 +115,7 @@ static NSMutableDictionary* RCUserUserCollection = nil;
 - (void) setUserAvatarAsync: (UIImage*)avatar completionHandler:(void (^)(UIImage*))completionHandle {
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
+        [RCConnectionManager startConnection];
         // Convert the image to JPEG data.
         NSData *imageData = UIImageJPEGRepresentation(avatar, 1.0);
         
@@ -125,25 +126,36 @@ static NSMutableDictionary* RCUserUserCollection = nil;
         por.data        = imageData;
         
         // Put the image data into the specified s3 bucket and object.
-        AmazonS3Client *s3 = [RCAmazonS3Helper s3:_userID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3AvatarPictureBucket]];
         NSString *error = @"Couldn't connect to server, please try again later";
-        if (s3 != nil) {
-            S3PutObjectResponse *putObjectResponse = [s3 putObject:por];
-            error = putObjectResponse.error.description;
-            if(putObjectResponse.error != nil) {
-                NSLog(@"Error: %@", putObjectResponse.error);
-            }
+        @try {
+            AmazonS3Client *s3 = [RCAmazonS3Helper s3:_userID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3AvatarPictureBucket]];
+            [RCConnectionManager endConnection];
             
-            if(error != nil) {
-                NSLog(@"Error: %@", error);
-                postNotification(error);
-                completionHandle(nil);
-            }else {
-                [[RCResourceCache centralCache] putResourceInCache:[[NSString alloc] initWithFormat:@"%@/%d/avatar", RCUsersResource, _userID] forKey:avatar];
-                completionHandle(avatar);
+            if (s3 != nil) {
+                S3PutObjectResponse *putObjectResponse = [s3 putObject:por];
+                error = putObjectResponse.error.description;
+                if(putObjectResponse.error != nil) {
+                    NSLog(@"Error: %@", putObjectResponse.error);
+                }
+                
+                if(error != nil) {
+                    NSLog(@"Error: %@", error);
+                    postNotification(error);
+                    completionHandle(nil);
+                }else {
+                    [[RCResourceCache centralCache] putResourceInCache:[[NSString alloc] initWithFormat:@"%@/%d/avatar", RCUsersResource, _userID] forKey:avatar];
+                    _displayAvatar = avatar;
+                    completionHandle(avatar);
+                }
             }
+
+            
+        }@catch (NSException *e) {
+            [RCConnectionManager endConnection];
+            NSLog(@"Exception: %@", e);
+            postNotification(error);
+            completionHandle(nil);
         }
-        
         
     });
 }
@@ -199,7 +211,9 @@ static NSMutableDictionary* RCUserUserCollection = nil;
     NSURLRequest *request = CreateHttpPutRequest(url, putData);
     NSURLResponse *response;
     NSError *error = nil;
+    [RCConnectionManager startConnection];
     NSData *userData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    [RCConnectionManager endConnection];
     if (error == nil) {
         NSString *responseData = [[NSString alloc]initWithData:userData encoding:NSUTF8StringEncoding];
         if (![responseData isEqualToString:@"ok"]) {
@@ -215,9 +229,11 @@ static NSMutableDictionary* RCUserUserCollection = nil;
                                                   [[NSString alloc] initWithFormat:@"%d",otherUser.userID]);
         NSData *postData = [dataSt dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
         NSURLRequest *request = CreateHttpPostRequest(url, postData);
+        [RCConnectionManager startConnection];
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
          {
+             [RCConnectionManager endConnection];
              if (error == nil) {
                  NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
                  
@@ -252,9 +268,11 @@ static NSMutableDictionary* RCUserUserCollection = nil;
     @try {
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/relation_follow?mobile=1&other_user=%d", RCServiceURL, RCUsersResource, _userID, otherUser.userID ]];
         NSURLRequest *request = CreateHttpGetRequest(url);
+        [RCConnectionManager startConnection];
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
          {
+             [RCConnectionManager endConnection];
              if (error == nil) {
                  NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
                  
@@ -290,9 +308,11 @@ static NSMutableDictionary* RCUserUserCollection = nil;
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/?mobile=1", RCServiceURL, RCFollowResource, followID]];
         NSURLRequest *request = CreateHttpDeleteRequest(url);
         
+        [RCConnectionManager startConnection];
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
          {
+             [RCConnectionManager endConnection];
              NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
              
              SBJsonParser *jsonParser = [SBJsonParser new];
@@ -324,9 +344,11 @@ static NSMutableDictionary* RCUserUserCollection = nil;
                                                   [[NSString alloc] initWithFormat:@"%d",otherUser.userID]);
         NSData *postData = [dataSt dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
         NSURLRequest *request = CreateHttpPostRequest(url, postData);
+        [RCConnectionManager startConnection];
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
          {
+             [RCConnectionManager endConnection];
              if (error == nil) {
                  NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
                  
@@ -362,9 +384,11 @@ static NSMutableDictionary* RCUserUserCollection = nil;
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/relation?mobile=1&other_user=%d", RCServiceURL, RCUsersResource, _userID, otherUser.userID]];
         NSURLRequest *request = CreateHttpGetRequest(url);
         
+        [RCConnectionManager startConnection];
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
          {
+             [RCConnectionManager endConnection];
              if (error == nil) {
                  NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
                  
@@ -403,9 +427,11 @@ static NSMutableDictionary* RCUserUserCollection = nil;
         NSData *putData = [dataSt dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
         NSURLRequest *request = CreateHttpPutRequest(url, putData);
         
+        [RCConnectionManager startConnection];
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
          {
+             [RCConnectionManager endConnection];
              if (error == nil) {
                  NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
                  
@@ -436,9 +462,11 @@ static NSMutableDictionary* RCUserUserCollection = nil;
         NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/?mobile=1", RCServiceURL, RCFriendshipsResource, friendshipID]];
         NSURLRequest *request = CreateHttpDeleteRequest(url);
         
+        [RCConnectionManager startConnection];
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
          {
+             [RCConnectionManager endConnection];
              if (error == nil) {
                  NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
                  

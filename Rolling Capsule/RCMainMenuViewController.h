@@ -10,6 +10,7 @@
 #import "RCUser.h"
 #import "RCLoginViewController.h"
 #import "TTTAttributedLabel.h"
+#import "RCTreeListModel.h"
 
 @interface RCMainMenuViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, RCLoginViewControllerDelegate>
 
@@ -24,6 +25,8 @@
 @property (strong, nonatomic) IBOutlet UIButton *btnLogOut;
 @property (strong, nonatomic) IBOutlet UIView *viewLogoutRow;
 @property (weak, nonatomic) IBOutlet UIImageView *btnLogOutIcon;
+
+@property (nonatomic, retain) RCTreeListModel *menuTree;
 
 - (id)initWithContentView:(UINavigationController *) mainNavigationController;
 

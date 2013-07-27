@@ -489,10 +489,10 @@ CGRect  searchButtonHideFrame;
     _displayedItems = _friends;
     [_tableTitleBackground setImage:[UIImage imageNamed:@"friendListBarFriends"]];
     if (_user == _loggedinUser) {
-        [_searchBar setPlaceholder:@"Search for friends"];
+        [_searchBar setPlaceholder:@"Search among your friends"];
         [_tableTitleLabel setText:@"Friends"];
     }else {
-        [_searchBar setPlaceholder:[NSString stringWithFormat:@"Search for %@'s friends", _user.name]];
+        [_searchBar setPlaceholder:[NSString stringWithFormat:@"Search among %@'s friends", _user.name]];
         [_tableTitleLabel setText:[NSString stringWithFormat:@"%@'s friends", _user.name]];
     }
     

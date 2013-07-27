@@ -550,7 +550,7 @@ BOOL _isTimedRelease = NO;
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     
-    [picker dismissViewControllerAnimated:YES completion:nil];
+
     [self removePhotoSourceControlAndAddPrivacyControl];
     if (_activityIndicator == nil)
         _activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:_scrollViewImage.frame];
@@ -652,7 +652,7 @@ BOOL _isTimedRelease = NO;
         localMediaUploadOp.thumbnailImage = rescaledThumbnail;
         [RCOperationsManager addUploadMediaOperation:localMediaUploadOp];
     });
-
+    [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void) imagePickerControllerDidCancel:(UIImagePickerController *)picker
