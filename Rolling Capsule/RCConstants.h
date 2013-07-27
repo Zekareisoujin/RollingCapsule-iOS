@@ -100,8 +100,10 @@ static NSString* const RCMenuItemSettingsLogOut = @"Log Out";
 
 static NSString* const RCMenuKeyKeyPath = @"key";
 static NSString* const RCMenuKeyIcon = @"icon";
+static NSString* const RCMenuKeyIcon2 = @"icon2";
 static NSString* const RCMenuKeyDisplayedName = @"displayedName";
 static NSString* const RCMenuKeySelector = @"selector";
+static NSString* const RCMenuKeySelectorLoad = @"selectorLoad";
 
 //cell border color
 static double const RCAppThemeColorRed = 52.0/255.0;

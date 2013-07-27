@@ -35,6 +35,7 @@
 @property (strong, nonatomic) CLLocation        *currentLocation;
 @property (strong, nonatomic) NSArray           *userNotifications;
 @property (assign, nonatomic) BOOL               didUpdateLocation;
+@property (strong, nonatomic) NSString          *currentCountry;
 
 - (NSString *)applicationDocumentsDirectory;
 - (void) showSideMenu;

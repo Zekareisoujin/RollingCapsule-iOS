@@ -35,6 +35,7 @@
 
 
 BOOL _didQueueOpenMainFeedOption;
+BOOL _hasUpdateCountry;
 
 + (NSString*) debugTag {
     return @"AppDelegate";
@@ -81,6 +82,7 @@ void SignalHandler(int sig) {
     _locationManager.distanceFilter = kCLDistanceFilterNone;
     _locationManager.desiredAccuracy = kCLLocationAccuracyBest;
     [_locationManager startUpdatingLocation];
+    _hasUpdateCountry = NO;
 
     RCLoginViewController *firstViewController;
     if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height) {
@@ -186,7 +188,13 @@ void SignalHandler(int sig) {
     }
     _currentLocation = [locations lastObject];
     //NSLog(@"update current location %f,%f", _currentLocation.coordinate.latitude, _currentLocation.coordinate.longitude);
+
+    if (!_hasUpdateCountry){
+        [self updateCurrentCountry];
+        _hasUpdateCountry = YES;
+    }
 }
+
 #pragma mark - global data flow
 - (void) setCurrentUser:(RCUser *)user {
     BOOL needReloadUpload = [RCUser currentUser] == nil || [RCUser currentUser].userID != user.userID;
@@ -201,6 +209,28 @@ void SignalHandler(int sig) {
 
 - (void) setNotificationList:(NSArray*)notifications {
     _userNotifications = notifications;
+}
+
+- (void)updateCurrentCountry {
+    CLGeocoder *reverseGeocoder = [[CLGeocoder alloc] init];
+    
+    [reverseGeocoder reverseGeocodeLocation:self.currentLocation completionHandler:^(NSArray *placemarks, NSError *error)
+     {
+         NSLog(@"reverseGeocodeLocation:completionHandler: Completion Handler called!");
+         if (error){
+             NSLog(@"Geocode failed with error: %@", error);
+             return;
+         }
+         
+         NSLog(@"Received placemarks: %@", placemarks);
+         
+         
+         CLPlacemark *myPlacemark = [placemarks objectAtIndex:0];
+         NSString *countryCode = myPlacemark.ISOcountryCode;
+         NSString *countryName = myPlacemark.country;
+         NSLog(@"My country code: %@ and countryName: %@", countryCode, countryName);
+         _currentCountry = countryCode;
+     }];
 }
 
 - (NSDictionary *)parseQueryString:(NSString *)query {

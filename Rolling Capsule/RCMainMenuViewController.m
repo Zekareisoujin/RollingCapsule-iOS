@@ -20,6 +20,7 @@
 #import "RCOperationsManager.h"
 #import "UIImage+animatedGIF.h"
 #import <Foundation/Foundation.h>
+#import "SBJson.h"
 
 @interface RCMainMenuViewController ()
 
@@ -79,6 +80,7 @@
 //    showLogOut = false;
     
     [self initializeMenuTable];
+    [self initializeConcierge];
 }
 
 - (void)didReceiveMemoryWarning
@@ -86,6 +88,65 @@
     [super didReceiveMemoryWarning];
     [AppDelegate cleanupMemory];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)initializeConcierge {
+    NSDictionary *sgList = [[NSDictionary alloc]
+        initWithObjectsAndKeys:@"http://itunes.apple.com/tw/lookup?id=649232055", RCMenuItemConciergeGame,
+                               @"http://itunes.apple.com/sg/lookup?id=486630839", RCMenuItemConciergeUtility,
+                               @"http://itunes.apple.com/sg/lookup?id=375971134", RCMenuItemConciergeTravel,
+                               @"http://itunes.apple.com/sg/lookup?id=504162619", RCMenuItemConciergeEmergency,
+                               @"http://itunes.apple.com/sg/lookup?id=395897074", RCMenuItemConciergeShopping, nil];
+    
+    NSDictionary *twList = [[NSDictionary alloc]
+        initWithObjectsAndKeys:@"http://itunes.apple.com/tw/lookup?id=649232055", RCMenuItemConciergeGame,
+                               @"http://itunes.apple.com/tw/lookup?id=656617797", RCMenuItemConciergeEmergency,
+                               @"http://itunes.apple.com/tw/lookup?id=596652968", RCMenuItemConciergeShopping, nil];
+
+    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSString *country = appDelegate.currentCountry;
+    NSDictionary *listToUse;
+    
+    if ([country isEqualToString:@"SG"])
+        listToUse = sgList;
+    else if ([country isEqualToString:@"TW"])
+        listToUse = twList;
+    else
+        listToUse = sgList; // lol
+    
+    for (NSString* key in listToUse) {
+        NSURL *url=[NSURL URLWithString:[listToUse objectForKey:key]];
+        NSURLRequest *request = CreateHttpGetRequest(url);
+        [RCConnectionManager startConnection];
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+        {
+            [RCConnectionManager endConnection];
+            NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+            NSDictionary *jsonData = [responseData JSONValue];
+            NSLog(@"App data: %@",jsonData);
+
+            if (jsonData != nil) {
+                NSDictionary *appInfo = [[jsonData objectForKey:@"results"] objectAtIndex:0];
+                
+                // image:
+                NSURL *imageURL = [NSURL URLWithString:[appInfo objectForKey:@"artworkUrl60"]];
+                UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:imageURL]];
+                [_menuTree setObject:image forKeyPath:RCMenuKeyIcon2 forTreeItem:key];
+                
+                // name:
+                NSString *appName = [appInfo objectForKey:@"trackName"];
+                [_menuTree setObject:appName forKeyPath:RCMenuKeyDisplayedName forTreeItem:key];
+                
+                // link:
+                NSURL *ituneUrl = [NSURL URLWithString:[appInfo objectForKey:@"trackViewUrl"]];
+                [_menuTree setObject:ituneUrl forKeyPath:RCMenuKeySelectorLoad forTreeItem:key];
+                
+                // selector:
+                [_menuTree setObject:NSStringFromSelector(@selector(goToURL:)) forKeyPath:RCMenuKeySelector forTreeItem:key];
+            }
+        }];
+    }
 }
 
 - (void)initializeMenuTable {
@@ -171,6 +232,9 @@
         RCMenuTableCell2 *cell = [RCMenuTableCell2 createMenuTableCell:_menuTable];
         [cell.imgCellIcon setImage:icon];
         [cell.lblCellTitle setText:label];
+        
+        UIImage *icon2 = [item objectForKey:RCMenuKeyIcon2];
+        if (icon2 != nil) [cell.imgCellIcon2 setImage:icon2];
         return cell;
     }
 }
@@ -228,8 +292,10 @@
     if (item_count<=0) {
         activeMenuIndex = indexPath.row;
         NSString* selectorStr = [item valueForKeyPath:RCMenuKeySelector];
+        id selectorLoad = [item valueForKeyPath:RCMenuKeySelectorLoad];
+        
         if (selectorStr != nil) {
-            [self performSelector:NSSelectorFromString(selectorStr) withObject:nil];
+            [self performSelector:NSSelectorFromString(selectorStr) withObject:selectorLoad];
         }
         [tableView reloadData];
         return;
@@ -246,6 +312,7 @@
     
     if (newState) {
         [tableView insertRowsAtIndexPaths:openItems withRowAnimation:UITableViewRowAnimationTop];
+        [tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForItem:(indexPath.row + item_count) inSection:0] atScrollPosition:UITableViewScrollPositionMiddle animated:YES];
     }else {
         [tableView deleteRowsAtIndexPaths:openItems withRowAnimation:UITableViewRowAnimationTop];
     }
@@ -376,6 +443,11 @@
 //        rect.origin.y += offset;
 //        [_btnLogOutIcon setFrame:rect];
 //    }];
+}
+
+- (void)goToURL: (NSURL*) url {
+    NSLog(@"Going to url: %@", url);
+    [[UIApplication sharedApplication] openURL:url];
 }
 
 - (void)asynchLogOutRequest

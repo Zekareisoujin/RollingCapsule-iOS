@@ -118,7 +118,7 @@
 }
 
 - (IBAction)btnForgotPassword:(id)sender {
-    postNotification(@"Not yet implemented!");
+    //postNotification(@"Not yet implemented!");
 }
 
 - (void)viewWillAppear:(BOOL)animated
