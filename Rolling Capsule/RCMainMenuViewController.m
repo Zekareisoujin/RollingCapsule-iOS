@@ -16,6 +16,7 @@
 #import "RCConstants.h"
 #import "RCMenuTableCell.h"
 #import "RCOutboxViewController.h"
+#import "RCOperationsManager.h"
 #import "UIImage+animatedGIF.h"
 
 @interface RCMainMenuViewController ()
@@ -265,6 +266,8 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
     [_navigationController popToRootViewControllerAnimated:YES];
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    [appDelegate setCurrentUser:nil];
+    [RCOperationsManager clearUploadManager];
     [appDelegate disableSideMenu];
     [self slideThenHide];
 }

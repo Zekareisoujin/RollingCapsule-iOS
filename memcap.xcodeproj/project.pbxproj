@@ -187,6 +187,11 @@
 		64EEBFC2178DC10500D2C968 /* UIViewController+RCCustomBackButtonViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64EEBFC1178DC10400D2C968 /* UIViewController+RCCustomBackButtonViewController.m */; };
 		64EEBFC4178DDA4B00D2C968 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64EEBFC3178DDA4A00D2C968 /* MediaPlayer.framework */; };
 		64EEBFC6178DFE2900D2C968 /* friendListTableBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 64EEBFC5178DFE2800D2C968 /* friendListTableBackground.png */; };
+		64F0815A17A3C95F0064257F /* outboxCleanup.png in Resources */ = {isa = PBXBuildFile; fileRef = 64F0815917A3C95F0064257F /* outboxCleanup.png */; };
+		64F0815F17A3C9760064257F /* outboxComplete.png in Resources */ = {isa = PBXBuildFile; fileRef = 64F0815B17A3C9750064257F /* outboxComplete.png */; };
+		64F0816017A3C9760064257F /* outboxDelete.png in Resources */ = {isa = PBXBuildFile; fileRef = 64F0815C17A3C9750064257F /* outboxDelete.png */; };
+		64F0816117A3C9760064257F /* outboxPause.png in Resources */ = {isa = PBXBuildFile; fileRef = 64F0815D17A3C9750064257F /* outboxPause.png */; };
+		64F0816217A3C9760064257F /* outboxUploading.png in Resources */ = {isa = PBXBuildFile; fileRef = 64F0815E17A3C9760064257F /* outboxUploading.png */; };
 		64FE8433176B9E0E00E561D8 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FE8432176B9E0E00E561D8 /* libTestFlight.a */; };
 		64FE84E5176BAAD800E561D8 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FE84E4176BAAD800E561D8 /* libz.dylib */; };
 		64FFD2CD17662D1B004337F8 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FFD2CC17662D1B004337F8 /* MapKit.framework */; };
@@ -506,6 +511,11 @@
 		64EEBFC1178DC10400D2C968 /* UIViewController+RCCustomBackButtonViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+RCCustomBackButtonViewController.m"; path = "../UIViewController+RCCustomBackButtonViewController.m"; sourceTree = "<group>"; };
 		64EEBFC3178DDA4A00D2C968 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		64EEBFC5178DFE2800D2C968 /* friendListTableBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = friendListTableBackground.png; path = ../friendListTableBackground.png; sourceTree = "<group>"; };
+		64F0815917A3C95F0064257F /* outboxCleanup.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = outboxCleanup.png; path = ../outboxCleanup.png; sourceTree = "<group>"; };
+		64F0815B17A3C9750064257F /* outboxComplete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = outboxComplete.png; path = ../outboxComplete.png; sourceTree = "<group>"; };
+		64F0815C17A3C9750064257F /* outboxDelete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = outboxDelete.png; path = ../outboxDelete.png; sourceTree = "<group>"; };
+		64F0815D17A3C9750064257F /* outboxPause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = outboxPause.png; path = ../outboxPause.png; sourceTree = "<group>"; };
+		64F0815E17A3C9760064257F /* outboxUploading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = outboxUploading.png; path = ../outboxUploading.png; sourceTree = "<group>"; };
 		64FE8432176B9E0E00E561D8 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
 		64FE84E3176B9E4E00E561D8 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = SOURCE_ROOT; };
 		64FE84E4176BAAD800E561D8 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -667,6 +677,8 @@
 		6417B23317946A8C007777E5 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				64D6EC2317A2A59500663AE3 /* RCUploadTask.h */,
+				64D6EC2417A2A59600663AE3 /* RCUploadTask.m */,
 				647265B917A04D37002E654A /* RCUploadManager.h */,
 				647265BA17A04D37002E654A /* RCUploadManager.m */,
 				647265B017A04CDF002E654A /* RCAsyncPhotoDownloadOperation.h */,
@@ -703,6 +715,11 @@
 		643EACE9175BBE0D002761D9 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				64F0815B17A3C9750064257F /* outboxComplete.png */,
+				64F0815C17A3C9750064257F /* outboxDelete.png */,
+				64F0815D17A3C9750064257F /* outboxPause.png */,
+				64F0815E17A3C9760064257F /* outboxUploading.png */,
+				64F0815917A3C95F0064257F /* outboxCleanup.png */,
 				BF7FAFB917A2FD630010CD95 /* menuIconOutbox.png */,
 				BF7FAFB717A2FC650010CD95 /* outboxBar.png */,
 				BF7FAFB517A2F9240010CD95 /* outboxTableBackground.png */,
@@ -862,8 +879,6 @@
 		BFCA780F174DFD3F00666CBA = {
 			isa = PBXGroup;
 			children = (
-				64D6EC2317A2A59500663AE3 /* RCUploadTask.h */,
-				64D6EC2417A2A59600663AE3 /* RCUploadTask.m */,
 				64D6EC1B17A2536A00663AE3 /* RCUserData.xcdatamodeld */,
 				BFCA7821174DFD3F00666CBA /* Rolling Capsule */,
 				BFCA7845174DFD3F00666CBA /* Rolling CapsuleTests */,
@@ -1364,6 +1379,11 @@
 				BF7FAFB817A2FC650010CD95 /* outboxBar.png in Resources */,
 				BF7FAFBA17A2FD630010CD95 /* menuIconOutbox.png in Resources */,
 				BF7FAFBC17A2FE170010CD95 /* RCOutboxTableCell.xib in Resources */,
+				64F0815A17A3C95F0064257F /* outboxCleanup.png in Resources */,
+				64F0815F17A3C9760064257F /* outboxComplete.png in Resources */,
+				64F0816017A3C9760064257F /* outboxDelete.png in Resources */,
+				64F0816117A3C9760064257F /* outboxPause.png in Resources */,
+				64F0816217A3C9760064257F /* outboxUploading.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

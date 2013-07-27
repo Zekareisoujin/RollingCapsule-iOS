@@ -6,9 +6,12 @@
 //  Copyright (c) 2013 Fox Cradle. All rights reserved.
 //
 
+
+#import "RCMediaUploadOperation.h"
+#import "RCNewPostOperation.h"
+#import "RCPost.h"
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
-
 
 @interface RCUploadTask : NSManagedObject
 
@@ -24,5 +27,10 @@
 @property (nonatomic, retain) NSString * topic;
 @property (nonatomic, retain) NSString * privacyOption;
 @property (nonatomic, retain) NSNumber * successful;
+@property (nonatomic, assign) BOOL paused;
+@property (nonatomic, strong) RCNewPostOperation* currentNewPostOperation;
 
+- initWithMediaUploadOperation:(RCMediaUploadOperation*) mediaUploadOperation withPost:(RCPost*) post;
+- (void) generateRetryOperation;
+- (RCPost*) respectivePost;
 @end

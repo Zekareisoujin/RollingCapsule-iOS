@@ -14,9 +14,11 @@
 @interface RCOperationsManager : NSObject
 + (void) addOperation:(NSOperation*) operation;
 + (void) addUploadMediaOperation:(RCMediaUploadOperation*) operation;
-+ (void) addUploadOperation:(RCNewPostOperation*) operation shouldStartMediaUpload:(BOOL)startMediaUpload;
++ (void) addUploadOperation:(RCMediaUploadOperation*) operation withPost:(RCPost*) post;
 + (void) suspendUpload;
 + (void) cleanupUploadData;
 + (NSMutableArray*) uploadList;
 + (RCUploadManager*) defaultUploadManager;
++ (void) createUploadManager;
++ (void) clearUploadManager;
 @end

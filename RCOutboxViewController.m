@@ -7,7 +7,7 @@
 //
 
 #import "RCOutboxViewController.h"
-#import "RCMenuTableCell.h"
+#import "RCOutboxTableCell.h"
 #import "RCOperationsManager.h"
 #import "RCNewPostOperation.h"
 #import "RCMediaUploadOperation.h"
@@ -29,6 +29,7 @@
     if (self) {
         // Custom initialization
         thumbnailImages = [[NSMutableDictionary alloc] init];
+        _uploadTasks = [[NSMutableArray alloc] init];
     }
     return self;
 }
@@ -37,17 +38,38 @@
 {
     [super viewDidLoad];
     _tblViewUploadTasks.tableFooterView = [[UIView alloc] init];
-    [self refreshData];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshData:) name:RCNotificationNameMediaUploaded object:nil];
+    [self refreshData:nil];
     // Do any additional setup after loading the view from its nib.
 }
 
-- (void) refreshData {
+- (void) refreshData:(NSNotification*) notification {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSMutableArray* uploadList = [RCOperationsManager uploadList];
+        [_uploadTasks removeAllObjects];
         @synchronized(uploadList)
         {
-            _uploadTasks = [uploadList copy];
+            for (RCUploadTask *task in uploadList)
+                 [_uploadTasks addObject:task];
         }
+        int j = [_uploadTasks count] - 1;
+        int i = 0;
+        while (i < j) {
+            RCUploadTask* task1 = (RCUploadTask*)[_uploadTasks objectAtIndex:i];
+            if ([task1.successful boolValue]) {
+                //decrease j until find a none successful post
+                RCUploadTask *task2 = (RCUploadTask*)[_uploadTasks objectAtIndex:j];
+                while (j > i && [task2.successful boolValue]) {
+                    j--;
+                    task2 = (RCUploadTask*)[_uploadTasks objectAtIndex:j];
+                }
+                if (j > i) {
+                    [_uploadTasks exchangeObjectAtIndex:i withObjectAtIndex:j];
+                }
+            }
+            i++;
+        }
+            
         dispatch_async(dispatch_get_main_queue(), ^{
             [_tblViewUploadTasks reloadData];
         });
@@ -67,39 +89,64 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    RCMenuTableCell *cell = [RCMenuTableCell createMenuTableCell:tableView];
-    RCNewPostOperation* op = [_uploadTasks objectAtIndex:indexPath.row];
-    if (op.mediaUploadOperation.thumbnailImage != nil)
-        [cell.imgCellIcon setImage:op.mediaUploadOperation.thumbnailImage];
-    else {
-        UIImage *image = [thumbnailImages objectForKey:op.mediaUploadOperation.fileURL];
+    RCOutboxTableCell *cell = [RCOutboxTableCell createOutboxTableCell:tableView];
+    RCUploadTask *task = [_uploadTasks objectAtIndex:indexPath.row];
+    NSURL* url;
+    BOOL success = task.fileURL == nil;
+    RCPost* post;
+    if (success) {
+        post = task.currentNewPostOperation.post;
+        url = task.currentNewPostOperation.mediaUploadOperation.fileURL;
+    } else {
+        post = [task respectivePost];
+        url = [NSURL URLWithString:task.fileURL];
+    }
+    /*if (op.mediaUploadOperation.thumbnailImage != nil)
+        [cell.imgViewThumbnail setImage:op.mediaUploadOperation.thumbnailImage];
+    else {*/
+        UIImage *image = [thumbnailImages objectForKey:task.fileURL];
         if (image != nil)
-            [cell.imgCellIcon setImage:image];
+            [cell.imgViewThumbnail setImage:image];
         else {
-            [cell.imgCellIcon setImage:[UIImage imageNamed:@"loading.gif"]];
+            [cell.imgViewThumbnail setImage:[UIImage imageNamed:@"loading.gif"]];
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-                generateThumbnailImage(op.mediaUploadOperation.fileURL, op.mediaUploadOperation.mediaType, ^(UIImage *image) {
+                NSString* mediaType = [task.key hasSuffix:@"mov"] ? @"movie/mov" : @"image/jpeg";
+                generateThumbnailImage(url, mediaType, ^(UIImage *image) {
                     NSLog(@"set image for cell");
-                    if (op.mediaUploadOperation.fileURL != nil)
-                        [thumbnailImages setObject:image forKey:op.mediaUploadOperation.fileURL];
+                    if (task.fileURL != nil)
+                        [thumbnailImages setObject:image forKey:url];
                     dispatch_async(dispatch_get_main_queue(), ^ {
-                        [cell.imgCellIcon setImage:image];
+                        [cell.imgViewThumbnail setImage:image];
                     });
                 });
             });
         }
+    //}
+    cell.lblSubject.text = post.subject;
+    /*NSString *status = @"";*/
+    cell.btnTaskAction.enabled = NO;
+    NSLog(@"task.successful %d",success);
+    NSLog(@"task.fileURL %@ %@",url, task.fileURL);
+    [cell.btnDeleteTask addTarget:self action:@selector(refreshData:) forControlEvents:UIControlEventTouchUpInside];
+    if (success) {
+        cell.btnDeleteTask.enabled = NO;
+        [cell.btnDeleteTask setImage:[UIImage imageNamed:@"outboxComplete.png"] forState:UIControlStateDisabled];
+        [cell.btnTaskAction setHidden:YES];
+        //[cell.viewActivityIndicator stopAnimating];
     }
-    
-    NSString *status = @"";
-    if (op.successfulPost) status = @"Done";
-    else if (op.isExecuting || op.mediaUploadOperation.isExecuting) status = @"Uploading";
-    else status = @"Queued";
-    cell.imgCellLabel.text = status;
+    else if (task.currentNewPostOperation.isExecuting || task.currentNewPostOperation.mediaUploadOperation.isExecuting) {
+        [cell.btnTaskAction setImage:[UIImage imageNamed:@"outboxUploading.png"] forState:UIControlStateNormal];
+        //[cell.viewActivityIndicator startAnimating];
+    } else {
+        [cell.btnTaskAction setImage:[UIImage imageNamed:@"outboxPause.png"] forState:UIControlStateNormal];
+        //[cell.viewActivityIndicator stopAnimating];
+    }
+    [cell setupButtonControl:task];
     return cell;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {    
-    return [RCMenuTableCell cellHeight];
+    return [RCOutboxTableCell cellHeight];
 
 }
 
@@ -122,7 +169,7 @@
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [defaultUM cleanupFinishedOperation];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self refreshData];
+            [self refreshData:nil];
         });
     });
 }

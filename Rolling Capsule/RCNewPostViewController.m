@@ -40,6 +40,8 @@
 @property (nonatomic, assign) BOOL viewFirstLoad;
 @property (nonatomic, strong) RCMediaUploadOperation *mediaUploadOp;
 @property (nonatomic, strong) RCNewPostOperation *postNewOp;
+@property (nonatomic, strong) RCPost *post;
+@property (nonatomic, strong) UIImagePickerController *imagePicker;
 @end
 
 @implementation RCNewPostViewController {
@@ -48,9 +50,9 @@
     RCConnectionManager *_connectionManager;
     NSData *_uploadData;
     NSData *_thumbnailData;
-    UIImagePickerController *imagePicker;
 }
 
+@synthesize imagePicker = _imagePicker;
 @synthesize postImage = _postImage;
 @synthesize videoUrl = _videoUrl;
 @synthesize postContent = _postContent;
@@ -73,6 +75,7 @@
 @synthesize currentTopic = _currentTopic;
 @synthesize mediaUploadOp = _mediaUploadOp;
 @synthesize postNewOp = _postNewOp;
+@synthesize post = _post;
 
 BOOL _isTapToCloseKeyboard = NO;
 BOOL _landmarkTableVisible = NO;
@@ -234,26 +237,27 @@ BOOL _isTimedRelease = NO;
         return;
     }
     
-    RCPost *post = [[RCPost alloc] init];
+    _post = [[RCPost alloc] init];
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-    post.latitude = appDelegate.currentLocation.coordinate.latitude;
-    post.longitude = appDelegate.currentLocation.coordinate.longitude;
-    post.subject = _txtFieldPostSubject.text;
-    post.content = [_txtViewPostContent.text substringFromIndex:[_user.name length]+1];
-    post.fileUrl = _imageFileName;
-    post.thumbnailUrl = [NSString stringWithFormat:@"%@-thumbnail", _imageFileName];
-    post.privacyOption = _privacyOption;
-    post.topic = _currentTopic;
-    post.postedTime = [NSDate date];
+    _post.latitude = appDelegate.currentLocation.coordinate.latitude;
+    _post.longitude = appDelegate.currentLocation.coordinate.longitude;
+    _post.subject = _txtFieldPostSubject.text;
+    _post.content = [_txtViewPostContent.text substringFromIndex:[_user.name length]+1];
+    _post.fileUrl = _imageFileName;
+    _post.thumbnailUrl = [NSString stringWithFormat:@"%@-thumbnail", _imageFileName];
+    _post.privacyOption = _privacyOption;
+    _post.topic = _currentTopic;
+    _post.postedTime = [NSDate date];
     if (_datePickerView != nil && _isTimedRelease) {
-        post.releaseDate = [_datePickerView date];
+        _post.releaseDate = [_datePickerView date];
     }
-    _postNewOp = [[RCNewPostOperation alloc] initWithPost:post withMediaUploadOperation:_mediaUploadOp];
-    [RCOperationsManager addUploadOperation:_postNewOp shouldStartMediaUpload:NO];
+    //_postNewOp = [[RCNewPostOperation alloc] initWithPost:post withMediaUploadOperation:_mediaUploadOp];
+    [RCOperationsManager addUploadOperation:_mediaUploadOp withPost:_post];
+    /*if (_postCancel != nil) {
+        _postCancel();
+    }*/
     [self dismissViewControllerAnimated:YES completion:^{
-        if (_postCancel != nil) {
-            _postCancel();
-        }
+        NSLog(@"successfully dismissed new post view controller");
     }];
 
     /*[_connectionManager startConnection];
@@ -589,8 +593,10 @@ BOOL _isTimedRelease = NO;
                         localMediaUploadOp.fileURL = assetURL;
                     }
                 }];
-            } else
-                localMediaUploadOp.fileURL = [info objectForKey:UIImagePickerControllerReferenceURL];
+            } else {
+                NSURL *url = [info objectForKey:UIImagePickerControllerReferenceURL];
+                localMediaUploadOp.fileURL = [NSURL URLWithString:[url absoluteString]];
+            }
             _postImage = generateVideoThumbnail(_videoUrl);
             _uploadData = [NSData dataWithContentsOfURL:_videoUrl];
             NSLog(@"obtained upload data");
@@ -607,8 +613,10 @@ BOOL _isTimedRelease = NO;
                         localMediaUploadOp.fileURL = assetURL;
                     }  
                 }];
-            } else
-                localMediaUploadOp.fileURL = [info objectForKey:UIImagePickerControllerReferenceURL];
+            } else {
+                NSURL *url = [info objectForKey:UIImagePickerControllerReferenceURL];
+                localMediaUploadOp.fileURL = [NSURL URLWithString:[url absoluteString]];
+            }
             NSLog(@"image size %f %f",_postImage.size.width, _postImage.size.height);
             _postImage = resizeImageIfTooBig(_postImage);
             _uploadData = UIImageJPEGRepresentation(_postImage, 1.0);
@@ -750,13 +758,13 @@ BOOL _isTimedRelease = NO;
 
 - (IBAction)btnActionChooseCameraSource:(id)sender {
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        imagePicker = [[UIImagePickerController alloc] init];
-        imagePicker.delegate = self;
-        imagePicker.allowsEditing = YES;
+        _imagePicker = [[UIImagePickerController alloc] init];
+        _imagePicker.delegate = self;
+        _imagePicker.allowsEditing = YES;
         
-        [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+        [_imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
         [_txtViewPostContent resignFirstResponder];
-        [self presentViewController:imagePicker animated:YES completion:nil];
+        [self presentViewController:_imagePicker animated:YES completion:nil];
     } else {
         showAlertDialog(@"Camera not available", @"Error");
     }
@@ -764,17 +772,17 @@ BOOL _isTimedRelease = NO;
 
 - (IBAction)btnActionChoosePhotoLibrarySource:(id)sender {
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-        imagePicker = [[UIImagePickerController alloc] init];
-        imagePicker.delegate = self;
-        imagePicker.videoQuality = UIImagePickerControllerQualityTypeMedium;
-        imagePicker.allowsEditing = YES;
-        imagePicker.videoMaximumDuration = RCMaxVideoLength;
-        NSMutableArray *currentMediaTypesArray = [[NSMutableArray alloc] initWithArray:imagePicker.mediaTypes];
+        _imagePicker = [[UIImagePickerController alloc] init];
+        _imagePicker.delegate = self;
+        _imagePicker.videoQuality = UIImagePickerControllerQualityTypeMedium;
+        _imagePicker.allowsEditing = YES;
+        _imagePicker.videoMaximumDuration = RCMaxVideoLength;
+        NSMutableArray *currentMediaTypesArray = [[NSMutableArray alloc] initWithArray:_imagePicker.mediaTypes];
         [currentMediaTypesArray addObject:(NSString *) kUTTypeMovie];
-        imagePicker.mediaTypes =[[NSArray alloc] initWithArray:currentMediaTypesArray];
-        [imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
+        _imagePicker.mediaTypes =[[NSArray alloc] initWithArray:currentMediaTypesArray];
+        [_imagePicker setSourceType:UIImagePickerControllerSourceTypePhotoLibrary];
         [_txtViewPostContent resignFirstResponder];
-        [self presentViewController:imagePicker animated:YES completion:nil];
+        [self presentViewController:_imagePicker animated:YES completion:nil];
     } else {
         showAlertDialog(@"Photo library not available", @"Error");
     }
@@ -783,14 +791,14 @@ BOOL _isTimedRelease = NO;
 
 - (IBAction)btnActionChooseVideSource:(id)sender {
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        imagePicker = [[UIImagePickerController alloc] init];
-        imagePicker.delegate = self;
-        imagePicker.videoQuality = UIImagePickerControllerQualityTypeMedium;
-        imagePicker.mediaTypes =[[NSArray alloc] initWithObjects: (NSString *) kUTTypeMovie, nil];
-        imagePicker.videoMaximumDuration = RCMaxVideoLength;
-        [imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
+        _imagePicker = [[UIImagePickerController alloc] init];
+        _imagePicker.delegate = self;
+        _imagePicker.videoQuality = UIImagePickerControllerQualityTypeMedium;
+        _imagePicker.mediaTypes =[[NSArray alloc] initWithObjects: (NSString *) kUTTypeMovie, nil];
+        _imagePicker.videoMaximumDuration = RCMaxVideoLength;
+        [_imagePicker setSourceType:UIImagePickerControllerSourceTypeCamera];
         [_txtViewPostContent resignFirstResponder];
-        [self presentViewController:imagePicker animated:YES completion:nil];
+        [self presentViewController:_imagePicker animated:YES completion:nil];
     } else {
         showAlertDialog(@"Camera not available", @"Error");
     }

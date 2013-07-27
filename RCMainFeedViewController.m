@@ -448,7 +448,7 @@
 }
 
 - (void) switchToNewPostScreen {
-    [_postButton setEnabled:NO];
+    //[_postButton setEnabled:NO];
     RCNewPostViewController *newPostController;
     if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height)
         newPostController = [[RCNewPostViewController alloc] initWithUser:_user withNibName:@"RCNewPostViewController4" bundle:nil];
@@ -458,9 +458,9 @@
         [_postButton setEnabled:YES];
         [self handleRefresh:_refreshControl];
     };
-    newPostController.postCancel = ^{
+    /*newPostController.postCancel = ^{
         [_postButton setEnabled:YES];
-    };
+    };*/
 
     [self presentViewController:newPostController animated:YES completion:nil];
     /*[self addChildViewController:newPostController];

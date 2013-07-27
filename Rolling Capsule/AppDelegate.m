@@ -189,7 +189,12 @@ void SignalHandler(int sig) {
 }
 #pragma mark - global data flow
 - (void) setCurrentUser:(RCUser *)user {
+    BOOL needReloadUpload = [RCUser currentUser] == nil || [RCUser currentUser].userID != user.userID;
     [RCUser setCurrentUser:user];
+    if (needReloadUpload)
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
+            [RCOperationsManager createUploadManager];
+        });
     [_menuViewController setLoggedInUser:user];
     NSLog(@"%@ set current user %d:%@",[AppDelegate debugTag], user.userID,user.email);
 }

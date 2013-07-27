@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "RCNewPostOperation.h"
+#import "RCMediaUploadOperation.h"
+#import "RCUploadTask.h"
 
 #define RCNotificationNameMediaUploaded @"RCNotificationNameMediaUploaded"
 
@@ -16,10 +18,12 @@
 @property (nonatomic, strong) NSOperationQueue* uploadQueue;
 @property (nonatomic,strong) NSMutableArray* uploadList;
 
+- (void) addUploadTaskWithMediaOperation:(RCMediaUploadOperation*) mediaUploadOperation forPost:(RCPost*) post;
 - (void) addNewPostOperation: (RCNewPostOperation*)operation shouldStartMediaUpload:(BOOL)startMediaUpload willSaveToDisk:(BOOL)saveToDisk;
 - (void) cleanupMemory;
 - (void) cleanupFinishedOperation;
-- (void) cancelNewPostOperation:(RCNewPostOperation*) operation;
-
+- (void) cancelNewPostOperation:(RCUploadTask*) task;
+- (void) unpauseNewPostOperation:(RCUploadTask*) task;
+- (void) pauseNewPostOperation:(RCUploadTask*) task;
 + (NSArray*) getListOfUploadTasksFromCoreData;
 @end

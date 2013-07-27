@@ -71,6 +71,7 @@ static NSMutableURLRequest* CreateHttpDeleteRequest (NSURL* url) {
 
 static void postNotification(NSString *msg)
 {
+    NSLog(@"creating alert message");
     UILabel *lblAlert = nil;
     if (lblAlert == nil)
         lblAlert = [[UILabel alloc] init];
@@ -92,7 +93,9 @@ static void postNotification(NSString *msg)
             [UIView animateWithDuration:0.5 animations:^{
                 lblAlert.alpha = 0.0;
             } completion:^(BOOL finished){
+                NSLog(@"removing alert from superview");
                 [lblAlert removeFromSuperview];
+                NSLog(@"done removing alert from superview");
             }];
     } repeats:NO];
 }

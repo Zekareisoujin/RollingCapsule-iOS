@@ -7,14 +7,19 @@
 //
 
 #import "RCOutboxTableCell.h"
+#import "RCOperationsManager.h"
 
-@implementation RCOutboxTableCell
+@implementation RCOutboxTableCell {
+    RCUploadTask* associatedUploadTask;
+    BOOL pause;
+}
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         // Initialization code
+        pause = NO;
     }
     return self;
 }
@@ -30,6 +35,15 @@
     // Configure the view for the selected state
 }
 
+- (void) setupButtonControl:(RCUploadTask*) task {
+    associatedUploadTask = task;
+}
+
+- (IBAction)btnDeleteTaskTouchUpInside:(id)sender {
+    RCUploadManager *defaultUM = [RCOperationsManager defaultUploadManager];
+    [defaultUM cancelNewPostOperation:associatedUploadTask];
+}
+
 + (RCOutboxTableCell*) createOutboxTableCell: (UITableView*) tableView {
     RCOutboxTableCell *cell;
     static NSString *cellIdentifier = @"RCOutboxTableCell";
@@ -42,4 +56,17 @@
     return cell;
 }
 
+- (IBAction)btnTaskActionTouchUpInside:(id)sender {
+    if (pause) {
+        pause = NO;
+        RCUploadManager *defaultUM = [RCOperationsManager defaultUploadManager];
+        [defaultUM unpauseNewPostOperation:associatedUploadTask];
+        [_btnTaskAction setImage:[UIImage imageNamed:@"outboxPause.png"] forState:UIControlStateNormal];
+    } else {
+        pause = YES;
+        RCUploadManager *defaultUM = [RCOperationsManager defaultUploadManager];
+        [defaultUM pauseNewPostOperation:associatedUploadTask];
+        [_btnTaskAction setImage:[UIImage imageNamed:@"outboxUploading.png"] forState:UIControlStateNormal];
+    }
+}
 @end
