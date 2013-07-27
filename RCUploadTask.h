@@ -28,6 +28,7 @@
 @property (nonatomic, retain) NSString * privacyOption;
 @property (nonatomic, retain) NSNumber * successful;
 @property (nonatomic, assign) BOOL paused;
+@property (nonatomic, assign) BOOL postedSuccessfully;
 @property (nonatomic, strong) RCNewPostOperation* currentNewPostOperation;
 
 - initWithMediaUploadOperation:(RCMediaUploadOperation*) mediaUploadOperation withPost:(RCPost*) post;

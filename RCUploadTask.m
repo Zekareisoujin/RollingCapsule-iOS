@@ -26,6 +26,7 @@
 @dynamic successful;
 @synthesize currentNewPostOperation = _currentNewPostOperation;
 @synthesize paused = _paused;
+@synthesize postedSuccessfully = _postedSuccessfully;
 
 - (id) initWithMediaUploadOperation:(RCMediaUploadOperation*) mediaUploadOperation withPost:(RCPost*) post {
     AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate] ;
@@ -48,6 +49,7 @@
         self.fileURL = [mediaUploadOperation.fileURL absoluteString];
         self.privacyOption = post.privacyOption;
         self.successful = [NSNumber numberWithBool:NO];
+        _postedSuccessfully = NO;
         NSLog(@"before forming newpost operation");
         self.currentNewPostOperation = [[RCNewPostOperation alloc] initWithPost:post withMediaUploadOperation:mediaUploadOperation];
     }

@@ -23,6 +23,8 @@ static RCUploadManager*  RCStaticUploadManager = nil;
     [RCStaticOperationQueue addOperation:operation];
 }
 + (void) clearUploadManager {
+    [RCStaticUploadManager.uploadQueue cancelAllOperations];
+    [RCStaticUploadManager unsuscribeAsObserver];
     RCStaticUploadManager = nil;
 }
 //need to create this method before calling any other upload manager stuff

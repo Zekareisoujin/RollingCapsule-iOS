@@ -56,10 +56,10 @@
         int i = 0;
         while (i < j) {
             RCUploadTask* task1 = (RCUploadTask*)[_uploadTasks objectAtIndex:i];
-            if ([task1.successful boolValue]) {
+            if (task1.postedSuccessfully) {
                 //decrease j until find a none successful post
                 RCUploadTask *task2 = (RCUploadTask*)[_uploadTasks objectAtIndex:j];
-                while (j > i && [task2.successful boolValue]) {
+                while (j > i && task2.postedSuccessfully) {
                     j--;
                     task2 = (RCUploadTask*)[_uploadTasks objectAtIndex:j];
                 }

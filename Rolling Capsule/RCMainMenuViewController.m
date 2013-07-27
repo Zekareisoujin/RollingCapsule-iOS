@@ -357,7 +357,7 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
     [_navigationController popToRootViewControllerAnimated:YES];
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate setCurrentUser:nil];
+    //[appDelegate setCurrentUser:nil];
     [RCOperationsManager clearUploadManager];
     [appDelegate disableSideMenu];
     [self slideThenHide];
