@@ -61,7 +61,7 @@
     NSMutableArray* tobeDeleted = [[NSMutableArray alloc] init];
     @synchronized(_uploadList) {
         for (RCUploadTask* task in _uploadList) {
-            if (task.successful || task.successful == nil || [task.successful isKindOfClass:[NSNull class]])
+            if (task.postedSuccessfully)
                 [tobeDeleted addObject:task];
         }
         for (RCUploadTask* task in tobeDeleted) {
@@ -159,10 +159,23 @@
     [task.currentNewPostOperation addObserver:self forKeyPath:@"isFinished" options:NSKeyValueObservingOptionNew context:nil];
 }
 
+- (void) unsuscribeAsObserver {
+    for (RCUploadTask* task in _uploadList) {
+        if (!task.currentNewPostOperation.isFinished) {
+            @try {
+                [task.currentNewPostOperation removeObserver:self forKeyPath:@"isFinished"];
+            }@catch(NSException *exception) {
+                NSLog(@"not observing this task");   
+            }
+        }
+    }
+}
+
 - (void) observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([object isKindOfClass:[RCNewPostOperation class]]) {
         RCNewPostOperation *operation = (RCNewPostOperation*)object;
         if ([keyPath isEqualToString:@"isFinished"]) {
+            [operation removeObserver:self forKeyPath:keyPath];
             RCUploadTask *task = [uploadTasksByKey objectForKey:operation.mediaUploadOperation.key];
             if (task == nil) return;
             if (!operation.successfulPost && !task.paused) {
@@ -171,6 +184,7 @@
                 task.currentNewPostOperation.mediaUploadOperation.uploadData = nil;
                 task.currentNewPostOperation.mediaUploadOperation.thumbnailImage = nil;
                 task.successful = [NSNumber numberWithBool:YES];
+                task.postedSuccessfully = YES;
                 [self deleteUploadTask:task];
                 NSNotification *notification = [NSNotification notificationWithName:RCNotificationNameMediaUploaded object:self];
                 [[NSNotificationCenter defaultCenter] postNotification:notification];

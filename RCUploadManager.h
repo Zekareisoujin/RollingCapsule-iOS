@@ -25,5 +25,6 @@
 - (void) cancelNewPostOperation:(RCUploadTask*) task;
 - (void) unpauseNewPostOperation:(RCUploadTask*) task;
 - (void) pauseNewPostOperation:(RCUploadTask*) task;
+- (void) unsuscribeAsObserver;
 + (NSArray*) getListOfUploadTasksFromCoreData;
 @end
