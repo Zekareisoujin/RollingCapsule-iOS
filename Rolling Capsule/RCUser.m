@@ -126,26 +126,36 @@ static NSMutableDictionary* RCUserUserCollection = nil;
         por.data        = imageData;
         
         // Put the image data into the specified s3 bucket and object.
-        AmazonS3Client *s3 = [RCAmazonS3Helper s3:_userID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3AvatarPictureBucket]];
         NSString *error = @"Couldn't connect to server, please try again later";
-        [RCConnectionManager endConnection];
-        if (s3 != nil) {
-            S3PutObjectResponse *putObjectResponse = [s3 putObject:por];
-            error = putObjectResponse.error.description;
-            if(putObjectResponse.error != nil) {
-                NSLog(@"Error: %@", putObjectResponse.error);
-            }
+        @try {
+            AmazonS3Client *s3 = [RCAmazonS3Helper s3:_userID forResource:[NSString stringWithFormat:@"%@/*",RCAmazonS3AvatarPictureBucket]];
+            [RCConnectionManager endConnection];
             
-            if(error != nil) {
-                NSLog(@"Error: %@", error);
-                postNotification(error);
-                completionHandle(nil);
-            }else {
-                [[RCResourceCache centralCache] putResourceInCache:[[NSString alloc] initWithFormat:@"%@/%d/avatar", RCUsersResource, _userID] forKey:avatar];
-                completionHandle(avatar);
+            if (s3 != nil) {
+                S3PutObjectResponse *putObjectResponse = [s3 putObject:por];
+                error = putObjectResponse.error.description;
+                if(putObjectResponse.error != nil) {
+                    NSLog(@"Error: %@", putObjectResponse.error);
+                }
+                
+                if(error != nil) {
+                    NSLog(@"Error: %@", error);
+                    postNotification(error);
+                    completionHandle(nil);
+                }else {
+                    [[RCResourceCache centralCache] putResourceInCache:[[NSString alloc] initWithFormat:@"%@/%d/avatar", RCUsersResource, _userID] forKey:avatar];
+                    _displayAvatar = avatar;
+                    completionHandle(avatar);
+                }
             }
+
+            
+        }@catch (NSException *e) {
+            [RCConnectionManager endConnection];
+            NSLog(@"Exception: %@", e);
+            postNotification(error);
+            completionHandle(nil);
         }
-        
         
     });
 }

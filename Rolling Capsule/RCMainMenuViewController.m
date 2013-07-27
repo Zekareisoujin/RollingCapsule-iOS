@@ -77,6 +77,17 @@
 //    [_menuTable reloadData];
 //    showLogOut = false;
     
+    [self initializeMenuTable];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    [AppDelegate cleanupMemory];
+    // Dispose of any resources that can be recreated.
+}
+
+- (void)initializeMenuTable {
     // Initialize menu table
     NSString *filePath = [[NSBundle mainBundle] pathForResource:@"menuContent" ofType:@"json"];
     _menuTree = [[RCTreeListModel alloc] initWithJSONFilePath:filePath];
@@ -103,13 +114,6 @@
     [_menuTree setObject:NSStringFromSelector(@selector(btnActionLogOut:)) forKeyPath:RCMenuKeySelector forTreeItem:RCMenuItemSettingsLogOut];
     
     [_menuTable reloadData];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    [AppDelegate cleanupMemory];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
