@@ -129,11 +129,12 @@
         [uploadTask setValue:post.releaseDate forKey:@"releaseDate"];
     if (post.topic != nil)
         [uploadTask setValue:post.topic forKey:@"topic"];
-    
+    NSLog(@"before saving to coredata");
     NSError *error;
     if (![context save:&error]) {
         NSLog(@"CoreData, couldn't save: %@", [error localizedDescription]);
     }
+    NSLog(@"finished saving to coredata");
 
 }
 

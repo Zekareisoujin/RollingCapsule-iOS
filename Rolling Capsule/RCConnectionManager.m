@@ -25,14 +25,14 @@ int _nOpenConnections;
 }
 
 + (void) startConnection {
-    //NSLog(@"start %d",_staticOpenConnections);
+    NSLog(@"start %d",_staticOpenConnections);
     _staticOpenConnections++;
     if (_staticOpenConnections > 0)
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
 }
 
 + (void) endConnection {
-    //NSLog(@"end %d",_staticOpenConnections);
+    NSLog(@"end %d",_staticOpenConnections);
     _staticOpenConnections--;
     if (_staticOpenConnections == 0)
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];

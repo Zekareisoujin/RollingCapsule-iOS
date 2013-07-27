@@ -40,8 +40,36 @@ BOOL _didQueueOpenMainFeedOption;
     return @"AppDelegate";
 }
 
+/*
+ My Apps Custom uncaught exception catcher, we do special stuff here, and TestFlight takes care of the rest
+ */
+void HandleExceptions(NSException *exception) {
+    NSLog(@"Uncaught exception : %@", exception);
+    // Save application data on crash
+}
+/*
+ My Apps Custom signal catcher, we do special stuff here, and TestFlight takes care of the rest
+ */
+void SignalHandler(int sig) {
+    NSLog(@"Uncaught signal code %d", sig);
+    // Save application data on crash
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    NSSetUncaughtExceptionHandler(&HandleExceptions);
+    // create the signal action structure
+    struct sigaction newSignalAction;
+    // initialize the signal action structure
+    memset(&newSignalAction, 0, sizeof(newSignalAction));
+    // set SignalHandler as the handler in the signal action structure
+    newSignalAction.sa_handler = &SignalHandler;
+    // set SignalHandler as the handlers for SIGABRT, SIGILL and SIGBUS
+    sigaction(SIGABRT, &newSignalAction, NULL);
+    sigaction(SIGILL, &newSignalAction, NULL);
+    sigaction(SIGBUS, &newSignalAction, NULL);
+    // Call takeOff after install your own unhandled exception and signal handlers
+    
     [TestFlight takeOff:@"9a1eac62-14de-493e-971e-bea0ff0cb99b"];
     [RCPost initPostDataModel];
     _didUpdateLocation = NO;
