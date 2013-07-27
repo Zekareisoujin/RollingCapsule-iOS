@@ -82,7 +82,7 @@
                     RCUser *user = [[RCUser alloc] initWithNSDictionary:(NSDictionary*)[jsonData objectForKey:@"user"]];
                     [delegate userDidLogIn:user];
                 }else {
-                    postNotification([NSString stringWithFormat:RCErrorMessagePleaseTryAgain]);
+                    showAlertDialog(([NSString stringWithFormat:RCErrorMessagePleaseTryAgain]), @"Error");
                 }
                 [self setUIBusy:NO];
             }];
@@ -90,7 +90,7 @@
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        postNotification(RCAlertMessageLoginFailed);
+        showAlertDialog(RCAlertMessageLoginFailed, @"Error");
     }
 }
 

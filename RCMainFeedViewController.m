@@ -700,6 +700,9 @@
         
         //if index path for cell not found
         if (indexPath != nil ) {
+            [_collectionView removeGestureRecognizer:_pinchGestureRecognizer];
+            [_collectionView removeGestureRecognizer:_tapGestureRecognizer];
+            [_collectionView removeGestureRecognizer:_longPressGestureRecognizer];
             RCPost *post;
             post = [_posts objectAtIndex:indexPath.row];
 //            RCUser *owner = [[RCUser alloc] init];
@@ -719,6 +722,7 @@
                 postDetailsViewController.landmarkID = post.landmarkID;
                 //[self presentViewController:postDetailsViewController animated:YES completion:nil];
                 [self.navigationController pushViewController:postDetailsViewController animated:YES];
+                
             }];
             
         }

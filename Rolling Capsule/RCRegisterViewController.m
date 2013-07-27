@@ -42,7 +42,7 @@ BOOL        _willMoveKeyboardUp;
         
         if([[_txtFieldName text] isEqualToString:@""] || [[_txtFieldPassword text] isEqualToString:@""] 
            || [[_txtFieldEmail text] isEqualToString:@""] || [[_txtFieldPasswordConfirmation text] isEqualToString:@""] ) {
-            postNotification(RCErrorMessageInformationMissing);
+            showAlertDialog(RCErrorMessageInformationMissing, @"Error");
         } else {
             NSMutableString *dataSt = initQueryString(@"user[email]", [_txtFieldEmail text]);
             addArgumentToQueryString(dataSt, @"user[password]", [_txtFieldPassword text]);
@@ -67,7 +67,7 @@ BOOL        _willMoveKeyboardUp;
                     NSString *name = (NSString *) [userData objectForKey:@"name"];
                     postNotification([NSString stringWithFormat:@"Welcome, %@!",name]);
                 }else {
-                    postNotification([NSString stringWithFormat:@"%@ %@",RCErrorMessagePleaseTryAgain, responseData]);
+                    showAlertDialog(([NSString stringWithFormat:@"%@ %@",RCErrorMessagePleaseTryAgain, responseData]), @"Error");
                 }
 
             }];
@@ -76,7 +76,7 @@ BOOL        _willMoveKeyboardUp;
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        postNotification(RCAlertMessageRegistrationFailed);
+        showAlertDialog(RCAlertMessageRegistrationFailed, @"Error");
     }
 }
 
