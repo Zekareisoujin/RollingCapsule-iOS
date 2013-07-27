@@ -12,12 +12,13 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *imgCellIcon;
 @property (weak, nonatomic) IBOutlet UIImageView *imgCellBackground;
-@property (weak, nonatomic) IBOutlet UILabel *imgCellLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *imgCellDropdownIcon;
+@property (weak, nonatomic) IBOutlet UILabel *lblCellTitle;
 
 + (NSString*) cellIdentifier;
 + (CGFloat) cellHeight;
 + (RCMenuTableCell*) createMenuTableCell: (UITableView*) tableView;
-- (void) setIcon: (UIImage*)icon label: (NSString*)label;
 - (void) setCellStateNormal: (BOOL)pressed;
+- (void) setDropDownIconVisible: (BOOL)show openState:(BOOL)open;
 
 @end

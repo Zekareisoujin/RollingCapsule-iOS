@@ -73,7 +73,7 @@
     if (op.successfulPost) status = @"Done";
     else if (op.isExecuting || op.mediaUploadOperation.isExecuting) status = @"Uploading";
     else status = @"Queued";
-    cell.imgCellLabel.text = status;
+    cell.lblCellTitle.text = status;
     return cell;
 }
 

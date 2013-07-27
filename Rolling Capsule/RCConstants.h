@@ -84,6 +84,25 @@ static NSString* const RCUploadError = @"UploadError";
 static NSString* const RCEmailCapitalString = @"EMAIL";
 static NSString* const RCPasswordCapitalString = @"PASSWORD";
 
+//Menu items
+static NSString* const RCMenuItemMainFeed = @"Main Feeds";
+static NSString* const RCMenuItemProfile = @"Profile";
+static NSString* const RCMenuItemFriend = @"Friends";
+static NSString* const RCMenuItemOutbox = @"Outbox";
+static NSString* const RCMenuItemConcierge = @"Concierge";
+static NSString* const RCMenuItemSettings = @"Settings";
+static NSString* const RCMenuItemConciergeGame = @"Games";
+static NSString* const RCMenuItemConciergeUtility = @"Utility";
+static NSString* const RCMenuItemConciergeTravel = @"Travel";
+static NSString* const RCMenuItemConciergeEmergency = @"Emergency";
+static NSString* const RCMenuItemConciergeShopping = @"Shopping";
+static NSString* const RCMenuItemSettingsLogOut = @"Log Out";
+
+static NSString* const RCMenuKeyKeyPath = @"key";
+static NSString* const RCMenuKeyIcon = @"icon";
+static NSString* const RCMenuKeyDisplayedName = @"displayedName";
+static NSString* const RCMenuKeySelector = @"selector";
+
 //cell border color
 static double const RCAppThemeColorRed = 52.0/255.0;
 static double const RCAppThemeColorGreen = 178.0/255.0;

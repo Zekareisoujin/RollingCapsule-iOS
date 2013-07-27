@@ -15,19 +15,21 @@
 #import "RCUtilities.h"
 #import "RCConstants.h"
 #import "RCMenuTableCell.h"
+#import "RCMenuTableCell2.h"
 #import "RCOutboxViewController.h"
 #import "UIImage+animatedGIF.h"
+#import <Foundation/Foundation.h>
 
 @interface RCMainMenuViewController ()
 
 @end
 
 @implementation RCMainMenuViewController {
-    NSArray *menuItemLabel;
-    NSArray *menuItemIcon;
+//    NSArray *menuItemLabel;
+//    NSArray *menuItemIcon;
     int     activeMenuIndex;
-    BOOL    showLogOut;
-    int     plusRows;
+//    BOOL    showLogOut;
+//    int     plusRows;
 }
 
 @synthesize navigationController = _navigationController;
@@ -54,27 +56,53 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    plusRows = 0;
+//    plusRows = 0;
     activeMenuIndex = 0;
     _menuTable.tableFooterView = [[UIView alloc] init];
     [_menuTable setSeparatorColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.3]];
     // Do any additional setup after loading the view from its nib.
     
-    menuItemLabel = [[NSArray alloc] initWithObjects:@"Main Feeds", @"Profile", @"Friends", @"Outbox", @"Settings", nil];
-    menuItemIcon = [[NSArray alloc] initWithObjects:[UIImage imageNamed:@"menuIconMainFeeds"],
-                                                    [UIImage imageNamed:@"menuIconProfile"],
-                                                    [UIImage imageNamed:@"menuIconFriends"],
-                                                    [UIImage imageNamed:@"menuIconOutbox"],
-                                                    [UIImage imageNamed:@"menuIconSettings"], nil];
+//    menuItemLabel = [[NSArray alloc] initWithObjects:@"Main Feeds", @"Profile", @"Friends", @"Outbox", @"Settings", nil];
+//    menuItemIcon = [[NSArray alloc] initWithObjects:[UIImage imageNamed:@"menuIconMainFeeds"],
+//                                                    [UIImage imageNamed:@"menuIconProfile"],
+//                                                    [UIImage imageNamed:@"menuIconFriends"],
+//                                                    [UIImage imageNamed:@"menuIconOutbox"],
+//                                                    [UIImage imageNamed:@"menuIconSettings"], nil];
     
     // Set table view background image
     UIImageView *backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"slideMenuBackground"]];
     [backgroundView setFrame:_menuTable.frame];
     [_btnUserAvatar setImage:[UIImage standardLoadingImage] forState:UIControlStateNormal];
     [_menuTable setBackgroundView: backgroundView];
-    [_menuTable reloadData];
-    showLogOut = false;
+//    [_menuTable reloadData];
+//    showLogOut = false;
     
+    // Initialize menu table
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"menuContent" ofType:@"json"];
+    _menuTree = [[RCTreeListModel alloc] initWithJSONFilePath:filePath];
+    
+    // Initialize menu icons
+    [_menuTree setObject:[UIImage imageNamed:@"menuIconMainFeeds"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemMainFeed];
+    [_menuTree setObject:[UIImage imageNamed:@"menuIconProfile"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemProfile];
+    [_menuTree setObject:[UIImage imageNamed:@"menuIconFriends"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemFriend];
+    [_menuTree setObject:[UIImage imageNamed:@"menuIconOutbox"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemOutbox];
+    [_menuTree setObject:[UIImage imageNamed:@"menuIconConcierge"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemConcierge];
+    [_menuTree setObject:[UIImage imageNamed:@"menuIconSettings"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemSettings];
+    [_menuTree setObject:[UIImage imageNamed:@"menuIconLogout"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemSettingsLogOut];
+    [_menuTree setObject:[UIImage imageNamed:@"menuIconConciergeGame"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemConciergeGame];
+    [_menuTree setObject:[UIImage imageNamed:@"menuIconConciergeUtility"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemConciergeUtility];
+    [_menuTree setObject:[UIImage imageNamed:@"menuIconConciergeTravel"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemConciergeTravel];
+    [_menuTree setObject:[UIImage imageNamed:@"menuIconConciergeShop"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemConciergeShopping];
+    [_menuTree setObject:[UIImage imageNamed:@"menuIconConciergeEmergency"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemConciergeEmergency];
+    
+    // Initialize menu selector
+    [_menuTree setObject:NSStringFromSelector(@selector(btnActionMainFeedNav:)) forKeyPath:RCMenuKeySelector forTreeItem:RCMenuItemMainFeed];
+    [_menuTree setObject:NSStringFromSelector(@selector(btnActionUserProfileNav:)) forKeyPath:RCMenuKeySelector forTreeItem:RCMenuItemProfile];
+    [_menuTree setObject:NSStringFromSelector(@selector(btnActionFriendViewNav:)) forKeyPath:RCMenuKeySelector forTreeItem:RCMenuItemFriend];
+    [_menuTree setObject:NSStringFromSelector(@selector(btnActionOutboxNav:)) forKeyPath:RCMenuKeySelector forTreeItem:RCMenuItemOutbox];
+    [_menuTree setObject:NSStringFromSelector(@selector(btnActionLogOut:)) forKeyPath:RCMenuKeySelector forTreeItem:RCMenuItemSettingsLogOut];
+    
+    [_menuTable reloadData];
 }
 
 - (void)didReceiveMemoryWarning
@@ -92,74 +120,133 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [menuItemLabel count] + plusRows;
+//    return [menuItemLabel count] + plusRows;
+    return _menuTree.cellCount;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     //Where we configure the cell in each row
-    RCMenuTableCell *cell = [RCMenuTableCell createMenuTableCell:_menuTable];
-    int idx = indexPath.row;
-    if (idx >= [menuItemIcon count]) {
-        UITableViewCell *newCell = [[UITableViewCell alloc] init];
-        [_viewLogoutRow removeFromSuperview];
-        [_viewLogoutRow setHidden:NO];
-        [newCell addSubview:_viewLogoutRow];
-        CGRect frame = _btnLogOut.frame;
-        frame.origin.x = frame.origin.y = 0;
-        _viewLogoutRow.frame = frame;
-        //[cell setIcon:[menuItemIcon objectAtIndex:0] label:@"Log out"];
-        return newCell;
-    }
-    [cell setIcon:[menuItemIcon objectAtIndex:indexPath.row] label:[menuItemLabel objectAtIndex:indexPath.row]];
-    [cell setCellStateNormal: (indexPath.row == activeMenuIndex)];
+//    RCMenuTableCell *cell = [RCMenuTableCell createMenuTableCell:_menuTable];
+//    int idx = indexPath.row;
+//    if (idx >= [menuItemIcon count]) {
+//        UITableViewCell *newCell = [[UITableViewCell alloc] init];
+//        [_viewLogoutRow removeFromSuperview];
+//        [_viewLogoutRow setHidden:NO];
+//        [newCell addSubview:_viewLogoutRow];
+//        CGRect frame = _btnLogOut.frame;
+//        frame.origin.x = frame.origin.y = 0;
+//        _viewLogoutRow.frame = frame;
+//        //[cell setIcon:[menuItemIcon objectAtIndex:0] label:@"Log out"];
+//        return newCell;
+//    }
+//    [cell setIcon:[menuItemIcon objectAtIndex:indexPath.row] label:[menuItemLabel objectAtIndex:indexPath.row]];
+//    [cell setCellStateNormal: (indexPath.row == activeMenuIndex)];
+//    
+//    return cell;
     
-    return cell;
+    NSMutableDictionary *item = [_menuTree itemForRowAtIndexPath:indexPath];
+    UIImage *icon = [item objectForKey:RCMenuKeyIcon];
+    if (icon == nil)
+        icon = [UIImage imageNamed:@"loading2.gif"];
+    NSString *label = [item objectForKey:RCMenuKeyDisplayedName];
+    if (label == nil)
+        label = [item objectForKey:RCMenuKeyKeyPath];
+    
+    if ([_menuTree levelForRowAtIndexPath:indexPath] < 1) {
+        RCMenuTableCell *cell = [RCMenuTableCell createMenuTableCell:_menuTable];
+        [cell.imgCellIcon setImage:icon];
+        [cell.lblCellTitle setText:label];
+        [cell setCellStateNormal:NO];
+        if ([[item valueForKeyPath:@"value.@count"] intValue] > 0)
+            [cell setDropDownIconVisible:YES openState:[[item valueForKeyPath:@"isOpen"] boolValue]];
+        else
+            [cell setCellStateNormal: (indexPath.row == activeMenuIndex)];
+        return cell;
+    }else {
+        RCMenuTableCell2 *cell = [RCMenuTableCell2 createMenuTableCell:_menuTable];
+        [cell.imgCellIcon setImage:icon];
+        [cell.lblCellTitle setText:label];
+        return cell;
+    }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row < 4)
+    if ([_menuTree levelForRowAtIndexPath:indexPath] < 1)
         return [RCMenuTableCell cellHeight];
     else
-        return _viewLogoutRow.frame.size.height;
+        return [RCMenuTableCell2 cellHeight];
 }
 
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Not sure of a better way to do this at the moment
+//    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+//    switch (indexPath.row) {
+//        case 0:
+//            [self btnActionMainFeedNav:self];
+//            break;
+//        case 1:
+//            [self btnActionUserProfileNav:self];
+//            break;
+//        case 2:
+//            [self btnActionFriendViewNav:self];
+//            break;
+//        case 3:
+//            [self btnActionOutboxNav:self];
+//            break;
+//        case 4:
+//            //[self btnActionSetting:self];
+//            //[self btnActionLogOutDropDown:self];
+//            if (plusRows == 0) {
+//                plusRows = 1;
+//                [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:[menuItemLabel count] inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
+//            } else {
+//                plusRows = 0;
+//                [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:[menuItemLabel count] inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
+//            }
+//            return;
+//            //[tableView reloadData];
+//            break;
+//        default:
+//            break;
+//    }
+//    
+//    activeMenuIndex = indexPath.row;
+//    [tableView reloadData];
+//    int item_count = [[item valueForKeyPath:@"value.@count"] intValue];
+
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    switch (indexPath.row) {
-        case 0:
-            [self btnActionMainFeedNav:self];
-            break;
-        case 1:
-            [self btnActionUserProfileNav:self];
-            break;
-        case 2:
-            [self btnActionFriendViewNav:self];
-            break;
-        case 3:
-            [self btnActionOutboxNav:self];
-            break;
-        case 4:
-            //[self btnActionSetting:self];
-            //[self btnActionLogOutDropDown:self];
-            if (plusRows == 0) {
-                plusRows = 1;
-                [tableView insertRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:[menuItemLabel count] inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
-            } else {
-                plusRows = 0;
-                [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:[NSIndexPath indexPathForItem:[menuItemLabel count] inSection:0]] withRowAnimation:UITableViewRowAnimationTop];
-            }
-            return;
-            //[tableView reloadData];
-            break;
-        default:
-            break;
+    NSMutableDictionary *item = [_menuTree itemForRowAtIndexPath:indexPath];
+    RCMenuTableCell *cell = (RCMenuTableCell*)[tableView cellForRowAtIndexPath:indexPath];
+    int item_count = [_menuTree numberOfChildrenForRowAtIndexPath:indexPath];
+    if (item_count<=0) {
+        activeMenuIndex = indexPath.row;
+        NSString* selectorStr = [item valueForKeyPath:RCMenuKeySelector];
+        if (selectorStr != nil) {
+            [self performSelector:NSSelectorFromString(selectorStr) withObject:nil];
+        }
+        [tableView reloadData];
+        return;
     }
     
-    activeMenuIndex = indexPath.row;
-    [tableView reloadData];
+    BOOL newState = ![_menuTree isCellOpenForRowAtIndexPath:indexPath];
+    [_menuTree setOpenClose:newState forRowAtIndexPath:indexPath];
+    
+    NSMutableArray *openItems = [[NSMutableArray alloc] init];
+    for (int i=0; i<item_count; i++){
+        NSIndexPath *idxPath = [NSIndexPath indexPathForItem:(indexPath.row + 1 + i) inSection:0];
+        [openItems addObject:idxPath];
+    }
+    
+    if (newState) {
+        [tableView insertRowsAtIndexPaths:openItems withRowAnimation:UITableViewRowAnimationTop];
+    }else {
+        [tableView deleteRowsAtIndexPaths:openItems withRowAnimation:UITableViewRowAnimationTop];
+    }
+    if ([_menuTree levelForRowAtIndexPath:indexPath] < 1)
+        [cell setDropDownIconVisible:YES openState:newState];
+
 }
 
 #pragma mark - Menu actions
@@ -270,18 +357,18 @@
 }
 
 - (IBAction)btnActionLogOutDropDown:(id)sender {
-    float offset;
-    offset = (!showLogOut?40:-40);
-    showLogOut = !showLogOut;
-    
-    [UIView animateWithDuration:0.5 animations:^{
-        CGRect rect = _btnLogOut.frame;
-        rect.origin.y += offset;
-        [_btnLogOut setFrame:rect];
-        rect = _btnLogOutIcon.frame;
-        rect.origin.y += offset;
-        [_btnLogOutIcon setFrame:rect];
-    }];
+//    float offset;
+//    offset = (!showLogOut?40:-40);
+//    showLogOut = !showLogOut;
+//    
+//    [UIView animateWithDuration:0.5 animations:^{
+//        CGRect rect = _btnLogOut.frame;
+//        rect.origin.y += offset;
+//        [_btnLogOut setFrame:rect];
+//        rect = _btnLogOutIcon.frame;
+//        rect.origin.y += offset;
+//        [_btnLogOutIcon setFrame:rect];
+//    }];
 }
 
 - (void)asynchLogOutRequest

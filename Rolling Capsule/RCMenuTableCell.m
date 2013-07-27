@@ -10,10 +10,6 @@
 
 @implementation RCMenuTableCell
 
-@synthesize imgCellIcon = _imgCellIcon;
-@synthesize imgCellBackground = _imgCellBackground;
-@synthesize imgCellLabel = _imgCellLabel;
-
 static NSString *cellStateHighlight = @"menuButtonPressed";
 static NSString *cellStateSelected = @"menuButtonPressed";
 static NSString *cellStateNormal = @"menuButtonNormal";
@@ -69,17 +65,20 @@ static NSString *cellStateNormal = @"menuButtonNormal";
     return cell;
 }
 
-- (void) setIcon: (UIImage*)icon label: (NSString*)label {
-    [_imgCellIcon setImage:icon];
-    [_imgCellLabel setText:label];
-}
-
 - (void) setCellStateNormal: (BOOL)pressed {
     if (pressed) {
         cellStateNormal = @"menuButtonPressed";
     }else {
         cellStateNormal = @"menuButtonNormal";
     }
+}
+
+- (void) setDropDownIconVisible: (BOOL)show openState:(BOOL)open {
+    [self setHidden:!show];
+    if (open)
+        [_imgCellDropdownIcon setImage:[UIImage imageNamed:@"menuIconDropdownOpen"]];
+    else
+        [_imgCellDropdownIcon setImage:[UIImage imageNamed:@"menuIconDropdownClose"]];
 }
 
 @end
