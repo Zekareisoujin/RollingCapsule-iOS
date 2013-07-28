@@ -45,6 +45,7 @@
 @property (nonatomic, strong) Reachability * reachability;
 @property (nonatomic, strong) UILabel* lblWarningNoConnection;
 @property (nonatomic, assign) BOOL didZoom;
+@property (nonatomic, strong) NSTimer* autoRefresh;
 
 @end
 
@@ -221,7 +222,7 @@
     [formatter setDateFormat:RCInfoStringDateFormat];
     NSString *lastUpdated = [NSString stringWithFormat:RCInfoStringLastUpdatedOnFormat, [formatter  stringFromDate:[NSDate date] ] ];
     [_refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:lastUpdated]];
-    [self animateButtonRefresh:YES];
+    [self toggleButtonRefresh:YES];
     
 	[self asynchFetchFeeds:NUM_RETRY_MAIN_FEED];
 }
@@ -349,14 +350,14 @@
                     
                     [_mapView removeAnnotations:_mapView.annotations];
                     [_collectionView reloadData];
-                    [self animateButtonRefresh:NO];
+                    [self toggleButtonRefresh:NO];
                     
                     return;
                 } else {
                     NSLog(@"error: %@",error);
                     if (nRetry == 0) {
                         postNotification(RCErrorMessageFailedToGetFeed);
-                        [self animateButtonRefresh:NO];
+                        [self toggleButtonRefresh:NO];
                     }else {
                         [self asynchFetchFeeds:nRetry];
                     }
@@ -611,6 +612,13 @@
 
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
+    if (_autoRefresh != nil)
+        [_autoRefresh invalidate];
+    _autoRefresh = [NSTimer scheduledTimerWithTimeInterval:10*60 block:^(NSTimeInterval time){
+        [self handleRefresh:_refreshControl];
+    }repeats:YES];
+    
     if (_willRefresh) {
         [self handleRefresh:_refreshControl];
         _willRefresh = NO;
@@ -775,11 +783,13 @@
     [_collectionView reloadData];
 }
 
-- (void) animateButtonRefresh: (BOOL)animate {
+- (void) toggleButtonRefresh: (BOOL)animate {
     if (animate) {
+        [_btnRefresh setEnabled:NO];
         NSURL *url = [[NSBundle mainBundle] URLForResource:@"buttonRefresh" withExtension:@"gif"];
         [_btnRefresh setImage:[UIImage animatedImageWithAnimatedGIFURL:url] forState:UIControlStateNormal];
     }else {
+        [_btnRefresh setEnabled:YES];
         [_btnRefresh setImage:[UIImage imageNamed:@"buttonRefresh.gif"] forState:UIControlStateNormal];
     }
 }
