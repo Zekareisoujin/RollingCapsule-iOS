@@ -204,7 +204,6 @@ void SignalHandler(int sig) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
             [RCOperationsManager createUploadManager];
         });
-    [_menuViewController setLoggedInUser:user];
     NSLog(@"%@ set current user %d:%@",[AppDelegate debugTag], user.userID,user.email);
 }
 
@@ -280,7 +279,7 @@ void SignalHandler(int sig) {
             NSString* userIDStr = [url.relativePath substringFromIndex:[@"/" length]];
             if ([userIDStr intValue] != 0) {
                 [RCUser getUserWithIDAsync:[userIDStr intValue] completionHandler:^(RCUser *user){
-                    RCUserProfileViewController *userProfileViewController = [[RCUserProfileViewController alloc] initWithUser:user viewingUser:self.menuViewController.user];
+                    RCUserProfileViewController *userProfileViewController = [[RCUserProfileViewController alloc] initWithUser:user viewingUser:[RCUser currentUser]];
                     [_navigationController pushViewController:userProfileViewController animated:YES];
                 }];
             }

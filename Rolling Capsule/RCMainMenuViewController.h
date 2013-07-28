@@ -15,7 +15,6 @@
 @interface RCMainMenuViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, RCLoginViewControllerDelegate>
 
 @property (strong, nonatomic) UINavigationController *navigationController;
-@property (nonatomic, strong) RCUser* user;
 - (IBAction)btnOptionsTouchUpInside:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UIButton *btnUserAvatar;
@@ -38,5 +37,4 @@
 - (IBAction)btnActionLogOut:(id)sender;
 - (IBAction)btnActionLogOutDropDown:(id)sender;
 - (void)setNavigationBarMenuBttonForViewController:(UIViewController *) viewController;
-- (void)setLoggedInUser: (RCUser*)user;
 @end

@@ -10,13 +10,12 @@
 #import <CoreLocation/CoreLocation.h>
 #import "TestFlight.h"
 #import "TTTAttributedLabel.h"
-
+#import "RCMainMenuViewController.h"
+#import "RCUser.h"
 #define NSLog TFLog
 #define TEST_VERSION
 
-@class RCMainMenuViewController;
 @class RCSlideoutViewController;
-@class RCUser;
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate, CLLocationManagerDelegate, TTTAttributedLabelDelegate> {
     NSManagedObjectModel *managedObjectModel;

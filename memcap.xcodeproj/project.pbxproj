@@ -101,6 +101,7 @@
 		6460E88D178C68460065D6BA /* landmarkEmpty.png in Resources */ = {isa = PBXBuildFile; fileRef = 6460E88C178C68460065D6BA /* landmarkEmpty.png */; };
 		6460E88F178C88FE0065D6BA /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6460E88E178C88FE0065D6BA /* MobileCoreServices.framework */; };
 		64610340176E5F8A008DD131 /* RCLandmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 6461033F176E5F8A008DD131 /* RCLandmark.m */; };
+		646C809B17A5C67A00054C1A /* RCFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = 646C809A17A5C67A00054C1A /* RCFeed.m */; };
 		647265B617A04CDF002E654A /* RCAsyncPhotoDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 647265B117A04CDF002E654A /* RCAsyncPhotoDownloadOperation.m */; };
 		647265B717A04CDF002E654A /* RCMediaUploadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 647265B317A04CDF002E654A /* RCMediaUploadOperation.m */; };
 		647265B817A04CDF002E654A /* RCNewPostOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 647265B517A04CDF002E654A /* RCNewPostOperation.m */; };
@@ -412,6 +413,8 @@
 		6460E88E178C88FE0065D6BA /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		6461033E176E5F8A008DD131 /* RCLandmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCLandmark.h; sourceTree = "<group>"; };
 		6461033F176E5F8A008DD131 /* RCLandmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCLandmark.m; sourceTree = "<group>"; };
+		646C809917A5C67A00054C1A /* RCFeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCFeed.h; sourceTree = "<group>"; };
+		646C809A17A5C67A00054C1A /* RCFeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCFeed.m; sourceTree = "<group>"; };
 		647265B017A04CDF002E654A /* RCAsyncPhotoDownloadOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAsyncPhotoDownloadOperation.h; sourceTree = "<group>"; };
 		647265B117A04CDF002E654A /* RCAsyncPhotoDownloadOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAsyncPhotoDownloadOperation.m; sourceTree = "<group>"; };
 		647265B217A04CDF002E654A /* RCMediaUploadOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMediaUploadOperation.h; sourceTree = "<group>"; };
@@ -727,6 +730,8 @@
 				6407BBD717545579000F29C5 /* RCUser.h */,
 				6407BBD817545579000F29C5 /* RCUser.m */,
 				64D6EC1B17A2536A00663AE3 /* RCUserData.xcdatamodeld */,
+				646C809917A5C67A00054C1A /* RCFeed.h */,
+				646C809A17A5C67A00054C1A /* RCFeed.m */,
 			);
 			name = Models;
 			path = ..;
@@ -1513,6 +1518,7 @@
 				BF7FAFBF17A2FE370010CD95 /* RCOutboxTableCell.m in Sources */,
 				642B0D6117A45959004F7B8E /* RCMenuTableCell2.m in Sources */,
 				642B0D6517A45975004F7B8E /* RCTreeListModel.m in Sources */,
+				646C809B17A5C67A00054C1A /* RCFeed.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

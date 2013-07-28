@@ -36,7 +36,6 @@
 }
 
 @synthesize navigationController = _navigationController;
-@synthesize user = _user;
 @synthesize menuTable = _menuTable;
 
 
@@ -331,7 +330,7 @@
 - (IBAction)btnActionMainFeedNav:(id)sender {
     RCMainFeedViewController *mainFeedViewController = [[RCMainFeedViewController alloc] init];
     //_navigationController.delegate = mainFeedViewController;
-    [mainFeedViewController setCurrentUser:_user];
+    [mainFeedViewController setCurrentUser:[RCUser currentUser]];
     [self navigateToViewControllerFromMenu:mainFeedViewController];
 }
 - (IBAction)btnActionOutboxNav:(id)sender {
@@ -339,17 +338,17 @@
     [self navigateToViewControllerFromMenu:outboxViewController];
 }
 - (IBAction)btnActionUserProfileNav:(id)sender {
-    RCUserProfileViewController *userProfileViewController = [[RCUserProfileViewController alloc] initWithUser:_user viewingUser:_user];
+    RCUserProfileViewController *userProfileViewController = [[RCUserProfileViewController alloc] initWithUser:[RCUser currentUser] viewingUser:[RCUser currentUser]];
     [self navigateToViewControllerFromMenu:userProfileViewController];
 }
 
 - (IBAction)btnActionFriendViewNav:(id)sender {
-    RCFriendListViewController *friendListViewController = [[RCFriendListViewController alloc] initWithUser:_user withLoggedinUser:_user];
+    RCFriendListViewController *friendListViewController = [[RCFriendListViewController alloc] initWithUser:[RCUser currentUser] withLoggedinUser:[RCUser currentUser]];
     [self navigateToViewControllerFromMenu:friendListViewController];
 }
 
 - (IBAction)btnActionSetting:(id)sender {
-    RCSettingViewController *settingViewController = [[RCSettingViewController alloc] initWithUser:_user];
+    RCSettingViewController *settingViewController = [[RCSettingViewController alloc] initWithUser:[RCUser currentUser]];
     [self navigateToViewControllerFromMenu:settingViewController];
 }
 
@@ -377,19 +376,12 @@
 }
 
 - (void)userDidLogIn:(RCUser *)user {
-    [self setLoggedInUser:user];
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:RCLogStatusDefault];
     [[NSUserDefaults standardUserDefaults] synchronize];
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate enableSideMenu];
 
     [self btnActionMainFeedNav:self];
-}
-
-- (void)setLoggedInUser: (RCUser*)user {
-    _user = user;
-    [[NSUserDefaults standardUserDefaults] setObject:[user getDictionaryObject] forKey:RCLogUserDefault];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (UIBarButtonItem*) menuBarButton {
@@ -419,13 +411,13 @@
 }
 
 - (void) refreshUserAvatar {
-    [_lblUserName setText:_user.name];
+    [_lblUserName setText:[RCUser currentUser].name];
     [_lblUserName setLinkAttributes:[[_lblUserName attributedText] attributesAtIndex:0 effectiveRange:nil]];
     [_lblUserName setActiveLinkAttributes:[[_lblUserName attributedText] attributesAtIndex:0 effectiveRange:nil]];
-    [_lblUserName addLinkToURL:[NSURL URLWithString:[NSString stringWithFormat:@"memcap:/%@/%d?user[name]=%@",RCUsersResource,_user.userID, urlEncodeValue(_user.name)]] withRange:NSMakeRange(0,[_lblUserName.text length])];
+    [_lblUserName addLinkToURL:[NSURL URLWithString:[NSString stringWithFormat:@"memcap:/%@/%d?user[name]=%@",RCUsersResource,[RCUser currentUser].userID, urlEncodeValue([RCUser currentUser].name)]] withRange:NSMakeRange(0,[_lblUserName.text length])];
     [_lblUserName setDelegate:(AppDelegate*)[[UIApplication sharedApplication] delegate]];
     
-    [_user getUserAvatarAsync:_user.userID completionHandler:^(UIImage* img){
+    [[RCUser currentUser] getUserAvatarAsync:[RCUser currentUser].userID completionHandler:^(UIImage* img){
         dispatch_async(dispatch_get_main_queue(), ^{
             [_btnUserAvatar setImage:img forState:UIControlStateNormal];
         });
