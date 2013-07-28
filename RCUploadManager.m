@@ -167,6 +167,7 @@
         if (!task.currentNewPostOperation.isFinished) {
             @try {
                 [task.currentNewPostOperation removeObserver:self forKeyPath:@"isFinished"];
+                [task.currentNewPostOperation.mediaUploadOperation removeObserver:self forKeyPath:@"fileURL"];
             }@catch(NSException *exception) {
                 NSLog(@"not observing this task");   
             }
