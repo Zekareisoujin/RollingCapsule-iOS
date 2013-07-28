@@ -30,6 +30,7 @@
 //    NSArray *menuItemLabel;
 //    NSArray *menuItemIcon;
     int     activeMenuIndex;
+    BOOL    conciergeInitialized;
 //    BOOL    showLogOut;
 //    int     plusRows;
 }
@@ -79,6 +80,7 @@
 //    [_menuTable reloadData];
 //    showLogOut = false;
     
+    conciergeInitialized = NO;
     [self initializeMenuTable];
     [self initializeConcierge];
 }
@@ -89,8 +91,7 @@
     [AppDelegate cleanupMemory];
     // Dispose of any resources that can be recreated.
 }
-//@"http://itunes.apple.com/tw/lookup?id=649232055",
-//@"http://itunes.apple.com/tw/lookup?id=649232055", RCMenuItemConciergeGame,
+
 - (void)initializeConcierge {
     NSDictionary *sgList = [[NSDictionary alloc]
         initWithObjectsAndKeys:@"http://itunes.apple.com/sg/lookup?id=615376522",
@@ -102,6 +103,7 @@
     
     NSDictionary *twList = [[NSDictionary alloc]
         initWithObjectsAndKeys:@"http://itunes.apple.com/tw/lookup?id=649232055", RCMenuItemConciergeGame,
+                               @"http://itunes.apple.com/tw/lookup?id=366479443", RCMenuItemConciergeUtility,
                                @"http://itunes.apple.com/tw/lookup?id=656617797", RCMenuItemConciergeEmergency,
                                @"http://itunes.apple.com/tw/lookup?id=596652968", RCMenuItemConciergeShopping, nil];
 
@@ -147,6 +149,7 @@
                 // selector:
                 [_menuTree setObject:NSStringFromSelector(@selector(goToURL:)) forKeyPath:RCMenuKeySelector forTreeItem:key];
             }
+            conciergeInitialized = YES;
         }];
     }
 }
@@ -368,6 +371,8 @@
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate showSideMenu];
     
+    if (!conciergeInitialized)
+        [self initializeConcierge];
     [self refreshUserAvatar];
 }
 
@@ -388,14 +393,22 @@
 }
 
 - (UIBarButtonItem*) menuBarButton {
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc]
-                                   initWithTitle:@"              "
-                                   style:UIBarButtonItemStyleBordered
-                                   target:self
-                                   action:@selector(showSelfAsSideMenu)];
-    UIImage *image = [[UIImage imageNamed:@"menu.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
-    [backButton setBackgroundImage:image forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
-    return backButton;
+//    UIBarButtonItem *backButton = [[UIBarButtonItem alloc]
+//                                   initWithTitle:@"              "
+//                                   style:UIBarButtonItemStyleBordered
+//                                   target:self
+//                                   action:@selector(showSelfAsSideMenu)];
+//    UIImage *image = [[UIImage imageNamed:@"menu.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)];
+//    [backButton setBackgroundImage:image forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+//    return backButton;
+    
+    UIImage *menuButtonImage = [UIImage imageNamed:@"menu"];
+    UIButton *menuButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [menuButton setFrame:CGRectMake(0,0,menuButtonImage.size.width, menuButtonImage.size.height)];
+    [menuButton setBackgroundImage:menuButtonImage forState:UIControlStateNormal];
+    [menuButton addTarget:self action:@selector(showSelfAsSideMenu) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *ret = [[UIBarButtonItem alloc] initWithCustomView:menuButton];
+    return ret;
 }
 
 - (void)setNavigationBarMenuBttonForViewController:(UIViewController *) viewController {

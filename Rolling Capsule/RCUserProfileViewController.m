@@ -133,6 +133,11 @@
     [_previewPostImage setClipsToBounds:YES];
     [self hidePostPreview];
     
+    [_btnFollow setContentEdgeInsets:UIEdgeInsetsMake(0, 35, 0, 0)];
+    [_btnFollow setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
+    [_btnViewFriends setContentEdgeInsets:UIEdgeInsetsMake(0, 35, 0, 0)];
+    [_btnViewFriends setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
+    
     if (_viewingUser.userID != _profileUser.userID) {
         [_btnEditProfile setHidden:YES];
         [_btnEditProfile setEnabled:NO];
@@ -141,10 +146,10 @@
 //        [self asynchCheckUserFollowRequest];
         [self getUserRelations];
         
-        UIImage *buttonImage = [UIImage imageNamed:@"profileBtnFriendAction"];
+        UIImage *buttonImage = [UIImage imageNamed:@"btnStandard-normal.png"];
         UIButton *postButton = [UIButton buttonWithType:UIButtonTypeCustom];
         _btnFriendAction = postButton;
-        [postButton setFrame:CGRectMake(0,0,buttonImage.size.width, buttonImage.size.height)];
+        [postButton setFrame:CGRectMake(0,0,buttonImage.size.width*1.6, buttonImage.size.height)];
         [postButton setBackgroundImage:buttonImage forState:UIControlStateNormal];
         [postButton addTarget:self action:@selector(btnFriendActionClicked:) forControlEvents:UIControlEventTouchUpInside];
         UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithCustomView:postButton] ;
