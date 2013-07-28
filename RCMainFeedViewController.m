@@ -454,13 +454,6 @@
         newPostController = [[RCNewPostViewController alloc] initWithUser:_user withNibName:@"RCNewPostViewController4" bundle:nil];
     else
         newPostController = [[RCNewPostViewController alloc] initWithUser:_user withNibName:@"RCNewPostViewController" bundle:nil];
-    newPostController.postComplete = ^{
-        [_postButton setEnabled:YES];
-        [self handleRefresh:_refreshControl];
-    };
-    /*newPostController.postCancel = ^{
-        [_postButton setEnabled:YES];
-    };*/
 
     [self presentViewController:newPostController animated:YES completion:nil];
     /*[self addChildViewController:newPostController];

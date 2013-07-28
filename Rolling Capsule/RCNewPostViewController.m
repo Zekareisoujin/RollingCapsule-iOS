@@ -248,18 +248,19 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     _post.latitude = appDelegate.currentLocation.coordinate.latitude;
     _post.longitude = appDelegate.currentLocation.coordinate.longitude;
-    _post.subject = _txtFieldPostSubject.text;
+    _post.subject = [_txtFieldPostSubject.text copy];
     _post.content = [_txtViewPostContent.text substringFromIndex:[_user.name length]+1];
-    _post.fileUrl = _imageFileName;
+    _post.fileUrl = [_imageFileName copy];
     _post.thumbnailUrl = [NSString stringWithFormat:@"%@-thumbnail", _imageFileName];
-    _post.privacyOption = _privacyOption;
-    _post.topic = _currentTopic;
+    _post.privacyOption = [_privacyOption copy];
+    _post.topic = [_currentTopic copy];
     _post.postedTime = [NSDate date];
     if (_datePickerView != nil && _isTimedRelease) {
         _post.releaseDate = [_datePickerView date];
     }
     //_postNewOp = [[RCNewPostOperation alloc] initWithPost:post withMediaUploadOperation:_mediaUploadOp];
     [RCOperationsManager addUploadOperation:_mediaUploadOp withPost:_post];
+    _mediaUploadOp = nil;
     /*if (_postCancel != nil) {
         _postCancel();
     }*/
@@ -566,6 +567,7 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
     [self.view addSubview:_activityIndicator];
     [_activityIndicator startAnimating];
     _videoUrl = nil;
+    [picker dismissViewControllerAnimated:YES completion:nil];
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
         NSLog(@"background processing before data upload");
@@ -603,8 +605,10 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
                     }
                 }];
             } else {
-                NSURL *url = [info objectForKey:UIImagePickerControllerReferenceURL];
-                localMediaUploadOp.fileURL = [NSURL URLWithString:[url absoluteString]];
+                if ([RCOperationsManager defaultUploadManager].willWriteToCoreData) {
+                    NSURL *url = [info objectForKey:UIImagePickerControllerReferenceURL];
+                    localMediaUploadOp.fileURL = [NSURL URLWithString:[url absoluteString]];
+                }
             }
             _postImage = generateVideoThumbnail(_videoUrl);
             _uploadData = [NSData dataWithContentsOfURL:_videoUrl];
@@ -623,8 +627,10 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
                     }  
                 }];
             } else {
-                NSURL *url = [info objectForKey:UIImagePickerControllerReferenceURL];
-                localMediaUploadOp.fileURL = [NSURL URLWithString:[url absoluteString]];
+                if ([RCOperationsManager defaultUploadManager].willWriteToCoreData) {
+                    NSURL *url = [info objectForKey:UIImagePickerControllerReferenceURL];
+                    localMediaUploadOp.fileURL = [NSURL URLWithString:[url absoluteString]];
+                }
             }
             NSLog(@"image size %f %f",_postImage.size.width, _postImage.size.height);
             _postImage = resizeImageIfTooBig(_postImage);
@@ -661,7 +667,6 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
         localMediaUploadOp.thumbnailImage = rescaledThumbnail;
         [RCOperationsManager addUploadMediaOperation:localMediaUploadOp];
     });
-    [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
 -(void) imagePickerControllerDidCancel:(UIImagePickerController *)picker
@@ -1056,9 +1061,9 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
 }
 - (IBAction)closeBtnTouchUpInside:(id)sender {
    
+    NSLog(@"clicked close on newpostviewcontroller");
     [self dismissViewControllerAnimated:YES completion:^ {
-        if (_postCancel != nil)
-            _postCancel();
+        
     }];
 }
 

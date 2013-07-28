@@ -69,7 +69,8 @@
                 S3GetObjectResponse *response = [_s3 getObject:downloadRequest];
                 UIImage *image = [UIImage imageWithData:response.body];
                 
-                [[RCResourceCache centralCache] putResourceInCache:image forKey:[NSString stringWithFormat:@"media/%@", _key]];
+                if (image != nil)
+                    [[RCResourceCache centralCache] putResourceInCache:image forKey:[NSString stringWithFormat:@"media/%@", _key]];
                 //[RCConnectionManager endConnection];
                 if (_completionHandler != nil)
                     _completionHandler(image);

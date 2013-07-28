@@ -481,7 +481,6 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     else 
         textContent = [NSString stringWithFormat:@"%@ %@",userName, comment];
     
-    
     UIFont *boldFont = [UIFont fontWithName:@"Helvetica-Bold" size:17.0];
     UIFont *regularFont = [UIFont fontWithName:@"Helvetica" size:17.0];
     UIColor *foregroundColor = [UIColor blackColor];
