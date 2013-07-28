@@ -18,6 +18,8 @@
 
 @synthesize uploadQueue = _uploadQueue;
 @synthesize uploadList = _uploadList;
+@synthesize willWriteToCoreData = _willWriteToCoreData;
+
 - (id) init {
     self = [super init];
     if (self) {
@@ -26,6 +28,7 @@
         _uploadList = [[NSMutableArray alloc] init];
         uploadTasksByKey = [[NSMutableDictionary alloc] init];
         [self readUploadTasksFromCoreData];
+        _willWriteToCoreData = YES;
     }
     return self;
 }
@@ -208,6 +211,7 @@
 }
 
 - (void) writeUploadTaskToCoreData:(RCUploadTask*) task {
+    if (!_willWriteToCoreData) return;
     AppDelegate* appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
     NSManagedObjectContext *context = [appDelegate managedObjectContext];
     NSError *error;

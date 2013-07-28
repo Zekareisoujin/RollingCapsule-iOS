@@ -7,6 +7,8 @@
 //
 
 #import "RCSettingViewController.h"
+#import "RCOperationsManager.h"
+#import "RCNewPostViewController.h"
 #import "RCUtilities.h"
 #import "RCConstants.h"
 
@@ -56,6 +58,16 @@
     [self.navigationController popToRootViewControllerAnimated:YES];
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate disableSideMenu];
+}
+
+- (IBAction)switchSaveToDiskValueChanged:(id)sender {
+    RCUploadManager* defaultUM = [RCOperationsManager defaultUploadManager];
+    defaultUM.willWriteToCoreData = !defaultUM.willWriteToCoreData;
+}
+
+- (IBAction)siwtchClosePostViewValueChanged:(id)sender {
+    //NSLog(@"%d", _switchClosePostView.on);
+    [RCNewPostViewController toggleAutomaticClose];
 }
 
 - (void)asynchLogOutRequest

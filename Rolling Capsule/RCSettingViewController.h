@@ -15,5 +15,9 @@
 @property (strong, nonatomic) RCUser *user;
 
 - (IBAction)btnActionLogOut:(id)sender;
+- (IBAction)switchSaveToDiskValueChanged:(id)sender;
+- (IBAction)siwtchClosePostViewValueChanged:(id)sender;
+@property (weak, nonatomic) IBOutlet UISwitch *switchClosePostView;
+@property (weak, nonatomic) IBOutlet UISwitch *switchSaveToDisk;
 
 @end

@@ -85,7 +85,14 @@ BOOL _didFinishUploadingImage = NO;
 BOOL _isMovie = NO;
 BOOL _isPosting = NO;
 BOOL _isTimedRelease = NO;
+static BOOL RCNewPostViewControllerAutomaticClose = YES;
 
++ (void) toggleAutomaticClose {    
+    if (RCNewPostViewControllerAutomaticClose)
+        RCNewPostViewControllerAutomaticClose = NO;
+    else
+        RCNewPostViewControllerAutomaticClose = YES;
+}
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -256,9 +263,11 @@ BOOL _isTimedRelease = NO;
     /*if (_postCancel != nil) {
         _postCancel();
     }*/
-    [self dismissViewControllerAnimated:YES completion:^{
-        NSLog(@"successfully dismissed new post view controller");
-    }];
+    _postButton.enabled = NO;
+    if (RCNewPostViewControllerAutomaticClose)
+        [self dismissViewControllerAnimated:YES completion:^{
+            NSLog(@"successfully dismissed new post view controller");
+        }];
 
     /*[_connectionManager startConnection];
     _postButton.enabled = NO;

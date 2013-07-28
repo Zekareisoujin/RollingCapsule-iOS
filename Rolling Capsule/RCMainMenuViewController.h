@@ -16,6 +16,7 @@
 
 @property (strong, nonatomic) UINavigationController *navigationController;
 @property (nonatomic, strong) RCUser* user;
+- (IBAction)btnOptionsTouchUpInside:(id)sender;
 
 @property (weak, nonatomic) IBOutlet UIButton *btnUserAvatar;
 @property (weak, nonatomic) IBOutlet TTTAttributedLabel *lblUserName;

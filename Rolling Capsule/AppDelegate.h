@@ -12,6 +12,7 @@
 #import "TTTAttributedLabel.h"
 
 #define NSLog TFLog
+#define TEST_VERSION
 
 @class RCMainMenuViewController;
 @class RCSlideoutViewController;
@@ -36,6 +37,7 @@
 @property (strong, nonatomic) NSArray           *userNotifications;
 @property (assign, nonatomic) BOOL               didUpdateLocation;
 @property (strong, nonatomic) NSString          *currentCountry;
+
 
 - (NSString *)applicationDocumentsDirectory;
 - (void) showSideMenu;

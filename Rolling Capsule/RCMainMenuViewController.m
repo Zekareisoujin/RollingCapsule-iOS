@@ -89,10 +89,12 @@
     [AppDelegate cleanupMemory];
     // Dispose of any resources that can be recreated.
 }
-
+//@"http://itunes.apple.com/tw/lookup?id=649232055",
+//@"http://itunes.apple.com/tw/lookup?id=649232055", RCMenuItemConciergeGame,
 - (void)initializeConcierge {
     NSDictionary *sgList = [[NSDictionary alloc]
-        initWithObjectsAndKeys:@"http://itunes.apple.com/tw/lookup?id=649232055", RCMenuItemConciergeGame,
+        initWithObjectsAndKeys:@"http://itunes.apple.com/sg/lookup?id=615376522",
+                                   RCMenuItemConciergeGame,
                                @"http://itunes.apple.com/sg/lookup?id=486630839", RCMenuItemConciergeUtility,
                                @"http://itunes.apple.com/sg/lookup?id=375971134", RCMenuItemConciergeTravel,
                                @"http://itunes.apple.com/sg/lookup?id=504162619", RCMenuItemConciergeEmergency,
@@ -470,4 +472,9 @@
     }
 }
 
+- (IBAction)btnOptionsTouchUpInside:(id)sender {
+    static RCSettingViewController *vc = nil;
+    if (vc == nil) vc = [[RCSettingViewController alloc] init];
+    [self navigateToViewControllerFromMenu:vc];
+}
 @end

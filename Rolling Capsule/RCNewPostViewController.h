@@ -59,4 +59,5 @@
 - (id) initWithUser:(RCUser *)user;
 - (id) initWithUser:(RCUser *)user withBackgroundImage:(UIImage*) image;
 - (id) initWithUser:(RCUser *)user withNibName:(NSString *)nibNameOrNil bundle:(NSBundle*)nibBundleOrNil;
++ (void) toggleAutomaticClose;
 @end

@@ -33,7 +33,6 @@
 @synthesize userNotifications = _userNotifications;
 @synthesize didUpdateLocation = _didUpdateLocation;
 
-
 BOOL _didQueueOpenMainFeedOption;
 BOOL _hasUpdateCountry;
 
@@ -72,6 +71,8 @@ void SignalHandler(int sig) {
     // Call takeOff after install your own unhandled exception and signal handlers
     
     [TestFlight takeOff:@"9a1eac62-14de-493e-971e-bea0ff0cb99b"];
+    
+    
     [RCPost initPostDataModel];
     _didUpdateLocation = NO;
     _didQueueOpenMainFeedOption = NO;
