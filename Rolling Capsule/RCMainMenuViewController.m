@@ -89,8 +89,7 @@
     [AppDelegate cleanupMemory];
     // Dispose of any resources that can be recreated.
 }
-//@"http://itunes.apple.com/tw/lookup?id=649232055",
-//@"http://itunes.apple.com/tw/lookup?id=649232055", RCMenuItemConciergeGame,
+
 - (void)initializeConcierge {
     NSDictionary *sgList = [[NSDictionary alloc]
         initWithObjectsAndKeys:@"http://itunes.apple.com/sg/lookup?id=615376522",
@@ -102,6 +101,7 @@
     
     NSDictionary *twList = [[NSDictionary alloc]
         initWithObjectsAndKeys:@"http://itunes.apple.com/tw/lookup?id=649232055", RCMenuItemConciergeGame,
+                               @"http://itunes.apple.com/tw/lookup?id=366479443", RCMenuItemConciergeUtility,
                                @"http://itunes.apple.com/tw/lookup?id=656617797", RCMenuItemConciergeEmergency,
                                @"http://itunes.apple.com/tw/lookup?id=596652968", RCMenuItemConciergeShopping, nil];
 
