@@ -8,6 +8,7 @@
 
 #import "RCOutboxTableCell.h"
 #import "RCOperationsManager.h"
+#import "UIImage+animatedGIF.h"
 
 @implementation RCOutboxTableCell {
     RCUploadTask* associatedUploadTask;
@@ -61,12 +62,13 @@
         pause = NO;
         RCUploadManager *defaultUM = [RCOperationsManager defaultUploadManager];
         [defaultUM unpauseNewPostOperation:associatedUploadTask];
-        [_btnTaskAction setImage:[UIImage imageNamed:@"outboxPause.png"] forState:UIControlStateNormal];
+        [_btnTaskAction setImage:[UIImage imageNamed:@"outboxUploading.gif"] forState:UIControlStateNormal];
     } else {
         pause = YES;
         RCUploadManager *defaultUM = [RCOperationsManager defaultUploadManager];
         [defaultUM pauseNewPostOperation:associatedUploadTask];
-        [_btnTaskAction setImage:[UIImage imageNamed:@"outboxUploading.png"] forState:UIControlStateNormal];
+        NSURL *url = [[NSBundle mainBundle] URLForResource:@"outboxUploading" withExtension:@"gif"];
+        [_btnTaskAction setImage:[UIImage animatedImageWithAnimatedGIFURL:url] forState:UIControlStateNormal];
     }
 }
 @end
