@@ -10,6 +10,8 @@
 
 @interface RCOutboxViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITableView *tblViewUploadTasks;
+@property (weak, nonatomic) IBOutlet UILabel *lblUsername;
+@property (weak, nonatomic) IBOutlet UIImageView *imgViewUserAvatar;
 - (IBAction)btnCleanupTouchUpInside:(id)sender;
 @property (nonatomic, strong) NSMutableArray* uploadTasks;
 @end
