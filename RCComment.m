@@ -22,6 +22,7 @@
         _commentID = [[userData objectForKey:@"id"] intValue];
         _userID = [[userData objectForKey:@"user_id"] intValue];
         NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC" ]];
         [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
         _createdTime = [formatter dateFromString:(NSString*)[userData objectForKey:@"created_at"]];
     }

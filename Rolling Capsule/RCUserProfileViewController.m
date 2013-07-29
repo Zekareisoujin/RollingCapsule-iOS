@@ -694,7 +694,7 @@
     // Get the selected image.
     //UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
-    UIImage *resizedImage = imageWithImage(image, CGSizeMake(80,80));
+    UIImage *resizedImage = imageWithImage(image, CGSizeMake(200,200));
     
     [_btnAvatarImg setBackgroundImage:resizedImage forState:UIControlStateNormal];
     [_btnAvatarImg setBackgroundImage:nil forState:UIControlStateDisabled];

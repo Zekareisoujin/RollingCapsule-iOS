@@ -710,8 +710,9 @@
 //            RCUser *owner = [[RCUser alloc] init];
 //            owner.userID = post.userID;
 //            owner.name = post.authorName;
+            RCUser *owner = [RCUser getUserOwnerOfPost:post];
             
-            [RCUser getUserWithIDAsync:post.userID completionHandler:^(RCUser* owner){
+//            [RCUser getUserWithIDAsync:post.userID completionHandler:^(RCUser* owner){
                 //[_collectionView removeGestureRecognizer:recognizer];
                 RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user];
                 if (post.landmarkID == -1)
@@ -725,7 +726,7 @@
                 //[self presentViewController:postDetailsViewController animated:YES completion:nil];
                 [self.navigationController pushViewController:postDetailsViewController animated:YES];
                 
-            }];
+//            }];
             
         }
     }
