@@ -107,7 +107,7 @@ void SignalHandler(int sig) {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:RCLogStatusDefault]) {
-        [_menuViewController btnActionMainFeedNav:nil];
+//        [_menuViewController btnActionMainFeedNav:nil];
         //queue main feed open action so that the main feed is opened automatically
         //when location is updated
         RCLoadingLocationViewController *loadingViewController = [[RCLoadingLocationViewController alloc] init];
