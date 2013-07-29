@@ -165,7 +165,7 @@
     [_menuTree setObject:[UIImage imageNamed:@"menuIconOutbox"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemOutbox];
     [_menuTree setObject:[UIImage imageNamed:@"menuIconConcierge"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemConcierge];
     [_menuTree setObject:[UIImage imageNamed:@"menuIconSettings"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemSettings];
-    [_menuTree setObject:[UIImage imageNamed:@"menuIconLogout"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemSettingsLogOut];
+    [_menuTree setObject:[UIImage imageNamed:@"menuIconLogout"] forKeyPath:RCMenuKeyIcon2 forTreeItem:RCMenuItemSettingsLogOut];
     [_menuTree setObject:[UIImage imageNamed:@"menuIconConciergeGame"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemConciergeGame];
     [_menuTree setObject:[UIImage imageNamed:@"menuIconConciergeUtility"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemConciergeUtility];
     [_menuTree setObject:[UIImage imageNamed:@"menuIconConciergeTravel"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemConciergeTravel];
@@ -216,8 +216,6 @@
     
     NSMutableDictionary *item = [_menuTree itemForRowAtIndexPath:indexPath];
     UIImage *icon = [item objectForKey:RCMenuKeyIcon];
-    if (icon == nil)
-        icon = [UIImage imageNamed:@"loading2.gif"];
     NSString *label = [item objectForKey:RCMenuKeyDisplayedName];
     if (label == nil)
         label = [item objectForKey:RCMenuKeyKeyPath];

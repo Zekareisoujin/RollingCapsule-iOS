@@ -12,6 +12,8 @@
 #import "RCNewPostOperation.h"
 #import "RCMediaUploadOperation.h"
 #import "RCUtilities.h"
+#import "UIImage+animatedGIF.h"
+#import "RCUserProfileViewController.h"
 
 @interface RCOutboxViewController ()
 
@@ -39,12 +41,21 @@
     [super viewDidLoad];
     _tblViewUploadTasks.tableFooterView = [[UIView alloc] init];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshData:) name:RCNotificationNameMediaUploaded object:nil];
-    _lblUsername.text = [RCUser currentUser].name;
-    [[RCUser currentUser] getUserAvatarAsync:[RCUser currentUser].userID completionHandler:^(UIImage* image){
-        [_imgViewUserAvatar setImage:image];
-    }];
     [self refreshData:nil];
     // Do any additional setup after loading the view from its nib.
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [_lblUsername setText: [RCUser currentUser].name];
+    [_lblUsername setLinkAttributes:[[_lblUsername attributedText] attributesAtIndex:0 effectiveRange:nil]];
+    [_lblUsername setActiveLinkAttributes:[[_lblUsername attributedText] attributesAtIndex:0 effectiveRange:nil]];
+    [_lblUsername addLinkToURL:[NSURL URLWithString:[NSString stringWithFormat:@"memcap:/%@/%d?user[name]=%@",RCUsersResource,[RCUser currentUser].userID, urlEncodeValue([RCUser currentUser].name)]] withRange:NSMakeRange(0,[_lblUsername.text length])];
+    [_lblUsername setDelegate:(AppDelegate*)[[UIApplication sharedApplication] delegate]];
+    [_lblUsername setAdjustsFontSizeToFitWidth:YES];
+    
+    [[RCUser currentUser] getUserAvatarAsync:[RCUser currentUser].userID completionHandler:^(UIImage* image){
+        [_btnViewUserAvatar setImage:image forState:UIControlStateNormal];
+    }];
 }
 
 - (void) refreshData:(NSNotification*) notification {
@@ -134,15 +145,16 @@
     [cell.btnDeleteTask addTarget:self action:@selector(refreshData:) forControlEvents:UIControlEventTouchUpInside];
     if (success) {
         cell.btnDeleteTask.enabled = NO;
-        [cell.btnDeleteTask setImage:[UIImage imageNamed:@"outboxComplete.png"] forState:UIControlStateDisabled];
-        [cell.btnTaskAction setHidden:YES];
+        [cell.btnTaskAction setImage:[UIImage imageNamed:@"outboxComplete.png"] forState:UIControlStateDisabled];
+        [cell.btnDeleteTask setHidden:YES];
         //[cell.viewActivityIndicator stopAnimating];
     }
     else if (task.currentNewPostOperation.isExecuting || task.currentNewPostOperation.mediaUploadOperation.isExecuting) {
-        [cell.btnTaskAction setImage:[UIImage imageNamed:@"outboxUploading.png"] forState:UIControlStateNormal];
+        NSURL *url = [[NSBundle mainBundle] URLForResource:@"outboxUploading" withExtension:@"gif"];
+        [cell.btnTaskAction setImage:[UIImage animatedImageWithAnimatedGIFURL:url] forState:UIControlStateNormal];
         //[cell.viewActivityIndicator startAnimating];
     } else {
-        [cell.btnTaskAction setImage:[UIImage imageNamed:@"outboxPause.png"] forState:UIControlStateNormal];
+        [cell.btnTaskAction setImage:[UIImage imageNamed:@"outboxUploading.gif"] forState:UIControlStateNormal];
         //[cell.viewActivityIndicator stopAnimating];
     }
     [cell setupButtonControl:task];
@@ -176,5 +188,10 @@
             [self refreshData:nil];
         });
     });
+}
+
+- (IBAction)btnViewUserAvatarTouchUpInside:(id)sender {
+    RCUserProfileViewController *userProfileViewController = [[RCUserProfileViewController alloc] initWithUser:[RCUser currentUser] viewingUser:[RCUser currentUser]];
+    [self.navigationController pushViewController:userProfileViewController animated:YES];
 }
 @end

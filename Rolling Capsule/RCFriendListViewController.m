@@ -105,13 +105,6 @@ CGRect  searchButtonHideFrame;
                         action:@selector(handleRefresh:)
               forControlEvents:UIControlEventValueChanged  ];
     
-    // Configure name & avatar display in friend list
-    [_user getUserAvatarAsync:_user.userID completionHandler:^(UIImage* img){
-        [_imgUserAvatar setImage:img];
-    }];
-    [_lblUserName setText:_user.name];
-    [_tableTitleLabel setAdjustsFontSizeToFitWidth:YES];
-    
     // Configure search bar
     [_searchBar setDelegate:self];
     
@@ -530,6 +523,11 @@ CGRect  searchButtonHideFrame;
     [self enableControl:YES];
 }
 
+- (IBAction)btnUserAvatarTouchUpInside:(id)sender {
+    RCUserProfileViewController *userProfileViewController = [[RCUserProfileViewController alloc] initWithUser:_user viewingUser:_user];
+    [self.navigationController pushViewController:userProfileViewController animated:YES];
+}
+
 - (void)enableControl: (BOOL)enable {
     for (UIButton *btn in controlButtonArray)
         btn.enabled = enable;
@@ -589,6 +587,17 @@ CGRect  searchButtonHideFrame;
 }
 
 - (void) viewWillAppear:(BOOL)animated {
+    // Configure name & avatar display in friend list
+    [_user getUserAvatarAsync:_user.userID completionHandler:^(UIImage* img){
+        [_btnUserAvatar setImage:img forState:UIControlStateNormal];
+    }];
+    [_lblUserName setText:_user.name];
+    [_lblUserName setLinkAttributes:[[_lblUserName attributedText] attributesAtIndex:0 effectiveRange:nil]];
+    [_lblUserName setActiveLinkAttributes:[[_lblUserName attributedText] attributesAtIndex:0 effectiveRange:nil]];
+    [_lblUserName addLinkToURL:[NSURL URLWithString:[NSString stringWithFormat:@"memcap:/%@/%d?user[name]=%@",RCUsersResource,_user.userID, urlEncodeValue(_user.name)]] withRange:NSMakeRange(0,[_lblUserName.text length])];
+    [_lblUserName setDelegate:(AppDelegate*)[[UIApplication sharedApplication] delegate]];
+    [_tableTitleLabel setAdjustsFontSizeToFitWidth:YES];
+    
     [self asynchGetFriendsRequest];
     [self asynchGetFolloweesRequest];
     if (_user != _loggedinUser) {
