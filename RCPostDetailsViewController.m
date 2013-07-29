@@ -287,7 +287,6 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
 
 #pragma mark - web request
 -(void) getPostImageFromInternet {
-    
     RCResourceCache *cache = [RCResourceCache centralCache];
     NSString *key = [NSString stringWithFormat:@"%@/%@", RCMediaResource, _post.fileUrl];
     
@@ -295,7 +294,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     dispatch_async(queue, ^{
         NSObject* cachedObj = [cache getResourceForKey:key usingQuery:^{
             [RCConnectionManager startConnection];
-            NSObject *object = [RCAmazonS3Helper getUserMediaImage:_postOwner withLoggedinUserID:_loggedInUser.userID   withImageUrl:_post.fileUrl];
+            NSObject *object = [RCAmazonS3Helper getUserMediaImage:_postOwner withLoggedinUserID:[RCUser currentUser].userID   withImageUrl:_post.fileUrl];
             [RCConnectionManager endConnection];
             return object;
         }];
@@ -305,7 +304,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
             NSString *thumbnailKey = [NSString stringWithFormat:@"%@/%@", RCMediaResource, _post.thumbnailUrl];
             thumbnailImage = [cache getResourceForKey:thumbnailKey usingQuery:^{
                 [RCConnectionManager startConnection];
-                NSObject *object = [RCAmazonS3Helper getUserMediaImage:_postOwner withLoggedinUserID:_loggedInUser.userID   withImageUrl:_post.thumbnailUrl];
+                NSObject *object = [RCAmazonS3Helper getUserMediaImage:_postOwner withLoggedinUserID:[RCUser currentUser].userID   withImageUrl:_post.thumbnailUrl];
                 [RCConnectionManager endConnection];
                 return object;
             }];
@@ -788,7 +787,7 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
             [cache invalidateKey:key];
             _videoUrl = (NSURL*) [cache getResourceForKey:key usingQuery:^{
                 [RCConnectionManager startConnection];
-                NSObject *object = [RCAmazonS3Helper getUserMediaImage:_postOwner withLoggedinUserID:_loggedInUser.userID   withImageUrl:_post.fileUrl];
+                NSObject *object = [RCAmazonS3Helper getUserMediaImage:_postOwner withLoggedinUserID:[RCUser currentUser].userID   withImageUrl:_post.fileUrl];
                 [RCConnectionManager endConnection];
                 return object;
             }];

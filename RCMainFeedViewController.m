@@ -9,6 +9,7 @@
 #import "RCMainFeedViewController.h"
 #import "RCUser.h"
 #import "RCPost.h"
+#import "RCFeed.h"
 #import "RCConstants.h"
 #import "RCUtilities.h"
 #import "RCNewPostViewController.h"
@@ -224,7 +225,44 @@
     [_refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:lastUpdated]];
     [self toggleButtonRefresh:YES];
     
-	[self asynchFetchFeeds:NUM_RETRY_MAIN_FEED];
+    RCFeed *feed = nil;
+    switch (_currentViewMode) {
+        case RCMainFeedViewModePublic:
+            feed = [RCFeed locationFeed];
+            [RCFeed updateLocation];
+            break;
+        case RCMainFeedViewModeFriends:
+            feed = [RCFeed friendFeed];
+            break;
+        case RCMainFeedViewModeFollow:
+            feed = [RCFeed followFeed];
+            break;
+        default:break;
+    }
+    [feed fetchFeedFromBackend:RCFeedFetchModeReset completion:^{
+        _posts = feed.postList;
+        [_collectionView reloadData];
+        [self toggleButtonRefresh:NO];
+        //if ([RCUser currentUser].userID)
+        [self updateUserUIElements:[RCUser currentUser]];
+    }];
+	//[self asynchFetchFeeds:NUM_RETRY_MAIN_FEED];
+}
+
+- (void) updateUserUIElements:(RCUser *)user {
+    self.user = user;
+    [_lblUsername setText: _user.name];
+    [_lblUsername setLinkAttributes:[[_lblUsername attributedText] attributesAtIndex:0 effectiveRange:nil]];
+    [_lblUsername setActiveLinkAttributes:[[_lblUsername attributedText] attributesAtIndex:0 effectiveRange:nil]];
+    [_lblUsername addLinkToURL:[NSURL URLWithString:[NSString stringWithFormat:@"memcap:/%@/%d?user[name]=%@",RCUsersResource,_user.userID, urlEncodeValue(_user.name)]] withRange:NSMakeRange(0,[_lblUsername.text length])];
+    [_lblUsername setDelegate:(AppDelegate*)[[UIApplication sharedApplication] delegate]];
+    [_lblUsername setAdjustsFontSizeToFitWidth:YES];
+    
+    [_user getUserAvatarAsync:_user.userID completionHandler:^(UIImage* retAvatar){
+        dispatch_async(dispatch_get_main_queue(),^{
+            [_btnUserAvatar setImage:retAvatar forState:UIControlStateNormal];
+        });
+    }];
 }
 
 - (void)didReceiveMemoryWarning
@@ -592,18 +630,7 @@
     
     //prepare user UI element
     if (_user != nil) {
-        [_lblUsername setText: _user.name];
-        [_lblUsername setLinkAttributes:[[_lblUsername attributedText] attributesAtIndex:0 effectiveRange:nil]];
-        [_lblUsername setActiveLinkAttributes:[[_lblUsername attributedText] attributesAtIndex:0 effectiveRange:nil]];
-        [_lblUsername addLinkToURL:[NSURL URLWithString:[NSString stringWithFormat:@"memcap:/%@/%d?user[name]=%@",RCUsersResource,_user.userID, urlEncodeValue(_user.name)]] withRange:NSMakeRange(0,[_lblUsername.text length])];
-        [_lblUsername setDelegate:(AppDelegate*)[[UIApplication sharedApplication] delegate]];
-        [_lblUsername setAdjustsFontSizeToFitWidth:YES];
-        
-        [_user getUserAvatarAsync:_user.userID completionHandler:^(UIImage* retAvatar){
-            dispatch_async(dispatch_get_main_queue(),^{
-                [_btnUserAvatar setImage:retAvatar forState:UIControlStateNormal];
-            });
-        }];
+        [self updateUserUIElements:_user];
     }
 }
 
@@ -705,28 +732,24 @@
             [_collectionView removeGestureRecognizer:_pinchGestureRecognizer];
             [_collectionView removeGestureRecognizer:_tapGestureRecognizer];
             [_collectionView removeGestureRecognizer:_longPressGestureRecognizer];
+            
             RCPost *post;
             post = [_posts objectAtIndex:indexPath.row];
-//            RCUser *owner = [[RCUser alloc] init];
-//            owner.userID = post.userID;
-//            owner.name = post.authorName;
-            RCUser *owner = [RCUser getUserOwnerOfPost:post];
             
-//            [RCUser getUserWithIDAsync:post.userID completionHandler:^(RCUser* owner){
-                //[_collectionView removeGestureRecognizer:recognizer];
-                RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user];
-                if (post.landmarkID == -1)
-                    postDetailsViewController.landmark = nil;
-                else
-                    postDetailsViewController.landmark = [_landmarks objectForKey:[NSNumber numberWithInt:post.landmarkID]];
-                postDetailsViewController.deleteFunction = ^{
-                    [self handleRefresh:_refreshControl];
-                };
-                postDetailsViewController.landmarkID = post.landmarkID;
-                //[self presentViewController:postDetailsViewController animated:YES completion:nil];
-                [self.navigationController pushViewController:postDetailsViewController animated:YES];
-                
-//            }];
+            RCUser *owner = [RCUser getUserOwnerOfPost:post];
+            RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user];
+            if (post.landmarkID == -1)
+                postDetailsViewController.landmark = nil;
+            else
+                postDetailsViewController.landmark = [_landmarks objectForKey:[NSNumber numberWithInt:post.landmarkID]];
+            postDetailsViewController.deleteFunction = ^{
+                [self handleRefresh:_refreshControl];
+            };
+            postDetailsViewController.landmarkID = post.landmarkID;
+            //[self presentViewController:postDetailsViewController animated:YES completion:nil];
+            [self.navigationController pushViewController:postDetailsViewController animated:YES];
+            
+
             
         }
     }

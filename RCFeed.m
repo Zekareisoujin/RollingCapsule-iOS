@@ -14,6 +14,46 @@
 
 @implementation RCFeed {
     int page;
+    NSTimer *timer;
+    NSMutableSet *postSet;
+}
+
+static RCFeed* RCFeedLocationFeed = nil;
+static RCFeed* RCFeedFriendFeed = nil;
+static RCFeed* RCFeedFollowFeed = nil;
+
++ (void) updateLocation {
+    if (RCFeedLocationFeed == nil)
+        RCFeedLocationFeed = [[RCFeed alloc] init];
+    AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
+    CLLocationCoordinate2D zoomLocation = appDelegate.currentLocation.coordinate;
+    
+    RCFeedLocationFeed.feedPath = [[NSString alloc] initWithFormat:@"?mobile=1&latitude=%f&longitude=%f&%@", zoomLocation.latitude, zoomLocation.longitude, RCLevelsQueryString];
+}
+
++ (RCFeed*) locationFeed {
+    if (RCFeedLocationFeed == nil) {
+        RCFeedLocationFeed = [[RCFeed alloc] init];
+    }
+    return RCFeedLocationFeed;
+}
+
++ (RCFeed*) friendFeed {
+    if (RCFeedFriendFeed == nil) {
+        RCFeedFriendFeed = [[RCFeed alloc] init];
+        RCFeedFriendFeed.feedPath = @"?mobile=1";
+    }
+    return RCFeedFriendFeed;
+
+}
+
++ (RCFeed*) followFeed {
+    if (RCFeedFollowFeed == nil) {
+        RCFeedFollowFeed = [[RCFeed alloc] init];
+        RCFeedFollowFeed.feedPath = @"?mobile=1&view_follow=1";
+    }
+    return RCFeedFollowFeed;
+
 }
 
 @synthesize postList = _postList;
@@ -26,13 +66,14 @@
     self = [super init];
     if (self) {
         _postList = [[NSMutableArray alloc] init];
+        postSet = [[NSMutableSet alloc] init];
         _numberOfHiddenCapsules = 0;
         page = 1;
     }
     return self;
 }
 
-- (void) appendData:(NSData*) data {
+- (void) appendData:(NSData*) data willAddToFront:(BOOL) toFront {
     NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
     if ([responseData isEqualToString:@"Unauthorized"]) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -55,12 +96,22 @@
         //_user = [[RCUser alloc] initWithNSDictionary:userDictionary];
         RCUser *user = [RCUser getUserWithNSDictionary:userDictionary];
         [RCUser setCurrentUser:user];
+        NSMutableArray *array = toFront ? [[NSMutableArray alloc] init] : _postList;
         for (NSDictionary *postData in postJsonList) {
             //RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
             RCPost *post = [RCPost getPostWithNSDictionary:postData];
-            [_postList addObject:post];
+            //if append to end then add no matter what
+            //if append to front then add only when it's new
+            BOOL addPost = (!toFront) || ([postSet containsObject:[NSNumber numberWithInt:post.postID]]);
+            if (addPost) {
+                [array addObject:post];
+                [postSet addObject:[NSNumber numberWithInt:post.postID]];
+            }
         }
-
+        if (toFront) {
+            [array addObjectsFromArray:_postList];
+            _postList = array;
+        }
         return;
     } else {
         NSLog(@"feed-data: error parsing json data received%@",responseData);
@@ -69,34 +120,47 @@
     }
 }
 
-- (void) fetchFeedFromBackend:(BOOL) fromBeginning {
+- (void) fetchFeedFromBackend:(RCFeedFetchMode) fetchMode completion:(void(^)(void)) completeFunc {
     NSURL* url;
+    int loadPage;
+    BOOL willAddToFront = NO;
     //if page 0 refresh everything
-    if (fromBeginning) {
-        page = 1;
-        [_postList removeAllObjects];
-        
+    switch (fetchMode) {
+        case RCFeedFetchModeReset:
+            [_postList removeAllObjects];
+            [postSet removeAllObjects];
+            loadPage = 1;
+            break;
+        case RCFeedFetchModeAppendBack:
+            page++;
+            loadPage = page;
+            break;
+        case RCFeedFetchModeAppendFront:
+            loadPage = 1;
+            willAddToFront = YES;
+            break;
+        default:break;
     }
-    else
-        page++;
     _errorType = RCFeedNoError;
     @try {
-        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@&page=%d",RCServiceURL, _feedPath,page]];
+        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@&page=%d",RCServiceURL, _feedPath,loadPage]];
         NSMutableURLRequest* request = CreateHttpGetRequest(url);
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
          {
              if (error == nil)
-                 [self appendData:data];
+                 [self appendData:data willAddToFront:willAddToFront];
              else {
                  NSLog(@"feed-data: error sending web request:%@",error);
                  _errorType = RCFeedCantReachServer;
              }
+             completeFunc();
          }];
     } @catch (NSException *exception) {
         NSLog(@"feed-data: exception:%@",exception);
         _errorType = RCFeedClientException;
     }
+    completeFunc();
 }
 
 @end

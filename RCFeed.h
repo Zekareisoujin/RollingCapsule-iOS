@@ -15,8 +15,14 @@ enum RCFeedErrorType {
     RCFeedBadServerResult,
     RCFeedNoError
 };
+enum RCFeedFetchMode {
+    RCFeedFetchModeAppendBack,
+    RCFeedFetchModeAppendFront,
+    RCFeedFetchModeReset
+};
 
 typedef enum RCFeedErrorType RCFeedErrorType;
+typedef enum RCFeedFetchMode RCFeedFetchMode;
 
 @interface RCFeed : NSObject
 
@@ -26,6 +32,10 @@ typedef enum RCFeedErrorType RCFeedErrorType;
 @property (nonatomic, strong) NSString* errorMessage;
 @property (nonatomic, assign) RCFeedErrorType errorType;
 - (id) init;
-- (void) appendData:(NSData*) data;
-- (void) fetchFeedFromBackend:(BOOL) fromBeginning;
+- (void) appendData:(NSData*) data willAddToFront:(BOOL) toFront;
+- (void) fetchFeedFromBackend:(RCFeedFetchMode) fetchMode completion:(void(^)(void)) completeFunc;
++ (RCFeed*) locationFeed;
++ (RCFeed*) friendFeed;
++ (RCFeed*) followFeed;
++ (void) updateLocation;
 @end
