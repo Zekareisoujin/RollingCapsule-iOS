@@ -39,6 +39,10 @@
     [super viewDidLoad];
     _tblViewUploadTasks.tableFooterView = [[UIView alloc] init];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshData:) name:RCNotificationNameMediaUploaded object:nil];
+    _lblUsername.text = [RCUser currentUser].name;
+    [[RCUser currentUser] getUserAvatarAsync:[RCUser currentUser].userID completionHandler:^(UIImage* image){
+        [_imgViewUserAvatar setImage:image];
+    }];
     [self refreshData:nil];
     // Do any additional setup after loading the view from its nib.
 }
