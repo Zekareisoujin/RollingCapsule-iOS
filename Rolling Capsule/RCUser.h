@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import "RCPost.h"
 @interface RCUser : NSObject
 
 @property (nonatomic, retain) NSString *name;
@@ -18,6 +18,7 @@
 
 + (void) initUserDataModel;
 + (id) getUserWithNSDictionary: (NSDictionary*)userData;
++ (id) getUserOwnerOfPost: (RCPost*)postData;
 + (void) getUserWithIDAsync: (int)userID completionHandler:(void (^)(RCUser*))completionHandle;
 - (id) initWithNSDictionary: (NSDictionary *)userData;
 

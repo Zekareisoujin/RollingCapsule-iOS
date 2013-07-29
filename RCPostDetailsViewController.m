@@ -473,7 +473,8 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
     
 - (NSMutableAttributedString *) generateAttributedStringForUser:(NSString*)userName forComment:(NSString*)comment withDate:(NSDate*)timeStamp {
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"dd/M/yyyy HH:mm"];
+    [formatter setTimeZone:[NSTimeZone systemTimeZone]];
+    [formatter setDateFormat:@"dd/M/yyyy hh:mm a"];
     NSString* dateString = [formatter stringFromDate:timeStamp];
     NSString *textContent;
     if (timeStamp != nil)

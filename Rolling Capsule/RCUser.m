@@ -59,6 +59,23 @@ static NSMutableDictionary* RCUserUserCollection = nil;
     return newUser;
 }
 
++ (id) getUserOwnerOfPost: (RCPost*)postData {
+    int newID = postData.userID;
+    RCUser* cachedUser = [RCUserUserCollection objectForKey:[NSNumber numberWithInt:newID]];
+    if (cachedUser != nil)
+        return cachedUser;
+    else {
+        RCUser* newUser = [[RCUser alloc] init];
+        newUser.userID = newID;
+        newUser.email = postData.authorEmail;
+        newUser.name = postData.authorName;
+        newUser.updatedTime = [NSDate date];
+        [RCUserUserCollection setObject:newUser forKey:[NSNumber numberWithInt:newID]];
+        
+        return newUser;
+    }
+}
+
 + (void) getUserWithIDAsync: (int)userID completionHandler:(void (^)(RCUser*))completionHandle {
     RCUser* cachedUser = [RCUserUserCollection objectForKey:[NSNumber numberWithInt:userID]];
     
