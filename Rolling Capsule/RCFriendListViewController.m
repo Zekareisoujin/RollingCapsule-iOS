@@ -204,8 +204,10 @@ CGRect  searchButtonHideFrame;
     if (isRequestCell) {
         [cell setFriendshipID:[(NSNumber*)[requestLists objectAtIndex:indexPath.row] intValue]];
         [cell setCompletionHandler:^(BOOL accept) {
-            [_displayedItems removeObjectAtIndex:indexPath.row];
-            [_tblViewFriendList deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            [_displayedItems removeObject:user];
+//            [_tblViewFriendList reloadData];
+            [_tblViewFriendList deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationRight];
+            [_tblViewFriendList reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
         }];
     }
     
