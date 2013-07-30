@@ -65,7 +65,6 @@ static NSMutableArray* RCNotificationNotificationList = nil;
     NSArray *nodes = [parser searchWithXPathQuery:tutorialsXpathQueryString];
     for (TFHppleElement *element in nodes) {
         NSURL *url = [NSURL URLWithString:[element objectForKey:@"href"]];
-        NSLog(@"url:%@ path:%@",url,url.path);
         [notification.urls addObject:url];
     }
     [RCNotificationNotificationList addObject:notification];
