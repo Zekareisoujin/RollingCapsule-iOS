@@ -241,7 +241,7 @@ static NSMutableDictionary* RCUserUserCollection = nil;
 
 + (void) followUserAsCurrentUserAsync:(RCUser*) otherUser completionHandler:(void (^)(int, NSString*))completionHandle {
     @try {
-        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@?mobile=1", RCServiceURL, RCFollowResource]];
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@?mobile=1", RCServiceURL, RCFollowsResource]];
         NSMutableString* dataSt = initQueryString(@"follow[followee_id]",
                                                   [[NSString alloc] initWithFormat:@"%d",otherUser.userID]);
         NSData *postData = [dataSt dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
@@ -322,7 +322,7 @@ static NSMutableDictionary* RCUserUserCollection = nil;
 
 + (void) removeFollowRelationAsync: (int)followID completionHandler:(void (^)(NSString*))completionHandle {
     @try {
-        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/?mobile=1", RCServiceURL, RCFollowResource, followID]];
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/?mobile=1", RCServiceURL, RCFollowsResource, followID]];
         NSURLRequest *request = CreateHttpDeleteRequest(url);
         
         [RCConnectionManager startConnection];

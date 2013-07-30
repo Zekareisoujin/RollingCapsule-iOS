@@ -202,6 +202,16 @@
 		64F0816017A3C9760064257F /* outboxDelete.png in Resources */ = {isa = PBXBuildFile; fileRef = 64F0815C17A3C9750064257F /* outboxDelete.png */; };
 		64F0816117A3C9760064257F /* outboxPause.png in Resources */ = {isa = PBXBuildFile; fileRef = 64F0815D17A3C9750064257F /* outboxPause.png */; };
 		64F0816217A3C9760064257F /* outboxUploading.png in Resources */ = {isa = PBXBuildFile; fileRef = 64F0815E17A3C9760064257F /* outboxUploading.png */; };
+		64F3AA2317A8181F00F4EFBC /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F3AA1E17A8181E00F4EFBC /* TFHpple.m */; };
+		64F3AA2417A8181F00F4EFBC /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F3AA2017A8181E00F4EFBC /* TFHppleElement.m */; };
+		64F3AA2517A8181F00F4EFBC /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F3AA2217A8181E00F4EFBC /* XPathQuery.m */; };
+		64F3AA2717A8188400F4EFBC /* libxml2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 64F3AA2617A8188400F4EFBC /* libxml2.dylib */; };
+		64F3AA2817A81C4000F4EFBC /* TFHpple.h in Sources */ = {isa = PBXBuildFile; fileRef = 64F3AA1D17A8181E00F4EFBC /* TFHpple.h */; };
+		64F3AA2917A81C4000F4EFBC /* TFHpple.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F3AA1E17A8181E00F4EFBC /* TFHpple.m */; };
+		64F3AA2A17A81C4000F4EFBC /* TFHppleElement.h in Sources */ = {isa = PBXBuildFile; fileRef = 64F3AA1F17A8181E00F4EFBC /* TFHppleElement.h */; };
+		64F3AA2B17A81C4000F4EFBC /* TFHppleElement.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F3AA2017A8181E00F4EFBC /* TFHppleElement.m */; };
+		64F3AA2C17A81C4000F4EFBC /* XPathQuery.h in Sources */ = {isa = PBXBuildFile; fileRef = 64F3AA2117A8181E00F4EFBC /* XPathQuery.h */; };
+		64F3AA2D17A81C4000F4EFBC /* XPathQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 64F3AA2217A8181E00F4EFBC /* XPathQuery.m */; };
 		64FE8433176B9E0E00E561D8 /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FE8432176B9E0E00E561D8 /* libTestFlight.a */; };
 		64FE84E5176BAAD800E561D8 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FE84E4176BAAD800E561D8 /* libz.dylib */; };
 		64FFD2CD17662D1B004337F8 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64FFD2CC17662D1B004337F8 /* MapKit.framework */; };
@@ -539,6 +549,13 @@
 		64F0815C17A3C9750064257F /* outboxDelete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = outboxDelete.png; path = ../outboxDelete.png; sourceTree = "<group>"; };
 		64F0815D17A3C9750064257F /* outboxPause.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = outboxPause.png; path = ../outboxPause.png; sourceTree = "<group>"; };
 		64F0815E17A3C9760064257F /* outboxUploading.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = outboxUploading.png; path = ../outboxUploading.png; sourceTree = "<group>"; };
+		64F3AA1D17A8181E00F4EFBC /* TFHpple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHpple.h; sourceTree = "<group>"; };
+		64F3AA1E17A8181E00F4EFBC /* TFHpple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHpple.m; sourceTree = "<group>"; };
+		64F3AA1F17A8181E00F4EFBC /* TFHppleElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHppleElement.h; sourceTree = "<group>"; };
+		64F3AA2017A8181E00F4EFBC /* TFHppleElement.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHppleElement.m; sourceTree = "<group>"; };
+		64F3AA2117A8181E00F4EFBC /* XPathQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XPathQuery.h; sourceTree = "<group>"; };
+		64F3AA2217A8181E00F4EFBC /* XPathQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XPathQuery.m; sourceTree = "<group>"; };
+		64F3AA2617A8188400F4EFBC /* libxml2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libxml2.dylib; path = usr/lib/libxml2.dylib; sourceTree = SDKROOT; };
 		64FE8432176B9E0E00E561D8 /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
 		64FE84E3176B9E4E00E561D8 /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = SOURCE_ROOT; };
 		64FE84E4176BAAD800E561D8 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -663,6 +680,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				64F3AA2717A8188400F4EFBC /* libxml2.dylib in Frameworks */,
 				64D6EC2217A256F000663AE3 /* CoreData.framework in Frameworks */,
 				64D6EC1517A1AAD500663AE3 /* AssetsLibrary.framework in Frameworks */,
 				BFD6530F179EE7CD00D6A13D /* ImageIO.framework in Frameworks */,
@@ -932,6 +950,7 @@
 		BFCA781A174DFD3F00666CBA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				64F3AA2617A8188400F4EFBC /* libxml2.dylib */,
 				64D6EC2117A256EF00663AE3 /* CoreData.framework */,
 				64D6EC1417A1AAD500663AE3 /* AssetsLibrary.framework */,
 				647E2FD017929BFC00AA6B9A /* AVFoundation.framework */,
@@ -959,6 +978,12 @@
 		BFCA7821174DFD3F00666CBA /* Rolling Capsule */ = {
 			isa = PBXGroup;
 			children = (
+				64F3AA1D17A8181E00F4EFBC /* TFHpple.h */,
+				64F3AA1E17A8181E00F4EFBC /* TFHpple.m */,
+				64F3AA1F17A8181E00F4EFBC /* TFHppleElement.h */,
+				64F3AA2017A8181E00F4EFBC /* TFHppleElement.m */,
+				64F3AA2117A8181E00F4EFBC /* XPathQuery.h */,
+				64F3AA2217A8181E00F4EFBC /* XPathQuery.m */,
 				BFCA782A174DFD3F00666CBA /* AppDelegate.h */,
 				BFCA782B174DFD3F00666CBA /* AppDelegate.m */,
 				643EACE9175BBE0D002761D9 /* Images */,
@@ -1461,6 +1486,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				64F3AA2817A81C4000F4EFBC /* TFHpple.h in Sources */,
+				64F3AA2917A81C4000F4EFBC /* TFHpple.m in Sources */,
+				64F3AA2A17A81C4000F4EFBC /* TFHppleElement.h in Sources */,
+				64F3AA2B17A81C4000F4EFBC /* TFHppleElement.m in Sources */,
+				64F3AA2C17A81C4000F4EFBC /* XPathQuery.h in Sources */,
+				64F3AA2D17A81C4000F4EFBC /* XPathQuery.m in Sources */,
 				BFD65310179EE8ED00D6A13D /* UIImage+animatedGIF.m in Sources */,
 				BFCA7828174DFD3F00666CBA /* main.m in Sources */,
 				BFCA782C174DFD3F00666CBA /* AppDelegate.m in Sources */,
@@ -1536,6 +1567,9 @@
 			files = (
 				BFCA784D174DFD3F00666CBA /* Rolling_CapsuleTests.m in Sources */,
 				BFD6530D179EE78E00D6A13D /* UIImage+animatedGIF.m in Sources */,
+				64F3AA2317A8181F00F4EFBC /* TFHpple.m in Sources */,
+				64F3AA2417A8181F00F4EFBC /* TFHppleElement.m in Sources */,
+				64F3AA2517A8181F00F4EFBC /* XPathQuery.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1648,6 +1682,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Rolling Capsule/memcap-Prefix.pch";
+				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = "Rolling Capsule/memcap-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1673,6 +1708,7 @@
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Rolling Capsule/memcap-Prefix.pch";
+				HEADER_SEARCH_PATHS = "$(SDKROOT)/usr/include/libxml2";
 				INFOPLIST_FILE = "Rolling Capsule/memcap-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

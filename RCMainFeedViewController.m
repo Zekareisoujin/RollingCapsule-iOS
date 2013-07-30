@@ -8,6 +8,7 @@
 
 #import "RCMainFeedViewController.h"
 #import "RCUser.h"
+#import "RCNotification.h"
 #import "RCPost.h"
 #import "RCConstants.h"
 #import "RCUtilities.h"
@@ -46,7 +47,7 @@
 @property (nonatomic, strong) UILabel* lblWarningNoConnection;
 @property (nonatomic, assign) BOOL didZoom;
 @property (nonatomic, strong) NSTimer* autoRefresh;
-
+@property (nonatomic, strong) NSMutableDictionary *postsWithNotification;
 @end
 
 @implementation RCMainFeedViewController {
@@ -82,6 +83,7 @@
 @synthesize reachability = _reachability;
 @synthesize lblWarningNoConnection = _lblWarningNoConnection;
 @synthesize didZoom = _didZoom;
+@synthesize postsWithNotification = _postsWithNotification;
 
 + (NSString*) debugTag {
     return @"MainFeedView";
@@ -105,6 +107,7 @@
         _chosenPosts = [[NSMutableSet alloc] init];
         _landmarks = [[NSMutableDictionary alloc] init];
         _posts = [[NSMutableArray alloc] init];
+        _postsWithNotification = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -261,8 +264,22 @@
         [_lblWarningNoConnection removeFromSuperview];
         _btnRefresh.enabled = YES;
     }];
+}
 
-    
+- (void) processNotificationListJson:(NSArray*) notificationListJson {
+    [_postsWithNotification removeAllObjects];
+    for (NSDictionary *notificationJson in notificationListJson) {
+        RCNotification* notification = [RCNotification parseNotification:notificationJson];
+        if (notification.viewed) continue;
+        for (NSURL *url in notification.urls) {
+            if ([url.scheme hasSuffix:@"memcap"]) {
+                if ([url.host hasSuffix:@"posts"]) {
+                    NSNumber *postID = [NSNumber numberWithInt:[[url.path substringFromIndex:1] intValue]];
+                    [_postsWithNotification setObject:notification forKey:postID];
+                }
+            }
+        }
+    }
 }
 
 - (void) asynchFetchFeeds:(int)nRetry {
@@ -312,6 +329,7 @@
                 }                
                 SBJsonParser *jsonParser = [SBJsonParser new];
                 NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
+                
 #if DEBUG==1
                 NSLog(@"%@%@",[RCMainFeedViewController debugTag], responseData);
 #endif
@@ -319,6 +337,9 @@
                 if (jsonData != NULL) {
                     [_postsByLandmark removeAllObjects];
                     [_chosenPosts removeAllObjects];
+                    
+                    NSArray* notificationListJson = [jsonData objectForKey:@"notification_list"];
+                    [self processNotificationListJson:notificationListJson];
 
                     NSArray *postList = (NSArray *) [jsonData objectForKey:@"post_list"];
                     int numCapsules = [[jsonData objectForKey:@"unreleased_capsules_count"] intValue];
@@ -491,6 +512,11 @@
             [cell changeCellState:RCCellStateDimmed];
         }
     }
+    RCNotification *notification = [_postsWithNotification objectForKey:[NSNumber numberWithInt:post.postID]];
+    if (notification != nil) {
+        //TODO add animation effect for post with new comments
+        [cell.lblNotification setHidden:NO];
+    } else [cell.lblNotification setHidden:YES];
     
     // Pulling next page if necessary:
     if (indexPath.row == (currentMaxPostNumber - 1)) {
@@ -705,27 +731,30 @@
             [_collectionView removeGestureRecognizer:_tapGestureRecognizer];
             [_collectionView removeGestureRecognizer:_longPressGestureRecognizer];
             RCPost *post;
-            post = [_posts objectAtIndex:indexPath.row];
-//            RCUser *owner = [[RCUser alloc] init];
-//            owner.userID = post.userID;
-//            owner.name = post.authorName;
-            RCUser *owner = [RCUser getUserOwnerOfPost:post];
             
-//            [RCUser getUserWithIDAsync:post.userID completionHandler:^(RCUser* owner){
-                //[_collectionView removeGestureRecognizer:recognizer];
-                RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user];
-                if (post.landmarkID == -1)
-                    postDetailsViewController.landmark = nil;
-                else
-                    postDetailsViewController.landmark = [_landmarks objectForKey:[NSNumber numberWithInt:post.landmarkID]];
-                postDetailsViewController.deleteFunction = ^{
-                    [self handleRefresh:_refreshControl];
-                };
-                postDetailsViewController.landmarkID = post.landmarkID;
-                //[self presentViewController:postDetailsViewController animated:YES completion:nil];
-                [self.navigationController pushViewController:postDetailsViewController animated:YES];
+            post = [_posts objectAtIndex:indexPath.row];
+            RCUser *owner = [RCUser getUserOwnerOfPost:post];
+            //check if this is a post with notification
+            NSNumber *postKey = [NSNumber numberWithInt:post.postID];
+            RCNotification* notification = [_postsWithNotification objectForKey:postKey];
+            if (notification != nil) {
+                [notification updateViewedProperty];
+                [_postsWithNotification removeObjectForKey:postKey];
                 
-//            }];
+            }
+            
+            RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user];
+            if (post.landmarkID == -1)
+                postDetailsViewController.landmark = nil;
+            else
+                postDetailsViewController.landmark = [_landmarks objectForKey:[NSNumber numberWithInt:post.landmarkID]];
+            postDetailsViewController.deleteFunction = ^{
+                [self handleRefresh:_refreshControl];
+            };
+            postDetailsViewController.landmarkID = post.landmarkID;
+            //[self presentViewController:postDetailsViewController animated:YES completion:nil];
+            [self.navigationController pushViewController:postDetailsViewController animated:YES];
+
             
         }
     }
