@@ -47,7 +47,7 @@
 @property (nonatomic, strong) UILabel* lblWarningNoConnection;
 @property (nonatomic, assign) BOOL didZoom;
 @property (nonatomic, strong) NSTimer* autoRefresh;
-@property (nonatomic, strong) NSMutableDictionary *postsWithNotification;
+
 @end
 
 @implementation RCMainFeedViewController {
@@ -83,7 +83,6 @@
 @synthesize reachability = _reachability;
 @synthesize lblWarningNoConnection = _lblWarningNoConnection;
 @synthesize didZoom = _didZoom;
-@synthesize postsWithNotification = _postsWithNotification;
 
 + (NSString*) debugTag {
     return @"MainFeedView";
@@ -107,7 +106,6 @@
         _chosenPosts = [[NSMutableSet alloc] init];
         _landmarks = [[NSMutableDictionary alloc] init];
         _posts = [[NSMutableArray alloc] init];
-        _postsWithNotification = [[NSMutableDictionary alloc] init];
     }
     return self;
 }
@@ -267,18 +265,9 @@
 }
 
 - (void) processNotificationListJson:(NSArray*) notificationListJson {
-    [_postsWithNotification removeAllObjects];
+    [RCNotification clearNotifications];
     for (NSDictionary *notificationJson in notificationListJson) {
-        RCNotification* notification = [RCNotification parseNotification:notificationJson];
-        if (notification.viewed) continue;
-        for (NSURL *url in notification.urls) {
-            if ([url.scheme hasSuffix:@"memcap"]) {
-                if ([url.host hasSuffix:@"posts"]) {
-                    NSNumber *postID = [NSNumber numberWithInt:[[url.path substringFromIndex:1] intValue]];
-                    [_postsWithNotification setObject:notification forKey:postID];
-                }
-            }
-        }
+        [RCNotification parseNotification:notificationJson];
     }
 }
 
@@ -512,8 +501,8 @@
             [cell changeCellState:RCCellStateDimmed];
         }
     }
-    RCNotification *notification = [_postsWithNotification objectForKey:[NSNumber numberWithInt:post.postID]];
-    if (notification != nil) {
+    RCNotification *notification = [RCNotification notificationForResource:[NSString stringWithFormat:@"posts/%d",post.postID]];
+    if (notification != nil && !notification.viewed) {
         //TODO add animation effect for post with new comments
         [cell.lblNotification setHidden:NO];
     } else [cell.lblNotification setHidden:YES];
@@ -735,12 +724,9 @@
             post = [_posts objectAtIndex:indexPath.row];
             RCUser *owner = [RCUser getUserOwnerOfPost:post];
             //check if this is a post with notification
-            NSNumber *postKey = [NSNumber numberWithInt:post.postID];
-            RCNotification* notification = [_postsWithNotification objectForKey:postKey];
+            RCNotification* notification = [RCNotification notificationForResource:[NSString stringWithFormat:@"posts/%d",post.postID]];
             if (notification != nil) {
                 [notification updateViewedProperty];
-                [_postsWithNotification removeObjectForKey:postKey];
-                
             }
             
             RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user];

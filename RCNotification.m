@@ -22,6 +22,7 @@
 @synthesize viewed = _viewed;
 
 static NSMutableArray* RCNotificationNotificationList = nil;
+static NSMutableDictionary* RCNotificationObjectWithNotification = nil;
 
 - (id) initWithNSDictionary:(NSDictionary *)postData {
     self = [super init];
@@ -51,6 +52,16 @@ static NSMutableArray* RCNotificationNotificationList = nil;
 
 + (void) initNotificationDataModel {
     RCNotificationNotificationList = [[NSMutableArray alloc] init];
+    RCNotificationObjectWithNotification = [[NSMutableDictionary alloc] init];
+}
+
++ (void) clearNotifications{
+    [RCNotificationNotificationList removeAllObjects];
+    [RCNotificationObjectWithNotification removeAllObjects];
+}
+
++ (RCNotification*) notificationForResource:(NSString*)resourceSpecifier {
+    return [RCNotificationObjectWithNotification objectForKey:resourceSpecifier];
 }
 
 + (RCNotification*) parseNotification:(NSDictionary*) notificationDict {
@@ -66,6 +77,11 @@ static NSMutableArray* RCNotificationNotificationList = nil;
     for (TFHppleElement *element in nodes) {
         NSURL *url = [NSURL URLWithString:[element objectForKey:@"href"]];
         [notification.urls addObject:url];
+        if ([url.scheme hasSuffix:@"memcap"]) {
+            if ([url.host hasSuffix:@"posts"]) {
+                [RCNotificationObjectWithNotification setObject:notification forKey:[NSString stringWithFormat:@"%@%@",url.host, url.path]];
+            }
+        }
     }
     [RCNotificationNotificationList addObject:notification];
     return notification;

@@ -15,6 +15,7 @@
 
 + (NSString*) cellIdentifier;
 - (void) setHighlightShadow: (BOOL)highlight;
+@property (weak, nonatomic) IBOutlet UILabel *lblNotification;
 - (void)initCellAppearanceForPost:(RCPost *) post;
 
 @end

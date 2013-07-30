@@ -22,4 +22,6 @@
 - (void) updateViewedProperty;
 + (RCNotification*) parseNotification:(NSDictionary*) notificationDict;
 + (void) initNotificationDataModel;
++ (void) clearNotifications;
++ (RCNotification*) notificationForResource:(NSString*)resourceSpecifier;
 @end

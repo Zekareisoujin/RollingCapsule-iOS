@@ -8,7 +8,7 @@
 
 #import "RCUtilities.h"
 #import "RCConstants.h"
-#import "SBJson.h"
+#import "RCNotification.h"
 #import "RCUserProfileViewController.h"
 #import "RCConnectionManager.h"
 #import "RCAmazonS3Helper.h"
@@ -16,6 +16,7 @@
 #import "RCFriendListViewController.h"
 #import "RCPostDetailsViewController.h"
 #import "UIImage+animatedGIF.h"
+#import "SBJson.h"
 #import <AWSRuntime/AWSRuntime.h>
 
 @interface RCUserProfileViewController ()
@@ -754,6 +755,10 @@
     //RCPost *post = [[RCPost alloc] initWithNSDictionary:[_postList objectAtIndex:indexPath.row]];
     RCPost *post = [_postList objectAtIndex:indexPath.row];
     [cell initCellAppearanceForPost:post];
+    RCNotification *notification = [RCNotification notificationForResource:[NSString stringWithFormat:@"posts/%d",post.postID]];
+    if (notification != nil && !notification.viewed) {
+        [cell.lblNotification setHidden:NO];
+    } else [cell.lblNotification setHidden:YES];
     
     // Pulling next page if necessary:
     if (indexPath.row == (currentMaxPostNumber - 1)) {
@@ -1035,27 +1040,27 @@
         //if index path for cell not found
         if (indexPath != nil ) {
             RCPost *post = [_postList objectAtIndex:indexPath.row];
-//            RCUser *owner = [[RCUser alloc] init];
-//            owner.userID = post.userID;
-//            owner.name = post.authorName;
+            RCUser *owner = [RCUser getUserOwnerOfPost:post];
+            RCNotification *notification = [RCNotification notificationForResource:[NSString stringWithFormat:@"posts/%d",post.postID]];
+            if (notification != nil && !notification.viewed) {
+                [notification updateViewedProperty];
+            }
             
-            [RCUser getUserWithIDAsync:post.userID completionHandler:^(RCUser *owner){
-                //[_collectionView removeGestureRecognizer:recognizer];
-                RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_viewingUser];
-                
-                /*if (post.landmarkID == -1)
-                    postDetailsViewController.landmark = nil;
-                else
-                    postDetailsViewController.landmark = [_landmarks objectForKey:[NSNumber numberWithInt:post.landmarkID]];*/
-                postDetailsViewController.deleteFunction = ^{
-                    [_postList removeObjectAtIndex:indexPath.row];
-                    [_collectionView reloadData];
-                    [self hidePostPreview];
-                };
-                //postDetailsViewController.landmarkID = post.landmarkID;
-                
-                [self.navigationController pushViewController:postDetailsViewController animated:YES];
-            }];
+            RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_viewingUser];
+            
+            /*if (post.landmarkID == -1)
+                postDetailsViewController.landmark = nil;
+            else
+                postDetailsViewController.landmark = [_landmarks objectForKey:[NSNumber numberWithInt:post.landmarkID]];*/
+            postDetailsViewController.deleteFunction = ^{
+                [_postList removeObjectAtIndex:indexPath.row];
+                [_collectionView reloadData];
+                [self hidePostPreview];
+            };
+            //postDetailsViewController.landmarkID = post.landmarkID;
+            
+            [self.navigationController pushViewController:postDetailsViewController animated:YES];
+
             
         }
     }
