@@ -419,7 +419,6 @@
                  }
                  
                  for (NSDictionary *postData in postList) {
-                     //RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
                      RCPost *post = [RCPost getPostWithNSDictionary:postData];
                      [_posts addObject:post];
                  }
