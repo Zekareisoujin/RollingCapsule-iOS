@@ -349,16 +349,18 @@
                          });
                      }];
                     
+                    [_mapView removeAnnotations:_mapView.annotations];
                     [appDelegate setCurrentUser:_user];
                     [_posts removeAllObjects];
                     for (NSDictionary *postData in postList) {
                         //RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
                         RCPost *post = [RCPost getPostWithNSDictionary:postData];
                         [_posts addObject:post];
+                        [_mapView addAnnotation:post];
                     }
                     willShowMoreFeeds = ([_posts count] == currentMaxPostNumber);
                     
-                    [_mapView removeAnnotations:_mapView.annotations];
+                    
                     [_collectionView reloadData];
                     [self toggleButtonRefresh:NO];
                     
@@ -431,6 +433,7 @@
                  for (NSDictionary *postData in postList) {
                      RCPost *post = [RCPost getPostWithNSDictionary:postData];
                      [_posts addObject:post];
+                     [_mapView addAnnotation:post];
                  }
                  
                  //[_collectionView reloadData];
@@ -570,16 +573,19 @@
         return nil;
     }
     
-    if ([annotation isKindOfClass:[RCLandmark class]]) {
-        RCLandmark *landmark = (RCLandmark*) annotation;
+    if ([annotation isKindOfClass:[RCPost class]]) {
+        RCPost *post = (RCPost*) annotation;
         NSString *annotationIdentifier = @"landmark";
-        MKAnnotationView *landmarkButton = (MKAnnotationView*) [mapView dequeueReusableAnnotationViewWithIdentifier:annotationIdentifier];
-        if (landmarkButton == nil)
-            landmarkButton = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:annotationIdentifier];
-        NSString *imageName = [NSString stringWithFormat:@"landmarkCategory%@.png",landmark.category];
-        UIImage *scaledLandmarkImage = imageWithImage([UIImage imageNamed:imageName], CGSizeMake(20,20));
-        [landmarkButton setImage:scaledLandmarkImage];
-        return (MKAnnotationView*)landmarkButton;
+        MKAnnotationView *postButton = (MKAnnotationView*) [mapView dequeueReusableAnnotationViewWithIdentifier:annotationIdentifier];
+        if (postButton == nil)
+            postButton = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:annotationIdentifier];
+        if (post.topic != nil) {
+            NSString *imageName = [NSString stringWithFormat:@"topicCategory%@.png",post.topic];
+            UIImage *scaledLandmarkImage = imageWithImage([UIImage imageNamed:imageName], CGSizeMake(35,35));
+            [postButton setImage:scaledLandmarkImage];
+            return (MKAnnotationView*)postButton;
+        } else return nil;
+        
     }
     return nil;
 }
@@ -670,7 +676,6 @@
         
         if ([_chosenPosts containsObject:key]) {
             [_chosenPosts removeObject:key];
-            [_mapView removeAnnotation:post];
             if ([_chosenPosts count] == 0) {
                 [currentCell changeCellState:RCCellStateNormal];
                 for (UICollectionViewCell* cell in _collectionView.visibleCells) {
@@ -685,7 +690,6 @@
             [_mapView setRegion:viewRegion animated:YES];
             [currentCell changeCellState:RCCellStateFloat];
             [_chosenPosts addObject:[[NSNumber alloc] initWithInt:post.postID]];
-            [_mapView addAnnotation:post];
             for (UICollectionViewCell* cell in _collectionView.visibleCells) {
                 RCMainFeedCell *feedCell = (RCMainFeedCell *)cell;
                 int index = [[_collectionView indexPathForCell:cell] row];
