@@ -8,6 +8,7 @@
 
 #import "RCMainFeedViewController.h"
 #import "RCUser.h"
+#import "RCNotification.h"
 #import "RCPost.h"
 #import "RCFeed.h"
 #import "RCConstants.h"
@@ -299,8 +300,13 @@
         [_lblWarningNoConnection removeFromSuperview];
         _btnRefresh.enabled = YES;
     }];
+}
 
-    
+- (void) processNotificationListJson:(NSArray*) notificationListJson {
+    [RCNotification clearNotifications];
+    for (NSDictionary *notificationJson in notificationListJson) {
+        [RCNotification parseNotification:notificationJson];
+    }
 }
 
 - (void) asynchFetchFeeds:(int)nRetry {
@@ -350,6 +356,7 @@
                 }                
                 SBJsonParser *jsonParser = [SBJsonParser new];
                 NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
+                
 #if DEBUG==1
                 NSLog(@"%@%@",[RCMainFeedViewController debugTag], responseData);
 #endif
@@ -357,6 +364,9 @@
                 if (jsonData != NULL) {
                     [_postsByLandmark removeAllObjects];
                     [_chosenPosts removeAllObjects];
+                    
+                    NSArray* notificationListJson = [jsonData objectForKey:@"notification_list"];
+                    [self processNotificationListJson:notificationListJson];
 
                     NSArray *postList = (NSArray *) [jsonData objectForKey:@"post_list"];
                     int numCapsules = [[jsonData objectForKey:@"unreleased_capsules_count"] intValue];
@@ -457,7 +467,6 @@
                  }
                  
                  for (NSDictionary *postData in postList) {
-                     //RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
                      RCPost *post = [RCPost getPostWithNSDictionary:postData];
                      [_posts addObject:post];
                  }
@@ -530,6 +539,11 @@
             [cell changeCellState:RCCellStateDimmed];
         }
     }
+    RCNotification *notification = [RCNotification notificationForResource:[NSString stringWithFormat:@"posts/%d",post.postID]];
+    if (notification != nil && !notification.viewed) {
+        //TODO add animation effect for post with new comments
+        [cell.lblNotification setHidden:NO];
+    } else [cell.lblNotification setHidden:YES];
     
     // Pulling next page if necessary:
     if (indexPath.row == (currentMaxPostNumber - 1)) {
@@ -734,9 +748,15 @@
             [_collectionView removeGestureRecognizer:_longPressGestureRecognizer];
             
             RCPost *post;
-            post = [_posts objectAtIndex:indexPath.row];
             
+            post = [_posts objectAtIndex:indexPath.row];
             RCUser *owner = [RCUser getUserOwnerOfPost:post];
+            //check if this is a post with notification
+            RCNotification* notification = [RCNotification notificationForResource:[NSString stringWithFormat:@"posts/%d",post.postID]];
+            if (notification != nil) {
+                [notification updateViewedProperty];
+            }
+            
             RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user];
             if (post.landmarkID == -1)
                 postDetailsViewController.landmark = nil;
@@ -748,7 +768,6 @@
             postDetailsViewController.landmarkID = post.landmarkID;
             //[self presentViewController:postDetailsViewController animated:YES completion:nil];
             [self.navigationController pushViewController:postDetailsViewController animated:YES];
-            
 
             
         }

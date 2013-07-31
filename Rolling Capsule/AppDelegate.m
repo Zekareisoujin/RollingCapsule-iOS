@@ -9,7 +9,7 @@
 #import "AppDelegate.h"
 #import <QuartzCore/QuartzCore.h>
 #import "RCPost.h"
-#import "RCUser.h"
+#import "RCNotification.h"
 #import "RCLoginViewController.h"
 #import "RCFriendListViewController.h"
 #import "RCMainFeedViewController.h"
@@ -55,6 +55,12 @@ void SignalHandler(int sig) {
     // Save application data on crash
 }
 
+- (void) initDataModelLayer {
+    [RCPost initPostDataModel];
+    [RCUser initUserDataModel];
+    [RCNotification initNotificationDataModel];
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     NSSetUncaughtExceptionHandler(&HandleExceptions);
@@ -73,7 +79,7 @@ void SignalHandler(int sig) {
     [TestFlight takeOff:@"9a1eac62-14de-493e-971e-bea0ff0cb99b"];
     
     
-    [RCPost initPostDataModel];
+    [self initDataModelLayer];
     _didUpdateLocation = NO;
     _didQueueOpenMainFeedOption = NO;
     
@@ -107,7 +113,6 @@ void SignalHandler(int sig) {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:RCLogStatusDefault]) {
-        //[_menuViewController btnActionMainFeedNav:nil];
         //queue main feed open action so that the main feed is opened automatically
         //when location is updated
         RCLoadingLocationViewController *loadingViewController = [[RCLoadingLocationViewController alloc] init];

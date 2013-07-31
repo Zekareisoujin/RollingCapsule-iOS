@@ -375,7 +375,9 @@
 
 - (void)userDidLogIn:(RCUser *)user {
     [[NSUserDefaults standardUserDefaults] setBool:YES forKey:RCLogStatusDefault];
+    [[NSUserDefaults standardUserDefaults] setObject:[user getDictionaryObject] forKey:RCLogUserDefault];
     [[NSUserDefaults standardUserDefaults] synchronize];
+    [RCUser setCurrentUser:user];
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate enableSideMenu];
 

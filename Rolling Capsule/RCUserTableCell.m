@@ -80,10 +80,10 @@ BOOL isRequestCell;
 }
 
 - (IBAction)btnAcceptTouchedUpInside:(id)sender {
+    if (_completionHandler != nil) //moved outside due to row inconsistency
+        _completionHandler(YES);
     [RCUser acceptFriendRelationAsync:_friendshipID completionhandler:^(NSString* errorMsg){
         if (errorMsg == nil){
-            if (_completionHandler != nil)
-                _completionHandler(YES);
             postNotification([NSString stringWithFormat:@"You are now friend with %@", _user.name]);
         }else
             postNotification(errorMsg);
@@ -91,10 +91,10 @@ BOOL isRequestCell;
 }
 
 - (IBAction)btnRejectTouchedUpInside:(id)sender {
+    if (_completionHandler != nil) //moved outside due to row inconsistency
+        _completionHandler(NO);
     [RCUser removeFriendRelationAsync:_friendshipID completionhandler:^(NSString* errorMsg){
         if (errorMsg == nil){
-            if (_completionHandler != nil)
-                _completionHandler(NO);
             //postNotification([NSString stringWithFormat:@"You are now following %@", _user.name]);
         }else
             postNotification(errorMsg);

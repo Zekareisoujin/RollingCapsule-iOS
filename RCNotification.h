@@ -10,12 +10,18 @@
 
 @interface RCNotification : NSObject
 
-@property (nonatomic,retain) NSString *content;
-@property (nonatomic,retain) NSString *createdTime;
-@property (nonatomic,retain) NSString *updatedTime;
+@property (nonatomic, strong) NSString *content;
+@property (nonatomic, strong) NSString *createdTime;
+@property (nonatomic, strong) NSString *updatedTime;
+@property (nonatomic, strong) NSMutableArray* urls;
 
+@property (nonatomic, assign) BOOL viewed;
 @property (nonatomic, assign) int receiverID;
 @property (nonatomic, assign) int notificationID;
 
-- (id) initWithNSDictionary:(NSDictionary *)postData;
+- (void) updateViewedProperty;
++ (RCNotification*) parseNotification:(NSDictionary*) notificationDict;
++ (void) initNotificationDataModel;
++ (void) clearNotifications;
++ (RCNotification*) notificationForResource:(NSString*)resourceSpecifier;
 @end
