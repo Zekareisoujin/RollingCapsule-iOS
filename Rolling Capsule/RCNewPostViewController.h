@@ -45,8 +45,6 @@
 @property (strong, nonatomic) RCKeyboardPushUpHandler *keyboardPushHandler;
 @property (nonatomic, strong) UICollectionView *tblViewLandmark;
 @property (nonatomic, strong) RCLandmark *currentLandmark;
-@property (nonatomic, copy)   VoidBlock   postComplete;
-@property (nonatomic, copy)   VoidBlock   postCancel;
 
 - (IBAction)backgroundTouchUpInside:(id)sender;
 - (IBAction)btnActionChooseCameraSource:(id)sender;

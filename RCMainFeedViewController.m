@@ -458,7 +458,6 @@
 }
 
 - (void) switchToNewPostScreen {
-    //[_postButton setEnabled:NO];
     RCNewPostViewController *newPostController;
     if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height)
         newPostController = [[RCNewPostViewController alloc] initWithUser:_user withNibName:@"RCNewPostViewController4" bundle:nil];
@@ -466,10 +465,6 @@
         newPostController = [[RCNewPostViewController alloc] initWithUser:_user withNibName:@"RCNewPostViewController" bundle:nil];
 
     [self presentViewController:newPostController animated:YES completion:nil];
-    /*[self addChildViewController:newPostController];
-    newPostController.view.frame = self.view.frame;
-        [self.view addSubview:newPostController.view];
-    [newPostController didMoveToParentViewController:self];*/
 }
 
 #pragma mark - UICollectionView Datasource
@@ -733,10 +728,7 @@
                 [self handleRefresh:_refreshControl];
             };
             postDetailsViewController.landmarkID = post.landmarkID;
-            //[self presentViewController:postDetailsViewController animated:YES completion:nil];
             [self.navigationController pushViewController:postDetailsViewController animated:YES];
-
-            
         }
     }
 }

@@ -45,9 +45,6 @@
 @end
 
 @implementation RCNewPostViewController {
-    S3PutObjectResponse *_putObjectResponse;
-    AmazonClientException *_amazonException;
-    RCConnectionManager *_connectionManager;
     NSData *_uploadData;
     NSData *_thumbnailData;
 }
@@ -68,8 +65,6 @@
 @synthesize personalPrivacyButton = _personalPrivacyButton;
 @synthesize privacyOption = _privacyOption;
 @synthesize viewTopic = _viewTopic;
-@synthesize postComplete = _postComplete;
-@synthesize postCancel = _postCancel;
 @synthesize viewFirstLoad = _viewFirstLoad;
 @synthesize activityIndicator = _activityIndicator;
 @synthesize currentTopic = _currentTopic;
@@ -106,7 +101,6 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
     if (_landmarkTableVisible) {
         _landmarkTableVisible = NO;
         [_viewTopic removeFromSuperview];
-        //[self.view addGestureRecognizer:_tapGestureRecognizer];
     } else {
         //[self asynchGetLandmarkRequest];
         if (_topics == nil || [_topics count] == 0) {
@@ -124,7 +118,6 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
     if (self) {
         _user = user;
         _keyboardPushHandler = [[RCKeyboardPushUpHandler alloc] init];
-        _connectionManager = [[RCConnectionManager alloc] init];
     }
     return self;
 }
@@ -134,7 +127,6 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
     if (self) {
         _user = user;
         _keyboardPushHandler = [[RCKeyboardPushUpHandler alloc] init];
-        _connectionManager = [[RCConnectionManager alloc] init];
     }
     return self;
 }
@@ -144,7 +136,6 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
     if (self) {
         _user = user;
         _keyboardPushHandler = [[RCKeyboardPushUpHandler alloc] init];
-        _connectionManager = [[RCConnectionManager alloc] init];
     }
     return self;
 }
@@ -222,7 +213,6 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
 
 - (void) resetUploadStatus {
     _didFinishUploadingImage = NO;
-    _amazonException = nil;
     _isPosting = NO;
 }
 
@@ -258,123 +248,14 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
     if (_datePickerView != nil && _isTimedRelease) {
         _post.releaseDate = [_datePickerView date];
     }
-    //_postNewOp = [[RCNewPostOperation alloc] initWithPost:post withMediaUploadOperation:_mediaUploadOp];
+
     [RCOperationsManager addUploadOperation:_mediaUploadOp withPost:_post];
     _mediaUploadOp = nil;
-    /*if (_postCancel != nil) {
-        _postCancel();
-    }*/
     _postButton.enabled = NO;
     if (RCNewPostViewControllerAutomaticClose)
         [self dismissViewControllerAnimated:YES completion:^{
             NSLog(@"successfully dismissed new post view controller");
         }];
-
-    /*[_connectionManager startConnection];
-    _postButton.enabled = NO;
-    dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
-    dispatch_async(queue, ^{
-        NSLog(@"infinite loop waiting for upload to finish");
-        if (_didFinishUploadingImage) {
-            [self uploadPostMetadata];
-            //NSLog(@"waiting for upload finish");
-        }
-        
-    });*/
-}
-
-- (void) uploadPostMetadata {
-    if (_amazonException != nil) {
-        [RCConnectionManager endConnection];
-        _postButton.enabled = YES;
-        [self showAlertMessage:@"Failed to upload image, please try again later!" withTitle:RCUploadError];
-        [self resetUploadStatus];
-        dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
-        dispatch_async(queue, ^{
-            [self uploadImageToS3:_uploadData withThumbnail:_thumbnailData dataBeingMovie:_isMovie];
-            [self processCompletionOfDataUpload];
-        });
-        return;
-    }
-    else if (_putObjectResponse.error != nil) {
-        
-        [RCConnectionManager endConnection];
-        _postButton.enabled = YES;
-        [self showAlertMessage:_putObjectResponse.error.description withTitle:@"Upload Error"];
-        [self resetUploadStatus];
-        dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
-        dispatch_async(queue, ^{
-            [self uploadImageToS3:_uploadData withThumbnail:_thumbnailData dataBeingMovie:_isMovie];
-            [self processCompletionOfDataUpload];
-           
-        });
-        return;
-    }
-    [self performSelectorOnMainThread:@selector(asynchPostNewResuest) withObject:nil waitUntilDone:YES];
-}
-
-- (void) processCompletionOfDataUpload {
-     NSLog(@"finished uploading image/video data");
-    _didFinishUploadingImage = YES;
-    if (_isPosting) {
-        [self uploadPostMetadata];
-    }
-    
-}
-
-#pragma mark - upload method
-
-- (void)uploadImageToS3:(NSData *)imageData withThumbnail:thumbnailData dataBeingMovie:(BOOL) isMovie
-{
-    AmazonS3Client *s3 = [RCAmazonS3Helper s3:_user.userID forResource:[NSString stringWithFormat:@"%@/*", RCAmazonS3UsersMediaBucket]];
-    if (s3 != nil) {
-        CFUUIDRef theUUID = CFUUIDCreate(NULL);
-        CFStringRef string = CFUUIDCreateString(NULL, theUUID);
-        CFRelease(theUUID);
-        _imageFileName = [(__bridge NSString*)string stringByReplacingOccurrencesOfString:@"-"withString:@""];
-        if (isMovie) {
-            _imageFileName = [NSString stringWithFormat:@"%@.mov",_imageFileName];
-        }
-        // Upload image data.  Remember to set the content type.
-        S3PutObjectRequest *por = [[S3PutObjectRequest alloc] initWithKey:_imageFileName
-                                                                 inBucket:RCAmazonS3UsersMediaBucket];
-        por.contentType = isMovie ? @"movie/mov" : @"image/jpeg";
-        por.data = imageData;
-        
-        S3PutObjectRequest *porThumbnail = [[S3PutObjectRequest alloc] initWithKey:[NSString stringWithFormat:@"%@-thumbnail",_imageFileName]
-                                                                 inBucket:RCAmazonS3UsersMediaBucket];
-        porThumbnail.contentType = @"image/jpeg";
-        porThumbnail.data = thumbnailData;
-
-        
-        @try {
-            NSLog(@"before calling data s3 putObject");
-            _putObjectResponse = [s3 putObject:por];
-            NSLog(@"done uploading data to s3 result %@",_putObjectResponse);
-            if (_putObjectResponse.error != nil)
-            {
-                NSLog(@"Error: %@", _putObjectResponse.error);
-            }
-            if (thumbnailData != nil)
-            {
-                NSLog(@"before calling thumbnail s3 putObject");
-                _putObjectResponse = [s3 putObject:porThumbnail];
-                NSLog(@"done uploading thumbnail to s3 result %@",_putObjectResponse);
-            }
-            if (_putObjectResponse.error != nil)
-            {
-                NSLog(@"Error: %@", _putObjectResponse.error);
-            }
-        }@catch (AmazonClientException *exception) {
-            NSLog(@"New-Post: Error: %@", exception);
-            NSLog(@"New-Post: Debug Description: %@",exception.debugDescription);
-            _amazonException = exception;
-        }
-    } else {
-        NSString* errorString = @"Failed to obtain S3 credentails from backend";
-        NSLog(@"New-Post: Error: %@", errorString);
-        _amazonException = [AmazonClientException exceptionWithMessage:errorString];
-    }
 }
 
 #pragma mark - helper methods
@@ -387,125 +268,6 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
                                                cancelButtonTitle:@"OK"
                                                otherButtonTitles:nil];
     [alertView show];
-}
-
-#pragma mark - post web request
-
-- (void) asynchPostNewResuest {
-    //Asynchronous Request
-    @try {
-        
-        NSString* prefix = [NSString stringWithFormat:@"%@ ",_user.name];
-        _postContent = [[_txtViewPostContent text] substringFromIndex:[prefix length]];
-        NSString *postSubject = [_txtFieldPostSubject text];
-        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-        CLLocationDegrees latitude = appDelegate.currentLocation.coordinate.latitude;
-        CLLocationDegrees longitude = appDelegate.currentLocation.coordinate.longitude;
-        NSString* latSt = [[NSString alloc] initWithFormat:@"%f",latitude];
-        NSString* longSt = [[NSString alloc] initWithFormat:@"%f",longitude];
-        NSString* thumbnail = (_thumbnailData != nil) ? [NSString stringWithFormat:@"%@-thumbnail",_imageFileName] : _imageFileName ;
-        NSMutableString *dataSt = initQueryString(@"post[content]", _postContent);
-        addArgumentToQueryString(dataSt, @"post[rating]", @"5");
-        addArgumentToQueryString(dataSt, @"post[latitude]", latSt);
-        addArgumentToQueryString(dataSt, @"post[longitude]", longSt);
-        addArgumentToQueryString(dataSt, @"post[file_url]", _imageFileName);
-        addArgumentToQueryString(dataSt, @"post[privacy_option]", _privacyOption);
-        addArgumentToQueryString(dataSt, @"post[thumbnail_url]", thumbnail);
-        addArgumentToQueryString(dataSt, @"post[subject]", postSubject);
-        if (_currentTopic != nil)
-            addArgumentToQueryString(dataSt, @"post[topic]", _currentTopic);
-        if (_isTimedRelease) {
-            addArgumentToQueryString(dataSt, @"post[release]", [_datePickerView dateTimeString]);
-        }
-        if (_currentLandmark != nil) {
-            addArgumentToQueryString(dataSt, @"landmark_id", [NSString stringWithFormat:@"%d",_currentLandmark.landmarkID]);
-        }
-        NSData *postData = [dataSt dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:NO];
-        
-        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCPostsResource]];
-        
-        NSURLRequest *request = CreateHttpPostRequest(url, postData);
-        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
-                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
-        {
-            NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
-            int responseStatusCode = [httpResponse statusCode];
-            if (responseStatusCode != RCHttpOkStatusCode) {
-                _successfulPost = NO;
-            } else _successfulPost = YES;
-            
-            [RCConnectionManager endConnection];
-            _postButton.enabled = YES;
-            
-            NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-            NSLog(@"%@",responseData);
-            
-            //Temporary:
-            if (_successfulPost) {
-                //TODO open main news feed page
-                [self showAlertMessage:@"Image posted successfully!" withTitle:@"Success!"];
-                [self dismissViewControllerAnimated:YES completion:^{
-                    if (_postComplete != nil)
-                        _postComplete();
-                }];
-                /*[self animateViewDisapperance:^ {
-                    if (_postComplete != nil)
-                        _postComplete();
-                    [self.view removeFromSuperview];
-                    [self removeFromParentViewController];
-                }];*/
-            }else {
-                postNotification([NSString stringWithFormat:@"Please try again! %@", responseData]);
-                _isPosting = NO;
-            }
-        }];
-    }
-    @catch (NSException * e) {
-        NSLog(@"Exception: %@", e);
-        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        self.navigationItem.rightBarButtonItem.enabled = YES;
-        postNotification(@"Post Failed.");
-        _isPosting = NO;
-    }
-}
-
-- (void) asynchGetLandmarkRequest {
-    @try {
-        [RCConnectionManager startConnection];
-        AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
-        CLLocationCoordinate2D zoomLocation = appDelegate.currentLocation.coordinate;
-        
-        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@?mobile=1&latitude=%f&longitude=%f&%@", RCServiceURL, RCLandmarksResource, zoomLocation.latitude, zoomLocation.longitude, RCLevelsQueryString]];
-        NSURLRequest *request = CreateHttpGetRequest(url);
-        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
-                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
-         {
-             [RCConnectionManager endConnection];
-             NSHTTPURLResponse* httpResponse = (NSHTTPURLResponse*)response;
-             
-             NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-             int responseStatusCode = [httpResponse statusCode];
-             if (responseStatusCode != RCHttpOkStatusCode) {
-                 NSLog(@"New-Post: backend error %@", responseData);
-             } else {
-                 SBJsonParser *jsonParser = [SBJsonParser new];
-                 NSArray *jsonData = (NSArray *) [jsonParser objectWithString:responseData error:nil];
-                 [_topics removeAllObjects];
-                 for (NSDictionary *landmarkJson in jsonData) {
-                     RCLandmark *landmark = [[RCLandmark alloc] initWithNSDictionary:landmarkJson];
-                     [_topics addObject:landmark];
-                 }
-                 [_collectionViewTopic reloadData];
-             }
-         }];
-    }
-    @catch (NSException * e) {
-        NSLog(@"Exception: %@", e);
-        [RCConnectionManager endConnection];
-        self.navigationItem.rightBarButtonItem.enabled = YES;
-        postNotification(@"Post Failed.");
-    }
-
 }
 
 #pragma mark - UI events
@@ -523,8 +285,6 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
 }
 #pragma mark - UIScrollViewDelegate
 - (void) setupImageScrollView {
-    [_activityIndicator removeFromSuperview];
-    [_activityIndicator stopAnimating];
     UIImage *image = _postImage;
     _scrollViewImage.delegate = self;
     _imageViewPostPicture = [[UIImageView alloc] initWithImage:image];
@@ -536,6 +296,7 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
     if (abs(_scrollViewImage.zoomScale - 1.0) < 1e-9) {
         [self scrollViewDidZoom:_scrollViewImage];
     }
+    [_activityIndicator stopAnimating];
 }
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
@@ -559,15 +320,13 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
 
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    
-
-    [self removePhotoSourceControlAndAddPrivacyControl];
     if (_activityIndicator == nil)
         _activityIndicator = [[UIActivityIndicatorView alloc] initWithFrame:_scrollViewImage.frame];
     [self.view addSubview:_activityIndicator];
     [_activityIndicator startAnimating];
     _videoUrl = nil;
     [picker dismissViewControllerAnimated:YES completion:nil];
+    [self removePhotoSourceControlAndAddPrivacyControl];
     dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
     dispatch_async(queue, ^{
         NSLog(@"background processing before data upload");
@@ -641,10 +400,6 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             [self setupImageScrollView];
-            NSLog(@"remove activity indicator");
-            [_activityIndicator removeFromSuperview];
-            [_activityIndicator stopAnimating];
-            
         });
         
         UIImage *thumbnail;
@@ -1062,9 +817,7 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
 - (IBAction)closeBtnTouchUpInside:(id)sender {
    
     NSLog(@"clicked close on newpostviewcontroller");
-    [self dismissViewControllerAnimated:YES completion:^ {
-        
-    }];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
@@ -1167,7 +920,6 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
         _lblLandmarkName.text = _user.name;
     }
     [_viewTopic removeFromSuperview];
-    //[self.view addGestureRecognizer:_tapGestureRecognizer];
     _landmarkTableVisible = NO;
 }
 
