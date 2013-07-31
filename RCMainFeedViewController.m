@@ -501,11 +501,6 @@
             [cell changeCellState:RCCellStateDimmed];
         }
     }
-    RCNotification *notification = [RCNotification notificationForResource:[NSString stringWithFormat:@"posts/%d",post.postID]];
-    if (notification != nil && !notification.viewed) {
-        //TODO add animation effect for post with new comments
-        [cell.lblNotification setHidden:NO];
-    } else [cell.lblNotification setHidden:YES];
     
     // Pulling next page if necessary:
     if (indexPath.row == (currentMaxPostNumber - 1)) {

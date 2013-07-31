@@ -12,6 +12,7 @@
 #import "RCConstants.h"
 #import "RCAmazonS3Helper.h"
 #import "RCConnectionManager.h"
+#import "RCNotification.h"
 #import "UIImage+animatedGIF.h"
 
 @implementation RCMainFeedCell {
@@ -89,6 +90,11 @@
         [ self.imageView setImage:post.thumbnailImage];
     else
         [post registerUIUpdateAction:self action:@selector(updateUIWithPost:)];
+    RCNotification *notification = [RCNotification notificationForResource:[NSString stringWithFormat:@"posts/%d",post.postID]];
+    if (notification != nil && !notification.viewed) {
+        //TODO add animation effect for post with new comments
+        [self.lblNotification setHidden:NO];
+    } else [self.lblNotification setHidden:YES];
 }
 
 - (void) updateUIWithPost:(RCPost*)post {
