@@ -37,6 +37,7 @@
 @property (weak, nonatomic) IBOutlet UILabel* lblDate;
 @property (weak, nonatomic) IBOutlet UIButton* postButton;
 @property (weak, nonatomic) IBOutlet UIButton* publicPrivacyButton;
+@property (weak, nonatomic) IBOutlet UIView *viewMainFrame;
 @property (weak, nonatomic) IBOutlet UIButton* friendPrivacyButton;
 @property (weak, nonatomic) IBOutlet UIButton* personalPrivacyButton;
 @property (weak, nonatomic) IBOutlet UIButton *timeCapsule;

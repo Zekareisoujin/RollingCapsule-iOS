@@ -597,20 +597,46 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
             else
                 [_datePickerView setHidden:NO];
         }
+        BOOL isIphone4 = [[UIScreen mainScreen] bounds].size.height < RCIphone5Height;
+        CGFloat moveBackBy = 45;
+        /*if (isIphone4 && open) {
+            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0,-moveBackBy,self.view.frame.size.width,moveBackBy)];
+            [view setBackgroundColor:[UIColor darkGrayColor]];
+            [self.view addSubview:view];
+            [self.view sendSubviewToBack:view];
+        }*/
         [UIView animateWithDuration:0.5
-                              delay:0
-                            options:UIViewAnimationOptionCurveEaseInOut
-                         animations:^{
-                             if (open)
-                                 _datePickerView.alpha = 1.0;
-                             else {
-                                 _datePickerView.alpha= 0.0;
-                                                          }
+                      delay:0
+                    options:UIViewAnimationOptionCurveEaseInOut
+                 animations:^{
+                     if (isIphone4) {
+                         if (!open) {
+                             CGRect frame2 =_datePickerView.frame;
+                             CGRect frame =  self.viewMainFrame.frame;
+                             frame.origin.y -= moveBackBy;
+                             frame2.origin.y -= moveBackBy;
+                             _datePickerView.frame = frame2;
+                             self.viewMainFrame.frame = frame;
+                         } else {
+                             CGRect frame2 =_datePickerView.frame;
+                             CGRect frame =  self.viewMainFrame.frame;
+                             frame.origin.y += moveBackBy;
+                             frame2.origin.y += moveBackBy;
+                             _datePickerView.frame = frame2;
+                             self.viewMainFrame.frame = frame;
                          }
-                         completion:^(BOOL finished) {
-                             if (!open)
-                                 [_datePickerView setHidden:YES];
-                         }];
+                     }
+
+                     if (open)
+                         _datePickerView.alpha = 1.0;
+                     else {
+                         _datePickerView.alpha= 0.0;
+                                                  }
+                 }
+                 completion:^(BOOL finished) {
+                     if (!open)
+                         [_datePickerView setHidden:YES];
+                 }];
     }else {
         _isTimedRelease = NO;
         [_timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsuleInactive.png"] forState:UIControlStateNormal];
@@ -956,6 +982,7 @@ handler:(void (^)(AVAssetExportSession*))handler
 
 #pragma mark - RCDatePickerDelegate
 - (void) didPickDate:(NSDate *)pickedDateTime success:(BOOL)success {
+    [self openDatePickerView:nil];
     if (success) {
         _isTimedRelease = YES;
         [_timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsuleActive.png"] forState:UIControlStateNormal];
