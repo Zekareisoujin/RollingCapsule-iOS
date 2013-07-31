@@ -11,7 +11,7 @@
 #import "RCUser.h"
 
 @interface RCMainFeedCell : UICollectionViewCell
-@property (weak, nonatomic) IBOutlet UILabel *lblNotification;
+@property (weak, nonatomic) IBOutlet UIImageView *lblNotification;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (strong, nonatomic) UIView *dimMask;
 @property (assign, nonatomic) int cellState;

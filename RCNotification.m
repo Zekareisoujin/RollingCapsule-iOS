@@ -66,6 +66,8 @@ static NSMutableDictionary* RCNotificationObjectWithNotification = nil;
 
 + (RCNotification*) parseNotification:(NSDictionary*) notificationDict {
     RCNotification* notification = [[RCNotification alloc] initWithNSDictionary:notificationDict];
+    if ([notification.content isKindOfClass:[NSNull class]])
+        return nil;
     NSData *htmlData = [notification.content dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:NO];
     
     // 2
