@@ -127,7 +127,7 @@
             [RCConnectionManager endConnection];
             NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
             NSDictionary *jsonData = [responseData JSONValue];
-            NSLog(@"App data: %@",jsonData);
+            //NSLog(@"App data: %@",jsonData);
 
             if (jsonData != nil) {
                 NSDictionary *appInfo = [[jsonData objectForKey:@"results"] objectAtIndex:0];

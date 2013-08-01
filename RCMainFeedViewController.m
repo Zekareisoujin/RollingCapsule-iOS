@@ -326,6 +326,7 @@
                 if (jsonData != NULL) {
                     [_postsByLandmark removeAllObjects];
                     [_chosenPosts removeAllObjects];
+                    [_mapView removeAnnotations:_mapView.annotations];
                     
                     NSArray* notificationListJson = [jsonData objectForKey:@"notification_list"];
                     [self processNotificationListJson:notificationListJson];
@@ -349,7 +350,6 @@
                          });
                      }];
                     
-                    [_mapView removeAnnotations:_mapView.annotations];
                     [appDelegate setCurrentUser:_user];
                     [_posts removeAllObjects];
                     for (NSDictionary *postData in postList) {

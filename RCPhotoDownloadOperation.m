@@ -76,7 +76,15 @@
                     _completionHandler(image);
                 return;
             } else continue;
-        } @catch (AmazonServiceException *e) {
+        } @catch (AmazonServiceException *se) {
+#if DEBUG==1
+            NSLog(@"amazon service exception %@",se);
+#endif
+        }@catch (AmazonClientException *ce) {
+#if DEBUG==1
+            NSLog(@"amazon client exception %@",ce);
+#endif
+        }@catch (NSException *e) {
 #if DEBUG==1
             NSLog(@"amazon service exception %@",e);
 #endif

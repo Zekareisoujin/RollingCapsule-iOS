@@ -335,7 +335,6 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
         _isMovie = CFStringCompare ((__bridge CFStringRef) mediaType, kUTTypeMovie, 0)
         == kCFCompareEqualTo;
         
-
         NSLog(@"creating media upload operation");
         CFUUIDRef theUUID = CFUUIDCreate(NULL);
         CFStringRef string = CFUUIDCreateString(NULL, theUUID);
@@ -410,7 +409,6 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
             if (thumbnail == nil)
                 thumbnail = generateSquareImageThumbnail(_postImage);
             rescaledThumbnail = imageWithImage(thumbnail, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
-            //_thumbnailData = UIImageJPEGRepresentation(rescaledThumbnail,0.7);
         } else {
             // Get the selected image
             thumbnail = generateSquareImageThumbnail(_postImage);
@@ -793,9 +791,9 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
     }
 }
 
-- (BOOL)textView:(UITextView *)textField shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)string
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)string
 {
-    NSString *resultString = [textField.text stringByReplacingCharactersInRange:range withString:string];
+    NSString *resultString = [textView.text stringByReplacingCharactersInRange:range withString:string];
     NSLog(@"resulting string would be: %@", resultString);
     //TODO optimize
     NSString *prefixString = [NSString stringWithFormat:@"%@ ",_user.name];
