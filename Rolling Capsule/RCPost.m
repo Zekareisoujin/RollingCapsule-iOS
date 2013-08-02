@@ -157,11 +157,11 @@ static NSMutableDictionary* RCPostPostCollection = nil;
 //}
 
 - (NSString *)title {
-    return @"";
+    return [self.subject length] > 0 ? self.subject : @"Here";
 }
 
 - (NSString *)subtitle {
-    return @"";
+    return self.content;
 }
 
 - (CLLocationCoordinate2D)coordinate {

@@ -34,7 +34,7 @@
 
 @property (nonatomic, strong) RCConnectionManager *connectionManager;
 @property (nonatomic, strong) NSMutableDictionary *postsByLandmark;
-@property (nonatomic, strong) NSMutableDictionary *landmarks;
+@property (nonatomic, strong) NSMutableDictionary *postsByRowIndex;
 @property (nonatomic, strong) NSMutableArray *posts;
 @property (nonatomic, assign) int currentLandmarkID;
 @property (nonatomic, strong) UIPinchGestureRecognizer *pinchGestureRecognizer;
@@ -77,7 +77,7 @@
 @synthesize tapGestureRecognizer = _tapGestureRecognizer;
 @synthesize backgroundImage = _backgroundImage;
 @synthesize currentViewMode = _currentViewMode;
-@synthesize landmarks = _landmarks;
+@synthesize postsByRowIndex = _postsByRowIndex;
 @synthesize postButton = _postButton;
 @synthesize posts = _posts;
 @synthesize reachability = _reachability;
@@ -104,7 +104,7 @@
         _connectionManager = [[RCConnectionManager alloc] init];
         _postsByLandmark = [[NSMutableDictionary alloc] init];
         _chosenPosts = [[NSMutableSet alloc] init];
-        _landmarks = [[NSMutableDictionary alloc] init];
+        _postsByRowIndex = [[NSMutableDictionary alloc] init];
         _posts = [[NSMutableArray alloc] init];
     }
     return self;
@@ -128,7 +128,6 @@
     [_chosenPosts removeAllObjects];
     _currentLandmarkID = -1;
     [_postsByLandmark removeAllObjects];
-    [_landmarks removeAllObjects];
     
     //customizing navigation bar
     self.navigationItem.title = @"";
@@ -351,10 +350,12 @@
                      }];
                     
                     [appDelegate setCurrentUser:_user];
+                    [_postsByRowIndex removeAllObjects];
                     [_posts removeAllObjects];
                     for (NSDictionary *postData in postList) {
                         //RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
                         RCPost *post = [RCPost getPostWithNSDictionary:postData];
+                        [_postsByRowIndex setObject:[NSNumber numberWithInt:[_posts count]] forKey:[NSNumber numberWithInt:post.postID]];
                         [_posts addObject:post];
                         [_mapView addAnnotation:post];
                     }
@@ -432,6 +433,7 @@
                  
                  for (NSDictionary *postData in postList) {
                      RCPost *post = [RCPost getPostWithNSDictionary:postData];
+                     [_postsByRowIndex setObject:[NSNumber numberWithInt:[_posts count]] forKey:[NSNumber numberWithInt:post.postID]];
                      [_posts addObject:post];
                      [_mapView addAnnotation:post];
                  }
@@ -546,10 +548,10 @@
     if ([view.annotation isKindOfClass:[MKUserLocation class]]){
         _userCalloutVisible = YES;
     }
-    if ([view.annotation isKindOfClass:[RCLandmark class]]){
-        RCLandmark *landmark = (RCLandmark *)view.annotation;
-        _currentLandmarkID = landmark.landmarkID;
-        [_collectionView reloadData];
+    if ([view.annotation isKindOfClass:[RCPost class]]){
+        RCPost* post = (RCPost*) view.annotation;
+        int index = [[_postsByRowIndex objectForKey:[NSNumber numberWithInt:post.postID]] intValue];
+        [self selectPostAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]];
     }
 }
 
@@ -557,8 +559,6 @@
     if ([view.annotation isKindOfClass:[MKUserLocation class]]){
         _userCalloutVisible = NO;
     }
-    _currentLandmarkID = -1;
-    [_collectionView reloadData];
 }
 
 -(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
@@ -580,6 +580,7 @@
         if (postButton == nil)
             postButton = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:annotationIdentifier];
         if (post.topic != nil) {
+            postButton.canShowCallout = YES;
             NSString *imageName = [NSString stringWithFormat:@"topicCategory%@.png",post.topic];
             UIImage *scaledLandmarkImage = imageWithImage([UIImage imageNamed:imageName], CGSizeMake(35,35));
             [postButton setImage:scaledLandmarkImage];
@@ -663,43 +664,52 @@
     showThreshold = numCell * _nRows;
 }
 
+- (void) selectPostAtIndexPath:(NSIndexPath*) indexPath {
+    int idx = [indexPath row];
+    RCPost *post = [_posts objectAtIndex:idx];
+    
+    RCMainFeedCell* currentCell = (RCMainFeedCell *)[_collectionView cellForItemAtIndexPath:indexPath];
+    
+    NSNumber *key = [[NSNumber alloc] initWithInt:post.postID];
+    if ([_chosenPosts containsObject:key]) {
+        [_chosenPosts removeObject:key];
+        [_mapView deselectAnnotation:post animated:YES];
+        if ([_chosenPosts count] == 0) {
+            [currentCell changeCellState:RCCellStateNormal];
+            for (UICollectionViewCell* cell in _collectionView.visibleCells) {
+                RCMainFeedCell *feedCell = (RCMainFeedCell *)cell;
+                [feedCell changeCellState:RCCellStateNormal];
+            }
+        } else {
+            [currentCell changeCellState:RCCellStateDimmed];
+        }
+    } else {
+        
+        MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(post.coordinate, 0.5*METERS_PER_MILE, 0.5*METERS_PER_MILE);
+        [_mapView setRegion:viewRegion animated:YES];
+        [_mapView selectAnnotation:post animated:YES];
+        [currentCell changeCellState:RCCellStateFloat];
+        [_chosenPosts removeAllObjects];
+        [_chosenPosts addObject:[[NSNumber alloc] initWithInt:post.postID]];
+        for (UICollectionViewCell* cell in _collectionView.visibleCells) {
+            RCMainFeedCell *feedCell = (RCMainFeedCell *)cell;
+            int index = [[_collectionView indexPathForCell:cell] row];
+            RCPost *iteratingPost = [_posts objectAtIndex:index];
+            NSNumber *key = [[NSNumber alloc] initWithInt:iteratingPost.postID];
+            //if post not chosen then dim
+            if (![_chosenPosts containsObject:key])
+                [feedCell changeCellState:RCCellStateDimmed];
+        }
+    }
+}
+
 - (IBAction)handleTap:(UITapGestureRecognizer *)recognizer {
     CGPoint point = [recognizer locationInView:_collectionView];
     NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:point];
     
     //if there's no item at point of tap
     if (indexPath != nil) {
-        int idx = [indexPath row];
-        RCPost *post = [_posts objectAtIndex:idx];
-        NSNumber *key = [[NSNumber alloc] initWithInt:post.postID];
-        RCMainFeedCell* currentCell = (RCMainFeedCell *)[_collectionView cellForItemAtIndexPath:indexPath];
-        
-        if ([_chosenPosts containsObject:key]) {
-            [_chosenPosts removeObject:key];
-            if ([_chosenPosts count] == 0) {
-                [currentCell changeCellState:RCCellStateNormal];
-                for (UICollectionViewCell* cell in _collectionView.visibleCells) {
-                    RCMainFeedCell *feedCell = (RCMainFeedCell *)cell;
-                    [feedCell changeCellState:RCCellStateNormal];
-                }
-            } else {
-                [currentCell changeCellState:RCCellStateDimmed];
-            }
-        } else {
-            MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(post.coordinate, 0.5*METERS_PER_MILE, 0.5*METERS_PER_MILE);
-            [_mapView setRegion:viewRegion animated:YES];
-            [currentCell changeCellState:RCCellStateFloat];
-            [_chosenPosts addObject:[[NSNumber alloc] initWithInt:post.postID]];
-            for (UICollectionViewCell* cell in _collectionView.visibleCells) {
-                RCMainFeedCell *feedCell = (RCMainFeedCell *)cell;
-                int index = [[_collectionView indexPathForCell:cell] row];
-                RCPost *iteratingPost = [_posts objectAtIndex:index];
-                NSNumber *key = [[NSNumber alloc] initWithInt:iteratingPost.postID];
-                //if post not chosen then dim
-                if (![_chosenPosts containsObject:key])
-                    [feedCell changeCellState:RCCellStateDimmed];
-            }
-        }
+        [self selectPostAtIndexPath:indexPath];
     }
 }
 
@@ -724,10 +734,6 @@
             }
             
             RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user];
-            if (post.landmarkID == -1)
-                postDetailsViewController.landmark = nil;
-            else
-                postDetailsViewController.landmark = [_landmarks objectForKey:[NSNumber numberWithInt:post.landmarkID]];
             postDetailsViewController.deleteFunction = ^{
                 [self handleRefresh:_refreshControl];
             };
