@@ -404,7 +404,6 @@
                     [_postsByRowIndex removeAllObjects];
                     [_posts removeAllObjects];
                     for (NSDictionary *postData in postList) {
-                        //RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
                         RCPost *post = [RCPost getPostWithNSDictionary:postData];
                         [_postsByRowIndex setObject:[NSNumber numberWithInt:[_posts count]] forKey:[NSNumber numberWithInt:post.postID]];
                         [_posts addObject:post];
@@ -609,7 +608,9 @@
     if ([view.annotation isKindOfClass:[RCPost class]]){
         RCPost* post = (RCPost*) view.annotation;
         int index = [[_postsByRowIndex objectForKey:[NSNumber numberWithInt:post.postID]] intValue];
-        [self selectPostAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
+        [_collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+        [self selectPostAtIndexPath:indexPath];
     }
 }
 
@@ -725,10 +726,9 @@
             [currentCell changeCellState:RCCellStateDimmed];
         }
     } else {
-        
-        MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(post.coordinate, 0.5*METERS_PER_MILE, 0.5*METERS_PER_MILE);
+
+        MKCoordinateRegion viewRegion = MKCoordinateRegionMake(post.coordinate, [_mapView region].span);
         [_mapView setRegion:viewRegion animated:YES];
-        [_mapView selectAnnotation:post animated:YES];
         [currentCell changeCellState:RCCellStateFloat];
         [_chosenPosts removeAllObjects];
         [_chosenPosts addObject:[[NSNumber alloc] initWithInt:post.postID]];
@@ -750,7 +750,8 @@
     
     //if there's no item at point of tap
     if (indexPath != nil) {
-        [self selectPostAtIndexPath:indexPath];
+        [_mapView selectAnnotation:[_posts objectAtIndex:indexPath.row] animated:YES];
+        //[self selectPostAtIndexPath:indexPath];
     }
 }
 
