@@ -21,6 +21,7 @@
 #import "RCUserProfileViewController.h"
 #import "RCConstants.h"
 #import "RCOperationsManager.h"
+#import "TTTAttributedLabel.h"
 #import <CoreData/CoreData.h>
 
 @implementation AppDelegate

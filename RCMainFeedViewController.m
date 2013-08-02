@@ -35,7 +35,7 @@
 
 @property (nonatomic, strong) RCConnectionManager *connectionManager;
 @property (nonatomic, strong) NSMutableDictionary *postsByLandmark;
-@property (nonatomic, strong) NSMutableDictionary *landmarks;
+@property (nonatomic, strong) NSMutableDictionary *postsByRowIndex;
 @property (nonatomic, strong) NSMutableArray *posts;
 @property (nonatomic, assign) int currentLandmarkID;
 @property (nonatomic, strong) UIPinchGestureRecognizer *pinchGestureRecognizer;
@@ -78,7 +78,7 @@
 @synthesize tapGestureRecognizer = _tapGestureRecognizer;
 @synthesize backgroundImage = _backgroundImage;
 @synthesize currentViewMode = _currentViewMode;
-@synthesize landmarks = _landmarks;
+@synthesize postsByRowIndex = _postsByRowIndex;
 @synthesize postButton = _postButton;
 @synthesize posts = _posts;
 @synthesize reachability = _reachability;
@@ -105,7 +105,7 @@
         _connectionManager = [[RCConnectionManager alloc] init];
         _postsByLandmark = [[NSMutableDictionary alloc] init];
         _chosenPosts = [[NSMutableSet alloc] init];
-        _landmarks = [[NSMutableDictionary alloc] init];
+        _postsByRowIndex = [[NSMutableDictionary alloc] init];
         _posts = [[NSMutableArray alloc] init];
     }
     return self;
@@ -129,7 +129,6 @@
     [_chosenPosts removeAllObjects];
     _currentLandmarkID = -1;
     [_postsByLandmark removeAllObjects];
-    [_landmarks removeAllObjects];
     
     //customizing navigation bar
     self.navigationItem.title = @"";
@@ -215,6 +214,9 @@
 }
 
 - (void) handleRefresh:(UIRefreshControl*) refreshControl {
+    if (_autoRefresh != nil)
+        [_autoRefresh invalidate];
+
     [self btnCenterMapTouchUpInside:nil];
     if ([_reachability currentReachabilityStatus] == NotReachable) {
         [self showNoConnectionWarningMessage];
@@ -226,28 +228,38 @@
     [_refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:lastUpdated]];
     [self toggleButtonRefresh:YES];
     
-    RCFeed *feed = nil;
-    switch (_currentViewMode) {
-        case RCMainFeedViewModePublic:
-            feed = [RCFeed locationFeed];
-            [RCFeed updateLocation];
-            break;
-        case RCMainFeedViewModeFriends:
-            feed = [RCFeed friendFeed];
-            break;
-        case RCMainFeedViewModeFollow:
-            feed = [RCFeed followFeed];
-            break;
-        default:break;
-    }
-    [feed fetchFeedFromBackend:RCFeedFetchModeReset completion:^{
-        _posts = feed.postList;
+    if (_currentViewMode == RCMainFeedViewModeCommented) {
+        [_posts removeAllObjects];
+        NSMutableArray* commentedPosts = [RCNotification getNotifiedPosts];
+        [_posts addObjectsFromArray:commentedPosts];
         [_collectionView reloadData];
+        [RCNotification loadMissingNotifiedPostsForList:_posts withCompletion:^{
+            [_collectionView reloadData];
+        }];
         [self toggleButtonRefresh:NO];
-        //if ([RCUser currentUser].userID)
-        [self updateUserUIElements:[RCUser currentUser]];
-    }];
-	//[self asynchFetchFeeds:NUM_RETRY_MAIN_FEED];
+    } else {
+        RCFeed *feed = nil;
+        switch (_currentViewMode) {
+            case RCMainFeedViewModePublic:
+                feed = [RCFeed locationFeed];
+                [RCFeed updateLocation];
+                break;
+            case RCMainFeedViewModeFriends:
+                feed = [RCFeed friendFeed];
+                break;
+            case RCMainFeedViewModeFollow:
+                feed = [RCFeed followFeed];
+                break;
+            default:break;
+        }
+        [feed fetchFeedFromBackend:RCFeedFetchModeReset completion:^{
+            _posts = feed.postList;
+            [_collectionView reloadData];
+            [self toggleButtonRefresh:NO];
+            //if ([RCUser currentUser].userID)
+            [self updateUserUIElements:[RCUser currentUser]];
+        }];
+	}
 }
 
 - (void) updateUserUIElements:(RCUser *)user {
@@ -364,6 +376,7 @@
                 if (jsonData != NULL) {
                     [_postsByLandmark removeAllObjects];
                     [_chosenPosts removeAllObjects];
+                    [_mapView removeAnnotations:_mapView.annotations];
                     
                     NSArray* notificationListJson = [jsonData objectForKey:@"notification_list"];
                     [self processNotificationListJson:notificationListJson];
@@ -388,15 +401,18 @@
                      }];
                     
                     [appDelegate setCurrentUser:_user];
+                    [_postsByRowIndex removeAllObjects];
                     [_posts removeAllObjects];
                     for (NSDictionary *postData in postList) {
                         //RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
                         RCPost *post = [RCPost getPostWithNSDictionary:postData];
+                        [_postsByRowIndex setObject:[NSNumber numberWithInt:[_posts count]] forKey:[NSNumber numberWithInt:post.postID]];
                         [_posts addObject:post];
+                        [_mapView addAnnotation:post];
                     }
                     willShowMoreFeeds = ([_posts count] == currentMaxPostNumber);
                     
-                    [_mapView removeAnnotations:_mapView.annotations];
+                    
                     [_collectionView reloadData];
                     [self toggleButtonRefresh:NO];
                     
@@ -410,6 +426,9 @@
                         [self asynchFetchFeeds:nRetry];
                     }
                 }
+                _autoRefresh = [NSTimer scheduledTimerWithTimeInterval:10*60 block:^(NSTimeInterval time){
+                    [self handleRefresh:_refreshControl];
+                } repeats:NO];
             }];
         }
         @catch (NSException * e) {
@@ -417,8 +436,12 @@
             failed = YES;
         }
     }
-    if (failed)
+    if (failed) {
         postNotification(RCErrorMessageFailedToGetFeed);
+        _autoRefresh = [NSTimer scheduledTimerWithTimeInterval:10*60 block:^(NSTimeInterval time){
+            [self handleRefresh:_refreshControl];
+        } repeats:NO];
+    }
 }
 
 - (void) asynchFetchFeedNextPage {
@@ -468,7 +491,9 @@
                  
                  for (NSDictionary *postData in postList) {
                      RCPost *post = [RCPost getPostWithNSDictionary:postData];
+                     [_postsByRowIndex setObject:[NSNumber numberWithInt:[_posts count]] forKey:[NSNumber numberWithInt:post.postID]];
                      [_posts addObject:post];
+                     [_mapView addAnnotation:post];
                  }
                  
                  //[_collectionView reloadData];
@@ -496,7 +521,6 @@
 }
 
 - (void) switchToNewPostScreen {
-    //[_postButton setEnabled:NO];
     RCNewPostViewController *newPostController;
     if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height)
         newPostController = [[RCNewPostViewController alloc] initWithUser:_user withNibName:@"RCNewPostViewController4" bundle:nil];
@@ -504,10 +528,6 @@
         newPostController = [[RCNewPostViewController alloc] initWithUser:_user withNibName:@"RCNewPostViewController" bundle:nil];
 
     [self presentViewController:newPostController animated:YES completion:nil];
-    /*[self addChildViewController:newPostController];
-    newPostController.view.frame = self.view.frame;
-        [self.view addSubview:newPostController.view];
-    [newPostController didMoveToParentViewController:self];*/
 }
 
 #pragma mark - UICollectionView Datasource
@@ -539,11 +559,6 @@
             [cell changeCellState:RCCellStateDimmed];
         }
     }
-    RCNotification *notification = [RCNotification notificationForResource:[NSString stringWithFormat:@"posts/%d",post.postID]];
-    if (notification != nil && !notification.viewed) {
-        //TODO add animation effect for post with new comments
-        [cell.lblNotification setHidden:NO];
-    } else [cell.lblNotification setHidden:YES];
     
     // Pulling next page if necessary:
     if (indexPath.row == (currentMaxPostNumber - 1)) {
@@ -591,10 +606,10 @@
     if ([view.annotation isKindOfClass:[MKUserLocation class]]){
         _userCalloutVisible = YES;
     }
-    if ([view.annotation isKindOfClass:[RCLandmark class]]){
-        RCLandmark *landmark = (RCLandmark *)view.annotation;
-        _currentLandmarkID = landmark.landmarkID;
-        [_collectionView reloadData];
+    if ([view.annotation isKindOfClass:[RCPost class]]){
+        RCPost* post = (RCPost*) view.annotation;
+        int index = [[_postsByRowIndex objectForKey:[NSNumber numberWithInt:post.postID]] intValue];
+        [self selectPostAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]];
     }
 }
 
@@ -602,8 +617,6 @@
     if ([view.annotation isKindOfClass:[MKUserLocation class]]){
         _userCalloutVisible = NO;
     }
-    _currentLandmarkID = -1;
-    [_collectionView reloadData];
 }
 
 -(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
@@ -618,16 +631,20 @@
         return nil;
     }
     
-    if ([annotation isKindOfClass:[RCLandmark class]]) {
-        RCLandmark *landmark = (RCLandmark*) annotation;
+    if ([annotation isKindOfClass:[RCPost class]]) {
+        RCPost *post = (RCPost*) annotation;
         NSString *annotationIdentifier = @"landmark";
-        MKAnnotationView *landmarkButton = (MKAnnotationView*) [mapView dequeueReusableAnnotationViewWithIdentifier:annotationIdentifier];
-        if (landmarkButton == nil)
-            landmarkButton = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:annotationIdentifier];
-        NSString *imageName = [NSString stringWithFormat:@"landmarkCategory%@.png",landmark.category];
-        UIImage *scaledLandmarkImage = imageWithImage([UIImage imageNamed:imageName], CGSizeMake(20,20));
-        [landmarkButton setImage:scaledLandmarkImage];
-        return (MKAnnotationView*)landmarkButton;
+        MKAnnotationView *postButton = (MKAnnotationView*) [mapView dequeueReusableAnnotationViewWithIdentifier:annotationIdentifier];
+        if (postButton == nil)
+            postButton = [[MKAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:annotationIdentifier];
+        if (post.topic != nil) {
+            postButton.canShowCallout = YES;
+            NSString *imageName = [NSString stringWithFormat:@"topicCategory%@.png",post.topic];
+            UIImage *scaledLandmarkImage = imageWithImage([UIImage imageNamed:imageName], CGSizeMake(35,35));
+            [postButton setImage:scaledLandmarkImage];
+            return (MKAnnotationView*)postButton;
+        } else return nil;
+        
     }
     return nil;
 }
@@ -654,12 +671,6 @@
 
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-    if (_autoRefresh != nil)
-        [_autoRefresh invalidate];
-    _autoRefresh = [NSTimer scheduledTimerWithTimeInterval:10*60 block:^(NSTimeInterval time){
-        [self handleRefresh:_refreshControl];
-    }repeats:YES];
     
     if (_willRefresh) {
         [self handleRefresh:_refreshControl];
@@ -694,45 +705,52 @@
     showThreshold = numCell * _nRows;
 }
 
+- (void) selectPostAtIndexPath:(NSIndexPath*) indexPath {
+    int idx = [indexPath row];
+    RCPost *post = [_posts objectAtIndex:idx];
+    
+    RCMainFeedCell* currentCell = (RCMainFeedCell *)[_collectionView cellForItemAtIndexPath:indexPath];
+    
+    NSNumber *key = [[NSNumber alloc] initWithInt:post.postID];
+    if ([_chosenPosts containsObject:key]) {
+        [_chosenPosts removeObject:key];
+        [_mapView deselectAnnotation:post animated:YES];
+        if ([_chosenPosts count] == 0) {
+            [currentCell changeCellState:RCCellStateNormal];
+            for (UICollectionViewCell* cell in _collectionView.visibleCells) {
+                RCMainFeedCell *feedCell = (RCMainFeedCell *)cell;
+                [feedCell changeCellState:RCCellStateNormal];
+            }
+        } else {
+            [currentCell changeCellState:RCCellStateDimmed];
+        }
+    } else {
+        
+        MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(post.coordinate, 0.5*METERS_PER_MILE, 0.5*METERS_PER_MILE);
+        [_mapView setRegion:viewRegion animated:YES];
+        [_mapView selectAnnotation:post animated:YES];
+        [currentCell changeCellState:RCCellStateFloat];
+        [_chosenPosts removeAllObjects];
+        [_chosenPosts addObject:[[NSNumber alloc] initWithInt:post.postID]];
+        for (UICollectionViewCell* cell in _collectionView.visibleCells) {
+            RCMainFeedCell *feedCell = (RCMainFeedCell *)cell;
+            int index = [[_collectionView indexPathForCell:cell] row];
+            RCPost *iteratingPost = [_posts objectAtIndex:index];
+            NSNumber *key = [[NSNumber alloc] initWithInt:iteratingPost.postID];
+            //if post not chosen then dim
+            if (![_chosenPosts containsObject:key])
+                [feedCell changeCellState:RCCellStateDimmed];
+        }
+    }
+}
+
 - (IBAction)handleTap:(UITapGestureRecognizer *)recognizer {
     CGPoint point = [recognizer locationInView:_collectionView];
     NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:point];
     
     //if there's no item at point of tap
     if (indexPath != nil) {
-        int idx = [indexPath row];
-        RCPost *post = [_posts objectAtIndex:idx];
-        NSNumber *key = [[NSNumber alloc] initWithInt:post.postID];
-        RCMainFeedCell* currentCell = (RCMainFeedCell *)[_collectionView cellForItemAtIndexPath:indexPath];
-        
-        if ([_chosenPosts containsObject:key]) {
-            [_chosenPosts removeObject:key];
-            [_mapView removeAnnotation:post];
-            if ([_chosenPosts count] == 0) {
-                [currentCell changeCellState:RCCellStateNormal];
-                for (UICollectionViewCell* cell in _collectionView.visibleCells) {
-                    RCMainFeedCell *feedCell = (RCMainFeedCell *)cell;
-                    [feedCell changeCellState:RCCellStateNormal];
-                }
-            } else {
-                [currentCell changeCellState:RCCellStateDimmed];
-            }
-        } else {
-            MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(post.coordinate, 0.5*METERS_PER_MILE, 0.5*METERS_PER_MILE);
-            [_mapView setRegion:viewRegion animated:YES];
-            [currentCell changeCellState:RCCellStateFloat];
-            [_chosenPosts addObject:[[NSNumber alloc] initWithInt:post.postID]];
-            [_mapView addAnnotation:post];
-            for (UICollectionViewCell* cell in _collectionView.visibleCells) {
-                RCMainFeedCell *feedCell = (RCMainFeedCell *)cell;
-                int index = [[_collectionView indexPathForCell:cell] row];
-                RCPost *iteratingPost = [_posts objectAtIndex:index];
-                NSNumber *key = [[NSNumber alloc] initWithInt:iteratingPost.postID];
-                //if post not chosen then dim
-                if (![_chosenPosts containsObject:key])
-                    [feedCell changeCellState:RCCellStateDimmed];
-            }
-        }
+        [self selectPostAtIndexPath:indexPath];
     }
 }
 
@@ -758,18 +776,11 @@
             }
             
             RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user];
-            if (post.landmarkID == -1)
-                postDetailsViewController.landmark = nil;
-            else
-                postDetailsViewController.landmark = [_landmarks objectForKey:[NSNumber numberWithInt:post.landmarkID]];
             postDetailsViewController.deleteFunction = ^{
                 [self handleRefresh:_refreshControl];
             };
             postDetailsViewController.landmarkID = post.landmarkID;
-            //[self presentViewController:postDetailsViewController animated:YES completion:nil];
             [self.navigationController pushViewController:postDetailsViewController animated:YES];
-
-            
         }
     }
 }
@@ -783,16 +794,24 @@
         _currentViewMode = RCMainFeedViewModePublic;
         _btnViewModeFriends.enabled = YES;
         _btnViewModeFollow.enabled = YES;
+        _btnViewModeCommented.enabled = YES;
     } else {
         [self hideCapsuleCounter];
         if ([sender isEqual:_btnViewModeFriends]) {
             _currentViewMode = RCMainFeedViewModeFriends;
             _btnViewModePublic.enabled = YES;
             _btnViewModeFollow.enabled = YES;
+            _btnViewModeCommented.enabled = YES;
         } else if ([sender isEqual:_btnViewModeFollow]) {
             _currentViewMode = RCMainFeedViewModeFollow;
             _btnViewModeFriends.enabled = YES;
             _btnViewModePublic.enabled = YES;
+            _btnViewModeCommented.enabled = YES;
+        } else if ([sender isEqual:_btnViewModeCommented]) {
+            _currentViewMode = RCMainFeedViewModeCommented;
+            _btnViewModeFriends.enabled = YES;
+            _btnViewModePublic.enabled = YES;
+            _btnViewModeFollow.enabled = YES;
         }
     }
     sender.enabled = NO;

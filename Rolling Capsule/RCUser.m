@@ -129,9 +129,9 @@ static NSMutableDictionary* RCUserUserCollection = nil;
     return retval;
 }
 
-- (void) setUserAvatarAsync: (UIImage*)avatar completionHandler:(void (^)(UIImage*))completionHandle {
-    dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
-    dispatch_async(queue, ^{
+- (void) setUserAvatar: (UIImage*)avatar completionHandler:(void (^)(UIImage*))completionHandle {
+    //dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
+    //dispatch_async(queue, ^{
         [RCConnectionManager startConnection];
         // Convert the image to JPEG data.
         NSData *imageData = UIImageJPEGRepresentation(avatar, 1.0);
@@ -173,8 +173,8 @@ static NSMutableDictionary* RCUserUserCollection = nil;
             postNotification(error);
             completionHandle(nil);
         }
-        
-    });
+    
+    //});
 }
 
 - (UIImage*) getUserAvatar: (int)viewingUserID {

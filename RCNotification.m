@@ -7,9 +7,11 @@
 //
 
 #import "RCNotification.h"
-#import "TFHpple.h"
+#import "RCPost.h"
 #import "RCUtilities.h"
 #import "RCConstants.h"
+#import "SBJson.h"
+#import "TFHpple.h"
 
 @implementation RCNotification
 
@@ -22,7 +24,8 @@
 @synthesize viewed = _viewed;
 
 static NSMutableArray* RCNotificationNotificationList = nil;
-static NSMutableDictionary* RCNotificationObjectWithNotification = nil;
+static NSMutableDictionary* RCNotificationObjectsWithNotification = nil;
+static NSMutableArray* RCNotificationPostsWithNotification = nil;
 
 - (id) initWithNSDictionary:(NSDictionary *)postData {
     self = [super init];
@@ -52,20 +55,25 @@ static NSMutableDictionary* RCNotificationObjectWithNotification = nil;
 
 + (void) initNotificationDataModel {
     RCNotificationNotificationList = [[NSMutableArray alloc] init];
-    RCNotificationObjectWithNotification = [[NSMutableDictionary alloc] init];
+    RCNotificationObjectsWithNotification = [[NSMutableDictionary alloc] init];
+    RCNotificationPostsWithNotification = [[NSMutableArray alloc] init];
 }
 
 + (void) clearNotifications{
     [RCNotificationNotificationList removeAllObjects];
-    [RCNotificationObjectWithNotification removeAllObjects];
+    [RCNotificationObjectsWithNotification removeAllObjects];
+    [RCNotificationPostsWithNotification removeAllObjects];
 }
 
 + (RCNotification*) notificationForResource:(NSString*)resourceSpecifier {
-    return [RCNotificationObjectWithNotification objectForKey:resourceSpecifier];
+    return [RCNotificationObjectsWithNotification objectForKey:resourceSpecifier];
 }
 
 + (RCNotification*) parseNotification:(NSDictionary*) notificationDict {
     RCNotification* notification = [[RCNotification alloc] initWithNSDictionary:notificationDict];
+    if ([notification.content isKindOfClass:[NSNull class]])
+        return nil;
+    if (notification.viewed) return notification;
     NSData *htmlData = [notification.content dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:NO];
     
     // 2
@@ -79,12 +87,56 @@ static NSMutableDictionary* RCNotificationObjectWithNotification = nil;
         [notification.urls addObject:url];
         if ([url.scheme hasSuffix:@"memcap"]) {
             if ([url.host hasSuffix:@"posts"]) {
-                [RCNotificationObjectWithNotification setObject:notification forKey:[NSString stringWithFormat:@"%@%@",url.host, url.path]];
+                NSString* key = [NSString stringWithFormat:@"%@%@",url.host, url.path];
+                if ([RCNotificationObjectsWithNotification objectForKey:key] == nil) {
+                    [RCNotificationObjectsWithNotification setObject:notification forKey:key];
+                    int postID = [[url.path substringFromIndex:1] intValue];
+                    [RCNotificationPostsWithNotification
+                            addObject:[RCPost getPostWithID:postID]];
+                        
+                }
             }
         }
     }
     [RCNotificationNotificationList addObject:notification];
     return notification;
+}
+
++ (NSMutableArray*) getNotifiedPosts {
+    return RCNotificationPostsWithNotification;
+}
+
++ (void) loadMissingNotifiedPostsForList:(NSMutableArray*)posts withCompletion:(void(^)(void)) completion {
+    NSMutableDictionary* missingIDs = [[NSMutableDictionary alloc] init];
+    int currentIdx = 0;
+    for (RCPost* post in posts) {
+        if (post.subject == nil)
+            [missingIDs setObject:[NSNumber numberWithInt:currentIdx] forKey:[NSNumber numberWithInt:post.postID]];
+        currentIdx++;
+    }
+    if ([missingIDs count] > 0 ) {
+        NSString *missingIDsQueryString = @"";
+        for (id missingID in missingIDs) {
+            missingIDsQueryString = [NSString stringWithFormat:@"%@&ids%%5B%%5D=%@", missingIDsQueryString, missingID];
+        }
+        NSURL *url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@?mobile=1%@", RCServiceURL, RCPostsResource, missingIDsQueryString]];
+        NSURLRequest *request = CreateHttpGetRequest(url);
+        
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+         {
+             NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+             
+             SBJsonParser *jsonParser = [SBJsonParser new];
+             NSArray *jsonData = (NSArray *) [jsonParser objectWithString:responseData error:nil];
+             for (NSDictionary* postDictionary in jsonData) {
+                 RCPost *post = [RCPost getPostWithNSDictionary:postDictionary];
+                 int idx = [[missingIDs objectForKey:[NSNumber numberWithInt:post.postID]] intValue];
+                 [posts setObject:post atIndexedSubscript:idx];
+             }
+             completion();
+         }];
+    } else completion();
 }
 
 @end

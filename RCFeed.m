@@ -11,6 +11,7 @@
 #import "RCPost.h"
 #import "RCConstants.h"
 #import "RCUtilities.h"
+#import "RCMainMenuViewController.h"
 
 @implementation RCFeed {
     int page;

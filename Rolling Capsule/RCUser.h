@@ -37,7 +37,7 @@
 + (void) acceptFriendRelationAsync: (int)friendshipID completionhandler:(void (^)(NSString*))completionHandle;
 + (void) removeFriendRelationAsync: (int)friendshipID completionhandler:(void (^)(NSString*))completionHandle;
 
-- (void) setUserAvatarAsync: (UIImage*)avatar completionHandler:(void (^)(UIImage*))completionHandle;
+- (void) setUserAvatar: (UIImage*)avatar completionHandler:(void (^)(UIImage*))completionHandle;
 - (UIImage*) getUserAvatar: (int)viewingUserID;
 - (void) getUserAvatarAsync: (int)viewingUserID completionHandler:(void (^)(UIImage*))completionHandle;
 

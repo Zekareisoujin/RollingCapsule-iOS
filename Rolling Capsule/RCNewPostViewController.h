@@ -37,6 +37,7 @@
 @property (weak, nonatomic) IBOutlet UILabel* lblDate;
 @property (weak, nonatomic) IBOutlet UIButton* postButton;
 @property (weak, nonatomic) IBOutlet UIButton* publicPrivacyButton;
+@property (weak, nonatomic) IBOutlet UIView *viewMainFrame;
 @property (weak, nonatomic) IBOutlet UIButton* friendPrivacyButton;
 @property (weak, nonatomic) IBOutlet UIButton* personalPrivacyButton;
 @property (weak, nonatomic) IBOutlet UIButton *timeCapsule;
@@ -45,8 +46,6 @@
 @property (strong, nonatomic) RCKeyboardPushUpHandler *keyboardPushHandler;
 @property (nonatomic, strong) UICollectionView *tblViewLandmark;
 @property (nonatomic, strong) RCLandmark *currentLandmark;
-@property (nonatomic, copy)   VoidBlock   postComplete;
-@property (nonatomic, copy)   VoidBlock   postCancel;
 
 - (IBAction)backgroundTouchUpInside:(id)sender;
 - (IBAction)btnActionChooseCameraSource:(id)sender;

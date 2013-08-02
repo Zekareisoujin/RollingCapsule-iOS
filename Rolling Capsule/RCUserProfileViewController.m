@@ -629,15 +629,17 @@
     //                       withObject:avatarImage];
     
     __unsafe_unretained typeof(self) weakSelf = self;
-    [_profileUser setUserAvatarAsync:avatarImage completionHandler:^(UIImage* retAvatar){
-        dispatch_async(dispatch_get_main_queue(),^{
-            if (retAvatar != nil) {
-                weakSelf.userAvatarImage = retAvatar;
-                postNotification(RCInfoStringPostSuccess);
-                [weakSelf.btnAvatarImg setBackgroundImage:retAvatar forState:UIControlStateDisabled];
-            }
-        });
-    }];
+    dispatch_async(dispatch_queue_create(RCCStringAppDomain, NULL), ^{
+        [_profileUser setUserAvatar:avatarImage completionHandler:^(UIImage* retAvatar){
+            dispatch_async(dispatch_get_main_queue(),^{
+                if (retAvatar != nil) {
+                    weakSelf.userAvatarImage = retAvatar;
+                    postNotification(RCInfoStringPostSuccess);
+                    [weakSelf.btnAvatarImg setBackgroundImage:retAvatar forState:UIControlStateDisabled];
+                }
+            });
+        }];
+    });
 }
 
 //- (void)processBackgroundThreadUploadInBackground:(UIImage *)avatarImage
@@ -755,10 +757,6 @@
     //RCPost *post = [[RCPost alloc] initWithNSDictionary:[_postList objectAtIndex:indexPath.row]];
     RCPost *post = [_postList objectAtIndex:indexPath.row];
     [cell initCellAppearanceForPost:post];
-    RCNotification *notification = [RCNotification notificationForResource:[NSString stringWithFormat:@"posts/%d",post.postID]];
-    if (notification != nil && !notification.viewed) {
-        [cell.lblNotification setHidden:NO];
-    } else [cell.lblNotification setHidden:YES];
     
     // Pulling next page if necessary:
     if (indexPath.row == (currentMaxPostNumber - 1)) {

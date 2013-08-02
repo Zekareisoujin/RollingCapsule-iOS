@@ -609,19 +609,11 @@ CGRect  searchButtonHideFrame;
 }
 
 - (void) switchToNewPostScreen {
-    [_postButton setEnabled:NO];
     RCNewPostViewController *newPostController;
     if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height)
         newPostController = [[RCNewPostViewController alloc] initWithUser:_user withNibName:@"RCNewPostViewController4" bundle:nil];
     else
         newPostController = [[RCNewPostViewController alloc] initWithUser:_user withNibName:@"RCNewPostViewController" bundle:nil];
-    newPostController.postComplete = ^{
-        [_postButton setEnabled:YES];
-    };
-    newPostController.postCancel = ^{
-        [_postButton setEnabled:YES];
-    };
-    
     [self presentViewController:newPostController animated:YES completion:nil];
 }
 

@@ -213,13 +213,13 @@
 
 - (IBAction)pickDate:(id)sender {
 
-    [UIView animateWithDuration:0.5
+    /*[UIView animateWithDuration:0.5
 						  delay:0
 						options:UIViewAnimationOptionCurveEaseInOut
 					 animations:^{
                          self.alpha = 0.0;
 					 }
-                     completion:^(BOOL finished) {
+                     completion:^(BOOL finished) {*/
                          NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
                          [dateFormatter setDateFormat:@"yyyy-MM-ddHH:mm:ss"];
                          NSDate *date = [dateFormatter dateFromString:[NSString stringWithFormat:@"%04d-%02d-%02d%02d:00:00",_year,_month,_day,_hour]];
@@ -227,9 +227,9 @@
                              [delegate didPickDate:date success:YES];
                          }else
                              [delegate didPickDate:date success:NO];
-                         [self setHidden:YES];
+                         //[self setHidden:YES];
                          NSLog(@"year %d month %d day %d hour %d",_year, _month, _day, _hour);
-					 }];
+					 //}];
 }
 
 /*
