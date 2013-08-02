@@ -37,7 +37,8 @@
 
 + (void) initPostDataModel;
 + (id) getPostWithNSDictionary:(NSDictionary *)postData;
-
++ (id) getPostWithID:(int)postID;
++ (void) addPostToCollection:(RCPost*) post;
 - (id) initWithNSDictionary:(NSDictionary *)postData;
 //- (void) getThumbnailImageAsync: (int)viewingUserID completion:(void (^)(UIImage*)) completionHandle;
 - (void) registerUIUpdateAction:(NSObject*)target action:(SEL)sel;

@@ -50,10 +50,26 @@ static NSMutableDictionary* RCPostPostCollection = nil;
     RCPostPostCollection = [[NSMutableDictionary alloc] init];
 }
 
++ (id) getPostWithID:(int)postID {
+    RCPost* cachedPost = [RCPostPostCollection objectForKey:[NSNumber numberWithInt:postID]];
+    if (cachedPost != nil)
+        return cachedPost;
+    else {
+        RCPost* post = [[RCPost alloc] init];
+        post.postID = postID;
+        return post;
+    }
+}
+
++ (void) addPostToCollection:(RCPost*) post {
+    [RCPostPostCollection setObject:post forKey:[NSNumber numberWithInt:post.postID]];
+}
+
 + (id) getPostWithNSDictionary:(NSDictionary *)postData {
     int newID = [[postData objectForKey:@"id"] intValue];
     RCPost* cachedPost = [RCPostPostCollection objectForKey:[NSNumber numberWithInt:newID]];
     if (cachedPost != nil) {
+        NSLog(@"cached post class:%@",[cachedPost class]);
         if (cachedPost.isTimeCapsule && [cachedPost.releaseDate compare:[NSDate date]] != NSOrderedDescending) {
             NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
             [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
@@ -66,6 +82,7 @@ static NSMutableDictionary* RCPostPostCollection = nil;
     }
     
     RCPost *newPost = [[RCPost alloc] initWithNSDictionary:postData];
+    [RCPost addPostToCollection:newPost];
     return newPost;
 }
 
@@ -117,7 +134,6 @@ static NSMutableDictionary* RCPostPostCollection = nil;
             _releaseDate = [formatter dateFromString:releaseTime];
         }
     }
-    [RCPostPostCollection setObject:self forKey:[NSNumber numberWithInt:_postID]];
     
     _thumbnailImage = [[RCResourceCache centralCache] getResourceForKey:[NSString stringWithFormat:@"media/%@", _thumbnailUrl]];
     if (_thumbnailImage == nil) {

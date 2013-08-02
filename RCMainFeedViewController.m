@@ -213,6 +213,9 @@
 }
 
 - (void) handleRefresh:(UIRefreshControl*) refreshControl {
+    if (_autoRefresh != nil)
+        [_autoRefresh invalidate];
+
     [self btnCenterMapTouchUpInside:nil];
     if ([_reachability currentReachabilityStatus] == NotReachable) {
         [self showNoConnectionWarningMessage];
@@ -223,8 +226,17 @@
     NSString *lastUpdated = [NSString stringWithFormat:RCInfoStringLastUpdatedOnFormat, [formatter  stringFromDate:[NSDate date] ] ];
     [_refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:lastUpdated]];
     [self toggleButtonRefresh:YES];
-    
-	[self asynchFetchFeeds:NUM_RETRY_MAIN_FEED];
+    if (_currentViewMode == RCMainFeedViewModeCommented) {
+        [_posts removeAllObjects];
+        NSMutableArray* commentedPosts = [RCNotification getNotifiedPosts];
+        [_posts addObjectsFromArray:commentedPosts];
+        [_collectionView reloadData];
+        [RCNotification loadMissingNotifiedPostsWithCompletion:^{
+            [_collectionView reloadData];
+        }];
+        [self toggleButtonRefresh:NO];
+    } else 
+        [self asynchFetchFeeds:NUM_RETRY_MAIN_FEED];
 }
 
 - (void)didReceiveMemoryWarning
@@ -375,6 +387,9 @@
                         [self asynchFetchFeeds:nRetry];
                     }
                 }
+                _autoRefresh = [NSTimer scheduledTimerWithTimeInterval:10*60 block:^(NSTimeInterval time){
+                    [self handleRefresh:_refreshControl];
+                } repeats:NO];
             }];
         }
         @catch (NSException * e) {
@@ -382,8 +397,12 @@
             failed = YES;
         }
     }
-    if (failed)
+    if (failed) {
         postNotification(RCErrorMessageFailedToGetFeed);
+        _autoRefresh = [NSTimer scheduledTimerWithTimeInterval:10*60 block:^(NSTimeInterval time){
+            [self handleRefresh:_refreshControl];
+        } repeats:NO];
+    }
 }
 
 - (void) asynchFetchFeedNextPage {
@@ -625,12 +644,6 @@
 - (void) viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
-    if (_autoRefresh != nil)
-        [_autoRefresh invalidate];
-    _autoRefresh = [NSTimer scheduledTimerWithTimeInterval:10*60 block:^(NSTimeInterval time){
-        [self handleRefresh:_refreshControl];
-    }repeats:YES];
-    
     if (_willRefresh) {
         [self handleRefresh:_refreshControl];
         _willRefresh = NO;
@@ -752,16 +765,24 @@
         _currentViewMode = RCMainFeedViewModePublic;
         _btnViewModeFriends.enabled = YES;
         _btnViewModeFollow.enabled = YES;
+        _btnViewModeCommented.enabled = YES;
     } else {
         [self hideCapsuleCounter];
         if ([sender isEqual:_btnViewModeFriends]) {
             _currentViewMode = RCMainFeedViewModeFriends;
             _btnViewModePublic.enabled = YES;
             _btnViewModeFollow.enabled = YES;
+            _btnViewModeCommented.enabled = YES;
         } else if ([sender isEqual:_btnViewModeFollow]) {
             _currentViewMode = RCMainFeedViewModeFollow;
             _btnViewModeFriends.enabled = YES;
             _btnViewModePublic.enabled = YES;
+            _btnViewModeCommented.enabled = YES;
+        } else if ([sender isEqual:_btnViewModeCommented]) {
+            _currentViewMode = RCMainFeedViewModeCommented;
+            _btnViewModeFriends.enabled = YES;
+            _btnViewModePublic.enabled = YES;
+            _btnViewModeFollow.enabled = YES;
         }
     }
     sender.enabled = NO;

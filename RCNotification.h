@@ -24,4 +24,6 @@
 + (void) initNotificationDataModel;
 + (void) clearNotifications;
 + (RCNotification*) notificationForResource:(NSString*)resourceSpecifier;
++ (NSMutableArray*) getNotifiedPosts;
++ (void) loadMissingNotifiedPostsWithCompletion:(void(^)(void)) completion;
 @end

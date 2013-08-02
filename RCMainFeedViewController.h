@@ -14,7 +14,8 @@
 enum RCMainFeedViewMode {
     RCMainFeedViewModePublic,
     RCMainFeedViewModeFriends,
-    RCMainFeedViewModeFollow
+    RCMainFeedViewModeFollow,
+    RCMainFeedViewModeCommented
 };
 typedef enum RCMainFeedViewMode RCMainFeedViewMode;
 
@@ -29,6 +30,7 @@ typedef enum RCMainFeedViewMode RCMainFeedViewMode;
 @property (weak, nonatomic) IBOutlet UIButton *btnShowHiddenCapsulesMessage;
 @property (weak, nonatomic) IBOutlet TTTAttributedLabel *lblUsername;
 @property (weak, nonatomic) IBOutlet UILabel *lblCapsuleCount;
+@property (weak, nonatomic) IBOutlet UIButton *btnViewModeCommented;
 @property (weak, nonatomic) IBOutlet UIButton *btnViewModeFriends;
 @property (weak, nonatomic) IBOutlet UIButton *btnUserAvatar;
 @property (weak, nonatomic) IBOutlet UIButton *btnViewModePublic;
