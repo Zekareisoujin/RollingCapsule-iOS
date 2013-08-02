@@ -25,5 +25,5 @@
 + (void) clearNotifications;
 + (RCNotification*) notificationForResource:(NSString*)resourceSpecifier;
 + (NSMutableArray*) getNotifiedPosts;
-+ (void) loadMissingNotifiedPostsWithCompletion:(void(^)(void)) completion;
++ (void) loadMissingNotifiedPostsForList:(NSMutableArray*)posts withCompletion:(void(^)(void)) completion;
 @end

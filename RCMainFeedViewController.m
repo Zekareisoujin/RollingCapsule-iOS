@@ -231,7 +231,7 @@
         NSMutableArray* commentedPosts = [RCNotification getNotifiedPosts];
         [_posts addObjectsFromArray:commentedPosts];
         [_collectionView reloadData];
-        [RCNotification loadMissingNotifiedPostsWithCompletion:^{
+        [RCNotification loadMissingNotifiedPostsForList:_posts withCompletion:^{
             [_collectionView reloadData];
         }];
         [self toggleButtonRefresh:NO];

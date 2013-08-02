@@ -106,10 +106,10 @@ static NSMutableArray* RCNotificationPostsWithNotification = nil;
     return RCNotificationPostsWithNotification;
 }
 
-+ (void) loadMissingNotifiedPostsWithCompletion:(void(^)(void)) completion {
++ (void) loadMissingNotifiedPostsForList:(NSMutableArray*)posts withCompletion:(void(^)(void)) completion {
     NSMutableDictionary* missingIDs = [[NSMutableDictionary alloc] init];
     int currentIdx = 0;
-    for (RCPost* post in RCNotificationPostsWithNotification) {
+    for (RCPost* post in posts) {
         if (post.subject == nil)
             [missingIDs setObject:[NSNumber numberWithInt:currentIdx] forKey:[NSNumber numberWithInt:post.postID]];
         currentIdx++;
@@ -132,7 +132,7 @@ static NSMutableArray* RCNotificationPostsWithNotification = nil;
              for (NSDictionary* postDictionary in jsonData) {
                  RCPost *post = [RCPost getPostWithNSDictionary:postDictionary];
                  int idx = [[missingIDs objectForKey:[NSNumber numberWithInt:post.postID]] intValue];
-                 [RCNotificationPostsWithNotification setObject:post atIndexedSubscript:idx];
+                 [posts setObject:post atIndexedSubscript:idx];
              }
              completion();
          }];
