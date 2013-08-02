@@ -365,7 +365,6 @@
                     [_postsByRowIndex removeAllObjects];
                     [_posts removeAllObjects];
                     for (NSDictionary *postData in postList) {
-                        //RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
                         RCPost *post = [RCPost getPostWithNSDictionary:postData];
                         [_postsByRowIndex setObject:[NSNumber numberWithInt:[_posts count]] forKey:[NSNumber numberWithInt:post.postID]];
                         [_posts addObject:post];
@@ -563,20 +562,27 @@
 }
 
 #pragma mark - MKMapViewDelegate
+- (void) processTogglingPost:(RCPost*) post {
+    int index = [[_postsByRowIndex objectForKey:[NSNumber numberWithInt:post.postID]] intValue];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
+    [self selectPostAtIndexPath:indexPath];
+}
+
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
     if ([view.annotation isKindOfClass:[MKUserLocation class]]){
         _userCalloutVisible = YES;
     }
     if ([view.annotation isKindOfClass:[RCPost class]]){
-        RCPost* post = (RCPost*) view.annotation;
-        int index = [[_postsByRowIndex objectForKey:[NSNumber numberWithInt:post.postID]] intValue];
-        [self selectPostAtIndexPath:[NSIndexPath indexPathForItem:index inSection:0]];
+        [self processTogglingPost:(RCPost*)view.annotation];
     }
 }
 
 - (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
     if ([view.annotation isKindOfClass:[MKUserLocation class]]){
         _userCalloutVisible = NO;
+    }
+    if ([view.annotation isKindOfClass:[RCPost class]]){
+        [self processTogglingPost:(RCPost*)view.annotation];
     }
 }
 
@@ -686,7 +692,6 @@
     NSNumber *key = [[NSNumber alloc] initWithInt:post.postID];
     if ([_chosenPosts containsObject:key]) {
         [_chosenPosts removeObject:key];
-        [_mapView deselectAnnotation:post animated:YES];
         if ([_chosenPosts count] == 0) {
             [currentCell changeCellState:RCCellStateNormal];
             for (UICollectionViewCell* cell in _collectionView.visibleCells) {
@@ -697,11 +702,14 @@
             [currentCell changeCellState:RCCellStateDimmed];
         }
     } else {
-        
-        MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(post.coordinate, 0.5*METERS_PER_MILE, 0.5*METERS_PER_MILE);
-        [_mapView setRegion:viewRegion animated:YES];
-        [_mapView selectAnnotation:post animated:YES];
+        /*dispatch_time_t dt = dispatch_time(DISPATCH_TIME_NOW, 0.2 * NSEC_PER_SEC);
+        dispatch_after(dt, dispatch_get_main_queue(), ^(void)
+        {
+            [_mapView setCenterCoordinate:post.coordinate animated:YES];
+        });*/
         [currentCell changeCellState:RCCellStateFloat];
+        for (RCPost* post in _chosenPosts)
+            [_mapView deselectAnnotation:post animated:YES];
         [_chosenPosts removeAllObjects];
         [_chosenPosts addObject:[[NSNumber alloc] initWithInt:post.postID]];
         for (UICollectionViewCell* cell in _collectionView.visibleCells) {
@@ -713,6 +721,8 @@
             if (![_chosenPosts containsObject:key])
                 [feedCell changeCellState:RCCellStateDimmed];
         }
+        [_collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+        
     }
 }
 
@@ -722,7 +732,12 @@
     
     //if there's no item at point of tap
     if (indexPath != nil) {
-        [self selectPostAtIndexPath:indexPath];
+        RCPost *post = [_posts objectAtIndex:indexPath.row];
+        if ([_chosenPosts containsObject:[NSNumber numberWithInt:post.postID]])
+            [_mapView deselectAnnotation:post animated:YES];
+        else
+            [_mapView selectAnnotation:post animated:YES];
+        //[self selectPostAtIndexPath:indexPath];
     }
 }
 
