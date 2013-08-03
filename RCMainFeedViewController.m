@@ -227,9 +227,10 @@
     [self toggleButtonRefresh:YES];
     if (_currentViewMode == RCMainFeedViewModeCommented) {
         [_chosenPosts removeAllObjects];
+        [_mapView removeAnnotations:_mapView.annotations];
         [_postsByRowIndex removeAllObjects];
         [_posts removeAllObjects];
-        [_mapView removeAnnotations:_mapView.annotations];
+        
 
         NSMutableArray* commentedPosts = [RCNotification getNotifiedPosts];
         [_posts addObjectsFromArray:commentedPosts];
@@ -339,9 +340,10 @@
                 
                 if (jsonData != NULL) {
                     [_chosenPosts removeAllObjects];
+                    [_mapView removeAnnotations:_mapView.annotations];
                     [_postsByRowIndex removeAllObjects];
                     [_posts removeAllObjects];
-                    [_mapView removeAnnotations:_mapView.annotations];
+                    
                     
                     NSArray* notificationListJson = [jsonData objectForKey:@"notification_list"];
                     [self processNotificationListJson:notificationListJson];
