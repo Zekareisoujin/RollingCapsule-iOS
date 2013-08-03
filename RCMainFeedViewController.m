@@ -40,6 +40,7 @@
 @property (nonatomic, strong) UIPinchGestureRecognizer *pinchGestureRecognizer;
 @property (nonatomic, strong) UILongPressGestureRecognizer *longPressGestureRecognizer;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
+@property (nonatomic, strong) UITapGestureRecognizer *doubleTapGestureRecognizer;
 @property (nonatomic, strong) UIImage *backgroundImage;
 @property (nonatomic, assign) RCMainFeedViewMode      currentViewMode;
 @property (nonatomic, strong) UIButton* postButton;
@@ -75,6 +76,7 @@
 @synthesize pinchGestureRecognizer = _pinchGestureRecognizer;
 @synthesize longPressGestureRecognizer = _longPressGestureRecognizer;
 @synthesize tapGestureRecognizer = _tapGestureRecognizer;
+@synthesize doubleTapGestureRecognizer = _doubleTapGestureRecognizer;
 @synthesize backgroundImage = _backgroundImage;
 @synthesize currentViewMode = _currentViewMode;
 @synthesize postsByRowIndex = _postsByRowIndex;
@@ -164,6 +166,10 @@
     _pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
     _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     _longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    _doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    [_doubleTapGestureRecognizer setNumberOfTapsRequired:2];
+    [_tapGestureRecognizer requireGestureRecognizerToFail:_doubleTapGestureRecognizer];
+    [_doubleTapGestureRecognizer requireGestureRecognizerToFail:_longPressGestureRecognizer];
     
     //set the current view mode of the view, the default view is public
     _currentViewMode = RCMainFeedViewModePublic;
@@ -629,6 +635,7 @@
     [_collectionView addGestureRecognizer:_pinchGestureRecognizer];
     [_collectionView addGestureRecognizer:_tapGestureRecognizer];
     [_collectionView addGestureRecognizer:_longPressGestureRecognizer];
+    [_collectionView addGestureRecognizer:_doubleTapGestureRecognizer];
     
     //prepare user UI element
     if (_user != nil) {
@@ -745,8 +752,8 @@
     }
 }
 
-- (IBAction)handleLongPress:(UILongPressGestureRecognizer *)recognizer {
-    if (recognizer.state == UIGestureRecognizerStateBegan) {
+- (IBAction)handleLongPress:(UIGestureRecognizer *)recognizer {
+    if ((recognizer.state == UIGestureRecognizerStateBegan && recognizer == _longPressGestureRecognizer) || recognizer == _doubleTapGestureRecognizer) {
         CGPoint point = [recognizer locationInView:_collectionView];
         NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:point];
         
@@ -755,6 +762,7 @@
             [_collectionView removeGestureRecognizer:_pinchGestureRecognizer];
             [_collectionView removeGestureRecognizer:_tapGestureRecognizer];
             [_collectionView removeGestureRecognizer:_longPressGestureRecognizer];
+            [_collectionView removeGestureRecognizer:_doubleTapGestureRecognizer];
             RCPost *post;
             
             post = [_posts objectAtIndex:indexPath.row];
