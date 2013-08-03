@@ -49,4 +49,5 @@
 - (IBAction) openCommentPostingView:(id) sender;
 - (IBAction)btnFriendsWithTouchUpInside:(id)sender;
 - (IBAction)btnFollowTouchUpInside:(id)sender;
++ (void) toggleShowPostID;
 @end
