@@ -168,7 +168,7 @@
     _longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
     _doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
     [_doubleTapGestureRecognizer setNumberOfTapsRequired:2];
-    [_tapGestureRecognizer requireGestureRecognizerToFail:_doubleTapGestureRecognizer];
+    //[_tapGestureRecognizer requireGestureRecognizerToFail:_doubleTapGestureRecognizer];
     [_doubleTapGestureRecognizer requireGestureRecognizerToFail:_longPressGestureRecognizer];
     
     //set the current view mode of the view, the default view is public
@@ -740,7 +740,7 @@
 - (IBAction)handleTap:(UITapGestureRecognizer *)recognizer {
     CGPoint point = [recognizer locationInView:_collectionView];
     NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:point];
-    
+    if (recognizer.numberOfTouches > 1) return;
     //if there's no item at point of tap
     if (indexPath != nil) {
         RCPost *post = [_posts objectAtIndex:indexPath.row];
