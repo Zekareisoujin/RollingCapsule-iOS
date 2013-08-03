@@ -129,7 +129,6 @@
     //reset view data
     [_chosenPosts removeAllObjects];
     _currentLandmarkID = -1;
-    [_postsByLandmark removeAllObjects];
     
     //customizing navigation bar
     self.navigationItem.title = @"";
@@ -233,7 +232,11 @@
     [_refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:lastUpdated]];
     [self toggleButtonRefresh:YES];
     if (_currentViewMode == RCMainFeedViewModeCommented) {
+        [_chosenPosts removeAllObjects];
+        [_postsByRowIndex removeAllObjects];
         [_posts removeAllObjects];
+        [_mapView removeAnnotations:_mapView.annotations];
+
         NSMutableArray* commentedPosts = [RCNotification getNotifiedPosts];
         [_posts addObjectsFromArray:commentedPosts];
         [_collectionView reloadData];
@@ -341,8 +344,9 @@
 #endif
                 
                 if (jsonData != NULL) {
-                    [_postsByLandmark removeAllObjects];
                     [_chosenPosts removeAllObjects];
+                    [_postsByRowIndex removeAllObjects];
+                    [_posts removeAllObjects];
                     [_mapView removeAnnotations:_mapView.annotations];
                     
                     NSArray* notificationListJson = [jsonData objectForKey:@"notification_list"];
@@ -368,8 +372,6 @@
                      }];
                     
                     [appDelegate setCurrentUser:_user];
-                    [_postsByRowIndex removeAllObjects];
-                    [_posts removeAllObjects];
                     for (NSDictionary *postData in postList) {
                         RCPost *post = [RCPost getPostWithNSDictionary:postData];
                         [_postsByRowIndex setObject:[NSNumber numberWithInt:[_posts count]] forKey:[NSNumber numberWithInt:post.postID]];
