@@ -583,7 +583,11 @@
         _userCalloutVisible = YES;
     }
     if ([view.annotation isKindOfClass:[RCPost class]]){
-        [self processTogglingPost:(RCPost*)view.annotation];
+        @try {
+            [self processTogglingPost:(RCPost*)view.annotation];
+        }@catch (NSException* exception) {
+            NSLog(@"excpetion occured selecting post %d in view mode %d",((RCPost*)view.annotation).postID, _currentViewMode);
+        }
     }
 }
 
@@ -592,7 +596,11 @@
         _userCalloutVisible = NO;
     }
     if ([view.annotation isKindOfClass:[RCPost class]]){
-        [self processTogglingPost:(RCPost*)view.annotation];
+        @try {
+            [self processTogglingPost:(RCPost*)view.annotation];
+        }@catch (NSException* exception) {
+            NSLog(@"excpetion occured selecting post %d in view mode %d",((RCPost*)view.annotation).postID, _currentViewMode);
+        }
     }
 }
 
@@ -713,11 +721,6 @@
             [currentCell changeCellState:RCCellStateDimmed];
         }
     } else {
-        /*dispatch_time_t dt = dispatch_time(DISPATCH_TIME_NOW, 0.2 * NSEC_PER_SEC);
-        dispatch_after(dt, dispatch_get_main_queue(), ^(void)
-        {
-            [_mapView setCenterCoordinate:post.coordinate animated:YES];
-        });*/
         [currentCell changeCellState:RCCellStateFloat];
         for (RCPost* post in _chosenPosts)
             [_mapView deselectAnnotation:post animated:YES];
