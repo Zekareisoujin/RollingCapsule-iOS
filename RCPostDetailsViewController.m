@@ -63,7 +63,14 @@ BOOL _isTapToCloseKeyboard;
 BOOL _firstTimeEditPost;
 RCConnectionManager *_connectionManager;
 RCKeyboardPushUpHandler *_keyboardPushHandler;
+static BOOL RCPostDetailsViewControllerShowPostID = NO;
 
++ (void) toggleShowPostID {
+    if (RCPostDetailsViewControllerShowPostID)
+        RCPostDetailsViewControllerShowPostID = NO;
+    else
+        RCPostDetailsViewControllerShowPostID = YES;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -145,6 +152,12 @@ RCKeyboardPushUpHandler *_keyboardPushHandler;
         _lblUsername.text = _post.authorName;
     else
         _lblUsername.text = [NSString stringWithFormat:@"%@ @ %@",_post.authorName, _post.topic];
+    
+    if (RCPostDetailsViewControllerShowPostID) {
+        NSString *formerText = _lblUsername.text;
+        _lblUsername.text = [NSString stringWithFormat:@"%d %@", _post.postID, formerText];
+    }
+    
     [_lblUsername sizeToFit];
     [self.viewCoverStrip addSubview:_lblDatePosted];
     CGRect dateLabelFrame = _lblDatePosted.frame;

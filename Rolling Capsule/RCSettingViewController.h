@@ -17,6 +17,7 @@
 - (IBAction)btnActionLogOut:(id)sender;
 - (IBAction)switchSaveToDiskValueChanged:(id)sender;
 - (IBAction)siwtchClosePostViewValueChanged:(id)sender;
+- (IBAction)switchShowPostIDValueChanged:(id)sender;
 @property (weak, nonatomic) IBOutlet UISwitch *switchClosePostView;
 @property (weak, nonatomic) IBOutlet UISwitch *switchSaveToDisk;
 

@@ -41,6 +41,7 @@
 @property (nonatomic, strong) UIPinchGestureRecognizer *pinchGestureRecognizer;
 @property (nonatomic, strong) UILongPressGestureRecognizer *longPressGestureRecognizer;
 @property (nonatomic, strong) UITapGestureRecognizer *tapGestureRecognizer;
+@property (nonatomic, strong) UITapGestureRecognizer *doubleTapGestureRecognizer;
 @property (nonatomic, strong) UIImage *backgroundImage;
 @property (nonatomic, assign) RCMainFeedViewMode      currentViewMode;
 @property (nonatomic, strong) UIButton* postButton;
@@ -76,6 +77,7 @@
 @synthesize pinchGestureRecognizer = _pinchGestureRecognizer;
 @synthesize longPressGestureRecognizer = _longPressGestureRecognizer;
 @synthesize tapGestureRecognizer = _tapGestureRecognizer;
+@synthesize doubleTapGestureRecognizer = _doubleTapGestureRecognizer;
 @synthesize backgroundImage = _backgroundImage;
 @synthesize currentViewMode = _currentViewMode;
 @synthesize postsByRowIndex = _postsByRowIndex;
@@ -128,7 +130,6 @@
     //reset view data
     [_chosenPosts removeAllObjects];
     _currentLandmarkID = -1;
-    [_postsByLandmark removeAllObjects];
     
     //customizing navigation bar
     self.navigationItem.title = @"";
@@ -166,6 +167,10 @@
     _pinchGestureRecognizer = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePinch:)];
     _tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     _longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    _doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    [_doubleTapGestureRecognizer setNumberOfTapsRequired:2];
+    //[_tapGestureRecognizer requireGestureRecognizerToFail:_doubleTapGestureRecognizer];
+    [_doubleTapGestureRecognizer requireGestureRecognizerToFail:_longPressGestureRecognizer];
     
     //set the current view mode of the view, the default view is public
     _currentViewMode = RCMainFeedViewModePublic;
@@ -229,7 +234,12 @@
     [self toggleButtonRefresh:YES];
     
     if (_currentViewMode == RCMainFeedViewModeCommented) {
+        [_chosenPosts removeAllObjects];
+        [_mapView removeAnnotations:_mapView.annotations];
+        [_postsByRowIndex removeAllObjects];
         [_posts removeAllObjects];
+        
+
         NSMutableArray* commentedPosts = [RCNotification getNotifiedPosts];
         [_posts addObjectsFromArray:commentedPosts];
         [_collectionView reloadData];
@@ -374,9 +384,11 @@
 #endif
                 
                 if (jsonData != NULL) {
-                    [_postsByLandmark removeAllObjects];
                     [_chosenPosts removeAllObjects];
                     [_mapView removeAnnotations:_mapView.annotations];
+                    [_postsByRowIndex removeAllObjects];
+                    [_posts removeAllObjects];
+                    
                     
                     NSArray* notificationListJson = [jsonData objectForKey:@"notification_list"];
                     [self processNotificationListJson:notificationListJson];
@@ -401,8 +413,6 @@
                      }];
                     
                     [appDelegate setCurrentUser:_user];
-                    [_postsByRowIndex removeAllObjects];
-                    [_posts removeAllObjects];
                     for (NSDictionary *postData in postList) {
                         RCPost *post = [RCPost getPostWithNSDictionary:postData];
                         [_postsByRowIndex setObject:[NSNumber numberWithInt:[_posts count]] forKey:[NSNumber numberWithInt:post.postID]];
@@ -601,22 +611,35 @@
 }
 
 #pragma mark - MKMapViewDelegate
+- (void) processTogglingPost:(RCPost*) post {
+    int index = [[_postsByRowIndex objectForKey:[NSNumber numberWithInt:post.postID]] intValue];
+    NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
+    [self selectPostAtIndexPath:indexPath];
+}
+
 - (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
     if ([view.annotation isKindOfClass:[MKUserLocation class]]){
         _userCalloutVisible = YES;
     }
     if ([view.annotation isKindOfClass:[RCPost class]]){
-        RCPost* post = (RCPost*) view.annotation;
-        int index = [[_postsByRowIndex objectForKey:[NSNumber numberWithInt:post.postID]] intValue];
-        NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
-        [_collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
-        [self selectPostAtIndexPath:indexPath];
+        @try {
+            [self processTogglingPost:(RCPost*)view.annotation];
+        }@catch (NSException* exception) {
+            NSLog(@"excpetion occured selecting post %d in view mode %d",((RCPost*)view.annotation).postID, _currentViewMode);
+        }
     }
 }
 
 - (void)mapView:(MKMapView *)mapView didDeselectAnnotationView:(MKAnnotationView *)view {
     if ([view.annotation isKindOfClass:[MKUserLocation class]]){
         _userCalloutVisible = NO;
+    }
+    if ([view.annotation isKindOfClass:[RCPost class]]){
+        @try {
+            [self processTogglingPost:(RCPost*)view.annotation];
+        }@catch (NSException* exception) {
+            NSLog(@"excpetion occured selecting post %d in view mode %d",((RCPost*)view.annotation).postID, _currentViewMode);
+        }
     }
 }
 
@@ -659,6 +682,7 @@
     [_collectionView addGestureRecognizer:_pinchGestureRecognizer];
     [_collectionView addGestureRecognizer:_tapGestureRecognizer];
     [_collectionView addGestureRecognizer:_longPressGestureRecognizer];
+    [_collectionView addGestureRecognizer:_doubleTapGestureRecognizer];
     
     //prepare user UI element
     if (_user != nil) {
@@ -715,7 +739,6 @@
     NSNumber *key = [[NSNumber alloc] initWithInt:post.postID];
     if ([_chosenPosts containsObject:key]) {
         [_chosenPosts removeObject:key];
-        [_mapView deselectAnnotation:post animated:YES];
         if ([_chosenPosts count] == 0) {
             [currentCell changeCellState:RCCellStateNormal];
             for (UICollectionViewCell* cell in _collectionView.visibleCells) {
@@ -726,10 +749,9 @@
             [currentCell changeCellState:RCCellStateDimmed];
         }
     } else {
-
-        MKCoordinateRegion viewRegion = MKCoordinateRegionMake(post.coordinate, [_mapView region].span);
-        [_mapView setRegion:viewRegion animated:YES];
         [currentCell changeCellState:RCCellStateFloat];
+        for (RCPost* post in _chosenPosts)
+            [_mapView deselectAnnotation:post animated:YES];
         [_chosenPosts removeAllObjects];
         [_chosenPosts addObject:[[NSNumber alloc] initWithInt:post.postID]];
         for (UICollectionViewCell* cell in _collectionView.visibleCells) {
@@ -741,22 +763,27 @@
             if (![_chosenPosts containsObject:key])
                 [feedCell changeCellState:RCCellStateDimmed];
         }
+        [_collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+        
     }
 }
 
 - (IBAction)handleTap:(UITapGestureRecognizer *)recognizer {
     CGPoint point = [recognizer locationInView:_collectionView];
     NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:point];
-    
+    if (recognizer.numberOfTouches > 1) return;
     //if there's no item at point of tap
     if (indexPath != nil) {
-        [_mapView selectAnnotation:[_posts objectAtIndex:indexPath.row] animated:YES];
-        //[self selectPostAtIndexPath:indexPath];
+        RCPost *post = [_posts objectAtIndex:indexPath.row];
+        if ([_chosenPosts containsObject:[NSNumber numberWithInt:post.postID]])
+            [_mapView deselectAnnotation:post animated:YES];
+        else
+            [_mapView selectAnnotation:post animated:YES];
     }
 }
 
-- (IBAction)handleLongPress:(UILongPressGestureRecognizer *)recognizer {
-    if (recognizer.state == UIGestureRecognizerStateBegan) {
+- (IBAction)handleLongPress:(UIGestureRecognizer *)recognizer {
+    if ((recognizer.state == UIGestureRecognizerStateBegan && recognizer == _longPressGestureRecognizer) || recognizer == _doubleTapGestureRecognizer) {
         CGPoint point = [recognizer locationInView:_collectionView];
         NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:point];
         
@@ -765,7 +792,7 @@
             [_collectionView removeGestureRecognizer:_pinchGestureRecognizer];
             [_collectionView removeGestureRecognizer:_tapGestureRecognizer];
             [_collectionView removeGestureRecognizer:_longPressGestureRecognizer];
-            
+            [_collectionView removeGestureRecognizer:_doubleTapGestureRecognizer];
             RCPost *post;
             
             post = [_posts objectAtIndex:indexPath.row];

@@ -80,6 +80,7 @@ BOOL _didFinishUploadingImage = NO;
 BOOL _isMovie = NO;
 BOOL _isPosting = NO;
 BOOL _isTimedRelease = NO;
+BOOL _isShowingPrivacyOption = NO;
 static BOOL RCNewPostViewControllerAutomaticClose = YES;
 
 + (void) toggleAutomaticClose {    
@@ -88,6 +89,7 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
     else
         RCNewPostViewControllerAutomaticClose = YES;
 }
+
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -207,7 +209,7 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
     
     //initialize text field with user name as speaker
     
-    
+    [_imgViewPrivacyOptionFrame setHidden:YES];
     //[_txtViewPostContent setText:_user.name];
 }
 
@@ -571,6 +573,39 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
     }
 }
 
+- (IBAction)btnPrivacyOptionTouchedUpInside:(id)sender {
+    [_btnPrivacyOption setEnabled:NO];
+    if (!_isShowingPrivacyOption) {
+        _isShowingPrivacyOption = YES;
+        [_imgViewPrivacyOptionFrame setHidden:NO];
+        [self backgroundTouchUpInside:self];
+        [UIView animateWithDuration:0.3 animations:^{
+            [_imgViewPrivacyOptionFrame.layer setOpacity:1.0];
+            [_txtFieldPostSubject.layer setOpacity:0.0];
+            [_txtViewPostContentFrame.layer setOpacity:0.0];
+        } completion:^(BOOL finished) {
+            [_txtFieldPostSubject setHidden:YES];
+            [_txtViewPostContentFrame setHidden:YES];
+            [_btnPrivacyOption setEnabled:YES];
+        }];
+        
+    }else {
+        _isShowingPrivacyOption = NO;
+        [_txtFieldPostSubject setHidden:NO];
+        [_txtViewPostContentFrame setHidden:NO];
+        [_txtFieldPostSubject becomeFirstResponder];
+        [UIView animateWithDuration:0.3 animations:^{
+            [_imgViewPrivacyOptionFrame.layer setOpacity:0.0];
+            [_txtFieldPostSubject.layer setOpacity:1.0];
+            [_txtViewPostContentFrame.layer setOpacity:1.0];
+        } completion:^(BOOL finished) {
+            [_imgViewPrivacyOptionFrame setHidden:YES];
+            [_btnPrivacyOption setEnabled:YES];
+        }];
+    }
+    
+}
+
 - (IBAction) openDatePickerView:(UIButton*) sender {
     
     if (!_isTimedRelease) {
@@ -669,6 +704,7 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
                          frame2.origin.x -= frame2.size.width;
                          _imgViewPrivacyControlFrame.frame = frame2;
                      } completion:^(BOOL finished){
+                         _isShowingPrivacyOption = YES;
                          [self setPostPrivacyOption:_publicPrivacyButton];
                      }];
     /*int buttonSize = 41;
@@ -880,6 +916,9 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
         }
         i++;
     }
+    
+    [_btnPrivacyOption setBackgroundImage:sender.imageView.image forState:UIControlStateNormal];
+    [self btnPrivacyOptionTouchedUpInside:self];
 }
 
 #pragma mark - UICollectionView Datasource

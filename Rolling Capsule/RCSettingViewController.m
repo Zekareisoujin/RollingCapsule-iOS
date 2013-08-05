@@ -9,6 +9,7 @@
 #import "RCSettingViewController.h"
 #import "RCOperationsManager.h"
 #import "RCNewPostViewController.h"
+#import "RCPostDetailsViewController.h"
 #import "RCUtilities.h"
 #import "RCConstants.h"
 
@@ -68,6 +69,10 @@
 - (IBAction)siwtchClosePostViewValueChanged:(id)sender {
     //NSLog(@"%d", _switchClosePostView.on);
     [RCNewPostViewController toggleAutomaticClose];
+}
+
+- (IBAction)switchShowPostIDValueChanged:(id)sender {
+    [RCPostDetailsViewController toggleShowPostID];
 }
 
 - (void)asynchLogOutRequest
