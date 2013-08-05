@@ -704,6 +704,7 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
                          frame2.origin.x -= frame2.size.width;
                          _imgViewPrivacyControlFrame.frame = frame2;
                      } completion:^(BOOL finished){
+                         _isShowingPrivacyOption = YES;
                          [self setPostPrivacyOption:_publicPrivacyButton];
                      }];
     /*int buttonSize = 41;
