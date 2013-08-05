@@ -31,9 +31,11 @@
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollViewImage;
 @property (weak, nonatomic) IBOutlet UIView *imgViewControlFrame;
 @property (weak, nonatomic) IBOutlet UIView *imgViewPrivacyControlFrame;
+@property (weak, nonatomic) IBOutlet UIView *imgViewPrivacyOptionFrame;
 @property (weak, nonatomic) IBOutlet UIImageView *imgViewMainFrame;
 @property (weak, nonatomic) IBOutlet UIButton *btnPhotoLibrarySource;
 @property (weak, nonatomic) IBOutlet UITextView *txtViewPostContent;
+@property (weak, nonatomic) IBOutlet UIView *txtViewPostContentFrame;
 @property (weak, nonatomic) IBOutlet UILabel* lblDate;
 @property (weak, nonatomic) IBOutlet UIButton* postButton;
 @property (weak, nonatomic) IBOutlet UIButton* publicPrivacyButton;
@@ -41,6 +43,7 @@
 @property (weak, nonatomic) IBOutlet UIButton* friendPrivacyButton;
 @property (weak, nonatomic) IBOutlet UIButton* personalPrivacyButton;
 @property (weak, nonatomic) IBOutlet UIButton *timeCapsule;
+@property (weak, nonatomic) IBOutlet UIButton *btnPrivacyOption;
 @property (nonatomic, strong) NSMutableArray *topics;
 @property (nonatomic, strong) RCUser *user;
 @property (strong, nonatomic) RCKeyboardPushUpHandler *keyboardPushHandler;
@@ -51,6 +54,7 @@
 - (IBAction)btnActionChooseCameraSource:(id)sender;
 - (IBAction)btnActionChoosePhotoLibrarySource:(id)sender;
 - (IBAction)btnActionChooseVideSource:(id)sender;
+- (IBAction)btnPrivacyOptionTouchedUpInside:(id)sender;
 - (IBAction)openLandmarkView:(id)sender;
 - (IBAction) openDatePickerView:(UIButton*) sender;
 - (IBAction) postNew:(id) sender;
