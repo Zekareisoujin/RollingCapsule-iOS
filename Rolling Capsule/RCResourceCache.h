@@ -10,7 +10,7 @@
 
 @interface RCResourceCache : NSObject
 
-@property (nonatomic, strong) NSMutableDictionary *cache;
+@property (nonatomic, strong) NSCache *cache;
 
 + (RCResourceCache*) centralCache;
 

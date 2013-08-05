@@ -17,7 +17,7 @@ static RCResourceCache *instance = 0;
 - (id) init {
     self = [super init];
     if (self){
-        _cache = [[NSMutableDictionary alloc] init];
+        _cache = [[NSCache alloc] init];
     }
     return self;
 }

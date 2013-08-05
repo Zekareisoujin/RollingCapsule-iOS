@@ -160,7 +160,8 @@ static NSMutableDictionary* RCUserUserCollection = nil;
                     postNotification(error);
                     completionHandle(nil);
                 }else {
-                    [[RCResourceCache centralCache] putResourceInCache:[[NSString alloc] initWithFormat:@"%@/%d/avatar", RCUsersResource, _userID] forKey:avatar];
+                    //[[RCResourceCache centralCache] putResourceInCache:[[NSString alloc] initWithFormat:@"%@/%d/avatar", RCUsersResource, _userID] forKey:avatar];
+                    [[RCResourceCache centralCache] putResourceInCache:avatar forKey:[[NSString alloc] initWithFormat:@"%@/%d/avatar", RCUsersResource, _userID]];
                     _displayAvatar = avatar;
                     completionHandle(avatar);
                 }
