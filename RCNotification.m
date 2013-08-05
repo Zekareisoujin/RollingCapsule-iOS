@@ -31,8 +31,11 @@ static NSMutableArray* RCNotificationPostsWithNotification = nil;
     self = [super init];
     if (self) {
         _content = (NSString*)[postData objectForKey:@"content"];
-        _createdTime = (NSString*)[postData objectForKey:@"created_at"];
-        _updatedTime = (NSString*)[postData objectForKey:@"updated_at"];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setTimeZone:[NSTimeZone timeZoneWithName:@"UTC"]];
+        [formatter setDateFormat:@"yyyy-MM-dd'T'HH:mm:ss'Z'"];
+        _createdTime = [formatter dateFromString:(NSString*)[postData objectForKey:@"created_at"]];
+        _updatedTime = [formatter dateFromString:(NSString*)[postData objectForKey:@"updated_at"]];
         
         _receiverID = [[postData objectForKey:@"receiver_id"] intValue];
         _notificationID = [[postData objectForKey:@"id"] intValue];
@@ -73,7 +76,9 @@ static NSMutableArray* RCNotificationPostsWithNotification = nil;
     RCNotification* notification = [[RCNotification alloc] initWithNSDictionary:notificationDict];
     if ([notification.content isKindOfClass:[NSNull class]])
         return nil;
-    if (notification.viewed) return notification;
+    int daysToAdd = 10;
+    NSDate *expiry = [notification.updatedTime dateByAddingTimeInterval:24*60*60*daysToAdd];
+    if ([expiry compare:[NSDate date]] == NSOrderedAscending) return notification;
     NSData *htmlData = [notification.content dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:NO];
     
     // 2

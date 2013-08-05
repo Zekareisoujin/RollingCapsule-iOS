@@ -11,8 +11,8 @@
 @interface RCNotification : NSObject
 
 @property (nonatomic, strong) NSString *content;
-@property (nonatomic, strong) NSString *createdTime;
-@property (nonatomic, strong) NSString *updatedTime;
+@property (nonatomic, strong) NSDate *createdTime;
+@property (nonatomic, strong) NSDate *updatedTime;
 @property (nonatomic, strong) NSMutableArray* urls;
 
 @property (nonatomic, assign) BOOL viewed;
