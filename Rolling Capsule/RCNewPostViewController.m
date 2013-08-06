@@ -17,6 +17,7 @@
 #import "RCOperationsManager.h"
 #import "RCMediaUploadOperation.h"
 #import "RCNewPostOperation.h"
+#import "RCFacebookHelper.h"
 #import <QuartzCore/QuartzCore.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <MediaPlayer/MediaPlayer.h>
@@ -81,6 +82,7 @@ BOOL _isMovie = NO;
 BOOL _isPosting = NO;
 BOOL _isTimedRelease = NO;
 BOOL _isShowingPrivacyOption = NO;
+BOOL _isFacebookPost = NO;
 static BOOL RCNewPostViewControllerAutomaticClose = YES;
 
 + (void) toggleAutomaticClose {    
@@ -258,6 +260,41 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
         [self dismissViewControllerAnimated:YES completion:^{
             NSLog(@"successfully dismissed new post view controller");
         }];
+    
+    if (_isFacebookPost) {
+        [RCFacebookHelper performPublishAction:^{
+            [FBRequestConnection startForUploadPhoto:_postImage
+               completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+                   //[self showAlert:@"Photo Post" result:result error:error];
+                   
+                   NSString *msg;
+                   if (error) {
+                       msg = @"Error";
+                       // For simplicity, we will use any error message provided by the SDK,
+                       // but you may consider inspecting the fberrorShouldNotifyUser or
+                       // fberrorCategory to provide better recourse to users. See the Scrumptious
+                       // sample for more examples on error handling.
+                       if (error.fberrorUserMessage) {
+                           msg = error.fberrorUserMessage;
+                       } else {
+                           msg = @"Operation failed due to a connection problem, retry later.";
+                       }
+                   } else {
+                       NSDictionary *resultDict = (NSDictionary *)result;
+                       msg = @"Successfully posted: ";
+                       NSString *postId = [resultDict valueForKey:@"id"];
+                       if (!postId) {
+                           postId = [resultDict valueForKey:@"postId"];
+                       }
+                       if (postId) {
+                           msg = [NSString stringWithFormat:@"%@\nPost ID: %@", msg, postId];
+                       }
+                   }
+                   postNotification(msg);
+               }];
+            
+        }];
+    }
 }
 
 #pragma mark - helper methods
@@ -604,6 +641,16 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
         }];
     }
     
+}
+
+- (IBAction)btnFacebookOptionTouchedUpInside:(id)sender {
+    if (_isFacebookPost) {
+        _isFacebookPost = NO;
+        [_btnFacebookOption setBackgroundImage:[UIImage imageNamed:@"facebookIconDisabled"] forState:UIControlStateNormal];
+    }else {
+        _isFacebookPost = YES;
+        [_btnFacebookOption setBackgroundImage:[UIImage imageNamed:@"facebookIcon"] forState:UIControlStateNormal];
+    }
 }
 
 - (IBAction) openDatePickerView:(UIButton*) sender {
