@@ -26,8 +26,8 @@ typedef enum RCFeedFetchMode RCFeedFetchMode;
 
 @interface RCFeed : NSObject
 
-@property (nonatomic, strong) NSMutableArray* postList;
-@property (nonatomic, assign) int numberOfHiddenCapsules;
+@property (nonatomic, readonly, strong) NSMutableArray* postList;
+@property (nonatomic, readonly, assign) int numberOfHiddenCapsules;
 @property (nonatomic, strong) NSString* feedPath;
 @property (nonatomic, strong) NSString* errorMessage;
 @property (nonatomic, assign) RCFeedErrorType errorType;

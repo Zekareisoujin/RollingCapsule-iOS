@@ -237,8 +237,7 @@
         [_chosenPosts removeAllObjects];
         [_mapView removeAnnotations:_mapView.annotations];
         [_postsByRowIndex removeAllObjects];
-        [_posts removeAllObjects];
-        
+        _posts = [[NSMutableArray alloc] init];
 
         NSMutableArray* commentedPosts = [RCNotification getNotifiedPosts];
         [_posts addObjectsFromArray:commentedPosts];
@@ -248,28 +247,37 @@
         }];
         [self toggleButtonRefresh:NO];
     } else {
-        RCFeed *feed = nil;
-        switch (_currentViewMode) {
-            case RCMainFeedViewModePublic:
-                feed = [RCFeed locationFeed];
-                [RCFeed updateLocation];
-                break;
-            case RCMainFeedViewModeFriends:
-                feed = [RCFeed friendFeed];
-                break;
-            case RCMainFeedViewModeFollow:
-                feed = [RCFeed followFeed];
-                break;
-            default:break;
-        }
+        RCFeed *feed = [self feedByCurrentViewMode];
+        _posts = feed.postList;
+        currentMaxPostNumber = [feed.postList count];
+        [_collectionView reloadData];
+        //CAREFUL sync (concurrent crash) issue may happen here
         [feed fetchFeedFromBackend:RCFeedFetchModeReset completion:^{
+            currentMaxDisplayedPostNumber = currentMaxPostNumber = [feed.postList count];
             _posts = feed.postList;
             [_collectionView reloadData];
             [self toggleButtonRefresh:NO];
-            //if ([RCUser currentUser].userID)
             [self updateUserUIElements:[RCUser currentUser]];
         }];
 	}
+}
+
+- (RCFeed*) feedByCurrentViewMode {
+    RCFeed *feed = nil;
+    switch (_currentViewMode) {
+        case RCMainFeedViewModePublic:
+            feed = [RCFeed locationFeed];
+            [RCFeed updateLocation];
+            break;
+        case RCMainFeedViewModeFriends:
+            feed = [RCFeed friendFeed];
+            break;
+        case RCMainFeedViewModeFollow:
+            feed = [RCFeed followFeed];
+            break;
+        default:break;
+    }
+    return feed;
 }
 
 - (void) updateUserUIElements:(RCUser *)user {
@@ -571,7 +579,16 @@
     
     // Pulling next page if necessary:
     if (indexPath.row == (currentMaxPostNumber - 1)) {
-        [self asynchFetchFeedNextPage];
+        RCFeed *feed = [self feedByCurrentViewMode];
+        int formerPostCount = currentMaxPostNumber;
+        currentMaxPostNumber = -1;
+        [feed fetchFeedFromBackend:RCFeedFetchModeAppendBack completion:^{
+            if ([feed.postList count] != formerPostCount) {
+                currentMaxPostNumber = [feed.postList count];
+                willShowMoreFeeds = YES;
+            }
+        }];
+        //[self asynchFetchFeedNextPage];
     }
     
     if (indexPath.row == (currentMaxDisplayedPostNumber - 1)){
@@ -870,7 +887,8 @@
 
 - (IBAction)btnMoreFeedClicked:(id)sender {
     //[self showMoreFeedButton:NO animate:NO];
-    currentMaxDisplayedPostNumber = currentMaxPostNumber;
+    willShowMoreFeeds = NO;
+    currentMaxDisplayedPostNumber = [_posts count];
     [_collectionView reloadData];
 }
 

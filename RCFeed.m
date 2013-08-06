@@ -9,6 +9,7 @@
 #import "RCFeed.h"
 #import "SBJson.h"
 #import "RCPost.h"
+#import "RCNotification.h"
 #import "RCConstants.h"
 #import "RCUtilities.h"
 #import "RCMainMenuViewController.h"
@@ -74,6 +75,13 @@ static RCFeed* RCFeedFollowFeed = nil;
     return self;
 }
 
+- (void) processNotificationListJson:(NSArray*) notificationListJson {
+    [RCNotification clearNotifications];
+    for (NSDictionary *notificationJson in notificationListJson) {
+        [RCNotification parseNotification:notificationJson];
+    }
+}
+
 - (void) appendData:(NSData*) data willAddToFront:(BOOL) toFront {
     NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
     if ([responseData isEqualToString:@"Unauthorized"]) {
@@ -94,6 +102,8 @@ static RCFeed* RCFeedFollowFeed = nil;
         NSArray *postJsonList = (NSArray *) [jsonData objectForKey:@"post_list"];
         _numberOfHiddenCapsules = [[jsonData objectForKey:@"unreleased_capsules_count"] intValue];
         NSDictionary *userDictionary = (NSDictionary *) [jsonData objectForKey:@"user"];
+        NSArray *notificationsData = (NSArray*)[jsonData objectForKey:@"notifications_list"];
+        [self processNotificationListJson:notificationsData];
         //_user = [[RCUser alloc] initWithNSDictionary:userDictionary];
         RCUser *user = [RCUser getUserWithNSDictionary:userDictionary];
         [RCUser setCurrentUser:user];
@@ -101,6 +111,7 @@ static RCFeed* RCFeedFollowFeed = nil;
         for (NSDictionary *postData in postJsonList) {
             //RCPost *post = [[RCPost alloc] initWithNSDictionary:postData];
             RCPost *post = [RCPost getPostWithNSDictionary:postData];
+            
             //if append to end then add no matter what
             //if append to front then add only when it's new
             BOOL addPost = (!toFront) || ([postSet containsObject:[NSNumber numberWithInt:post.postID]]);
@@ -130,7 +141,7 @@ static RCFeed* RCFeedFollowFeed = nil;
         case RCFeedFetchModeReset:
             [_postList removeAllObjects];
             [postSet removeAllObjects];
-            loadPage = 1;
+            page = loadPage = 1;
             break;
         case RCFeedFetchModeAppendBack:
             page++;
