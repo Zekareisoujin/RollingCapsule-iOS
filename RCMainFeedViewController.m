@@ -228,7 +228,7 @@
     NSString *lastUpdated = [NSString stringWithFormat:RCInfoStringLastUpdatedOnFormat, [formatter  stringFromDate:[NSDate date] ] ];
     [_refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:lastUpdated]];
     [self toggleButtonRefresh:YES];
-    
+    willShowMoreFeeds = NO;
     if (_currentViewMode == RCMainFeedViewModeCommented) {
         [_chosenPosts removeAllObjects];
         [_mapView removeAnnotations:_mapView.annotations];
@@ -237,6 +237,7 @@
 
         NSMutableArray* commentedPosts = [RCNotification getNotifiedPosts];
         [_posts addObjectsFromArray:commentedPosts];
+        currentMaxDisplayedPostNumber = [_posts count];
         [_collectionView reloadData];
         if ([_reachability currentReachabilityStatus] == NotReachable) {
             [self showNoConnectionWarningMessage];
@@ -247,23 +248,43 @@
         }];
         [self toggleButtonRefresh:NO];
     } else {
-        RCFeed *feed = [self feedByCurrentViewMode];
-        _posts = feed.postList;
-        currentMaxPostNumber = [feed.postList count];
-        [_collectionView reloadData];
-        //CAREFUL sync (concurrent crash) issue may happen here
-        if ([_reachability currentReachabilityStatus] == NotReachable) {
-            [self showNoConnectionWarningMessage];
-            return;
-        }
-        [feed fetchFeedFromBackend:RCFeedFetchModeReset completion:^{
+        [self loadFeed:NUM_RETRY_MAIN_FEED];
+	}
+}
+
+- (void) loadFeed:(int) nRetry {
+    RCFeed *feed = [self feedByCurrentViewMode];
+    _posts = feed.postList;
+    currentMaxDisplayedPostNumber = currentMaxPostNumber = [_posts count];
+    [_collectionView reloadData];
+    //CAREFUL sync (concurrent crash) issue may happen here
+    if ([_reachability currentReachabilityStatus] == NotReachable) {
+        [self showNoConnectionWarningMessage];
+        return;
+    }
+    [feed fetchFeedFromBackend:RCFeedFetchModeReset completion:^{
+        if (feed.errorType != RCFeedNoError) {
+            [self loadFeed:nRetry-1];
+        } else {
             currentMaxDisplayedPostNumber = currentMaxPostNumber = [feed.postList count];
             _posts = feed.postList;
             [_collectionView reloadData];
             [self toggleButtonRefresh:NO];
             [self updateUserUIElements:[RCUser currentUser]];
-        }];
-	}
+        }
+    }];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    if ([scrollView isEqual:_collectionView]) {
+        UICollectionViewCell* cell = [_collectionView cellForItemAtIndexPath:[NSIndexPath indexPathForItem:currentMaxDisplayedPostNumber-1 inSection:0]];
+        if (cell != nil) {
+            //NSLog(@"show more feed button");
+            [self showMoreFeedButton:YES animate:YES];
+        } else {
+            [self showMoreFeedButton:NO animate:YES];
+        }
+    }
 }
 
 - (RCFeed*) feedByCurrentViewMode {
@@ -554,13 +575,7 @@
 #pragma mark - UICollectionView Datasource
 // 1
 - (NSInteger)collectionView:(UICollectionView *)view numberOfItemsInSection:(NSInteger)section {
-    int nPosts;
-    switch (_currentViewMode) {
-        default:
-            nPosts = [_posts count];
-            break;
-    };
-    return nPosts;
+    return currentMaxDisplayedPostNumber;
 }
 // 2
 - (NSInteger)numberOfSectionsInCollectionView: (UICollectionView *)collectionView {
@@ -590,17 +605,18 @@
             if ([feed.postList count] != formerPostCount) {
                 currentMaxPostNumber = [feed.postList count];
                 willShowMoreFeeds = YES;
+                [self scrollViewDidScroll:_collectionView];
             }
         }];
         //[self asynchFetchFeedNextPage];
     }
     
-    if (indexPath.row == (currentMaxDisplayedPostNumber - 1)){
+    /*if (indexPath.row == (currentMaxDisplayedPostNumber - 1)){
         [self showMoreFeedButton:YES animate:YES];
-    }else if (indexPath.row < (currentMaxDisplayedPostNumber - 1 - showThreshold)) {
+    }else if (indexPath.row < (currentMaxDisplayedPostNumber - _nRows - _nRows - showThreshold)) {
         if (!_btnMoreFeed.isHidden)
             [self showMoreFeedButton:NO animate:YES];
-    }
+    }*/
     
     return cell;
 }
@@ -891,7 +907,7 @@
 }
 
 - (IBAction)btnMoreFeedClicked:(id)sender {
-    //[self showMoreFeedButton:NO animate:NO];
+    [self showMoreFeedButton:NO animate:NO];
     willShowMoreFeeds = NO;
     currentMaxDisplayedPostNumber = [_posts count];
     [_collectionView reloadData];
@@ -916,7 +932,7 @@
     float duration = (animate?0.5:0.0);
     
     if (show && willShowMoreFeeds) {
-        [_btnMoreFeed setHidden:!show];
+        [_btnMoreFeed setHidden:NO];
         [UIView animateWithDuration:duration animations:^{
             [_btnMoreFeed.layer setOpacity:1.0];
         }];

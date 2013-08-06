@@ -103,7 +103,7 @@ static RCFeed* RCFeedFollowFeed = nil;
         NSArray *postJsonList = (NSArray *) [jsonData objectForKey:@"post_list"];
         _numberOfHiddenCapsules = [[jsonData objectForKey:@"unreleased_capsules_count"] intValue];
         NSDictionary *userDictionary = (NSDictionary *) [jsonData objectForKey:@"user"];
-        NSArray *notificationsData = (NSArray*)[jsonData objectForKey:@"notifications_list"];
+        NSArray *notificationsData = (NSArray*)[jsonData objectForKey:@"notification_list"];
         [self processNotificationListJson:notificationsData];
         //_user = [[RCUser alloc] initWithNSDictionary:userDictionary];
         RCUser *user = [RCUser getUserWithNSDictionary:userDictionary];
@@ -144,9 +144,6 @@ static RCFeed* RCFeedFollowFeed = nil;
     //if page 0 refresh everything
     switch (fetchMode) {
         case RCFeedFetchModeReset:
-            [_postList removeAllObjects];
-            [postSet removeAllObjects];
-            [_postsByRowIndex removeAllObjects];
             page = loadPage = 1;
             break;
         case RCFeedFetchModeAppendBack:
@@ -166,6 +163,11 @@ static RCFeed* RCFeedFollowFeed = nil;
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
          {
+             if (fetchMode == RCFeedFetchModeReset){
+                 [_postList removeAllObjects];
+                 [postSet removeAllObjects];
+                 [_postsByRowIndex removeAllObjects];
+             }
              if (error == nil)
                  [self appendData:data willAddToFront:willAddToFront];
              else {
@@ -177,8 +179,9 @@ static RCFeed* RCFeedFollowFeed = nil;
     } @catch (NSException *exception) {
         NSLog(@"feed-data: exception:%@",exception);
         _errorType = RCFeedClientException;
+        completeFunc();
     }
-    completeFunc();
+    
 }
 
 @end
