@@ -230,15 +230,12 @@
     [self toggleButtonRefresh:YES];
     willShowMoreFeeds = NO;
     if (_currentViewMode == RCMainFeedViewModeCommented) {
-        [_chosenPosts removeAllObjects];
-        [_mapView removeAnnotations:_mapView.annotations];
-        [_postsByRowIndex removeAllObjects];
         _posts = [[NSMutableArray alloc] init];
 
         NSMutableArray* commentedPosts = [RCNotification getNotifiedPosts];
         [_posts addObjectsFromArray:commentedPosts];
         currentMaxDisplayedPostNumber = [_posts count];
-        [_collectionView reloadData];
+        [self reloadData];
         if ([_reachability currentReachabilityStatus] == NotReachable) {
             [self showNoConnectionWarningMessage];
             return;
@@ -256,7 +253,7 @@
     RCFeed *feed = [self feedByCurrentViewMode];
     _posts = feed.postList;
     currentMaxDisplayedPostNumber = currentMaxPostNumber = [_posts count];
-    [_collectionView reloadData];
+    [self reloadData];
     //CAREFUL sync (concurrent crash) issue may happen here
     if ([_reachability currentReachabilityStatus] == NotReachable) {
         [self showNoConnectionWarningMessage];
@@ -268,11 +265,25 @@
         } else {
             currentMaxDisplayedPostNumber = currentMaxPostNumber = [feed.postList count];
             _posts = feed.postList;
-            [_collectionView reloadData];
+            [self reloadData];
             [self toggleButtonRefresh:NO];
             [self updateUserUIElements:[RCUser currentUser]];
         }
     }];
+}
+
+- (void) reloadData {
+    [_chosenPosts removeAllObjects];
+    [_mapView removeAnnotations:_mapView.annotations];
+    [_postsByRowIndex removeAllObjects];
+    int i = 0;
+    for (RCPost*post in _posts) {
+        [_postsByRowIndex setObject:[NSNumber numberWithInt:i] forKey:[NSNumber numberWithInt:post.postID]];
+        [_mapView addAnnotation:post];
+        i++;
+    }
+    [_collectionView reloadData];
+
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -438,8 +449,7 @@
 
 #pragma mark - MKMapViewDelegate
 - (void) processTogglingPost:(RCPost*) post {
-    RCFeed *feed = [self feedByCurrentViewMode];
-    int index = [[feed.postsByRowIndex objectForKey:[NSNumber numberWithInt:post.postID]] intValue];
+    int index = [[_postsByRowIndex objectForKey:[NSNumber numberWithInt:post.postID]] intValue];
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
     [self selectPostAtIndexPath:indexPath];
 }
