@@ -26,6 +26,7 @@
 @property (nonatomic, assign) BOOL pickedNewAvatarImage;
 @property (nonatomic, weak)   UIImage *userAvatarImage;
 @property (nonatomic, strong) UILabel *lblAvatarEdit;
+@property (nonatomic, strong) UITapGestureRecognizer *doubleTapGestureRecognizer;
 @property (nonatomic, strong) UILongPressGestureRecognizer *longPressGestureRecognizer;
 @end
 
@@ -70,6 +71,7 @@
 @synthesize pickedNewAvatarImage = _pickedNewAvatarImage;
 @synthesize userAvatarImage = _userAvatarImage;
 @synthesize lblAvatarEdit = _lblAvatarEdit;
+@synthesize doubleTapGestureRecognizer = _doubleTapGestureRecognizer;
 @synthesize longPressGestureRecognizer = _longPressGestureRecognizer;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
@@ -126,6 +128,9 @@
     
     
     _longPressGestureRecognizer = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    _doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+    [_doubleTapGestureRecognizer setNumberOfTapsRequired:2];
+    //[_tapGestureRecognizer requireGestureRecognizerToFail:_doubleTapGestureRecognizer];
     
     _postList = [[NSMutableArray alloc] init];
     
@@ -1030,13 +1035,16 @@
 }
 
 #pragma mark - Long Press Gesture handler
-- (IBAction)handleLongPress:(UILongPressGestureRecognizer *)recognizer {
-    if (recognizer.state == UIGestureRecognizerStateBegan) {
+- (IBAction)handleLongPress:(UIGestureRecognizer *)recognizer {
+    if ((recognizer.state == UIGestureRecognizerStateBegan && recognizer == _longPressGestureRecognizer) || recognizer == _doubleTapGestureRecognizer) {
         CGPoint point = [recognizer locationInView:_collectionView];
         NSIndexPath *indexPath = [_collectionView indexPathForItemAtPoint:point];
         
         //if index path for cell not found
         if (indexPath != nil ) {
+            [_collectionView removeGestureRecognizer:_longPressGestureRecognizer];
+            [_collectionView removeGestureRecognizer:_doubleTapGestureRecognizer];
+            
             RCPost *post = [_postList objectAtIndex:indexPath.row];
             RCUser *owner = [RCUser getUserOwnerOfPost:post];
             RCNotification *notification = [RCNotification notificationForResource:[NSString stringWithFormat:@"posts/%d",post.postID]];
@@ -1066,6 +1074,7 @@
 
 - (void) viewWillAppear:(BOOL)animated {
     [_collectionView addGestureRecognizer:_longPressGestureRecognizer];
+    [_collectionView addGestureRecognizer:_doubleTapGestureRecognizer];
 }
 
 @end

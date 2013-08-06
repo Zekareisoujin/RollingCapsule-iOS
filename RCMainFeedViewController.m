@@ -169,7 +169,6 @@
     _doubleTapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
     [_doubleTapGestureRecognizer setNumberOfTapsRequired:2];
     //[_tapGestureRecognizer requireGestureRecognizerToFail:_doubleTapGestureRecognizer];
-    [_doubleTapGestureRecognizer requireGestureRecognizerToFail:_longPressGestureRecognizer];
     
     //set the current view mode of the view, the default view is public
     _currentViewMode = RCMainFeedViewModePublic;
