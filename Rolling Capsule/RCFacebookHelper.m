@@ -11,7 +11,7 @@
 @implementation RCFacebookHelper
 
 // Convenience method to perform some action that requires the "publish_actions" permissions.
-+ (void) performPublishAction:(void (^)(void)) action {
++ (void) validatePermissionAndPerformAction:(void (^)(void)) action {
     // we defer request for permission to post to the moment of post, then we check for the permission
     if ([FBSession.activeSession.permissions indexOfObject:@"publish_actions"] == NSNotFound) {
         // if we don't already have the permission, then we request it now

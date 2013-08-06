@@ -262,38 +262,35 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
         }];
     
     if (_isFacebookPost) {
-        [RCFacebookHelper performPublishAction:^{
-            [FBRequestConnection startForUploadPhoto:_postImage
-               completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-                   //[self showAlert:@"Photo Post" result:result error:error];
-                   
-                   NSString *msg;
-                   if (error) {
-                       msg = @"Error";
-                       // For simplicity, we will use any error message provided by the SDK,
-                       // but you may consider inspecting the fberrorShouldNotifyUser or
-                       // fberrorCategory to provide better recourse to users. See the Scrumptious
-                       // sample for more examples on error handling.
-                       if (error.fberrorUserMessage) {
-                           msg = error.fberrorUserMessage;
-                       } else {
-                           msg = @"Operation failed due to a connection problem, retry later.";
-                       }
+        [FBRequestConnection startForUploadPhoto:_postImage
+           completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+               //[self showAlert:@"Photo Post" result:result error:error];
+               
+               NSString *msg;
+               if (error) {
+                   msg = @"Error";
+                   // For simplicity, we will use any error message provided by the SDK,
+                   // but you may consider inspecting the fberrorShouldNotifyUser or
+                   // fberrorCategory to provide better recourse to users. See the Scrumptious
+                   // sample for more examples on error handling.
+                   if (error.fberrorUserMessage) {
+                       msg = error.fberrorUserMessage;
                    } else {
-                       NSDictionary *resultDict = (NSDictionary *)result;
-                       msg = @"Successfully posted: ";
-                       NSString *postId = [resultDict valueForKey:@"id"];
-                       if (!postId) {
-                           postId = [resultDict valueForKey:@"postId"];
-                       }
-                       if (postId) {
-                           msg = [NSString stringWithFormat:@"%@\nPost ID: %@", msg, postId];
-                       }
+                       msg = @"Operation failed due to a connection problem, retry later.";
                    }
-                   postNotification(msg);
-               }];
-            
-        }];
+               } else {
+                   NSDictionary *resultDict = (NSDictionary *)result;
+                   msg = @"Successfully posted: ";
+                   NSString *postId = [resultDict valueForKey:@"id"];
+                   if (!postId) {
+                       postId = [resultDict valueForKey:@"postId"];
+                   }
+                   if (postId) {
+                       msg = [NSString stringWithFormat:@"%@\nPost ID: %@", msg, postId];
+                   }
+               }
+               postNotification(msg);
+           }];
     }
 }
 
@@ -648,8 +645,10 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
         _isFacebookPost = NO;
         [_btnFacebookOption setBackgroundImage:[UIImage imageNamed:@"facebookIconDisabled"] forState:UIControlStateNormal];
     }else {
-        _isFacebookPost = YES;
-        [_btnFacebookOption setBackgroundImage:[UIImage imageNamed:@"facebookIcon"] forState:UIControlStateNormal];
+        [RCFacebookHelper validatePermissionAndPerformAction:^{
+            _isFacebookPost = YES;
+            [_btnFacebookOption setBackgroundImage:[UIImage imageNamed:@"facebookIcon"] forState:UIControlStateNormal];
+        }];
     }
 }
 

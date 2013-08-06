@@ -11,6 +11,6 @@
 
 @interface RCFacebookHelper : NSObject
 
-+ (void) performPublishAction:(void (^)(void)) action;
++ (void) validatePermissionAndPerformAction:(void (^)(void)) action;
 
 @end
