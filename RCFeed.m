@@ -63,12 +63,13 @@ static RCFeed* RCFeedFollowFeed = nil;
 @synthesize feedPath = _feedPath;
 @synthesize errorMessage = _errorMessage;
 @synthesize errorType = _errorType;
-
+@synthesize postsByRowIndex = _postsByRowIndex;
 - (id) init {
     self = [super init];
     if (self) {
         _postList = [[NSMutableArray alloc] init];
         postSet = [[NSMutableSet alloc] init];
+        _postsByRowIndex = [[NSMutableDictionary alloc] init];
         _numberOfHiddenCapsules = 0;
         page = 1;
     }
@@ -124,6 +125,10 @@ static RCFeed* RCFeedFollowFeed = nil;
             [array addObjectsFromArray:_postList];
             _postList = array;
         }
+        for (int i = 0; i < [_postList count]; i++) {
+            RCPost *post = [_postList objectAtIndex:i];
+            [_postsByRowIndex setObject:[NSNumber numberWithInt:i] forKey:[NSNumber numberWithInt:post.postID]];
+        }
         return;
     } else {
         NSLog(@"feed-data: error parsing json data received%@",responseData);
@@ -141,6 +146,7 @@ static RCFeed* RCFeedFollowFeed = nil;
         case RCFeedFetchModeReset:
             [_postList removeAllObjects];
             [postSet removeAllObjects];
+            [_postsByRowIndex removeAllObjects];
             page = loadPage = 1;
             break;
         case RCFeedFetchModeAppendBack:

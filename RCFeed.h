@@ -31,6 +31,7 @@ typedef enum RCFeedFetchMode RCFeedFetchMode;
 @property (nonatomic, strong) NSString* feedPath;
 @property (nonatomic, strong) NSString* errorMessage;
 @property (nonatomic, assign) RCFeedErrorType errorType;
+@property (nonatomic, strong) NSMutableDictionary *postsByRowIndex;
 - (id) init;
 - (void) appendData:(NSData*) data willAddToFront:(BOOL) toFront;
 - (void) fetchFeedFromBackend:(RCFeedFetchMode) fetchMode completion:(void(^)(void)) completeFunc;

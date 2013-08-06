@@ -223,10 +223,6 @@
         [_autoRefresh invalidate];
 
     [self btnCenterMapTouchUpInside:nil];
-    if ([_reachability currentReachabilityStatus] == NotReachable) {
-        [self showNoConnectionWarningMessage];
-        return;
-    }
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:RCInfoStringDateFormat];
     NSString *lastUpdated = [NSString stringWithFormat:RCInfoStringLastUpdatedOnFormat, [formatter  stringFromDate:[NSDate date] ] ];
@@ -242,6 +238,10 @@
         NSMutableArray* commentedPosts = [RCNotification getNotifiedPosts];
         [_posts addObjectsFromArray:commentedPosts];
         [_collectionView reloadData];
+        if ([_reachability currentReachabilityStatus] == NotReachable) {
+            [self showNoConnectionWarningMessage];
+            return;
+        }
         [RCNotification loadMissingNotifiedPostsForList:_posts withCompletion:^{
             [_collectionView reloadData];
         }];
@@ -252,6 +252,10 @@
         currentMaxPostNumber = [feed.postList count];
         [_collectionView reloadData];
         //CAREFUL sync (concurrent crash) issue may happen here
+        if ([_reachability currentReachabilityStatus] == NotReachable) {
+            [self showNoConnectionWarningMessage];
+            return;
+        }
         [feed fetchFeedFromBackend:RCFeedFetchModeReset completion:^{
             currentMaxDisplayedPostNumber = currentMaxPostNumber = [feed.postList count];
             _posts = feed.postList;
@@ -629,7 +633,8 @@
 
 #pragma mark - MKMapViewDelegate
 - (void) processTogglingPost:(RCPost*) post {
-    int index = [[_postsByRowIndex objectForKey:[NSNumber numberWithInt:post.postID]] intValue];
+    RCFeed *feed = [self feedByCurrentViewMode];
+    int index = [[feed.postsByRowIndex objectForKey:[NSNumber numberWithInt:post.postID]] intValue];
     NSIndexPath *indexPath = [NSIndexPath indexPathForItem:index inSection:0];
     [self selectPostAtIndexPath:indexPath];
 }
