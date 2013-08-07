@@ -8,6 +8,7 @@
 
 #import "RCFacebookSettingsViewController.h"
 #import "RCFacebookHelper.h"
+#import "RCConnectionManager.h"
 
 @interface RCFacebookSettingsViewController ()
 
@@ -77,7 +78,9 @@
         [self setDisplayElements];
     } else {
         // Session is closed
+        [RCConnectionManager startConnection];
         [RCFacebookHelper openFacebookSessionWithDefaultReadPermission:^{
+            [RCConnectionManager endConnection];
             [self setDisplayElements];
         }];
     }

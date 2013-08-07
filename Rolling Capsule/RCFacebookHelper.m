@@ -7,6 +7,7 @@
 //
 
 #import "RCFacebookHelper.h"
+#import "RCConnectionManager.h"
 
 @implementation RCFacebookHelper
 
@@ -17,8 +18,10 @@ static NSDictionary<FBGraphUser> *currentUser;
         if (currentUser != nil)
             completionHandle(currentUser);
         else {
+            [RCConnectionManager startConnection];
             [[FBRequest requestForMe] startWithCompletionHandler:
              ^(FBRequestConnection *connection, NSDictionary<FBGraphUser> *user, NSError *error) {
+                 [RCConnectionManager endConnection];
                  if (!error) {
                      currentUser = user;
                      completionHandle(currentUser);

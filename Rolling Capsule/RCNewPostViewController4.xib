@@ -334,6 +334,32 @@
 										<reference key="IBUIFontDescription" ref="902266637"/>
 										<reference key="IBUIFont" ref="794793721"/>
 									</object>
+									<object class="IBUIButton" id="443459932">
+										<reference key="NSNextResponder" ref="248784110"/>
+										<int key="NSvFlags">292</int>
+										<string key="NSFrame">{{134, 2}, {35, 35}}</string>
+										<reference key="NSSuperview" ref="248784110"/>
+										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView" ref="938213332"/>
+										<string key="NSReuseIdentifierKey">_NS:9</string>
+										<bool key="IBUIOpaque">NO</bool>
+										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
+										<int key="IBUIContentHorizontalAlignment">0</int>
+										<int key="IBUIContentVerticalAlignment">0</int>
+										<int key="IBUIButtonType">1</int>
+										<reference key="IBUIHighlightedTitleColor" ref="338573971"/>
+										<object class="NSColor" key="IBUINormalTitleColor">
+											<int key="NSColorSpace">1</int>
+											<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+										</object>
+										<reference key="IBUINormalTitleShadowColor" ref="514332454"/>
+										<object class="NSCustomResource" key="IBUINormalBackgroundImage">
+											<string key="NSClassName">NSImage</string>
+											<string key="NSResourceName">facebookIconDisabled.png</string>
+										</object>
+										<reference key="IBUIFontDescription" ref="902266637"/>
+										<reference key="IBUIFont" ref="794793721"/>
+									</object>
 									<object class="IBUIButton" id="255294726">
 										<reference key="NSNextResponder" ref="248784110"/>
 										<int key="NSvFlags">292</int>
@@ -366,6 +392,7 @@
 										<string key="NSFrame">{{257, -2}, {37, 42}}</string>
 										<reference key="NSSuperview" ref="248784110"/>
 										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -406,7 +433,7 @@
 										<string key="NSFrame">{{49, 9}, {83, 21}}</string>
 										<reference key="NSSuperview" ref="248784110"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="938213332"/>
+										<reference key="NSNextKeyView" ref="443459932"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIClipsSubviews">YES</bool>
@@ -885,6 +912,14 @@
 					<int key="connectionID">3761</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">btnFacebookOption</string>
+						<reference key="source" ref="372490531"/>
+						<reference key="destination" ref="443459932"/>
+					</object>
+					<int key="connectionID">3764</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">openLandmarkView:</string>
 						<reference key="source" ref="570012534"/>
@@ -999,6 +1034,15 @@
 					</object>
 					<int key="connectionID">3760</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">btnFacebookOptionTouchedUpInside:</string>
+						<reference key="source" ref="443459932"/>
+						<reference key="destination" ref="372490531"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">3765</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -1072,6 +1116,7 @@
 							<reference ref="255294726"/>
 							<reference ref="706114538"/>
 							<reference ref="72914921"/>
+							<reference ref="443459932"/>
 						</array>
 						<reference key="parent" ref="1017865285"/>
 					</object>
@@ -1210,6 +1255,11 @@
 						<reference key="object" ref="72914921"/>
 						<reference key="parent" ref="248784110"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">3763</int>
+						<reference key="object" ref="443459932"/>
+						<reference key="parent" ref="248784110"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -1246,12 +1296,13 @@
 				<string key="3754.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="3755.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="3762.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="3763.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 			</dictionary>
 			<dictionary class="NSMutableDictionary" key="unlocalizedProperties"/>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">3762</int>
+			<int key="maxID">3765</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -1263,7 +1314,9 @@
 						<string key="btnActionChooseCameraSource:">id</string>
 						<string key="btnActionChoosePhotoLibrarySource:">id</string>
 						<string key="btnActionChooseVideSource:">id</string>
+						<string key="btnFacebookOptionTouchedUpInside:">id</string>
 						<string key="btnPrivacyOptionTouchedUpInside:">id</string>
+						<string key="callLandmarkTable:">id</string>
 						<string key="closeBtnTouchUpInside:">id</string>
 						<string key="openDatePickerView:">UIButton</string>
 						<string key="openLandmarkView:">id</string>
@@ -1287,8 +1340,16 @@
 							<string key="name">btnActionChooseVideSource:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="btnFacebookOptionTouchedUpInside:">
+							<string key="name">btnFacebookOptionTouchedUpInside:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="btnPrivacyOptionTouchedUpInside:">
 							<string key="name">btnPrivacyOptionTouchedUpInside:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="callLandmarkTable:">
+							<string key="name">callLandmarkTable:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="closeBtnTouchUpInside:">
@@ -1315,6 +1376,7 @@
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="btnCameraSource">UIButton</string>
 						<string key="btnChooseLandmark">UIButton</string>
+						<string key="btnFacebookOption">UIButton</string>
 						<string key="btnLandmark">UIButton</string>
 						<string key="btnPhotoLibrarySource">UIButton</string>
 						<string key="btnPostImage">UIButton</string>
@@ -1346,6 +1408,10 @@
 						</object>
 						<object class="IBToOneOutletInfo" key="btnChooseLandmark">
 							<string key="name">btnChooseLandmark</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="btnFacebookOption">
+							<string key="name">btnFacebookOption</string>
 							<string key="candidateClassName">UIButton</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="btnLandmark">
@@ -1455,6 +1521,7 @@
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="buttonCancel.png">{72, 75}</string>
 			<string key="buttonTopic.png">{148, 171}</string>
+			<string key="facebookIconDisabled.png">{100, 100}</string>
 			<string key="postButtonTimeCapsule.png">{82, 82}</string>
 			<string key="postCameraSourceButton.png">{73, 55}</string>
 			<string key="postFriendPrivacyButton-2.png">{82, 82}</string>
