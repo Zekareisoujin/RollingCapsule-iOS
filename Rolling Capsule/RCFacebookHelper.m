@@ -7,6 +7,7 @@
 //
 
 #import "RCFacebookHelper.h"
+#import "RCConnectionManager.h"
 
 @implementation RCFacebookHelper
 
@@ -17,8 +18,10 @@ static NSDictionary<FBGraphUser> *currentUser;
         if (currentUser != nil)
             completionHandle(currentUser);
         else {
+            [RCConnectionManager startConnection];
             [[FBRequest requestForMe] startWithCompletionHandler:
              ^(FBRequestConnection *connection, NSDictionary<FBGraphUser> *user, NSError *error) {
+                 [RCConnectionManager endConnection];
                  if (!error) {
                      currentUser = user;
                      completionHandle(currentUser);
@@ -68,9 +71,11 @@ static NSDictionary<FBGraphUser> *currentUser;
     // we defer request for permission to post to the moment of post, then we check for the permission
     if ([FBSession.activeSession.permissions indexOfObject:@"publish_actions"] == NSNotFound) {
         // if we don't already have the permission, then we request it now
+        [RCConnectionManager startConnection];
         [FBSession.activeSession requestNewPublishPermissions:@[@"publish_actions"]
                                               defaultAudience:FBSessionDefaultAudienceFriends
                                             completionHandler:^(FBSession *session, NSError *error) {
+                                                [RCConnectionManager endConnection];
                                                 if (!error) {
                                                     action();
                                                 }
