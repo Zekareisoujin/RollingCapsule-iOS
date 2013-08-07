@@ -10,6 +10,25 @@
 
 @implementation RCFacebookHelper
 
+static NSDictionary<FBGraphUser> *currentUser;
+
++ (void) getCurrentUserWithCompletionHandler:(void (^)(NSDictionary<FBGraphUser>*))completionHandle {
+    if (FBSession.activeSession.isOpen) {
+        if (currentUser != nil)
+            completionHandle(currentUser);
+        else {
+            [[FBRequest requestForMe] startWithCompletionHandler:
+             ^(FBRequestConnection *connection, NSDictionary<FBGraphUser> *user, NSError *error) {
+                 if (!error) {
+                     currentUser = user;
+                     completionHandle(currentUser);
+                 }
+             }];
+        }
+    }else
+        completionHandle(nil);
+}
+
 + (BOOL) shouldLogIn {
     return [[NSUserDefaults standardUserDefaults] boolForKey:@"FacebookShouldLogIn"];
 }
@@ -61,6 +80,11 @@
         action();
     }
     
+}
+
++ (void) closeCurrentSession {
+    currentUser = nil;
+    [FBSession.activeSession closeAndClearTokenInformation];
 }
 
 @end

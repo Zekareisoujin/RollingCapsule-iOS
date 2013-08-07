@@ -18,6 +18,7 @@
 #import "RCMediaUploadOperation.h"
 #import "RCNewPostOperation.h"
 #import "RCFacebookHelper.h"
+#import "RCFacebookSettingsViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <MediaPlayer/MediaPlayer.h>
@@ -656,16 +657,18 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
             }];
         } else {
             // Session is closed
-            showConfirmationDialog(@"You are not logged in to facebook yet. Do you want to log in now?", @"Facebook", self);
+            showConfirmationDialog(@"You are not logged in to Facebook yet. Do you want to go to settings?", @"Facebook", self);
         }
     }
 }
 
 // alert view delegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    [_btnFacebookOption setEnabled:YES];
     if (buttonIndex == 1){
-    }else if (buttonIndex == 0)
-        [_btnFacebookOption setEnabled:YES];
+        RCFacebookSettingsViewController *facebookSettingsViewController = [[RCFacebookSettingsViewController alloc] init];
+        [self.navigationController pushViewController:facebookSettingsViewController animated:YES];
+    }
 }
 
 - (IBAction) openDatePickerView:(UIButton*) sender {

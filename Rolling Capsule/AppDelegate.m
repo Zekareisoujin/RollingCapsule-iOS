@@ -65,6 +65,7 @@ void SignalHandler(int sig) {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [FBProfilePictureView class];
     NSSetUncaughtExceptionHandler(&HandleExceptions);
     // create the signal action structure
     struct sigaction newSignalAction;
@@ -114,9 +115,7 @@ void SignalHandler(int sig) {
     _mainViewController.menuViewController = _menuViewController;
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    // Handling facebook authentication
-    [RCFacebookHelper setShouldLogIn:NO]; //temporary
-    
+    // Handling facebook authentication    
     if ([RCFacebookHelper shouldLogIn])
         [RCFacebookHelper openFacebookSessionWithDefaultReadPermission:^{/*doing nothing here*/}];
     

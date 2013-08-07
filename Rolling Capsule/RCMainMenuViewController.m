@@ -17,13 +17,12 @@
 #import "RCMenuTableCell.h"
 #import "RCMenuTableCell2.h"
 #import "RCOutboxViewController.h"
+#import "RCFacebookSettingsViewController.h"
 #import "RCOperationsManager.h"
 #import "UIImage+animatedGIF.h"
 #import "SBJson.h"
 
 @interface RCMainMenuViewController ()
-
-@property (strong, nonatomic) FBUserSettingsViewController *facebookSettingViewController;
 
 @end
 
@@ -432,12 +431,8 @@
 }
 
 - (IBAction)btnActionFacebookSetting:(id)sender {
-    if (self.facebookSettingViewController == nil) {
-        self.facebookSettingViewController = [[FBUserSettingsViewController alloc] init];
-        self.facebookSettingViewController.delegate = self;
-    }
-    
-    [self navigateToViewControllerFromMenu:self.facebookSettingViewController];
+    RCFacebookSettingsViewController *facebookSettingViewController = [[RCFacebookSettingsViewController alloc] init];
+    [self navigateToViewControllerFromMenu:facebookSettingViewController];
 }
 
 - (void)goToURL: (NSURL*) url {
