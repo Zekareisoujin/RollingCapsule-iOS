@@ -23,6 +23,7 @@
 @synthesize urls = _urls;
 @synthesize viewed = _viewed;
 
+static int RCNotficationNumberOfNewNotifications = 0;
 static NSMutableArray* RCNotificationNotificationList = nil;
 static NSMutableDictionary* RCNotificationObjectsWithNotification = nil;
 static NSMutableArray* RCNotificationPostsWithNotification = nil;
@@ -46,12 +47,15 @@ static NSMutableArray* RCNotificationPostsWithNotification = nil;
 }
 
 - (void) updateViewedProperty {
-    self.viewed = true;
-    NSURL *url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%d", RCServiceURL, RCNotificationsResource, _notificationID]];
-    NSURLRequest *request = CreateHttpPutRequest(url,nil);
-    
-    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+    if (!self.viewed) {
+        RCNotficationNumberOfNewNotifications--;
+        self.viewed = true;
+        NSURL *url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%d", RCServiceURL, RCNotificationsResource, _notificationID]];
+        NSURLRequest *request = CreateHttpPutRequest(url,nil);
+        
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                            completionHandler:nil];
+    }
 
 
 }
@@ -66,9 +70,10 @@ static NSMutableArray* RCNotificationPostsWithNotification = nil;
     [RCNotificationNotificationList removeAllObjects];
     [RCNotificationObjectsWithNotification removeAllObjects];
     [RCNotificationPostsWithNotification removeAllObjects];
+    RCNotficationNumberOfNewNotifications = 0;
 }
 
-+ (RCNotification*) notificationForResource:(NSString*)resourceSpecifier {
++ (NSMutableArray*) notificationsForResource:(NSString*)resourceSpecifier {
     return [RCNotificationObjectsWithNotification objectForKey:resourceSpecifier];
 }
 
@@ -76,6 +81,8 @@ static NSMutableArray* RCNotificationPostsWithNotification = nil;
     RCNotification* notification = [[RCNotification alloc] initWithNSDictionary:notificationDict];
     if ([notification.content isKindOfClass:[NSNull class]])
         return nil;
+    if (!notification.viewed)
+        RCNotficationNumberOfNewNotifications++;
     int daysToAdd = 10;
     NSDate *expiry = [notification.updatedTime dateByAddingTimeInterval:24*60*60*daysToAdd];
     if ([expiry compare:[NSDate date]] == NSOrderedAscending) return notification;
@@ -93,13 +100,15 @@ static NSMutableArray* RCNotificationPostsWithNotification = nil;
         if ([url.scheme hasSuffix:@"memcap"]) {
             if ([url.host hasSuffix:@"posts"]) {
                 NSString* key = [NSString stringWithFormat:@"%@%@",url.host, url.path];
-                if ([RCNotificationObjectsWithNotification objectForKey:key] == nil) {
-                    [RCNotificationObjectsWithNotification setObject:notification forKey:key];
+                NSMutableArray* notificationListForObject = [RCNotificationObjectsWithNotification objectForKey:key];
+                if (notificationListForObject == nil) {
+                    notificationListForObject = [[NSMutableArray alloc] init];
+                    [RCNotificationObjectsWithNotification setObject:notificationListForObject forKey:key];
                     int postID = [[url.path substringFromIndex:1] intValue];
                     [RCNotificationPostsWithNotification
-                            addObject:[RCPost getPostWithID:postID]];
-                        
+                     addObject:[RCPost getPostWithID:postID]];
                 }
+                [notificationListForObject addObject:notification];
             }
         }
     }
@@ -142,6 +151,9 @@ static NSMutableArray* RCNotificationPostsWithNotification = nil;
              completion();
          }];
     } else completion();
+}
++ (int) numberOfNewNotifications {
+    return RCNotficationNumberOfNewNotifications;
 }
 
 @end

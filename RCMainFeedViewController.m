@@ -352,6 +352,11 @@
                     
                     NSArray* notificationListJson = [jsonData objectForKey:@"notification_list"];
                     [self processNotificationListJson:notificationListJson];
+                    if ([RCNotification numberOfNewNotifications] > 0) {
+                        [_imgViewNewNotificationNotice setHidden:NO];
+                    } else {
+                        [_imgViewNewNotificationNotice setHidden:YES];
+                    }
 
                     NSArray *postList = (NSArray *) [jsonData objectForKey:@"post_list"];
                     int numCapsules = [[jsonData objectForKey:@"unreleased_capsules_count"] intValue];
@@ -771,9 +776,12 @@
             post = [_posts objectAtIndex:indexPath.row];
             RCUser *owner = [RCUser getUserOwnerOfPost:post];
             //check if this is a post with notification
-            RCNotification* notification = [RCNotification notificationForResource:[NSString stringWithFormat:@"posts/%d",post.postID]];
-            if (notification != nil) {
-                [notification updateViewedProperty];
+            NSMutableArray* associatedNotifications = [RCNotification notificationsForResource:[NSString stringWithFormat:@"posts/%d",post.postID]];
+            if (associatedNotifications != nil) {                
+                for (RCNotification* notification in associatedNotifications)
+                    if (notification != nil) {
+                        [notification updateViewedProperty];
+                    }
             }
             
             RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user];

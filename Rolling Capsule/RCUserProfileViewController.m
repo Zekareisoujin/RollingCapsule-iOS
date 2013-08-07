@@ -1047,11 +1047,13 @@
             
             RCPost *post = [_postList objectAtIndex:indexPath.row];
             RCUser *owner = [RCUser getUserOwnerOfPost:post];
-            RCNotification *notification = [RCNotification notificationForResource:[NSString stringWithFormat:@"posts/%d",post.postID]];
-            if (notification != nil && !notification.viewed) {
-                [notification updateViewedProperty];
+            NSMutableArray* associatedNotifications = [RCNotification notificationsForResource:[NSString stringWithFormat:@"posts/%d",post.postID]];
+            if (associatedNotifications != nil) {
+                for (RCNotification* notification in associatedNotifications)
+                    if (notification != nil) {
+                        [notification updateViewedProperty];
+                    }
             }
-            
             RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_viewingUser];
             
             /*if (post.landmarkID == -1)

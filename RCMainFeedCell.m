@@ -90,8 +90,8 @@
         [ self.imageView setImage:post.thumbnailImage];
     else
         [post registerUIUpdateAction:self action:@selector(updateUIWithPost:)];
-    RCNotification *notification = [RCNotification notificationForResource:[NSString stringWithFormat:@"posts/%d",post.postID]];
-    if (notification != nil && !notification.viewed) {
+    NSMutableArray* associatedNotifications = [RCNotification notificationsForResource:[NSString stringWithFormat:@"posts/%d",post.postID]];
+    if (associatedNotifications != nil && [associatedNotifications count] > 0) {
         //TODO add animation effect for post with new comments
         [self.lblNotification setHidden:NO];
     } else [self.lblNotification setHidden:YES];
