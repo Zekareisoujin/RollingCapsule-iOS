@@ -28,6 +28,9 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    
+    if ([self.navigationController.viewControllers count] > 2)
+        [self setupBackButton];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -47,24 +50,27 @@
         [RCFacebookHelper getCurrentUserWithCompletionHandler:^(NSDictionary<FBGraphUser> *user){
             if (user) {
                 [_lblHeadline setText:user.name];
-                [_btnLogIn.titleLabel setText:@"Log Out"];
                 [_imgUserDisplayPicture setHidden:NO];
                 [_imgUserDisplayPicture setProfileID:[user objectForKey:@"id"]];
                 [_btnShouldLogInOption setEnabled:YES];
+                [_btnLogIn setTitle:@"Log Out" forState:UIControlStateNormal];
+                [_btnLogIn setEnabled:YES];
             }
         }];
     } else {
         // Session is closed
         [_lblHeadline setText:@"You are not logged in."];
-        [_btnLogIn.titleLabel setText:@"Log In"];
         [_imgUserDisplayPicture setHidden:YES];
         [_btnShouldLogInOption setEnabled:NO];
         [_btnShouldLogInOption setOn:NO animated:YES];
         [RCFacebookHelper setShouldLogIn:NO];
+        [_btnLogIn setTitle:@"Log In" forState:UIControlStateNormal];
+        [_btnLogIn setEnabled:YES];
     }
 }
 
 - (IBAction)btnLogInClicked:(id)sender {
+    [_btnLogIn setEnabled:NO];
     if ([FBSession.activeSession isOpen]) {
         // Session is open
         [RCFacebookHelper closeCurrentSession];

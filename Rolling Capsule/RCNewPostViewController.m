@@ -258,9 +258,10 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
     _mediaUploadOp = nil;
     _postButton.enabled = NO;
     if (RCNewPostViewControllerAutomaticClose)
-        [self dismissViewControllerAnimated:YES completion:^{
-            NSLog(@"successfully dismissed new post view controller");
-        }];
+//        [self dismissViewControllerAnimated:YES completion:^{
+//            NSLog(@"successfully dismissed new post view controller");
+//        }];
+        [self.navigationController popViewControllerAnimated:YES];
     
     if (_isFacebookPost) {
         [FBRequestConnection startForUploadPhoto:_postImage
@@ -290,6 +291,7 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
                        msg = [NSString stringWithFormat:@"%@\nPost ID: %@", msg, postId];
                    }
                }
+               msg = @"Successfully posted to Facebook"; //Nevermind, post this instead of graph post ID
                postNotification(msg);
            }];
     }
@@ -471,6 +473,7 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
 - (void)viewWillAppear:(BOOL)animated
 {
     [_txtFieldPostSubject becomeFirstResponder];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
     
     if (_viewFirstLoad) {
         _viewFirstLoad = NO;
@@ -545,9 +548,10 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
     [[NSNotificationCenter defaultCenter] removeObserver:_keyboardPushHandler
                                                     name:UIKeyboardWillHideNotification
                                                   object:nil];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
     [super viewWillDisappear:animated];
-    
 }
+
 #pragma mark - animate in the view
 /*- (void)viewDidAppear:(BOOL)animated {
     
@@ -942,7 +946,8 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
 - (IBAction)closeBtnTouchUpInside:(id)sender {
    
     NSLog(@"clicked close on newpostviewcontroller");
-    [self dismissViewControllerAnimated:YES completion:nil];
+//    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
