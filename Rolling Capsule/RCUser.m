@@ -35,11 +35,28 @@ static NSMutableDictionary* RCUserUserCollection = nil;
 }
 
 + (RCUser*) currentUser {
+    if (RCUserCurrentUser == nil) {
+        RCUserCurrentUser = [[RCUser alloc] initWithNSDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:RCLogUserDefault]];
+    }
     return RCUserCurrentUser;
 }
 
 + (void) setCurrentUser: (RCUser*)user {
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:RCLogStatusDefault];
+    [[NSUserDefaults standardUserDefaults] setObject:[user getDictionaryObject] forKey:RCLogUserDefault];
+    [[NSUserDefaults standardUserDefaults] synchronize];
     RCUserCurrentUser = user;
+}
+
++ (void) clearCurrentUser {
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:RCLogStatusDefault];
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:RCLogUserDefault];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    RCUserCurrentUser = nil;
+}
+
++ (BOOL) hasLoggedInUser {
+    return [[NSUserDefaults standardUserDefaults] boolForKey:RCLogStatusDefault];
 }
 
 + (id) getUserWithNSDictionary: (NSDictionary*)userData {

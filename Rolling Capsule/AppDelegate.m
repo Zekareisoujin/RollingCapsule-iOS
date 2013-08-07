@@ -119,7 +119,7 @@ void SignalHandler(int sig) {
     if ([RCFacebookHelper shouldLogIn])
         [RCFacebookHelper openFacebookSessionWithDefaultReadPermission:^{/*doing nothing here*/}];
     
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:RCLogStatusDefault]) {
+    if ([RCUser hasLoggedInUser]) {
 //        [_menuViewController btnActionMainFeedNav:nil];
         //queue main feed open action so that the main feed is opened automatically
         //when location is updated
@@ -194,8 +194,8 @@ void SignalHandler(int sig) {
             _didQueueOpenMainFeedOption = NO;
             [_navigationController popCurrentViewController];
             [_navigationController setNavigationBarHidden:NO animated:NO];
-            RCUser *currentUser = [[RCUser alloc] initWithNSDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:RCLogUserDefault]];
-            [self setCurrentUser:currentUser];
+//            RCUser *currentUser = [[RCUser alloc] initWithNSDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:RCLogUserDefault]];
+//            [self setCurrentUser:currentUser];
             [_menuViewController btnActionMainFeedNav:_mainViewController];
             [self enableSideMenu];
         }
