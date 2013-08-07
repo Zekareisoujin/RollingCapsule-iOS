@@ -708,6 +708,11 @@
 - (IBAction)btnMoreFeedClicked:(id)sender {
     [self showMoreFeedButton:NO animate:NO];
     willShowMoreFeeds = NO;
+    for (int i = currentMaxDisplayedPostNumber; i < [_posts count]; i++) {
+        RCPost *post = [_posts objectAtIndex:i];
+        [_postsByRowIndex setObject:[NSNumber numberWithInt:i] forKey:[NSNumber numberWithInt:post.postID]];
+        [_mapView addAnnotation:post];
+    }
     currentMaxDisplayedPostNumber = [_posts count];
     [_collectionView reloadData];
 }
