@@ -23,6 +23,7 @@
 #import "RCOperationsManager.h"
 #import "TTTAttributedLabel.h"
 #import <CoreData/CoreData.h>
+#import "RCFacebookHelper.h"
 
 @implementation AppDelegate
 
@@ -112,6 +113,12 @@ void SignalHandler(int sig) {
     _mainViewController.contentController = _navigationController;
     _mainViewController.menuViewController = _menuViewController;
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    // Handling facebook authentication
+    [RCFacebookHelper setShouldLogIn:NO]; //temporary
+    
+    if ([RCFacebookHelper shouldLogIn])
+        [RCFacebookHelper openFacebookSessionWithDefaultReadPermission:^{/*doing nothing here*/}];
     
     if ([[NSUserDefaults standardUserDefaults] boolForKey:RCLogStatusDefault]) {
 //        [_menuViewController btnActionMainFeedNav:nil];

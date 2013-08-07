@@ -423,7 +423,7 @@ static BOOL RCPostDetailsViewControllerShowPostID = NO;
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0){
+    if (buttonIndex == 1){
         [self asynchDeletePost];
     }
 }

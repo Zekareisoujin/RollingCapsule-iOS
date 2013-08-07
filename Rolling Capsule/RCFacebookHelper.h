@@ -11,6 +11,10 @@
 
 @interface RCFacebookHelper : NSObject
 
-+ (void) validatePermissionAndPerformAction:(void (^)(void)) action;
++ (BOOL) shouldLogIn;
++ (void) setShouldLogIn: (BOOL)shouldLogIn;
++ (void) openFacebookSessionWithDefaultReadPermission:(void (^)(void))completionHandle;
+//+ (void) openFacebookSessionWithDefaultPublishPermission:(void (^)(void))completionHandle; //not working
++ (void) validatePublishPermissionAndPerformAction:(void (^)(void)) action;
 
 @end

@@ -641,15 +641,31 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
 }
 
 - (IBAction)btnFacebookOptionTouchedUpInside:(id)sender {
+    [_btnFacebookOption setEnabled:NO];
     if (_isFacebookPost) {
         _isFacebookPost = NO;
         [_btnFacebookOption setBackgroundImage:[UIImage imageNamed:@"facebookIconDisabled"] forState:UIControlStateNormal];
+        [_btnFacebookOption setEnabled:YES];
     }else {
-        [RCFacebookHelper validatePermissionAndPerformAction:^{
-            _isFacebookPost = YES;
-            [_btnFacebookOption setBackgroundImage:[UIImage imageNamed:@"facebookIcon"] forState:UIControlStateNormal];
-        }];
+        if ([FBSession.activeSession isOpen]) {
+            // Session is open
+            [RCFacebookHelper validatePublishPermissionAndPerformAction:^{
+                _isFacebookPost = YES;
+                [_btnFacebookOption setBackgroundImage:[UIImage imageNamed:@"facebookIcon"] forState:UIControlStateNormal];
+                [_btnFacebookOption setEnabled:YES];
+            }];
+        } else {
+            // Session is closed
+            showConfirmationDialog(@"You are not logged in to facebook yet. Do you want to log in now?", @"Facebook", self);
+        }
     }
+}
+
+// alert view delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 1){
+    }else if (buttonIndex == 0)
+        [_btnFacebookOption setEnabled:YES];
 }
 
 - (IBAction) openDatePickerView:(UIButton*) sender {
