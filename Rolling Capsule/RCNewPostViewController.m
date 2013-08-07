@@ -229,6 +229,11 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
 }
 
 - (IBAction) postNew:(id) sender {
+    if (_isTimedRelease && _isFacebookPost) {
+        showAlertDialog(@"The post cannot be both time capsule and facebook release yet!", @"Error");
+        return;
+    }
+    
     _isPosting = YES;
     if (_uploadData == nil) {
         [self showAlertMessage:@"Please choose an image or video!" withTitle:@"Incomplete post!"];
