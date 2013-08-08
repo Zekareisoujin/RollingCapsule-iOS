@@ -130,6 +130,10 @@ void SignalHandler(int sig) {
         //[firstViewController setUIIntera]
     }
     
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
+        [RCOperationsManager createUploadManager];
+    });
+    
     // Configure Window
     
     [self.window setRootViewController:_mainViewController];
