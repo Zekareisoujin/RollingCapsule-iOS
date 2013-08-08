@@ -32,6 +32,14 @@
     
     if ([self.navigationController.viewControllers count] > 2)
         [self setupBackButton];
+    
+    // Hack to fix auto layout:
+    CGRect viewFrame = _imgUserDisplayPicture.frame;
+    [_imgUserDisplayPicture setHidden:YES];
+    [_imgUserDisplayPicture removeFromSuperview];
+    _imgUserDisplayPicture = [[FBProfilePictureView alloc] init];
+    [_imgUserDisplayPicture setFrame:viewFrame];
+    [self.view addSubview:_imgUserDisplayPicture];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
