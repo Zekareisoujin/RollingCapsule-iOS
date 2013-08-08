@@ -269,36 +269,59 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
         [self.navigationController popViewControllerAnimated:YES];
     
     if (_isFacebookPost) {
-        [FBRequestConnection startForUploadPhoto:_postImage
-           completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
-               //[self showAlert:@"Photo Post" result:result error:error];
-               
-               NSString *msg;
-               if (error) {
-                   msg = @"Error";
-                   // For simplicity, we will use any error message provided by the SDK,
-                   // but you may consider inspecting the fberrorShouldNotifyUser or
-                   // fberrorCategory to provide better recourse to users. See the Scrumptious
-                   // sample for more examples on error handling.
-                   if (error.fberrorUserMessage) {
-                       msg = error.fberrorUserMessage;
-                   } else {
-                       msg = @"Operation failed due to a connection problem, retry later.";
-                   }
-               } else {
-                   NSDictionary *resultDict = (NSDictionary *)result;
-                   msg = @"Successfully posted: ";
-                   NSString *postId = [resultDict valueForKey:@"id"];
-                   if (!postId) {
-                       postId = [resultDict valueForKey:@"postId"];
-                   }
-                   if (postId) {
-                       msg = [NSString stringWithFormat:@"%@\nPost ID: %@", msg, postId];
-                   }
-               }
-               msg = @"Successfully posted to Facebook"; //Nevermind, post this instead of graph post ID
-               postNotification(msg);
-           }];
+        NSMutableDictionary* params = [[NSMutableDictionary alloc] init];
+        [params setObject:_post.subject forKey:@"message"];
+        [params setObject:UIImagePNGRepresentation(_postImage) forKey:@"picture"];
+        
+        [FBRequestConnection startWithGraphPath:@"me/photos"
+                                     parameters:params
+                                     HTTPMethod:@"POST"
+                              completionHandler:^(FBRequestConnection *connection,
+                                                  id result,
+                                                  NSError *error)
+         {
+             if (error)
+             {
+                 //showing an alert for failure
+                 postNotification(@"Failed to post to Facebook");
+             }
+             else
+             {
+                 //showing an alert for success
+                 postNotification(@"Successfully posted to Facebook");
+             }
+         }];
+        
+//        [FBRequestConnection startForUploadPhoto:_postImage
+//           completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+//               //[self showAlert:@"Photo Post" result:result error:error];
+//               
+//               NSString *msg;
+//               if (error) {
+//                   msg = @"Error";
+//                   // For simplicity, we will use any error message provided by the SDK,
+//                   // but you may consider inspecting the fberrorShouldNotifyUser or
+//                   // fberrorCategory to provide better recourse to users. See the Scrumptious
+//                   // sample for more examples on error handling.
+//                   if (error.fberrorUserMessage) {
+//                       msg = error.fberrorUserMessage;
+//                   } else {
+//                       msg = @"Operation failed due to a connection problem, retry later.";
+//                   }
+//               } else {
+//                   NSDictionary *resultDict = (NSDictionary *)result;
+//                   msg = @"Successfully posted: ";
+//                   NSString *postId = [resultDict valueForKey:@"id"];
+//                   if (!postId) {
+//                       postId = [resultDict valueForKey:@"postId"];
+//                   }
+//                   if (postId) {
+//                       msg = [NSString stringWithFormat:@"%@\nPost ID: %@", msg, postId];
+//                   }
+//               }
+//               msg = @"Successfully posted to Facebook"; //Nevermind, post this instead of graph post ID
+//               postNotification(msg);
+//           }];
     }
 }
 

@@ -13,7 +13,7 @@
 @interface RCFacebookSettingsViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UILabel *lblHeadline;
-@property (weak, nonatomic) IBOutlet FBProfilePictureView *imgUserDisplayPicture;
+@property (strong, nonatomic) IBOutlet FBProfilePictureView *imgUserDisplayPicture;
 @property (weak, nonatomic) IBOutlet UIButton *btnLogIn;
 @property (weak, nonatomic) IBOutlet UISwitch *btnShouldLogInOption;
 
