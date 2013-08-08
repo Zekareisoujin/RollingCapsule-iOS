@@ -273,6 +273,16 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
         [params setObject:_post.subject forKey:@"message"];
         [params setObject:UIImagePNGRepresentation(_postImage) forKey:@"picture"];
         
+        NSString *privacyStr;
+        if ([_privacyOption isEqualToString:@"public"])
+            privacyStr = @"{'value':'EVERYONE'}";
+        else if ([_privacyOption isEqualToString:@"friends"])
+            privacyStr = @"{'value':'ALL_FRIENDS'}";
+        else if ([_privacyOption isEqualToString:@"personal"])
+            privacyStr = @"{'value':'SELF'}";
+        
+        [params setObject:privacyStr forKey:@"privacy"];
+        
         [FBRequestConnection startWithGraphPath:@"me/photos"
                                      parameters:params
                                      HTTPMethod:@"POST"
