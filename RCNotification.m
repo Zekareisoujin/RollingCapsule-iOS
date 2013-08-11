@@ -146,7 +146,9 @@ static NSMutableArray* RCNotificationPostsWithNotification = nil;
              for (NSDictionary* postDictionary in jsonData) {
                  RCPost *post = [RCPost getPostWithNSDictionary:postDictionary];
                  int idx = [[missingIDs objectForKey:[NSNumber numberWithInt:post.postID]] intValue];
-                 [posts setObject:post atIndexedSubscript:idx];
+                 if (idx < [posts count]) {
+                     [posts setObject:post atIndexedSubscript:idx];
+                 }
              }
              completion();
          }];
