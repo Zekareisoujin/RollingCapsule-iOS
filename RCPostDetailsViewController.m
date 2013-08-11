@@ -281,7 +281,7 @@ static BOOL RCPostDetailsViewControllerShowPostID = NO;
     [super viewDidAppear:animated];
 }
 
-- (void) viewDidDisappear:(BOOL)animated {
+- (void) viewWillDisappear:(BOOL)animated {
     [self.navigationController setNavigationBarHidden:NO animated:YES];
 }
 
@@ -422,7 +422,7 @@ static BOOL RCPostDetailsViewControllerShowPostID = NO;
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    if (buttonIndex == 0){
+    if (buttonIndex == 1){
         [self asynchDeletePost];
     }
 }
@@ -648,7 +648,6 @@ static BOOL RCPostDetailsViewControllerShowPostID = NO;
              
              if ([responseData isEqualToString:@"ok"]){
                  postNotification(@"Post deleted successfully!");
-                 [self.navigationController setNavigationBarHidden:NO animated:YES];
                  [self.navigationController popViewControllerAnimated:YES];
                  if (_deleteFunction != nil)
                      _deleteFunction();
@@ -687,7 +686,6 @@ static BOOL RCPostDetailsViewControllerShowPostID = NO;
 }
 - (IBAction)btnCloseTouchUpInside:(id)sender {
     //[self dismissViewControllerAnimated:YES completion:nil];
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
     [self.navigationController popViewControllerAnimated:YES];
 
 }

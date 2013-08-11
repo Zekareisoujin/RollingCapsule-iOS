@@ -24,6 +24,8 @@
 
 + (RCUser*) currentUser;
 + (void) setCurrentUser: (RCUser*)user;
++ (void) clearCurrentUser;
++ (BOOL) hasLoggedInUser;
 
 - (NSDictionary*) getDictionaryObject;
 - (void) updateNewName : (NSString*) newName;

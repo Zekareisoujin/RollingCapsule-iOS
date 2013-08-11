@@ -23,6 +23,7 @@
 #import "RCOperationsManager.h"
 #import "TTTAttributedLabel.h"
 #import <CoreData/CoreData.h>
+#import "RCFacebookHelper.h"
 
 @implementation AppDelegate
 
@@ -64,6 +65,7 @@ void SignalHandler(int sig) {
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [FBProfilePictureView class];
     NSSetUncaughtExceptionHandler(&HandleExceptions);
     // create the signal action structure
     struct sigaction newSignalAction;
@@ -113,7 +115,12 @@ void SignalHandler(int sig) {
     _mainViewController.menuViewController = _menuViewController;
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    if ([[NSUserDefaults standardUserDefaults] boolForKey:RCLogStatusDefault]) {
+    // Handling facebook authentication    
+    if ([RCFacebookHelper shouldLogIn])
+        [RCFacebookHelper openFacebookSessionWithDefaultReadPermission:^{/*doing nothing here*/}];
+    
+    if ([RCUser hasLoggedInUser]) {
+//        [_menuViewController btnActionMainFeedNav:nil];
         //queue main feed open action so that the main feed is opened automatically
         //when location is updated
         RCLoadingLocationViewController *loadingViewController = [[RCLoadingLocationViewController alloc] init];
@@ -122,6 +129,10 @@ void SignalHandler(int sig) {
         _didQueueOpenMainFeedOption = YES;
         //[firstViewController setUIIntera]
     }
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0),^{
+        [RCOperationsManager createUploadManager];
+    });
     
     // Configure Window
     
@@ -187,8 +198,8 @@ void SignalHandler(int sig) {
             _didQueueOpenMainFeedOption = NO;
             [_navigationController popCurrentViewController];
             [_navigationController setNavigationBarHidden:NO animated:NO];
-            RCUser *currentUser = [[RCUser alloc] initWithNSDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:RCLogUserDefault]];
-            [self setCurrentUser:currentUser];
+//            RCUser *currentUser = [[RCUser alloc] initWithNSDictionary:[[NSUserDefaults standardUserDefaults] objectForKey:RCLogUserDefault]];
+//            [self setCurrentUser:currentUser];
             [_menuViewController btnActionMainFeedNav:_mainViewController];
             [self enableSideMenu];
         }

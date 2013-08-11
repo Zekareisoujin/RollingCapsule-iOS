@@ -254,6 +254,15 @@
 		BFA53F511785B4FD007686F1 /* profileAvatarBar.png in Resources */ = {isa = PBXBuildFile; fileRef = BFA53F501785B4FD007686F1 /* profileAvatarBar.png */; };
 		BFB728F5178F541B00DE01CA /* loading.gif in Resources */ = {isa = PBXBuildFile; fileRef = BFB728F4178F541B00DE01CA /* loading.gif */; };
 		BFB728F7178F5B0C00DE01CA /* loading2.gif in Resources */ = {isa = PBXBuildFile; fileRef = BFB728F6178F5B0C00DE01CA /* loading2.gif */; };
+		BFB8085017B0E56B004EB38E /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFB8084F17B0E56B004EB38E /* FacebookSDK.framework */; };
+		BFB8085217B0F021004EB38E /* facebookIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = BFB8085117B0F021004EB38E /* facebookIcon.png */; };
+		BFB8085717B0F9D9004EB38E /* RCFacebookHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB8085617B0F9D9004EB38E /* RCFacebookHelper.m */; };
+		BFB8085917B1004C004EB38E /* facebookIconDisabled.png in Resources */ = {isa = PBXBuildFile; fileRef = BFB8085817B1004C004EB38E /* facebookIconDisabled.png */; };
+		BFB8085D17B25266004EB38E /* RCFacebookSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB8085B17B25264004EB38E /* RCFacebookSettingsViewController.m */; };
+		BFB8085E17B25266004EB38E /* RCFacebookSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFB8085C17B25265004EB38E /* RCFacebookSettingsViewController.xib */; };
+		BFB8086017B26692004EB38E /* facebook-logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFB8085F17B26692004EB38E /* facebook-logo@2x.png */; };
+		BFB8086217B2669C004EB38E /* silver-button-normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFB8086117B2669C004EB38E /* silver-button-normal@2x.png */; };
+		BFB8086417B269DF004EB38E /* FBUserSettingsViewResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BFB8086317B269DF004EB38E /* FBUserSettingsViewResources.bundle */; };
 		BFC8414717586BFB00E52FE2 /* RCPost.m in Sources */ = {isa = PBXBuildFile; fileRef = BFC8414617586BFB00E52FE2 /* RCPost.m */; };
 		BFCA781C174DFD3F00666CBA /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFCA781B174DFD3F00666CBA /* UIKit.framework */; };
 		BFCA781E174DFD3F00666CBA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFCA781D174DFD3F00666CBA /* Foundation.framework */; };
@@ -610,6 +619,17 @@
 		BFA53F501785B4FD007686F1 /* profileAvatarBar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profileAvatarBar.png; sourceTree = "<group>"; };
 		BFB728F4178F541B00DE01CA /* loading.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loading.gif; sourceTree = "<group>"; };
 		BFB728F6178F5B0C00DE01CA /* loading2.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loading2.gif; sourceTree = "<group>"; };
+		BFB8084F17B0E56B004EB38E /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FacebookSDK.framework; sourceTree = "<group>"; };
+		BFB8085117B0F021004EB38E /* facebookIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = facebookIcon.png; sourceTree = "<group>"; };
+		BFB8085517B0F9D9004EB38E /* RCFacebookHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCFacebookHelper.h; path = "Rolling Capsule/RCFacebookHelper.h"; sourceTree = "<group>"; };
+		BFB8085617B0F9D9004EB38E /* RCFacebookHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCFacebookHelper.m; path = "Rolling Capsule/RCFacebookHelper.m"; sourceTree = "<group>"; };
+		BFB8085817B1004C004EB38E /* facebookIconDisabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = facebookIconDisabled.png; sourceTree = "<group>"; };
+		BFB8085A17B25264004EB38E /* RCFacebookSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCFacebookSettingsViewController.h; sourceTree = "<group>"; };
+		BFB8085B17B25264004EB38E /* RCFacebookSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCFacebookSettingsViewController.m; sourceTree = "<group>"; };
+		BFB8085C17B25265004EB38E /* RCFacebookSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCFacebookSettingsViewController.xib; sourceTree = "<group>"; };
+		BFB8085F17B26692004EB38E /* facebook-logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "facebook-logo@2x.png"; path = "FBUserSettingsViewResources.bundle/images/facebook-logo@2x.png"; sourceTree = "<group>"; };
+		BFB8086117B2669C004EB38E /* silver-button-normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "silver-button-normal@2x.png"; path = "FBUserSettingsViewResources.bundle/images/silver-button-normal@2x.png"; sourceTree = "<group>"; };
+		BFB8086317B269DF004EB38E /* FBUserSettingsViewResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FBUserSettingsViewResources.bundle; sourceTree = "<group>"; };
 		BFC8414517586BFB00E52FE2 /* RCPost.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCPost.h; path = "Rolling Capsule/RCPost.h"; sourceTree = "<group>"; };
 		BFC8414617586BFB00E52FE2 /* RCPost.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCPost.m; path = "Rolling Capsule/RCPost.m"; sourceTree = "<group>"; };
 		BFCA7818174DFD3F00666CBA /* memcap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = memcap.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -700,6 +720,7 @@
 				BFCA7820174DFD3F00666CBA /* CoreGraphics.framework in Frameworks */,
 				BF4DCC46175C82280081B5AC /* AWSRuntime.framework in Frameworks */,
 				BF4DCC47175C82280081B5AC /* AWSS3.framework in Frameworks */,
+				BFB8085017B0E56B004EB38E /* FacebookSDK.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -724,6 +745,8 @@
 				642B0D5C17A45959004F7B8E /* menuContent.json */,
 				649A869B175B0CC30016674F /* RCAmazonS3Helper.h */,
 				649A869C175B0CC30016674F /* RCAmazonS3Helper.m */,
+				BFB8085517B0F9D9004EB38E /* RCFacebookHelper.h */,
+				BFB8085617B0F9D9004EB38E /* RCFacebookHelper.m */,
 				647265B017A04CDF002E654A /* RCAsyncPhotoDownloadOperation.h */,
 				647265B117A04CDF002E654A /* RCAsyncPhotoDownloadOperation.m */,
 				64B81CAB1795BD4C00B5A825 /* RCComment.h */,
@@ -765,6 +788,7 @@
 		643EACE9175BBE0D002761D9 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				BFB8086317B269DF004EB38E /* FBUserSettingsViewResources.bundle */,
 				6460E869178AE3EA0065D6BA /* appIcon.png */,
 				6460E86A178AE3EA0065D6BA /* appIcon@2x.png */,
 				643EACE7175BACC0002761D9 /* back_button.png */,
@@ -784,6 +808,9 @@
 				64119A12178460A500BF0B05 /* closeButton.png */,
 				6460E888178B2D800065D6BA /* closeButton@2x.png */,
 				647E2FCE1791F2E600AA6B9A /* default_avatar.png */,
+				BFB8085F17B26692004EB38E /* facebook-logo@2x.png */,
+				BFB8085117B0F021004EB38E /* facebookIcon.png */,
+				BFB8085817B1004C004EB38E /* facebookIconDisabled.png */,
 				BF0B108A179C635C00E9ECBD /* fadingBar2Sided.png */,
 				BF05D89917990BC100398929 /* feedButtonMore.png */,
 				BFE63140179D6AB4004992E1 /* friendListBarFollows.png */,
@@ -900,6 +927,7 @@
 				6460E882178B274A0065D6BA /* registerMainFrame.png */,
 				6460E886178B2D3E0065D6BA /* registerMainFrame@2x.png */,
 				6460E883178B274A0065D6BA /* registerRegisterButton.png */,
+				BFB8086117B2669C004EB38E /* silver-button-normal@2x.png */,
 				64EA880517796DAB00011F3E /* textField@2x.png */,
 				6416D11517A046A30017065A /* topicCancel.png */,
 				6416D11617A046A30017065A /* topicCategoryAirport.png */,
@@ -968,6 +996,7 @@
 		BFCA781A174DFD3F00666CBA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				BFB8084F17B0E56B004EB38E /* FacebookSDK.framework */,
 				64F3AA2617A8188400F4EFBC /* libxml2.dylib */,
 				64D6EC2117A256EF00663AE3 /* CoreData.framework */,
 				64D6EC1417A1AAD500663AE3 /* AssetsLibrary.framework */,
@@ -1159,6 +1188,9 @@
 				64B81CAE1795CCA500B5A825 /* RCCommentPostingViewController.h */,
 				64B81CAF1795CCA500B5A825 /* RCCommentPostingViewController.m */,
 				64B81CB01795CCA500B5A825 /* RCCommentPostingViewController.xib */,
+				BFB8085A17B25264004EB38E /* RCFacebookSettingsViewController.h */,
+				BFB8085B17B25264004EB38E /* RCFacebookSettingsViewController.m */,
+				BFB8085C17B25265004EB38E /* RCFacebookSettingsViewController.xib */,
 				6491DCEA1755CF8D006FBCD8 /* RCFindFriendsViewController.h */,
 				6491DCEB1755CF8D006FBCD8 /* RCFindFriendsViewController.m */,
 				6491DCEC1755CF8D006FBCD8 /* RCFindFriendsViewController.xib */,
@@ -1182,6 +1214,9 @@
 				643EACEB175BBE51002761D9 /* RCNewPostViewController.m */,
 				643EACEC175BBE51002761D9 /* RCNewPostViewController.xib */,
 				6401017C1797DC79002A6E2E /* RCNewPostViewController4.xib */,
+				64D6EC1617A1CE1900663AE3 /* RCOutboxViewController.h */,
+				64D6EC1717A1CE1900663AE3 /* RCOutboxViewController.m */,
+				64D6EC1817A1CE1900663AE3 /* RCOutboxViewController.xib */,
 				64549D85175F264600BA8164 /* RCPostDetailsViewController.h */,
 				64549D86175F264600BA8164 /* RCPostDetailsViewController.m */,
 				64549D87175F264600BA8164 /* RCPostDetailsViewController.xib */,
@@ -1194,9 +1229,6 @@
 				6491DCEF1755E092006FBCD8 /* RCUserProfileViewController.h */,
 				6491DCF01755E096006FBCD8 /* RCUserProfileViewController.m */,
 				6491DCF11755E096006FBCD8 /* RCUserProfileViewController.xib */,
-				64D6EC1617A1CE1900663AE3 /* RCOutboxViewController.h */,
-				64D6EC1717A1CE1900663AE3 /* RCOutboxViewController.m */,
-				64D6EC1817A1CE1900663AE3 /* RCOutboxViewController.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -1466,6 +1498,12 @@
 				BF8ED0B417A64E6800A183E6 /* outboxUploading.gif in Resources */,
 				6476626C17A954ED000D9E36 /* notice.png in Resources */,
 				649315D717ABA7A700DF30CE /* mainViewOptionCommented.png in Resources */,
+				BFB8085217B0F021004EB38E /* facebookIcon.png in Resources */,
+				BFB8085917B1004C004EB38E /* facebookIconDisabled.png in Resources */,
+				BFB8085E17B25266004EB38E /* RCFacebookSettingsViewController.xib in Resources */,
+				BFB8086017B26692004EB38E /* facebook-logo@2x.png in Resources */,
+				BFB8086217B2669C004EB38E /* silver-button-normal@2x.png in Resources */,
+				BFB8086417B269DF004EB38E /* FBUserSettingsViewResources.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1569,6 +1607,8 @@
 				642B0D6117A45959004F7B8E /* RCMenuTableCell2.m in Sources */,
 				642B0D6517A45975004F7B8E /* RCTreeListModel.m in Sources */,
 				646C809B17A5C67A00054C1A /* RCFeed.m in Sources */,
+				BFB8085717B0F9D9004EB38E /* RCFacebookHelper.m in Sources */,
+				BFB8085D17B25266004EB38E /* RCFacebookSettingsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1690,6 +1730,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Downloads/aws-ios-sdk-1.6.0\"",
 					"\"$(SRCROOT)/Rolling Capsule\"",
+					"\"$(SRCROOT)\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Rolling Capsule/memcap-Prefix.pch";
@@ -1716,6 +1757,7 @@
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Downloads/aws-ios-sdk-1.6.0\"",
 					"\"$(SRCROOT)/Rolling Capsule\"",
+					"\"$(SRCROOT)\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Rolling Capsule/memcap-Prefix.pch";

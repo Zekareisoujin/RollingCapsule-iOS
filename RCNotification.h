@@ -23,7 +23,8 @@
 + (RCNotification*) parseNotification:(NSDictionary*) notificationDict;
 + (void) initNotificationDataModel;
 + (void) clearNotifications;
-+ (RCNotification*) notificationForResource:(NSString*)resourceSpecifier;
++ (NSMutableArray*) notificationsForResource:(NSString*)resourceSpecifier;
 + (NSMutableArray*) getNotifiedPosts;
 + (void) loadMissingNotifiedPostsForList:(NSMutableArray*)posts withCompletion:(void(^)(void)) completion;
++ (int) numberOfNewNotifications;
 @end

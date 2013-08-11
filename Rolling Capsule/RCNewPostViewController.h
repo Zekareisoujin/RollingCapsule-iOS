@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import <AWSS3/AWSS3.h>
+#import <FacebookSDK/FacebookSDK.h>
 #import "RCUser.h"
 #import "RCKeyboardPushUpHandler.h"
 #import "RCLandmark.h"
@@ -44,6 +45,7 @@
 @property (weak, nonatomic) IBOutlet UIButton* personalPrivacyButton;
 @property (weak, nonatomic) IBOutlet UIButton *timeCapsule;
 @property (weak, nonatomic) IBOutlet UIButton *btnPrivacyOption;
+@property (weak, nonatomic) IBOutlet UIButton *btnFacebookOption;
 @property (nonatomic, strong) NSMutableArray *topics;
 @property (nonatomic, strong) RCUser *user;
 @property (strong, nonatomic) RCKeyboardPushUpHandler *keyboardPushHandler;
@@ -55,6 +57,7 @@
 - (IBAction)btnActionChoosePhotoLibrarySource:(id)sender;
 - (IBAction)btnActionChooseVideSource:(id)sender;
 - (IBAction)btnPrivacyOptionTouchedUpInside:(id)sender;
+- (IBAction)btnFacebookOptionTouchedUpInside:(id)sender;
 - (IBAction)openLandmarkView:(id)sender;
 - (IBAction) openDatePickerView:(UIButton*) sender;
 - (IBAction) postNew:(id) sender;

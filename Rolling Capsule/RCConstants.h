@@ -98,6 +98,7 @@ static NSString* const RCMenuItemConciergeTravel = @"Travel";
 static NSString* const RCMenuItemConciergeEmergency = @"Emergency";
 static NSString* const RCMenuItemConciergeShopping = @"Shopping";
 static NSString* const RCMenuItemSettingsLogOut = @"Log Out";
+static NSString* const RCMenuItemSettingsFacebook = @"Facebook";
 
 static NSString* const RCMenuKeyKeyPath = @"key";
 static NSString* const RCMenuKeyIcon = @"icon";

@@ -17,9 +17,9 @@
 #import "RCMenuTableCell.h"
 #import "RCMenuTableCell2.h"
 #import "RCOutboxViewController.h"
+#import "RCFacebookSettingsViewController.h"
 #import "RCOperationsManager.h"
 #import "UIImage+animatedGIF.h"
-#import <Foundation/Foundation.h>
 #import "SBJson.h"
 
 @interface RCMainMenuViewController ()
@@ -64,20 +64,11 @@
     [_menuTable setSeparatorColor:[UIColor colorWithRed:1.0 green:1.0 blue:1.0 alpha:0.3]];
     // Do any additional setup after loading the view from its nib.
     
-//    menuItemLabel = [[NSArray alloc] initWithObjects:@"Main Feeds", @"Profile", @"Friends", @"Outbox", @"Settings", nil];
-//    menuItemIcon = [[NSArray alloc] initWithObjects:[UIImage imageNamed:@"menuIconMainFeeds"],
-//                                                    [UIImage imageNamed:@"menuIconProfile"],
-//                                                    [UIImage imageNamed:@"menuIconFriends"],
-//                                                    [UIImage imageNamed:@"menuIconOutbox"],
-//                                                    [UIImage imageNamed:@"menuIconSettings"], nil];
-    
     // Set table view background image
     UIImageView *backgroundView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"slideMenuBackground"]];
     [backgroundView setFrame:_menuTable.frame];
     [_btnUserAvatar setImage:[UIImage standardLoadingImage] forState:UIControlStateNormal];
     [_menuTable setBackgroundView: backgroundView];
-//    [_menuTable reloadData];
-//    showLogOut = false;
     
     conciergeInitialized = NO;
     [self initializeMenuTable];
@@ -166,6 +157,7 @@
     [_menuTree setObject:[UIImage imageNamed:@"menuIconConcierge"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemConcierge];
     [_menuTree setObject:[UIImage imageNamed:@"menuIconSettings"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemSettings];
     [_menuTree setObject:[UIImage imageNamed:@"menuIconLogout"] forKeyPath:RCMenuKeyIcon2 forTreeItem:RCMenuItemSettingsLogOut];
+    [_menuTree setObject:[UIImage imageNamed:@"facebookicon"] forKeyPath:RCMenuKeyIcon2 forTreeItem:RCMenuItemSettingsFacebook];
     [_menuTree setObject:[UIImage imageNamed:@"menuIconConciergeGame"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemConciergeGame];
     [_menuTree setObject:[UIImage imageNamed:@"menuIconConciergeUtility"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemConciergeUtility];
     [_menuTree setObject:[UIImage imageNamed:@"menuIconConciergeTravel"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemConciergeTravel];
@@ -177,6 +169,7 @@
     [_menuTree setObject:NSStringFromSelector(@selector(btnActionUserProfileNav:)) forKeyPath:RCMenuKeySelector forTreeItem:RCMenuItemProfile];
     [_menuTree setObject:NSStringFromSelector(@selector(btnActionFriendViewNav:)) forKeyPath:RCMenuKeySelector forTreeItem:RCMenuItemFriend];
     [_menuTree setObject:NSStringFromSelector(@selector(btnActionOutboxNav:)) forKeyPath:RCMenuKeySelector forTreeItem:RCMenuItemOutbox];
+    [_menuTree setObject:NSStringFromSelector(@selector(btnActionFacebookSetting:)) forKeyPath:RCMenuKeySelector forTreeItem:RCMenuItemSettingsFacebook];
     [_menuTree setObject:NSStringFromSelector(@selector(btnActionLogOut:)) forKeyPath:RCMenuKeySelector forTreeItem:RCMenuItemSettingsLogOut];
     
     [_menuTable reloadData];
@@ -374,9 +367,6 @@
 }
 
 - (void)userDidLogIn:(RCUser *)user {
-    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:RCLogStatusDefault];
-    [[NSUserDefaults standardUserDefaults] setObject:[user getDictionaryObject] forKey:RCLogUserDefault];
-    [[NSUserDefaults standardUserDefaults] synchronize];
     [RCUser setCurrentUser:user];
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     [appDelegate enableSideMenu];
@@ -426,9 +416,7 @@
 
 - (IBAction)btnActionLogOut:(id)sender {
     [self asynchLogOutRequest];
-    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:RCLogStatusDefault];
-    [[NSUserDefaults standardUserDefaults] removeObjectForKey:RCLogUserDefault];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    [RCUser clearCurrentUser];
     [_navigationController popToRootViewControllerAnimated:YES];
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     //[appDelegate setCurrentUser:nil];
@@ -437,19 +425,9 @@
     [self slideThenHide];
 }
 
-- (IBAction)btnActionLogOutDropDown:(id)sender {
-//    float offset;
-//    offset = (!showLogOut?40:-40);
-//    showLogOut = !showLogOut;
-//    
-//    [UIView animateWithDuration:0.5 animations:^{
-//        CGRect rect = _btnLogOut.frame;
-//        rect.origin.y += offset;
-//        [_btnLogOut setFrame:rect];
-//        rect = _btnLogOutIcon.frame;
-//        rect.origin.y += offset;
-//        [_btnLogOutIcon setFrame:rect];
-//    }];
+- (IBAction)btnActionFacebookSetting:(id)sender {
+    RCFacebookSettingsViewController *facebookSettingViewController = [[RCFacebookSettingsViewController alloc] init];
+    [self navigateToViewControllerFromMenu:facebookSettingViewController];
 }
 
 - (void)goToURL: (NSURL*) url {

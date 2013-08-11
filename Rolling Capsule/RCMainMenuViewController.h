@@ -7,12 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import <FacebookSDK/FacebookSDK.h>
 #import "RCUser.h"
 #import "RCLoginViewController.h"
 #import "TTTAttributedLabel.h"
 #import "RCTreeListModel.h"
 
-@interface RCMainMenuViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, RCLoginViewControllerDelegate>
+@interface RCMainMenuViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, RCLoginViewControllerDelegate, FBUserSettingsDelegate>
 
 @property (strong, nonatomic) UINavigationController *navigationController;
 - (IBAction)btnOptionsTouchUpInside:(id)sender;
@@ -35,6 +37,6 @@
 - (IBAction)btnActionFriendViewNav:(id)sender;
 - (IBAction)btnActionSetting:(id)sender;
 - (IBAction)btnActionLogOut:(id)sender;
-- (IBAction)btnActionLogOutDropDown:(id)sender;
+- (IBAction)btnActionFacebookSetting:(id)sender;
 - (void)setNavigationBarMenuBttonForViewController:(UIViewController *) viewController;
 @end

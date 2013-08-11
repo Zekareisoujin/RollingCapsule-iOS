@@ -17,6 +17,8 @@
 #import "RCOperationsManager.h"
 #import "RCMediaUploadOperation.h"
 #import "RCNewPostOperation.h"
+#import "RCFacebookHelper.h"
+#import "RCFacebookSettingsViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <MediaPlayer/MediaPlayer.h>
@@ -81,6 +83,7 @@ BOOL _isMovie = NO;
 BOOL _isPosting = NO;
 BOOL _isTimedRelease = NO;
 BOOL _isShowingPrivacyOption = NO;
+BOOL _isFacebookPost = NO;
 static BOOL RCNewPostViewControllerAutomaticClose = YES;
 
 + (void) toggleAutomaticClose {    
@@ -226,6 +229,11 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
 }
 
 - (IBAction) postNew:(id) sender {
+    if (_isTimedRelease && _isFacebookPost) {
+        showAlertDialog(@"The post cannot be both time capsule and facebook release yet!", @"Error");
+        return;
+    }
+    
     _isPosting = YES;
     if (_uploadData == nil) {
         [self showAlertMessage:@"Please choose an image or video!" withTitle:@"Incomplete post!"];
@@ -255,9 +263,76 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
     _mediaUploadOp = nil;
     _postButton.enabled = NO;
     if (RCNewPostViewControllerAutomaticClose)
-        [self dismissViewControllerAnimated:YES completion:^{
-            NSLog(@"successfully dismissed new post view controller");
-        }];
+//        [self dismissViewControllerAnimated:YES completion:^{
+//            NSLog(@"successfully dismissed new post view controller");
+//        }];
+        [self.navigationController popViewControllerAnimated:YES];
+    
+    if (_isFacebookPost) {
+        NSMutableDictionary* params = [[NSMutableDictionary alloc] init];
+        [params setObject:_post.subject forKey:@"message"];
+        [params setObject:UIImagePNGRepresentation(_postImage) forKey:@"picture"];
+        
+        NSString *privacyStr;
+        if ([_privacyOption isEqualToString:@"public"])
+            privacyStr = @"{'value':'EVERYONE'}";
+        else if ([_privacyOption isEqualToString:@"friends"])
+            privacyStr = @"{'value':'ALL_FRIENDS'}";
+        else if ([_privacyOption isEqualToString:@"personal"])
+            privacyStr = @"{'value':'SELF'}";
+        
+        [params setObject:privacyStr forKey:@"privacy"];
+        
+        [FBRequestConnection startWithGraphPath:@"me/photos"
+                                     parameters:params
+                                     HTTPMethod:@"POST"
+                              completionHandler:^(FBRequestConnection *connection,
+                                                  id result,
+                                                  NSError *error)
+         {
+             if (error)
+             {
+                 //showing an alert for failure
+                 postNotification(@"Failed to post to Facebook");
+             }
+             else
+             {
+                 //showing an alert for success
+                 postNotification(@"Successfully posted to Facebook");
+             }
+         }];
+        
+//        [FBRequestConnection startForUploadPhoto:_postImage
+//           completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+//               //[self showAlert:@"Photo Post" result:result error:error];
+//               
+//               NSString *msg;
+//               if (error) {
+//                   msg = @"Error";
+//                   // For simplicity, we will use any error message provided by the SDK,
+//                   // but you may consider inspecting the fberrorShouldNotifyUser or
+//                   // fberrorCategory to provide better recourse to users. See the Scrumptious
+//                   // sample for more examples on error handling.
+//                   if (error.fberrorUserMessage) {
+//                       msg = error.fberrorUserMessage;
+//                   } else {
+//                       msg = @"Operation failed due to a connection problem, retry later.";
+//                   }
+//               } else {
+//                   NSDictionary *resultDict = (NSDictionary *)result;
+//                   msg = @"Successfully posted: ";
+//                   NSString *postId = [resultDict valueForKey:@"id"];
+//                   if (!postId) {
+//                       postId = [resultDict valueForKey:@"postId"];
+//                   }
+//                   if (postId) {
+//                       msg = [NSString stringWithFormat:@"%@\nPost ID: %@", msg, postId];
+//                   }
+//               }
+//               msg = @"Successfully posted to Facebook"; //Nevermind, post this instead of graph post ID
+//               postNotification(msg);
+//           }];
+    }
 }
 
 #pragma mark - helper methods
@@ -436,6 +511,7 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
 - (void)viewWillAppear:(BOOL)animated
 {
     [_txtFieldPostSubject becomeFirstResponder];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
     
     if (_viewFirstLoad) {
         _viewFirstLoad = NO;
@@ -510,9 +586,10 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
     [[NSNotificationCenter defaultCenter] removeObserver:_keyboardPushHandler
                                                     name:UIKeyboardWillHideNotification
                                                   object:nil];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
     [super viewWillDisappear:animated];
-    
 }
+
 #pragma mark - animate in the view
 /*- (void)viewDidAppear:(BOOL)animated {
     
@@ -604,6 +681,36 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
         }];
     }
     
+}
+
+- (IBAction)btnFacebookOptionTouchedUpInside:(id)sender {
+    [_btnFacebookOption setEnabled:NO];
+    if (_isFacebookPost) {
+        _isFacebookPost = NO;
+        [_btnFacebookOption setBackgroundImage:[UIImage imageNamed:@"facebookIconDisabled"] forState:UIControlStateNormal];
+        [_btnFacebookOption setEnabled:YES];
+    }else {
+        if ([FBSession.activeSession isOpen]) {
+            // Session is open
+            [RCFacebookHelper validatePublishPermissionAndPerformAction:^{
+                _isFacebookPost = YES;
+                [_btnFacebookOption setBackgroundImage:[UIImage imageNamed:@"facebookIcon"] forState:UIControlStateNormal];
+                [_btnFacebookOption setEnabled:YES];
+            }];
+        } else {
+            // Session is closed
+            showConfirmationDialog(@"You are not logged in to Facebook yet. Do you want to go to settings?", @"Facebook", self);
+        }
+    }
+}
+
+// alert view delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    [_btnFacebookOption setEnabled:YES];
+    if (buttonIndex == 1){
+        RCFacebookSettingsViewController *facebookSettingsViewController = [[RCFacebookSettingsViewController alloc] init];
+        [self.navigationController pushViewController:facebookSettingsViewController animated:YES];
+    }
 }
 
 - (IBAction) openDatePickerView:(UIButton*) sender {
@@ -877,7 +984,8 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
 - (IBAction)closeBtnTouchUpInside:(id)sender {
    
     NSLog(@"clicked close on newpostviewcontroller");
-    [self dismissViewControllerAnimated:YES completion:nil];
+//    [self dismissViewControllerAnimated:YES completion:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 - (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {

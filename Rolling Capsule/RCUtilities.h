@@ -114,8 +114,8 @@ static void showConfirmationDialog(NSString *msg, NSString *title, id delegate){
     UIAlertView* alertView = [[UIAlertView alloc] initWithTitle:title
                                                        message:msg
                                                       delegate:delegate
-                                             cancelButtonTitle:@"Ok"
-                                             otherButtonTitles:@"Cancel", nil];
+                                             cancelButtonTitle:@"Cancel"
+                                             otherButtonTitles:@"Ok", nil];
     [alertView show];
 }
 
