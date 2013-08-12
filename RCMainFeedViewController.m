@@ -234,12 +234,14 @@
         NSMutableArray* commentedPosts = [RCNotification getNotifiedPosts];
         [_posts addObjectsFromArray:commentedPosts];
         currentMaxDisplayedPostNumber = [_posts count];
+        NSLog(@"notified post [self reloadData");
         [self reloadData];
         if ([_reachability currentReachabilityStatus] == NotReachable) {
             [self showNoConnectionWarningMessage];
             return;
         }
         [RCNotification loadMissingNotifiedPostsForList:_posts withCompletion:^{
+            NSLog(@"notified posts reload data, this is when images in notifications are loaded");
             [_collectionView reloadData];
         }];
         [self toggleButtonRefresh:NO];
@@ -252,6 +254,7 @@
     RCFeed *feed = [self feedByCurrentViewMode];
     _posts = feed.postList;
     currentMaxDisplayedPostNumber = currentMaxPostNumber = [_posts count];
+    NSLog(@"loading feed current view mode is %d",_currentViewMode);
     [self reloadData];
     //CAREFUL sync (concurrent crash) issue may happen here
     if ([_reachability currentReachabilityStatus] == NotReachable) {
@@ -259,19 +262,23 @@
         return;
     }
     [feed fetchFeedFromBackend:RCFeedFetchModeReset completion:^{
-        if (feed.errorType != RCFeedNoError) {
-            [self loadFeed:nRetry-1];
-        } else {
-            currentMaxDisplayedPostNumber = currentMaxPostNumber = [feed.postList count];
-            _posts = feed.postList;
-            [self reloadData];
-            [self toggleButtonRefresh:NO];
-            [self updateUserUIElements:[RCUser currentUser]];
+        if ([feed isEqual:[self feedByCurrentViewMode]]) {
+            if (feed.errorType != RCFeedNoError) {
+                [self loadFeed:nRetry-1];
+            } else {
+                currentMaxDisplayedPostNumber = currentMaxPostNumber = [feed.postList count];
+                _posts = feed.postList;
+                NSLog(@"reload feed after successful refresh");
+                [self reloadData];
+                [self toggleButtonRefresh:NO];
+                [self updateUserUIElements:[RCUser currentUser]];
+            }
         }
     }];
 }
 
 - (void) reloadData {
+    NSLog(@"in [self reloadData]");
     [_chosenPosts removeAllObjects];
     [_mapView removeAnnotations:_mapView.annotations];
     [_postsByRowIndex removeAllObjects];
@@ -281,6 +288,11 @@
         [_mapView addAnnotation:post];
         i++;
     }
+    if ([RCNotification numberOfNewNotifications] > 0)
+        [_imgViewNewNotificationNotice setHidden:NO];
+    else
+        [_imgViewNewNotificationNotice setHidden:YES];
+    NSLog(@"before reloading collection view reloadData");
     [_collectionView reloadData];
 
 }
@@ -375,7 +387,6 @@
     else
         newPostController = [[RCNewPostViewController alloc] initWithUser:_user withNibName:@"RCNewPostViewController" bundle:nil];
 
-//    [self presentViewController:newPostController animated:YES completion:nil];
     [self.navigationController pushViewController:newPostController animated:YES];
 }
 
@@ -409,10 +420,12 @@
         int formerPostCount = currentMaxPostNumber;
         currentMaxPostNumber = -1;
         [feed fetchFeedFromBackend:RCFeedFetchModeAppendBack completion:^{
-            if ([feed.postList count] != formerPostCount) {
-                currentMaxPostNumber = [feed.postList count];
-                willShowMoreFeeds = YES;
-                [self scrollViewDidScroll:_collectionView];
+            if ([feed isEqual:[self feedByCurrentViewMode]]) {
+                if ([feed.postList count] != formerPostCount) {
+                    currentMaxPostNumber = [feed.postList count];
+                    willShowMoreFeeds = YES;
+                    [self scrollViewDidScroll:_collectionView];
+                }
             }
         }];
     }
@@ -550,11 +563,13 @@
         if (recognizer.scale > 1.5 && _nRows > 1 && !_didZoom) {
             _nRows--;
             _didZoom = YES;
+            NSLog(@"reload data after zoom -- rows");
             [_collectionView reloadData];
         }
         if (recognizer.scale < 0.8 && _nRows < maximumRow && !_didZoom) {
             _didZoom = YES;
             _nRows++;
+            NSLog(@"reload data after zoom ++ rows");
             [_collectionView reloadData];
         }
     }
@@ -716,6 +731,7 @@
         [_mapView addAnnotation:post];
     }
     currentMaxDisplayedPostNumber = [_posts count];
+    NSLog(@"reload data after cliking more feed button");
     [_collectionView reloadData];
 }
 

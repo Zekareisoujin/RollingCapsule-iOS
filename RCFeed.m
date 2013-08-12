@@ -76,6 +76,7 @@ static RCFeed* RCFeedFollowFeed = nil;
 }
 
 - (void) processNotificationListJson:(NSArray*) notificationListJson {
+    NSLog(@"RCFeed processing notifications obtained from backend");
     [RCNotification clearNotifications];
     for (NSDictionary *notificationJson in notificationListJson) {
         [RCNotification parseNotification:notificationJson];
@@ -155,9 +156,11 @@ static RCFeed* RCFeedFollowFeed = nil;
     @try {
         url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@&page=%d",RCServiceURL, _feedPath,loadPage]];
         NSMutableURLRequest* request = CreateHttpGetRequest(url);
+        NSLog(@"before sending http request");
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
                                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
          {
+             NSLog(@"obtained feed data");
              if (fetchMode == RCFeedFetchModeReset){
                  [_postList removeAllObjects];
                  [postSet removeAllObjects];

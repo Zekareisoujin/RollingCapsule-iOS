@@ -91,12 +91,6 @@ static NSMutableDictionary* RCPostPostCollection = nil;
     if (self) {
         _thumbnailImage = nil;
         _postID = [[postData objectForKey:@"id"] intValue];
-        _content = (NSString*)[postData objectForKey:@"content"];
-        if ([_content isKindOfClass:[NSNull class]])
-            _content = @"";
-        _subject = (NSString*)[postData objectForKey:@"subject"];
-        if ([_subject isKindOfClass:[NSNull class]])
-            _subject = @"";
         _topic = [postData objectForKey:@"topic"];
         if ([_topic isKindOfClass:[NSNull class]])
             _topic = nil;
@@ -132,6 +126,20 @@ static NSMutableDictionary* RCPostPostCollection = nil;
         }else {
             _isTimeCapsule = YES;
             _releaseDate = [formatter dateFromString:releaseTime];
+        }
+        
+        _subject = (NSString*)[postData objectForKey:@"subject"];
+        if ([_subject isKindOfClass:[NSNull class]])
+            _subject = @"";
+        _content = (NSString*)[postData objectForKey:@"content"];
+        if ([_content isKindOfClass:[NSNull class]] || [_content isEqualToString:@""]) {
+            if ([_subject isEqualToString:@""]) {
+                [formatter setTimeZone:[NSTimeZone localTimeZone]];
+                [formatter setDateFormat:@"yyyy-MM-dd' 'HH:mm:ss' '"];
+                _content = [NSString stringWithFormat:@"Posted on %@", [formatter stringFromDate:_postedTime]];
+            } else {
+                _content = _subject;
+            }
         }
     }
     
