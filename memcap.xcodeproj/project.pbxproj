@@ -101,6 +101,9 @@
 		6460E88D178C68460065D6BA /* landmarkEmpty.png in Resources */ = {isa = PBXBuildFile; fileRef = 6460E88C178C68460065D6BA /* landmarkEmpty.png */; };
 		6460E88F178C88FE0065D6BA /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6460E88E178C88FE0065D6BA /* MobileCoreServices.framework */; };
 		64610340176E5F8A008DD131 /* RCLandmark.m in Sources */ = {isa = PBXBuildFile; fileRef = 6461033F176E5F8A008DD131 /* RCLandmark.m */; };
+		6461C9B417B96552009DD299 /* viewPostWhistle.png in Resources */ = {isa = PBXBuildFile; fileRef = 6461C9B317B96552009DD299 /* viewPostWhistle.png */; };
+		6461C9B617B9707E009DD299 /* viewPostReportFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 6461C9B517B9707E009DD299 /* viewPostReportFrame.png */; };
+		6461C9B917B99B0A009DD299 /* RCPostReport.m in Sources */ = {isa = PBXBuildFile; fileRef = 6461C9B817B99B0A009DD299 /* RCPostReport.m */; };
 		646C809B17A5C67A00054C1A /* RCFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = 646C809A17A5C67A00054C1A /* RCFeed.m */; };
 		646C809D17A64A6F00054C1A /* outboxGreyLeacher.png in Resources */ = {isa = PBXBuildFile; fileRef = 646C809C17A64A6F00054C1A /* outboxGreyLeacher.png */; };
 		647265B617A04CDF002E654A /* RCAsyncPhotoDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 647265B117A04CDF002E654A /* RCAsyncPhotoDownloadOperation.m */; };
@@ -433,6 +436,10 @@
 		6460E88E178C88FE0065D6BA /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		6461033E176E5F8A008DD131 /* RCLandmark.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCLandmark.h; sourceTree = "<group>"; };
 		6461033F176E5F8A008DD131 /* RCLandmark.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCLandmark.m; sourceTree = "<group>"; };
+		6461C9B317B96552009DD299 /* viewPostWhistle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostWhistle.png; path = ../viewPostWhistle.png; sourceTree = "<group>"; };
+		6461C9B517B9707E009DD299 /* viewPostReportFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostReportFrame.png; path = ../viewPostReportFrame.png; sourceTree = "<group>"; };
+		6461C9B717B99B0A009DD299 /* RCPostReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCPostReport.h; sourceTree = "<group>"; };
+		6461C9B817B99B0A009DD299 /* RCPostReport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCPostReport.m; sourceTree = "<group>"; };
 		646C809917A5C67A00054C1A /* RCFeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCFeed.h; sourceTree = "<group>"; };
 		646C809A17A5C67A00054C1A /* RCFeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCFeed.m; sourceTree = "<group>"; };
 		646C809C17A64A6F00054C1A /* outboxGreyLeacher.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = outboxGreyLeacher.png; path = ../outboxGreyLeacher.png; sourceTree = "<group>"; };
@@ -780,6 +787,8 @@
 				64D6EC1B17A2536A00663AE3 /* RCUserData.xcdatamodeld */,
 				646C809917A5C67A00054C1A /* RCFeed.h */,
 				646C809A17A5C67A00054C1A /* RCFeed.m */,
+				6461C9B717B99B0A009DD299 /* RCPostReport.h */,
+				6461C9B817B99B0A009DD299 /* RCPostReport.m */,
 			);
 			name = Models;
 			path = ..;
@@ -788,6 +797,8 @@
 		643EACE9175BBE0D002761D9 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				6461C9B517B9707E009DD299 /* viewPostReportFrame.png */,
+				6461C9B317B96552009DD299 /* viewPostWhistle.png */,
 				BFB8086317B269DF004EB38E /* FBUserSettingsViewResources.bundle */,
 				6460E869178AE3EA0065D6BA /* appIcon.png */,
 				6460E86A178AE3EA0065D6BA /* appIcon@2x.png */,
@@ -1504,6 +1515,8 @@
 				BFB8086017B26692004EB38E /* facebook-logo@2x.png in Resources */,
 				BFB8086217B2669C004EB38E /* silver-button-normal@2x.png in Resources */,
 				BFB8086417B269DF004EB38E /* FBUserSettingsViewResources.bundle in Resources */,
+				6461C9B417B96552009DD299 /* viewPostWhistle.png in Resources */,
+				6461C9B617B9707E009DD299 /* viewPostReportFrame.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1609,6 +1622,7 @@
 				646C809B17A5C67A00054C1A /* RCFeed.m in Sources */,
 				BFB8085717B0F9D9004EB38E /* RCFacebookHelper.m in Sources */,
 				BFB8085D17B25266004EB38E /* RCFacebookSettingsViewController.m in Sources */,
+				6461C9B917B99B0A009DD299 /* RCPostReport.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

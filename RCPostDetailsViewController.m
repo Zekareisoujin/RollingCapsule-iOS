@@ -11,6 +11,8 @@
 #import "RCAmazonS3Helper.h"
 #import "RCUtilities.h"
 #import "RCComment.h"
+#import "RCPostReport.h"
+
 #import "RCConnectionManager.h"
 #import "RCKeyboardPushUpHandler.h"
 #import "RCResourceCache.h"
@@ -37,7 +39,13 @@
 
 @end
 
-@implementation RCPostDetailsViewController
+@implementation RCPostDetailsViewController {
+    int _currentReportChoice;
+    BOOL _isTapToCloseKeyboard;
+    BOOL _firstTimeEditPost;
+    RCConnectionManager *_connectionManager;
+    RCKeyboardPushUpHandler *_keyboardPushHandler;
+}
 
 @synthesize descriptionMarker = _descriptionMarker;
 @synthesize activityIndicatorView = _activityIndicatorView;
@@ -59,10 +67,7 @@
 @synthesize originalCommentBoxPosition = _originalCommentBoxPosition;
 @synthesize deleteFunction = _deleteFunction;
 
-BOOL _isTapToCloseKeyboard;
-BOOL _firstTimeEditPost;
-RCConnectionManager *_connectionManager;
-RCKeyboardPushUpHandler *_keyboardPushHandler;
+
 static BOOL RCPostDetailsViewControllerShowPostID = NO;
 
 + (void) toggleShowPostID {
@@ -77,6 +82,7 @@ static BOOL RCPostDetailsViewControllerShowPostID = NO;
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        _currentReportChoice = 0;
     }
     return self;
 }
@@ -89,6 +95,7 @@ static BOOL RCPostDetailsViewControllerShowPostID = NO;
         _loggedInUser = loggedInUser;
         _connectionManager = [[RCConnectionManager alloc] init];
         _keyboardPushHandler = [[RCKeyboardPushUpHandler alloc] init];
+        _currentReportChoice = 0;
     }
     
     return self;
@@ -217,6 +224,8 @@ static BOOL RCPostDetailsViewControllerShowPostID = NO;
     //remove delete button if not correct user
     if (_postOwner.userID != _loggedInUser.userID) {
         [_btnDelete setHidden:YES];
+    } else {
+        [_btnWhistle setHidden:YES];
     }
 }
 
@@ -833,4 +842,37 @@ static BOOL RCPostDetailsViewControllerShowPostID = NO;
     }];
 }
 
+- (IBAction)btnWhistleTouchUpInside:(id)sender {
+    if ([_viewReport isHidden]) {
+        [_viewReport setHidden:NO];
+    } else {
+        [_viewReport setHidden:YES];
+    }
+}
+- (IBAction)btnReportInappropriateTouchUpInside:(id)sender {
+    _currentReportChoice = 0;
+    [_lblReportInappropriate setBackgroundColor:[UIColor colorWithRed:81.0/255.0 green:18.0/255.0 blue:36.0/255.0 alpha:1.0]];
+    [_lblReportCopyrightContent setBackgroundColor:[UIColor clearColor]];
+}
+
+- (IBAction)btnReportSubmitTouchUpInside:(id)sender {
+    NSString* category = _currentReportChoice == 0 ? @"Inappropriate" : @"Copyright content";
+    //post to website the report here
+    [_viewReport setHidden:YES];
+    [RCConnectionManager startConnection];
+    [RCPostReport postReportCategory:category withReason:@"automatic flag by user from ios app" forPost:_post withSuccessHandler:^ {
+        [RCConnectionManager endConnection];
+        [_btnWhistle setHidden:YES];
+    } withFailureHandler:^(NSString *errorMessage) {
+        [RCConnectionManager endConnection];
+        showAlertDialog(([NSString stringWithFormat:@"Could not post report because %@. %@", errorMessage, RCErrorMessagePleaseTryAgain]), @"Error");
+    }];
+    
+}
+
+- (IBAction)btnReportCopyrightContentTouchUpInside:(id)sender {
+    _currentReportChoice = 1;
+    [_lblReportCopyrightContent setBackgroundColor:[UIColor colorWithRed:81.0/255.0 green:18.0/255.0 blue:36.0/255.0 alpha:1.0]];
+    [_lblReportInappropriate setBackgroundColor:[UIColor clearColor]];
+}
 @end

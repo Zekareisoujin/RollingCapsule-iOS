@@ -17,7 +17,16 @@
 @interface RCPostDetailsViewController : UIViewController<UITableViewDataSource, UITableViewDataSource, UITextFieldDelegate, UITextViewDelegate, TTTAttributedLabelDelegate>
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollViewImage;
 @property (weak, nonatomic) IBOutlet UIImageView *imgViewMainFrame;
+@property (weak, nonatomic) IBOutlet UIButton *btnWhistle;
+- (IBAction)btnReportInappropriateTouchUpInside:(id)sender;
+@property (weak, nonatomic) IBOutlet UILabel *lblReportInappropriate;
+- (IBAction)btnWhistleTouchUpInside:(id)sender;
+- (IBAction)btnReportSubmitTouchUpInside:(id)sender;
+@property (weak, nonatomic) IBOutlet UILabel *lblReportCopyrightContent;
+@property (weak, nonatomic) IBOutlet UIView *viewReport;
+@property (weak, nonatomic) IBOutlet UIButton *btnReportCopyrightContent;
 @property (weak, nonatomic) IBOutlet UIView *viewCoverStrip;
+- (IBAction)btnReportCopyrightContentTouchUpInside:(id)sender;
 @property (weak, nonatomic) IBOutlet UITextView *txtViewPostComment;
 @property (weak, nonatomic) IBOutlet UIButton *closeButton;
 @property (weak, nonatomic) IBOutlet UIButton *btnDelete;
