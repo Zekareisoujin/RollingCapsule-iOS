@@ -38,6 +38,7 @@ typedef enum RCMainFeedViewMode RCMainFeedViewMode;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet MKMapView *mapView;
 @property (weak, nonatomic) IBOutlet UIButton *btnMoreFeed;
+@property (weak, nonatomic) IBOutlet UILabel *lblNoPost;
 
 @property (nonatomic, strong) NSMutableSet *chosenPosts;
 @property (nonatomic, strong) RCUser *user;

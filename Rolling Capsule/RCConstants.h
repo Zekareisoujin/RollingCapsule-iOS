@@ -85,6 +85,10 @@ static NSString* const RCDeclineRequest = @"Decline Request";
 static NSString* const RCUploadError = @"UploadError";
 static NSString* const RCEmailCapitalString = @"EMAIL";
 static NSString* const RCPasswordCapitalString = @"PASSWORD";
+static NSString* const RCMainFeedNoPostPublic = @"There is no post in this area yet. Share something!";
+static NSString* const RCMainFeedNoPostFriends = @"There is no post from your friends yet. Add some new friends!";
+static NSString* const RCMainFeedNoPostFollows = @"There is no post from people you follow yet. Follow some new user!";
+static NSString* const RCMainFeedNoPostCommented = @"There is no new comment at the moment";
 
 //Menu items
 static NSString* const RCMenuItemMainFeed = @"Main Feeds";

@@ -261,6 +261,8 @@
         [self showNoConnectionWarningMessage];
         return;
     }
+    
+    [_lblNoPost setHidden:YES];
     [feed fetchFeedFromBackend:RCFeedFetchModeReset completion:^{
         if ([feed isEqual:[self feedByCurrentViewMode]]) {
             if (feed.errorType != RCFeedNoError) {
@@ -268,6 +270,25 @@
             } else {
                 currentMaxDisplayedPostNumber = currentMaxPostNumber = [feed.postList count];
                 _posts = feed.postList;
+                
+                [_lblNoPost setHidden:([_posts count] > 0 || ([_reachability currentReachabilityStatus] == NotReachable))];
+                switch (_currentViewMode) {
+                    case RCMainFeedViewModePublic:
+                        [_lblNoPost setText:RCMainFeedNoPostPublic];
+                        break;
+                    case RCMainFeedViewModeFriends:
+                        [_lblNoPost setText:RCMainFeedNoPostFriends];
+                        break;
+                    case RCMainFeedViewModeFollow:
+                        [_lblNoPost setText:RCMainFeedNoPostFollows];
+                        break;
+                    case RCMainFeedViewModeCommented:
+                        [_lblNoPost setText:RCMainFeedNoPostCommented];
+                        break;
+                    default:
+                        break;
+                }
+                
                 NSLog(@"reload feed after successful refresh");
                 [self reloadData];
                 [self toggleButtonRefresh:NO];
