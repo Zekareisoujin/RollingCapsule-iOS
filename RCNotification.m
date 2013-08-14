@@ -108,7 +108,8 @@ static NSMutableArray* RCNotificationPostsWithNotification = nil;
                     [RCNotificationPostsWithNotification
                      addObject:[RCPost getPostWithID:postID]];
                 }
-                [notificationListForObject addObject:notification];
+                if (!notification.viewed)
+                    [notificationListForObject addObject:notification];
             }
         }
     }
