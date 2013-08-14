@@ -157,7 +157,7 @@
     [_menuTree setObject:[UIImage imageNamed:@"menuIconConcierge"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemConcierge];
     [_menuTree setObject:[UIImage imageNamed:@"menuIconSettings"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemSettings];
     [_menuTree setObject:[UIImage imageNamed:@"menuIconLogout"] forKeyPath:RCMenuKeyIcon2 forTreeItem:RCMenuItemSettingsLogOut];
-    [_menuTree setObject:[UIImage imageNamed:@"facebookIcon"] forKeyPath:RCMenuKeyIcon2 forTreeItem:RCMenuItemSettingsFacebook];
+    [_menuTree setObject:[UIImage imageNamed:@"menuIconFacebook"] forKeyPath:RCMenuKeyIcon2 forTreeItem:RCMenuItemSettingsFacebook];
     [_menuTree setObject:[UIImage imageNamed:@"menuIconConciergeGame"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemConciergeGame];
     [_menuTree setObject:[UIImage imageNamed:@"menuIconConciergeUtility"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemConciergeUtility];
     [_menuTree setObject:[UIImage imageNamed:@"menuIconConciergeTravel"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemConciergeTravel];
