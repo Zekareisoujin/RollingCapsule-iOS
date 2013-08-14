@@ -29,10 +29,17 @@ BOOL        _willMoveKeyboardUp;
     [_txtFieldEmail setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
     [_txtFieldPassword setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
     [_txtFieldPasswordConfirmation setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
-    
+    NSString *text = [_lblTermsOfUse.text copy];
+    _lblTermsOfUse.text = text;
+    _lblTermsOfUse.delegate = self;
+    NSRange termsRange = [_lblTermsOfUse.text rangeOfString:@"Memcap terms"];
+    [_lblTermsOfUse addLinkToURL:[NSURL URLWithString:RCTermsOfUseURL] withRange:termsRange];
     [self animateViewAppearance];
 }
 
+- (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
+    [[UIApplication sharedApplication] openURL:url];
+}
 #pragma mark - web request
 
 - (void)asynchRegisterRequest

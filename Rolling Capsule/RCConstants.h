@@ -13,6 +13,7 @@
 #define eps 1e-9
 //prefix RC : rolling capsule
 static NSString* const RCServiceURL = @"https://rocaps.herokuapp.com";
+static NSString* const RCTermsOfUseURL = @"https://rocaps.herokuapp.com/terms_of_use";
 static NSString* const RCSessionsResource = @"/sessions";
 static NSString* const RCUsersResource = @"/users";
 static NSString* const RCPostsResource = @"/posts";
