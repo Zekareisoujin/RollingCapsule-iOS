@@ -16,7 +16,7 @@ static NSString* const RCServiceURL = @"http://localhost:5000";//@"https://rocap
 static NSString* const RCTermsOfUseURL = @"https://rocaps.herokuapp.com/terms_of_use";
 static NSString* const RCUnactivatedAccountString = @"Unactivated account";
 static NSString* const RCUnactivatedWarningKey = @"unactivated_warning";
-static NSString* const RCInvalidCodeString = @"Invalid code";
+static NSString* const RCErrorMessageKey = @"error_message";
 static NSString* const RCSessionsResource = @"/sessions";
 static NSString* const RCUsersResource = @"/users";
 static NSString* const RCPostsResource = @"/posts";
@@ -34,6 +34,7 @@ static NSString* const RCFriendStatusNull = @"null";
 static NSString* const RCAmazonS3AvatarPictureBucket = @"memcap-avatar-images";
 static NSString* const RCAmazonS3UsersMediaBucket = @"memcap-users-media";
 static int       const RCHttpOkStatusCode = 200;
+static int       const RCHttpUnauthorizedStatus = 401;
 #define RCCStringAppDomain "com.foxtwo.rollingcapsules"
 
 //query string for web request to indicate needed levels

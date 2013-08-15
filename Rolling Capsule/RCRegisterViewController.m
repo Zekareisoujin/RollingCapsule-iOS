@@ -10,12 +10,11 @@
 #import "SBJson.h"
 #import "RCUtilities.h"
 #import "RCRegisterViewController.h"
-#import "RCKeyboardPushUpHandler.h"
 #import "RMPhoneFormat.h"
 
-@implementation RCRegisterViewController {
-    RCKeyboardPushUpHandler *_keyboardHandler;
-}
+@implementation RCRegisterViewController
+
+@synthesize keyboardHandler = _keyboardHandler;
 
 double      _moveUpBy;
 double      _keyboardTopPosition;
@@ -36,6 +35,10 @@ BOOL        _willMoveKeyboardUp;
     NSString *text = [_lblTermsOfUse.text copy];
     _lblTermsOfUse.text = text;
     _lblTermsOfUse.delegate = self;
+    
+    RMPhoneFormat *fmt = [[RMPhoneFormat alloc] init];
+    self.txtFieldPhoneNumber.text = [NSString stringWithFormat:@"+%@",[fmt defaultCallingCode]];
+    
     NSRange termsRange = [_lblTermsOfUse.text rangeOfString:@"Memcap terms"];
     [_lblTermsOfUse addLinkToURL:[NSURL URLWithString:RCTermsOfUseURL] withRange:termsRange];
     [self animateViewAppearance];
@@ -60,14 +63,10 @@ BOOL        _willMoveKeyboardUp;
             addArgumentToQueryString(dataSt, @"user[password]", [_txtFieldPassword text]);
             addArgumentToQueryString(dataSt, @"user[name]", [_txtFieldName text]);
             addArgumentToQueryString(dataSt, @"user[password_confirmation]", [_txtFieldPassword text]);
-            RMPhoneFormat *fmt = [[RMPhoneFormat alloc] init];
-            // Call any number of times
-            NSString *numberString = [_txtFieldPhoneNumber text];
-            if ([numberString hasPrefix:@"0"])
-                numberString = [numberString substringFromIndex:1];
-            
-             NSString *formattedNumber = [NSString stringWithFormat:@"%@%@",[fmt defaultCallingCode],numberString];
-            addArgumentToQueryString(dataSt, @"phone_number", formattedNumber);
+            NSString *phoneNumber = [_txtFieldPhoneNumber text];
+            if ([phoneNumber hasPrefix:@"+"])
+                phoneNumber = [phoneNumber substringFromIndex:1];
+            addArgumentToQueryString(dataSt, @"phone_number", phoneNumber);
             NSData *postData = [dataSt dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
             NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCUsersResource]];
             NSURLRequest *request = CreateHttpPostRequest(url, postData);
@@ -86,6 +85,7 @@ BOOL        _willMoveKeyboardUp;
                     NSDictionary *userData = (NSDictionary *) [jsonData objectForKey: @"user"];
                     NSString *name = (NSString *) [userData objectForKey:@"name"];
                     showAlertDialog(([NSString stringWithFormat:@"Welcome %@! We have sent you an activation code via SMS to the phone number you provided. You can now login and activate your account using the aforementioned code.",name]), @"Welcome");
+                    [self btnCloseTouchUpInside:nil];
                 }else {
                     showAlertDialog(([NSString stringWithFormat:@"%@. %@",responseData, RCErrorMessagePleaseTryAgain]), @"Error");
                 }

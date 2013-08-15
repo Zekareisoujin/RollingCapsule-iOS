@@ -96,6 +96,7 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
                     UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Account activation" message:@"Please enter the activation code sent to you via SMS" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:@"Resend SMS", nil];
                     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
                     alert.delegate = self;
+                    [[alert textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeDecimalPad];
                     [alert show];
                 } else {
                     RCUser *user = [[RCUser alloc] initWithNSDictionary:(NSDictionary*)[jsonData objectForKey:@"user"]];
@@ -117,13 +118,7 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
 - (void) requestResendActivation:(NSString*) phoneNumber {
     @try {
     NSMutableString *post = initQueryString(@"password", _password);
-        
-    RMPhoneFormat *fmt = [[RMPhoneFormat alloc] init];
-    if ([phoneNumber hasPrefix:@"0"])
-        phoneNumber = [phoneNumber substringFromIndex:1];
-    
-    NSString *formattedNumber = [NSString stringWithFormat:@"%@%@",[fmt defaultCallingCode],phoneNumber];
-    addArgumentToQueryString(post, @"phone_number", formattedNumber);
+    addArgumentToQueryString(post, @"phone_number", phoneNumber);
     NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
     NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/send_activation_code", RCServiceURL, RCUsersResource, _userID]];
     NSURLRequest *request = CreateHttpPostRequest(url, postData);
@@ -145,7 +140,12 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     NSLog(@"press button index in alert view: %d", buttonIndex);
     if ([alertView.title isEqualToString:@"Phone number"]) {
-        [self requestResendActivation:[[alertView textFieldAtIndex:0] text]];
+        NSString *phoneNumber = [[alertView textFieldAtIndex:0] text];
+        if ([phoneNumber length] > 1) {
+            if ([phoneNumber hasPrefix:@"+"])
+                phoneNumber = [phoneNumber substringFromIndex:1];
+            [self requestResendActivation:phoneNumber];
+        }
     } else {
         if (buttonIndex == RCActivationAlertOkButtonIndex) {
             NSString* activationCode = [[alertView textFieldAtIndex:0] text];
@@ -164,8 +164,10 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
                  if (httpResponse.statusCode ==  RCHttpOkStatusCode && [responseData isEqualToString:@"ok"]) {
                      [self asynchLogInRequest];
                  } else {
-                     if ([responseData hasPrefix:RCInvalidCodeString]) {
-                         showAlertDialog(@"Error", @"You entered the invalid activation code");
+                     SBJsonParser *parser = [[SBJsonParser alloc] init];
+                     NSDictionary* errorJson = [parser objectWithString:responseData];
+                     if ([errorJson objectForKey:RCErrorMessageKey] != nil) {
+                         showAlertDialog([errorJson objectForKey:RCErrorMessageKey], @"Error");
                      } else {
                          showAlertDialog(@"Error", @"We encountered a problem activating your account. Please try again.");
                      }
@@ -174,15 +176,20 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
                  
              }];
         } else if (buttonIndex == RCActivationAlertResendSMSButtonIndex) {
+            RMPhoneFormat *fmt = [[RMPhoneFormat alloc] init];
             UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Phone number" message:@"Please enter your phone number" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
             alert.alertViewStyle = UIAlertViewStylePlainTextInput;
             alert.delegate = self;
+            [alert textFieldAtIndex:0].text = [NSString stringWithFormat:@"+%@",[fmt defaultCallingCode]];
+            [[alert textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeDecimalPad];
             [alert show];
         }
     }
 }
 
 - (IBAction)btnActionRegister:(id)sender {
+    [_txtFieldPassword resignFirstResponder];
+    [_txtFieldUsername resignFirstResponder];
     [[NSNotificationCenter defaultCenter] removeObserver:_keyboardHandler
                                                     name:UIKeyboardWillShowNotification
                                                   object:nil];
@@ -190,6 +197,7 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
     [[NSNotificationCenter defaultCenter] removeObserver:_keyboardHandler
                                                     name:UIKeyboardWillHideNotification
                                                   object:nil];
+    
     RCRegisterViewController *registerViewController = [[RCRegisterViewController alloc]
                                                       init];
     [self addChildViewController:registerViewController];
