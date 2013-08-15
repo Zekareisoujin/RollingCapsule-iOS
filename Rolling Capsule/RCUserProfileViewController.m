@@ -171,6 +171,7 @@
         _pickedNewAvatarImage = NO;
         _editingProfile = NO;
     }
+    [_btnEditProfileCancel setHidden:YES];
     
     [self showMoreFeedButton:NO animate:NO];
     
@@ -985,6 +986,7 @@
         _editingProfile = NO;
         [_btnEditProfile setTitle:@"Edit" forState:UIControlStateNormal];
         _btnAvatarImg.enabled = NO;
+        [_btnEditProfileCancel setHidden:YES];
         [self doneEditProfile];
         [_lblAvatarEdit removeFromSuperview];
         
@@ -993,6 +995,7 @@
         [_btnEditProfile setTitle:@"Apply" forState:UIControlStateNormal];
         [_btnAvatarImg setBackgroundImage:_userAvatarImage forState:UIControlStateNormal];
         _btnAvatarImg.enabled = YES;
+        [_btnEditProfileCancel setHidden:NO];
         CGRect lblFrame = _btnAvatarImg.frame;
         int incr = 8;
         lblFrame.origin.x += incr;
@@ -1029,6 +1032,12 @@
         frame.origin.x += frame.size.width * (_editingProfile?-1:1);
         [_editNotificationBar setFrame:frame];
     }];
+}
+
+- (IBAction)btnEditProfileCancelTouchUpInside:(id)sender {
+    _pickedNewAvatarImage = NO;
+    _txtFieldEditName.text = _lblName.text;
+    [self btnEditProfileTouchUpInside:nil];
 }
 
 - (void) doneEditProfile {
