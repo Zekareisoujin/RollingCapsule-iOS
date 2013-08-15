@@ -12,8 +12,11 @@
 #define METERS_PER_MILE 1609.344
 #define eps 1e-9
 //prefix RC : rolling capsule
-static NSString* const RCServiceURL = @"https://rocaps.herokuapp.com";
+static NSString* const RCServiceURL = @"http://localhost:5000";//@"https://rocaps.herokuapp.com";
 static NSString* const RCTermsOfUseURL = @"https://rocaps.herokuapp.com/terms_of_use";
+static NSString* const RCUnactivatedAccountString = @"Unactivated account";
+static NSString* const RCUnactivatedWarningKey = @"unactivated_warning";
+static NSString* const RCInvalidCodeString = @"Invalid code";
 static NSString* const RCSessionsResource = @"/sessions";
 static NSString* const RCUsersResource = @"/users";
 static NSString* const RCPostsResource = @"/posts";

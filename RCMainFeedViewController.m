@@ -265,7 +265,7 @@
     [_lblNoPost setHidden:YES];
     [feed fetchFeedFromBackend:RCFeedFetchModeReset completion:^{
         if ([feed isEqual:[self feedByCurrentViewMode]]) {
-            if (feed.errorType != RCFeedNoError) {
+            if (feed.errorType != RCFeedNoError && nRetry > 0) {
                 [self loadFeed:nRetry-1];
             } else {
                 currentMaxDisplayedPostNumber = currentMaxPostNumber = [feed.postList count];

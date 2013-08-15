@@ -16,7 +16,7 @@
 
 @end
 
-@interface RCLoginViewController : UIViewController
+@interface RCLoginViewController : UIViewController <UIAlertViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *txtFieldUsername;
 @property (weak, nonatomic) IBOutlet UITextField *txtFieldPassword;
 @property (weak, nonatomic) IBOutlet UIButton *btnLogIn;
