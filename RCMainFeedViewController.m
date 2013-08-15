@@ -678,7 +678,7 @@
                     }
             }
             
-            RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user];
+            RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_user editable:NO];
             postDetailsViewController.deleteFunction = ^{
                 [self handleRefresh:_refreshControl];
             };

@@ -21,6 +21,7 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "SBJson.h"
 #import "RCUserProfileViewController.h"
+#import "RCLandmarkCell.h"
 
 @interface RCPostDetailsViewController ()
 @property (nonatomic, strong) NSMutableArray* comments;
@@ -36,6 +37,12 @@
 @property (nonatomic, assign) BOOL         didStartDraggingCommentBox;
 @property (nonatomic, assign) CGFloat      originalCommentBoxPosition;
 @property (nonatomic, strong) UIActivityIndicatorView* activityIndicatorView;
+
+@property (nonatomic, strong) UIView*      viewTopic;
+@property (nonatomic, strong) UICollectionView*     collectionViewTopic;
+@property (nonatomic, strong) NSMutableArray*       topics;
+@property (nonatomic, strong) NSString*    currentTopic;
+@property (nonatomic, assign) BOOL         topicTableVisible;
 
 @end
 
@@ -87,7 +94,7 @@ static BOOL RCPostDetailsViewControllerShowPostID = NO;
     return self;
 }
 
-- (id) initWithPost:(RCPost *)post withOwner:(RCUser*)owner withLoggedInUser:(RCUser *) loggedInUser{
+- (id) initWithPost:(RCPost *)post withOwner:(RCUser*)owner withLoggedInUser:(RCUser *)loggedInUser editable:(BOOL)editable{
     self = [super init];
     if (self) {
         _post = post;
@@ -96,6 +103,7 @@ static BOOL RCPostDetailsViewControllerShowPostID = NO;
         _connectionManager = [[RCConnectionManager alloc] init];
         _keyboardPushHandler = [[RCKeyboardPushUpHandler alloc] init];
         _currentReportChoice = 0;
+        _editable = editable;
     }
     
     return self;
@@ -180,10 +188,35 @@ static BOOL RCPostDetailsViewControllerShowPostID = NO;
         NSString *dtString = [formatter stringFromDate:_post.releaseDate];
         _post.content = [NSString stringWithFormat:@"Released at %@.", dtString];
     }
+
+    //initialize topic variables
+    _topics = [[NSMutableArray alloc] init];
+    _topicTableVisible = NO;
+    
+    //prepare topic view
+    _viewTopic = [[UIView alloc] initWithFrame:CGRectMake(10, 90, 300, 160)];
+    UIImageView *landmarkBackground = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 300, 160)];
+    [landmarkBackground setImage:[UIImage imageNamed:@"postLandmarkBackground.png"]];
+    UICollectionViewFlowLayout *flowLayout = [[UICollectionViewFlowLayout alloc] init];
+    _collectionViewTopic = [[UICollectionView alloc] initWithFrame:CGRectMake(0, 0, 280, 160) collectionViewLayout:flowLayout];
+    [_viewTopic addSubview:landmarkBackground];
+    landmarkBackground.frame = CGRectMake(0,0,_viewTopic.frame.size.width, _viewTopic.frame.size.height);
+    [_viewTopic addSubview:_collectionViewTopic];
+    _collectionViewTopic.frame = CGRectMake(10,0,280,160);
+    [_collectionViewTopic setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.0]];
+    [flowLayout setScrollDirection:UICollectionViewScrollDirectionHorizontal];
+    _collectionViewTopic.allowsSelection = YES;
+    _collectionViewTopic.delegate = self;
+    _collectionViewTopic.dataSource = self;
+    NSString* cellIdentifier = [RCLandmarkCell cellIdentifier];
+    [_collectionViewTopic registerClass:[RCLandmarkCell class] forCellWithReuseIdentifier:cellIdentifier];
+    UINib *nib = [UINib nibWithNibName:cellIdentifier bundle: nil];
+    [_collectionViewTopic registerNib:nib forCellWithReuseIdentifier:cellIdentifier];
     
     if (_post.topic != nil)
-        [_imgViewLandmarkCategory setImage:[UIImage imageNamed:[NSString stringWithFormat:@"topicCategory%@.png",_post.topic]]];
+        [_btnTopic setImage:[UIImage imageNamed:[NSString stringWithFormat:@"topicCategory%@.png", _post.topic]] forState:UIControlStateNormal];
     
+    //tap gesture for user label, in order to go to user profile
     UIView *sview = [[UIView alloc] initWithFrame:_lblUsername.frame];
     [sview addGestureRecognizer:_tapGestureRecognizer];
     [self.viewCoverStrip addSubview:sview];
@@ -227,6 +260,12 @@ static BOOL RCPostDetailsViewControllerShowPostID = NO;
     } else {
         [_btnWhistle setHidden:YES];
     }
+    
+    //setting for edit mode:
+    [_btnTopic setBackgroundImage:[UIImage imageNamed:@"buttonTopic"] forState:UIControlStateDisabled];
+    [_btnTopic setEnabled:_editable];
+    [_btnComment setEnabled:!_editable];
+    [_btnPostComment setEnabled:!_editable];
 }
 
 - (void) setupDescriptionMarker:(UIView*) markView {
@@ -842,6 +881,23 @@ static BOOL RCPostDetailsViewControllerShowPostID = NO;
     }];
 }
 
+- (IBAction)btnTopicTouchUpInside:(id)sender {
+    if (_topicTableVisible) {
+        _topicTableVisible = NO;
+        [_viewTopic removeFromSuperview];
+    } else {
+        //[self asynchGetLandmarkRequest];
+        if (_topics == nil || [_topics count] == 0) {
+            _topics = [[NSMutableArray alloc] init];
+            for (int i = 0; i < NUM_TOPICS; i++)
+                [_topics addObject:[NSString stringWithUTF8String:RCTopics[i]]];
+            [_collectionViewTopic reloadData];
+        }
+        [self.view addSubview:_viewTopic];
+        _topicTableVisible = YES;
+    }
+}
+
 - (IBAction)btnWhistleTouchUpInside:(id)sender {
     if ([_viewReport isHidden]) {
         [_viewReport setHidden:NO];
@@ -875,4 +931,84 @@ static BOOL RCPostDetailsViewControllerShowPostID = NO;
     [_lblReportCopyrightContent setBackgroundColor:[UIColor colorWithRed:81.0/255.0 green:18.0/255.0 blue:36.0/255.0 alpha:1.0]];
     [_lblReportInappropriate setBackgroundColor:[UIColor clearColor]];
 }
+
+#pragma mark - UICollectionView Datasource
+// 1
+- (NSInteger)collectionView:(UICollectionView *)view numberOfItemsInSection:(NSInteger)section {
+    return [_topics count] + 1;//section == 0 ? [[_postsByLandmark objectForKey:[[NSNumber alloc] initWithInteger:_currentLandmarkID]] count] : 0;
+}
+// 2
+- (NSInteger)numberOfSectionsInCollectionView: (UICollectionView *)collectionView {
+    return 1;
+}
+// 3
+- (UICollectionViewCell *)collectionView:(UICollectionView *)cv cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSString* cellIdentifier = [RCLandmarkCell cellIdentifier];
+    RCLandmarkCell *cell = [cv dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
+    int idx = [indexPath row] - 1;
+    if (idx < 0) {
+        if (_currentTopic == nil)
+            [cell.imgViewChosenMark setImage:[UIImage imageNamed:@"postLandmarkChosenBackground.png"]];
+        else
+            [cell.imgViewChosenMark setImage:nil];
+        [cell.imgViewCategory setImage:[UIImage imageNamed:@"topicCancel.png"]];
+        cell.lblLandmarkTitle.text = @"No topic";
+    } else {
+        NSString *topic = [_topics objectAtIndex:idx];
+        NSString *imageName = [NSString stringWithFormat:@"topicCategory%@.png", topic];
+        [cell.imgViewCategory setImage:[UIImage imageNamed:imageName]];
+        
+        if ([topic isEqualToString:_currentTopic])
+            [cell.imgViewChosenMark setImage:[UIImage imageNamed:@"postLandmarkChosenBackground.png"]];
+        else
+            [cell.imgViewChosenMark setImage:nil];
+        cell.lblLandmarkTitle.lineBreakMode = NSLineBreakByWordWrapping;
+        cell.lblLandmarkTitle.numberOfLines = 0;
+        cell.lblLandmarkTitle.text = topic;
+        NSLog(@"width of text label %f", cell.lblLandmarkTitle.frame.size.width);
+        NSLog(@"width of cell %f", cell.frame.size.width);
+    }
+    return cell;
+}
+// 4
+/*- (UICollectionReusableView *)collectionView:
+ (UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath
+ {
+ return [[UICollectionReusableView alloc] init];
+ }*/
+
+#pragma mark - UICollectionViewDelegate
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+    int idx = [indexPath row] - 1;
+    UIButton *button = _btnTopic;//(UIButton*)_txtFieldPostSubject.leftView;
+    if (idx >= 0) {
+        NSString *topic = [_topics objectAtIndex:idx];
+        _currentTopic = topic;
+        NSString *imageName = [NSString stringWithFormat:@"topicCategory%@.png", topic];
+        [button setBackgroundImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+    } else {
+        _currentTopic = nil;
+        [button setBackgroundImage:[UIImage imageNamed:@"buttonTopic.png"] forState:UIControlStateNormal];
+    }
+    [_viewTopic removeFromSuperview];
+    _topicTableVisible = NO;
+}
+
+#pragma mark – UICollectionViewDelegateFlowLayout
+
+// 1
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
+    float height = (collectionView.frame.size.height-42);
+    float width = (collectionView.frame.size.width - 22) / 3;
+    CGSize retval = CGSizeMake(width,height);
+    return retval;
+}
+
+// 3
+- (UIEdgeInsets)collectionView:
+(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout insetForSectionAtIndex:(NSInteger)section {
+    return UIEdgeInsetsMake(30,10,10,10);
+}
+
 @end

@@ -799,17 +799,30 @@
     RCProfileViewCell *cell = (RCProfileViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
     RCPost *post = (RCPost*)[_postList objectAtIndex:indexPath.row];
     
-    if (_selectedCell == cell) {
-        if (_selectedCell != nil) {
+    if (!_editingProfile) {
+        if (_selectedCell == cell) {
+            if (_selectedCell != nil) {
+                [_selectedCell setHighlightShadow:NO];
+                [self hidePostPreview];
+            }
+            _selectedCell = nil;
+        }else {
             [_selectedCell setHighlightShadow:NO];
-            [self hidePostPreview];
+            _selectedCell = cell;
+            [_selectedCell setHighlightShadow:YES];
+            [self showPostPreview:post withImageFromCell:cell];
         }
-        _selectedCell = nil;
     }else {
-        [_selectedCell setHighlightShadow:NO];
-        _selectedCell = cell;
-        [_selectedCell setHighlightShadow:YES];
-        [self showPostPreview:post withImageFromCell:cell];
+        RCUser *owner = [RCUser getUserOwnerOfPost:post];
+        RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_viewingUser editable:YES];
+        
+        postDetailsViewController.deleteFunction = ^{
+            [_postList removeObjectAtIndex:indexPath.row];
+            [_collectionView reloadData];
+            [self hidePostPreview];
+        };
+        
+        [self.navigationController pushViewController:postDetailsViewController animated:YES];
     }
 }
 
@@ -984,6 +997,10 @@
         _txtFieldEditName.textAlignment = NSTextAlignmentRight;
         _txtFieldEditName.delegate = self;
         [self.view addSubview:_txtFieldEditName];
+        
+        [_selectedCell setHighlightShadow:NO];
+        _selectedCell = nil;
+        [self hidePostPreview];
     }
 }
 
@@ -1054,7 +1071,7 @@
                         [notification updateViewedProperty];
                     }
             }
-            RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_viewingUser];
+            RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_viewingUser editable:NO];
             
             /*if (post.landmarkID == -1)
                 postDetailsViewController.landmark = nil;
