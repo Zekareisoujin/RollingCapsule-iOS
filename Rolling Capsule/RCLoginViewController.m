@@ -17,13 +17,21 @@
 #import <QuartzCore/QuartzCore.h>
 
 @interface RCLoginViewController ()
-
+@property (nonatomic, strong) NSString* email;
+@property (nonatomic, strong) NSString* password;
+@property (nonatomic, assign) int userID;
 @end
 
 @implementation RCLoginViewController
 
 @synthesize delegate;
 @synthesize keyboardHandler = _keyboardHandler;
+@synthesize email = _email;
+@synthesize password = _password;
+@synthesize userID = _userID;
+
+static int RCActivationAlertOkButtonIndex = 0;
+static int RCActivationAlertResendSMSButtonIndex = 1;
 
 - (void)viewDidLoad
 {
@@ -49,48 +57,93 @@
 
 - (IBAction)btnActionLogIn:(id)sender {
     [self setUIBusy:YES];
-    [self asynchLogInRequest];
+    if([[_txtFieldUsername text] isEqualToString:@""] || [[_txtFieldPassword text] isEqualToString:@""] ) {
+        showAlertDialog(RCErrorMessageUsernameAndPasswordMissing, @"Error");
+        [self setUIBusy:NO];
+    } else {
+        [self asynchLogInRequest];
+    }
 }
 
 - (void)asynchLogInRequest
 {
     //Asynchronous Request
     @try {
+        _email = [_txtFieldUsername text];
+        _password = [_txtFieldPassword text];
+        //[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+        NSMutableString *post = initQueryString(@"session[email]", _email);
+        addArgumentToQueryString(post, @"session[password]", _password);
+        NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCSessionsResource]];
+        NSURLRequest *request = CreateHttpPostRequest(url, postData);
         
-        if([[_txtFieldUsername text] isEqualToString:@""] || [[_txtFieldPassword text] isEqualToString:@""] ) {
-            showAlertDialog(RCErrorMessageUsernameAndPasswordMissing, @"Error");
-            [self setUIBusy:NO];
-        } else {
-            //[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-            NSString *post =[[NSString alloc] initWithFormat:@"session[email]=%@&session[password]=%@&mobile=1",[_txtFieldUsername text],[_txtFieldPassword text]];
-            NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-            NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCSessionsResource]];
-            NSURLRequest *request = CreateHttpPostRequest(url, postData);
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+            completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+        {
+            //[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
             
-            [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
-                completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
-            {
-                //[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-                NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-                
-                SBJsonParser *jsonParser = [SBJsonParser new];
-                NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
-                //NSLog(@"%@",jsonData);
-                
-                //Temporary:
-                if (jsonData != NULL) {
+            SBJsonParser *jsonParser = [SBJsonParser new];
+            NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
+            //NSLog(@"%@",jsonData);
+            
+            
+            if (jsonData != NULL) {
+                if ([[jsonData objectForKey:RCUnactivatedWarningKey] isEqualToString:RCUnactivatedAccountString]) {
+                    _userID = [[jsonData objectForKey:@"user_id"] intValue];
+                    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Account activation" message:@"Please enter the activation code sent to you via SMS" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:@"Resend SMS", nil];
+                    alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+                    alert.delegate = self;
+                    [alert show];
+                } else {
                     RCUser *user = [[RCUser alloc] initWithNSDictionary:(NSDictionary*)[jsonData objectForKey:@"user"]];
                     [delegate userDidLogIn:user];
-                }else {
-                    showAlertDialog(([NSString stringWithFormat:RCErrorMessagePleaseTryAgain]), @"Error");
                 }
-                [self setUIBusy:NO];
-            }];
-        }
+            }else {
+                showAlertDialog(([NSString stringWithFormat:@"%@. %@ ",responseData, RCErrorMessagePleaseTryAgain]), @"Error");
+            }
+            [self setUIBusy:NO];
+        }];
+        
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
         showAlertDialog(RCAlertMessageLoginFailed, @"Error");
+    }
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    NSLog(@"press button index in alert view: %d", buttonIndex);
+    if (buttonIndex == RCActivationAlertOkButtonIndex) {
+        NSString* activationCode = [[alertView textFieldAtIndex:0] text];
+        NSLog(@"Entered: %@",activationCode);
+        //[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+        NSString *post = initQueryString(@"confirmation_code", activationCode);
+        NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/activate", RCServiceURL, RCUsersResource, _userID]];
+        NSURLRequest *request = CreateHttpPostRequest(url, postData);
+        [self setUIBusy:YES];
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+         {
+             NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse*)response;
+             NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+             if (httpResponse.statusCode ==  RCHttpOkStatusCode && [responseData isEqualToString:@"ok"]) {
+                 [self asynchLogInRequest];
+             } else {
+                 if ([responseData hasPrefix:RCInvalidCodeString]) {
+                     showAlertDialog(@"Error", @"You entered the invalid activation code");
+                 } else {
+                     showAlertDialog(@"Error", @"We encountered a problem activating your account. Please try again.");
+                 }
+                 [self setUIBusy:NO];
+             }
+             
+         }];
+
+    } else if (buttonIndex == RCActivationAlertResendSMSButtonIndex) {
+        
     }
 }
 

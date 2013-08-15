@@ -10,7 +10,7 @@
 #import "RCLightboxViewController.h"
 
 @interface RCRegisterViewController : RCLightboxViewController <UITextFieldDelegate, TTTAttributedLabelDelegate>
-@property (weak, nonatomic) IBOutlet UITextField *txtFieldPasswordConfirmation;
+@property (weak, nonatomic) IBOutlet UITextField *txtFieldPhoneNumber;
 @property (weak, nonatomic) IBOutlet UITextField *txtFieldPassword;
 @property (weak, nonatomic) IBOutlet UITextField *txtFieldEmail;
 - (IBAction)btnCloseTouchUpInside:(id)sender;

@@ -21,14 +21,14 @@ BOOL        _willMoveKeyboardUp;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    _txtFieldPasswordConfirmation.delegate = self;
+    _txtFieldPhoneNumber.delegate = self;
     _txtFieldPassword.delegate = self;
 	_willMoveKeyboardUp = FALSE;
     _keyboardVisible = FALSE;
     [_txtFieldName setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
     [_txtFieldEmail setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
     [_txtFieldPassword setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
-    [_txtFieldPasswordConfirmation setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
+    [_txtFieldPhoneNumber setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
     NSString *text = [_lblTermsOfUse.text copy];
     _lblTermsOfUse.text = text;
     _lblTermsOfUse.delegate = self;
@@ -48,13 +48,13 @@ BOOL        _willMoveKeyboardUp;
     @try {
         
         if([[_txtFieldName text] isEqualToString:@""] || [[_txtFieldPassword text] isEqualToString:@""] 
-           || [[_txtFieldEmail text] isEqualToString:@""] || [[_txtFieldPasswordConfirmation text] isEqualToString:@""] ) {
+           || [[_txtFieldEmail text] isEqualToString:@""] || [[_txtFieldPhoneNumber text] isEqualToString:@""] ) {
             showAlertDialog(RCErrorMessageInformationMissing, @"Error");
         } else {
             NSMutableString *dataSt = initQueryString(@"user[email]", [_txtFieldEmail text]);
             addArgumentToQueryString(dataSt, @"user[password]", [_txtFieldPassword text]);
             addArgumentToQueryString(dataSt, @"user[name]", [_txtFieldName text]);
-            addArgumentToQueryString(dataSt, @"user[password_confirmation]", [_txtFieldPasswordConfirmation text]);
+            addArgumentToQueryString(dataSt, @"user[password_confirmation]", [_txtFieldPassword text]);
             NSData *postData = [dataSt dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
             NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCUsersResource]];
             NSURLRequest *request = CreateHttpPostRequest(url, postData);
@@ -72,6 +72,7 @@ BOOL        _willMoveKeyboardUp;
                 if (jsonData != NULL) {
                     NSDictionary *userData = (NSDictionary *) [jsonData objectForKey: @"user"];
                     NSString *name = (NSString *) [userData objectForKey:@"name"];
+                    showAlertDialog(([NSString stringWithFormat:@"Welcome %@! We have sent you an activation code via SMS to the phone number you provided. You can now login and activate your account using the aforementioned code.",name]), @"Welcome");
                     postNotification([NSString stringWithFormat:@"Welcome, %@!",name]);
                 }else {
                     showAlertDialog(([NSString stringWithFormat:@"%@ %@",RCErrorMessagePleaseTryAgain, responseData]), @"Error");
@@ -92,7 +93,7 @@ BOOL        _willMoveKeyboardUp;
 - (IBAction)btnBackgroundTap:(id)sender {
     [_txtFieldName resignFirstResponder];
     [_txtFieldPassword resignFirstResponder];
-    [_txtFieldPasswordConfirmation resignFirstResponder];
+    [_txtFieldPhoneNumber resignFirstResponder];
     [_txtFieldEmail resignFirstResponder];
     
 }
@@ -152,7 +153,7 @@ BOOL        _willMoveKeyboardUp;
 
 -(void)textFieldDidBeginEditing:(UITextField *)sender
 {
-    if ([sender isEqual:_txtFieldPasswordConfirmation] || [sender isEqual:_txtFieldPassword])
+    if ([sender isEqual:_txtFieldPhoneNumber] || [sender isEqual:_txtFieldPassword])
     {
         _willMoveKeyboardUp = TRUE;
         double oldPosition = _moveUpBy;
