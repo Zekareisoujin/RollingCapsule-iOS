@@ -260,6 +260,7 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
     [_txtFieldUsername setUserInteractionEnabled:!busy];
     [_txtFieldPassword setUserInteractionEnabled:!busy];
     [_btnLogIn setEnabled:!busy];
+    [_btnTickLogIn setEnabled:!busy];
     [_btnRegister setUserInteractionEnabled:!busy];
 }
 

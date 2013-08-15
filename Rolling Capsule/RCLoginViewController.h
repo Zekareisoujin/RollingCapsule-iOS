@@ -20,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *txtFieldUsername;
 @property (weak, nonatomic) IBOutlet UITextField *txtFieldPassword;
 @property (weak, nonatomic) IBOutlet UIButton *btnLogIn;
+@property (weak, nonatomic) IBOutlet UIButton *btnTickLogIn;
 @property (weak, nonatomic) IBOutlet UIButton *btnRegister;
 
 @property (strong, nonatomic) RCKeyboardPushUpHandler *keyboardHandler;
