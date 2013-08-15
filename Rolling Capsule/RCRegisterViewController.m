@@ -10,8 +10,12 @@
 #import "SBJson.h"
 #import "RCUtilities.h"
 #import "RCRegisterViewController.h"
+#import "RCKeyboardPushUpHandler.h"
+#import "RMPhoneFormat.h"
 
-@implementation RCRegisterViewController
+@implementation RCRegisterViewController {
+    RCKeyboardPushUpHandler *_keyboardHandler;
+}
 
 double      _moveUpBy;
 double      _keyboardTopPosition;
@@ -35,6 +39,7 @@ BOOL        _willMoveKeyboardUp;
     NSRange termsRange = [_lblTermsOfUse.text rangeOfString:@"Memcap terms"];
     [_lblTermsOfUse addLinkToURL:[NSURL URLWithString:RCTermsOfUseURL] withRange:termsRange];
     [self animateViewAppearance];
+    _keyboardHandler = [[RCKeyboardPushUpHandler alloc] init];
 }
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
@@ -55,6 +60,14 @@ BOOL        _willMoveKeyboardUp;
             addArgumentToQueryString(dataSt, @"user[password]", [_txtFieldPassword text]);
             addArgumentToQueryString(dataSt, @"user[name]", [_txtFieldName text]);
             addArgumentToQueryString(dataSt, @"user[password_confirmation]", [_txtFieldPassword text]);
+            RMPhoneFormat *fmt = [[RMPhoneFormat alloc] init];
+            // Call any number of times
+            NSString *numberString = [_txtFieldPhoneNumber text];
+            if ([numberString hasPrefix:@"0"])
+                numberString = [numberString substringFromIndex:1];
+            
+             NSString *formattedNumber = [NSString stringWithFormat:@"%@%@",[fmt defaultCallingCode],numberString];
+            addArgumentToQueryString(dataSt, @"phone_number", formattedNumber);
             NSData *postData = [dataSt dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
             NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCUsersResource]];
             NSURLRequest *request = CreateHttpPostRequest(url, postData);
@@ -73,9 +86,8 @@ BOOL        _willMoveKeyboardUp;
                     NSDictionary *userData = (NSDictionary *) [jsonData objectForKey: @"user"];
                     NSString *name = (NSString *) [userData objectForKey:@"name"];
                     showAlertDialog(([NSString stringWithFormat:@"Welcome %@! We have sent you an activation code via SMS to the phone number you provided. You can now login and activate your account using the aforementioned code.",name]), @"Welcome");
-                    postNotification([NSString stringWithFormat:@"Welcome, %@!",name]);
                 }else {
-                    showAlertDialog(([NSString stringWithFormat:@"%@ %@",RCErrorMessagePleaseTryAgain, responseData]), @"Error");
+                    showAlertDialog(([NSString stringWithFormat:@"%@. %@",responseData, RCErrorMessagePleaseTryAgain]), @"Error");
                 }
 
             }];
@@ -106,30 +118,30 @@ BOOL        _willMoveKeyboardUp;
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    // register for keyboard notifications
-    [[NSNotificationCenter defaultCenter] addObserver:self
+    [super viewWillAppear:animated];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:_keyboardHandler
                                              selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardWillShowNotification
                                                object:nil];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self
+    [[NSNotificationCenter defaultCenter] addObserver:_keyboardHandler
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
-    [super viewWillAppear:animated];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
-    // unregister for keyboard notifications while not visible.
-    [[NSNotificationCenter defaultCenter] removeObserver:self
+    [super viewWillDisappear:animated];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:_keyboardHandler
                                                     name:UIKeyboardWillShowNotification
                                                   object:nil];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self
+    [[NSNotificationCenter defaultCenter] removeObserver:_keyboardHandler
                                                     name:UIKeyboardWillHideNotification
                                                   object:nil];
-    [super viewWillDisappear:animated];
 }
 
 -(void)keyboardWillShow:(NSNotification*)notification {
@@ -150,18 +162,18 @@ BOOL        _willMoveKeyboardUp;
     }
     
 }
-
+-(BOOL)textFieldShouldBeginEditing:(UITextField *)sender {
+    if ([sender isEqual:_txtFieldPhoneNumber] )
+    {
+        _keyboardHandler.enabled = YES;
+        _keyboardHandler.view = self.view;
+        _keyboardHandler.bottomScreenGap = self.view.frame.size.height - (_txtFieldPhoneNumber.frame.origin.y + _txtFieldPhoneNumber.frame.size.height);
+    } else _keyboardHandler.enabled = NO;
+    return YES;
+}
 -(void)textFieldDidBeginEditing:(UITextField *)sender
 {
-    if ([sender isEqual:_txtFieldPhoneNumber] || [sender isEqual:_txtFieldPassword])
-    {
-        _willMoveKeyboardUp = TRUE;
-        double oldPosition = _moveUpBy;
-        _moveUpBy = sender.frame.origin.y + sender.frame.size.height;
-        if (_keyboardVisible) {
-            [self setViewMovedUp:YES offset:(_moveUpBy-oldPosition)];
-        }
-    }
+    
 }
 
 //method to move the view up/down whenever the keyboard is shown/dismissed

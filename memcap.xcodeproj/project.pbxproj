@@ -104,6 +104,8 @@
 		6461C9B417B96552009DD299 /* viewPostWhistle.png in Resources */ = {isa = PBXBuildFile; fileRef = 6461C9B317B96552009DD299 /* viewPostWhistle.png */; };
 		6461C9B617B9707E009DD299 /* viewPostReportFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 6461C9B517B9707E009DD299 /* viewPostReportFrame.png */; };
 		6461C9B917B99B0A009DD299 /* RCPostReport.m in Sources */ = {isa = PBXBuildFile; fileRef = 6461C9B817B99B0A009DD299 /* RCPostReport.m */; };
+		6461C9C617BCBC2D009DD299 /* RMPhoneFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 6461C9C517BCBC2D009DD299 /* RMPhoneFormat.m */; };
+		6461C9C817BCBE33009DD299 /* PhoneFormats.dat in Resources */ = {isa = PBXBuildFile; fileRef = 6461C9C717BCBE33009DD299 /* PhoneFormats.dat */; };
 		646C809B17A5C67A00054C1A /* RCFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = 646C809A17A5C67A00054C1A /* RCFeed.m */; };
 		646C809D17A64A6F00054C1A /* outboxGreyLeacher.png in Resources */ = {isa = PBXBuildFile; fileRef = 646C809C17A64A6F00054C1A /* outboxGreyLeacher.png */; };
 		647265B617A04CDF002E654A /* RCAsyncPhotoDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 647265B117A04CDF002E654A /* RCAsyncPhotoDownloadOperation.m */; };
@@ -443,6 +445,9 @@
 		6461C9B517B9707E009DD299 /* viewPostReportFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostReportFrame.png; path = ../viewPostReportFrame.png; sourceTree = "<group>"; };
 		6461C9B717B99B0A009DD299 /* RCPostReport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCPostReport.h; sourceTree = "<group>"; };
 		6461C9B817B99B0A009DD299 /* RCPostReport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCPostReport.m; sourceTree = "<group>"; };
+		6461C9C417BCBC2C009DD299 /* RMPhoneFormat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RMPhoneFormat.h; sourceTree = "<group>"; };
+		6461C9C517BCBC2D009DD299 /* RMPhoneFormat.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RMPhoneFormat.m; sourceTree = "<group>"; };
+		6461C9C717BCBE33009DD299 /* PhoneFormats.dat */ = {isa = PBXFileReference; lastKnownFileType = file; path = PhoneFormats.dat; sourceTree = "<group>"; };
 		646C809917A5C67A00054C1A /* RCFeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCFeed.h; sourceTree = "<group>"; };
 		646C809A17A5C67A00054C1A /* RCFeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCFeed.m; sourceTree = "<group>"; };
 		646C809C17A64A6F00054C1A /* outboxGreyLeacher.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = outboxGreyLeacher.png; path = ../outboxGreyLeacher.png; sourceTree = "<group>"; };
@@ -753,6 +758,7 @@
 		6417B23317946A8C007777E5 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				6461C9C917BCC507009DD299 /* Phone number */,
 				6476626D17A95506000D9E36 /* XML */,
 				BFCA7856174E1AD200666CBA /* Json */,
 				642B0D5C17A45959004F7B8E /* menuContent.json */,
@@ -979,6 +985,16 @@
 				64E293151784ABEE009496FF /* viewPostViewSeedLabel.png */,
 			);
 			name = Images;
+			sourceTree = "<group>";
+		};
+		6461C9C917BCC507009DD299 /* Phone number */ = {
+			isa = PBXGroup;
+			children = (
+				6461C9C717BCBE33009DD299 /* PhoneFormats.dat */,
+				6461C9C417BCBC2C009DD299 /* RMPhoneFormat.h */,
+				6461C9C517BCBC2D009DD299 /* RMPhoneFormat.m */,
+			);
+			name = "Phone number";
 			sourceTree = "<group>";
 		};
 		6476626D17A95506000D9E36 /* XML */ = {
@@ -1529,6 +1545,7 @@
 				BFA561D917BB7E8600665126 /* btnStandard2@2x.png in Resources */,
 				BFA561DB17BB811200665126 /* menuIconFacebook.png in Resources */,
 				BFA561DD17BB851D00665126 /* facebookNoAvatar.png in Resources */,
+				6461C9C817BCBE33009DD299 /* PhoneFormats.dat in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1635,6 +1652,7 @@
 				BFB8085717B0F9D9004EB38E /* RCFacebookHelper.m in Sources */,
 				BFB8085D17B25266004EB38E /* RCFacebookSettingsViewController.m in Sources */,
 				6461C9B917B99B0A009DD299 /* RCPostReport.m in Sources */,
+				6461C9C617BCBC2D009DD299 /* RMPhoneFormat.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

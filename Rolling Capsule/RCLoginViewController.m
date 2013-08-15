@@ -14,6 +14,7 @@
 #import "RCMainFeedViewController.h"
 #import "RCUser.h"
 #import "RCUtilities.h"
+#import "RMPhoneFormat.h"
 #import <QuartzCore/QuartzCore.h>
 
 @interface RCLoginViewController ()
@@ -113,37 +114,71 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
     }
 }
 
+- (void) requestResendActivation:(NSString*) phoneNumber {
+    @try {
+    NSMutableString *post = initQueryString(@"password", _password);
+        
+    RMPhoneFormat *fmt = [[RMPhoneFormat alloc] init];
+    if ([phoneNumber hasPrefix:@"0"])
+        phoneNumber = [phoneNumber substringFromIndex:1];
+    
+    NSString *formattedNumber = [NSString stringWithFormat:@"%@%@",[fmt defaultCallingCode],phoneNumber];
+    addArgumentToQueryString(post, @"phone_number", formattedNumber);
+    NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+    NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/send_activation_code", RCServiceURL, RCUsersResource, _userID]];
+    NSURLRequest *request = CreateHttpPostRequest(url, postData);
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+     {
+         NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse*)response;
+         NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+         if (error != nil || httpResponse.statusCode !=  RCHttpOkStatusCode || ![responseData isEqualToString:@"ok"]) {
+             showAlertDialog(RCErrorMessagePleaseTryAgain, @"Error");
+         }
+     }];
+    }@catch (NSException* e) {
+        NSLog(@"Exception: %@", e);
+        showAlertDialog(RCAlertMessageLoginFailed, @"Error");
+    }
+}
+
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     NSLog(@"press button index in alert view: %d", buttonIndex);
-    if (buttonIndex == RCActivationAlertOkButtonIndex) {
-        NSString* activationCode = [[alertView textFieldAtIndex:0] text];
-        NSLog(@"Entered: %@",activationCode);
-        //[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-        NSString *post = initQueryString(@"confirmation_code", activationCode);
-        NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/activate", RCServiceURL, RCUsersResource, _userID]];
-        NSURLRequest *request = CreateHttpPostRequest(url, postData);
-        [self setUIBusy:YES];
-        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
-                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
-         {
-             NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse*)response;
-             NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-             if (httpResponse.statusCode ==  RCHttpOkStatusCode && [responseData isEqualToString:@"ok"]) {
-                 [self asynchLogInRequest];
-             } else {
-                 if ([responseData hasPrefix:RCInvalidCodeString]) {
-                     showAlertDialog(@"Error", @"You entered the invalid activation code");
+    if ([alertView.title isEqualToString:@"Phone number"]) {
+        [self requestResendActivation:[[alertView textFieldAtIndex:0] text]];
+    } else {
+        if (buttonIndex == RCActivationAlertOkButtonIndex) {
+            NSString* activationCode = [[alertView textFieldAtIndex:0] text];
+            NSLog(@"Entered: %@",activationCode);
+            //[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+            NSString *post = initQueryString(@"confirmation_code", activationCode);
+            NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+            NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d/activate", RCServiceURL, RCUsersResource, _userID]];
+            NSURLRequest *request = CreateHttpPostRequest(url, postData);
+            [self setUIBusy:YES];
+            [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                                   completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+             {
+                 NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse*)response;
+                 NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+                 if (httpResponse.statusCode ==  RCHttpOkStatusCode && [responseData isEqualToString:@"ok"]) {
+                     [self asynchLogInRequest];
                  } else {
-                     showAlertDialog(@"Error", @"We encountered a problem activating your account. Please try again.");
+                     if ([responseData hasPrefix:RCInvalidCodeString]) {
+                         showAlertDialog(@"Error", @"You entered the invalid activation code");
+                     } else {
+                         showAlertDialog(@"Error", @"We encountered a problem activating your account. Please try again.");
+                     }
+                     [self setUIBusy:NO];
                  }
-                 [self setUIBusy:NO];
-             }
-             
-         }];
-
-    } else if (buttonIndex == RCActivationAlertResendSMSButtonIndex) {
-        
+                 
+             }];
+        } else if (buttonIndex == RCActivationAlertResendSMSButtonIndex) {
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Phone number" message:@"Please enter your phone number" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+            alert.delegate = self;
+            [alert show];
+        }
     }
 }
 
