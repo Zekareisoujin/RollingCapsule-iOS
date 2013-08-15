@@ -12,6 +12,7 @@
 #import "RCAmazonS3Helper.h"
 #import "RCResourceCache.h"
 #import "RCOperationsManager.h"
+#import "SBJson.h"
 
 @interface RCPost ()
 @property (nonatomic,strong) NSObject* objUIUpdate;
@@ -219,5 +220,30 @@ static NSMutableDictionary* RCPostPostCollection = nil;
 - (void) registerUIUpdateAction:(NSObject*)target action:(SEL)sel {
     _objUIUpdate = target;
     _selUIUPdate = sel;
+}
+
+- (void)updatePostTopic:(NSString*)topic completionHandler:(void(^)(NSString*))completionHandle {
+    
+    
+    NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@/%d?mobile=1", RCServiceURL, RCPostsResource, _postID]];
+    NSMutableString* dataSt = initQueryString(@"post[topic]", topic);
+    NSData *postData = [dataSt dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+    NSURLRequest *request = CreateHttpPutRequest(url, postData);
+    [RCConnectionManager startConnection];
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                           completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+     {
+         [RCConnectionManager endConnection];
+         if (error == nil) {
+             NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+             
+             if ([responseData isEqualToString:@"ok"])
+                 completionHandle(nil);
+             else
+                 completionHandle(@"Server error, please try again later");
+             
+         } else
+             completionHandle(RCAlertMessageConnectionFailed);
+     }];
 }
 @end

@@ -213,8 +213,11 @@ static BOOL RCPostDetailsViewControllerShowPostID = NO;
     UINib *nib = [UINib nibWithNibName:cellIdentifier bundle: nil];
     [_collectionViewTopic registerNib:nib forCellWithReuseIdentifier:cellIdentifier];
     
-    if (_post.topic != nil)
-        [_btnTopic setImage:[UIImage imageNamed:[NSString stringWithFormat:@"topicCategory%@.png", _post.topic]] forState:UIControlStateNormal];
+    [_btnTopic setBackgroundImage:[UIImage imageNamed:@"buttonTopic"] forState:UIControlStateDisabled];
+    if (_post.topic != nil) {
+        [_btnTopic setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"topicCategory%@.png", _post.topic]] forState:UIControlStateNormal];
+        [_btnTopic setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"topicCategory%@.png", _post.topic]] forState:UIControlStateDisabled];
+    }
     
     //tap gesture for user label, in order to go to user profile
     UIView *sview = [[UIView alloc] initWithFrame:_lblUsername.frame];
@@ -262,7 +265,6 @@ static BOOL RCPostDetailsViewControllerShowPostID = NO;
     }
     
     //setting for edit mode:
-    [_btnTopic setBackgroundImage:[UIImage imageNamed:@"buttonTopic"] forState:UIControlStateDisabled];
     [_btnTopic setEnabled:_editable];
     [_btnComment setEnabled:!_editable];
     [_btnPostComment setEnabled:!_editable];
@@ -984,12 +986,24 @@ static BOOL RCPostDetailsViewControllerShowPostID = NO;
     UIButton *button = _btnTopic;//(UIButton*)_txtFieldPostSubject.leftView;
     if (idx >= 0) {
         NSString *topic = [_topics objectAtIndex:idx];
-        _currentTopic = topic;
-        NSString *imageName = [NSString stringWithFormat:@"topicCategory%@.png", topic];
-        [button setBackgroundImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+        
+        [_post updatePostTopic:topic completionHandler:^(NSString* errorMsg){
+            if (!errorMsg) {
+                _post.topic = _currentTopic = topic;
+                NSString *imageName = [NSString stringWithFormat:@"topicCategory%@.png", topic];
+                [button setBackgroundImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
+            }else
+                postNotification(errorMsg);
+        }];
+        
     } else {
-        _currentTopic = nil;
-        [button setBackgroundImage:[UIImage imageNamed:@"buttonTopic.png"] forState:UIControlStateNormal];
+        [_post updatePostTopic:nil completionHandler:^(NSString *errorMsg) {
+            if (!errorMsg) {
+                _post.topic = _currentTopic = nil;
+                [button setBackgroundImage:[UIImage imageNamed:@"buttonTopic.png"] forState:UIControlStateNormal];
+            }else
+                postNotification(errorMsg);
+        }];
     }
     [_viewTopic removeFromSuperview];
     _topicTableVisible = NO;
