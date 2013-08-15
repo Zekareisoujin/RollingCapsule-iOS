@@ -15,6 +15,7 @@
 
 + (NSString*) cellIdentifier;
 - (void) setHighlightShadow: (BOOL)highlight;
+- (void) setShowBorder: (BOOL)show;
 @property (weak, nonatomic) IBOutlet UIImageView *lblNotification;
 - (void)initCellAppearanceForPost:(RCPost *) post;
 

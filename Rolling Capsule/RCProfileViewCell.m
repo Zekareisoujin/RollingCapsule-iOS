@@ -45,7 +45,10 @@
     [self.layer setShadowOffset:CGSizeZero];
     [self.layer setShadowPath:[[UIBezierPath
                                 bezierPathWithRect:self.bounds] CGPath]];
-    [self.imageView setImage:[UIImage imageNamed:@"loading2.gif"]];
+    
+    [self.imageView.layer setBorderColor:[UIColor yellowColor].CGColor];
+    
+    [self.imageView setImage:[UIImage standardLoadingImage]];
     if ([post.thumbnailUrl isKindOfClass:[NSNull class]]) return;
     _currentPostID = post.postID;
     if (post.thumbnailImage != nil)
@@ -67,62 +70,66 @@
 
 - (void)getPostContentImageFromInternet:(RCUser *) user withPostContent:(RCPost *) post usingCollection:(NSMutableDictionary*)postCache completion:(void (^)(void))callback {
     
-    _currentPostID = post.postID;
-    [self.imageView.layer setCornerRadius:10.0];
-    [self.imageView setClipsToBounds:YES];
-    [self.imageView setImage:[UIImage standardLoadingImage]];
-    
-    [self.layer setMasksToBounds:NO];
-    [self.layer setShadowColor:[UIColor whiteColor].CGColor];
-    [self.layer setShadowRadius:5.0];
-    [self.layer setShadowOffset:CGSizeZero];
-    [self.layer setShadowPath:[[UIBezierPath
-                                bezierPathWithRect:self.bounds] CGPath]];
-    [self.imageView setImage:[UIImage imageNamed:@"loading2.gif"]];
-    if ([post.fileUrl isKindOfClass:[NSNull class]]) return;
-    RCResourceCache *cache = [RCResourceCache centralCache];
-    NSString *key = [NSString stringWithFormat:@"%@/%@", RCMediaResource, post.thumbnailUrl];
-    dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
-    dispatch_async(queue, ^{
-//        RCUser *owner = [[RCUser alloc] init];
-//        owner.userID = post.userID;
-//        owner.email = post.authorEmail;
-//        owner.name = post.authorName;
-        [RCUser getUserWithIDAsync:post.userID completionHandler:^(RCUser* owner){
-            UIImage* cachedImg = (UIImage*)[cache getResourceForKey:key usingQuery:^{
-                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-                UIImage *image = [RCAmazonS3Helper getUserMediaImage:owner withLoggedinUserID:user.userID withImageUrl:post.thumbnailUrl];
-                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-                NSLog(@"downloading images");
-
-                return image;
-            }];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (post.postID == _currentPostID)
-                    [_imageView setImage:cachedImg];
-                callback();
-            });
-        }];
-    });
-    
-
-    /*[RCUser getUserWithIDAsync:post.userID completionHandler:^(RCUser* owner){
-        UIImage* cachedImg = (UIImage*)[cache getResourceForKey:key usingQuery:^{
-            UIImage *image = [RCAmazonS3Helper getUserMediaImage:owner withLoggedinUserID:user.userID withImageUrl:post.thumbnailUrl];
-            NSLog(@"downloading images");
-            return image;
-        }];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (cachedImg != nil)
-                [_imageView setImage:cachedImg];
-            callback();
-        });
-    }];*/
+//    _currentPostID = post.postID;
+//    [self.imageView.layer setCornerRadius:10.0];
+//    [self.imageView setClipsToBounds:YES];
+//    [self.imageView setImage:[UIImage standardLoadingImage]];
+//    
+//    [self.layer setMasksToBounds:NO];
+//    [self.layer setShadowColor:[UIColor whiteColor].CGColor];
+//    [self.layer setShadowRadius:5.0];
+//    [self.layer setShadowOffset:CGSizeZero];
+//    [self.layer setShadowPath:[[UIBezierPath
+//                                bezierPathWithRect:self.bounds] CGPath]];
+//    [self.imageView setImage:[UIImage standardLoadingImage]];
+//    if ([post.fileUrl isKindOfClass:[NSNull class]]) return;
+//    RCResourceCache *cache = [RCResourceCache centralCache];
+//    NSString *key = [NSString stringWithFormat:@"%@/%@", RCMediaResource, post.thumbnailUrl];
+//    dispatch_queue_t queue = dispatch_queue_create(RCCStringAppDomain, NULL);
+//    dispatch_async(queue, ^{
+////        RCUser *owner = [[RCUser alloc] init];
+////        owner.userID = post.userID;
+////        owner.email = post.authorEmail;
+////        owner.name = post.authorName;
+//        [RCUser getUserWithIDAsync:post.userID completionHandler:^(RCUser* owner){
+//            UIImage* cachedImg = (UIImage*)[cache getResourceForKey:key usingQuery:^{
+//                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+//                UIImage *image = [RCAmazonS3Helper getUserMediaImage:owner withLoggedinUserID:user.userID withImageUrl:post.thumbnailUrl];
+//                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+//                NSLog(@"downloading images");
+//
+//                return image;
+//            }];
+//            dispatch_async(dispatch_get_main_queue(), ^{
+//                if (post.postID == _currentPostID)
+//                    [_imageView setImage:cachedImg];
+//                callback();
+//            });
+//        }];
+//    });
+//    
+//
+//    /*[RCUser getUserWithIDAsync:post.userID completionHandler:^(RCUser* owner){
+//        UIImage* cachedImg = (UIImage*)[cache getResourceForKey:key usingQuery:^{
+//            UIImage *image = [RCAmazonS3Helper getUserMediaImage:owner withLoggedinUserID:user.userID withImageUrl:post.thumbnailUrl];
+//            NSLog(@"downloading images");
+//            return image;
+//        }];
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            if (cachedImg != nil)
+//                [_imageView setImage:cachedImg];
+//            callback();
+//        });
+//    }];*/
 
 }
 
 - (void) setHighlightShadow: (BOOL)highlight {
     [self.layer setShadowOpacity:highlight?1.0:0.0];
+}
+
+- (void) setShowBorder: (BOOL)show {
+    [self.imageView.layer setBorderWidth:(show?2.0:0.0)];
 }
 
 /*
