@@ -36,15 +36,18 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
 
 - (void)viewDidLoad
 {
-    _txtFieldUsername.placeholder = RCEmailCapitalString;
-    _txtFieldPassword.placeholder = RCPasswordCapitalString;
+    //_txtFieldUsername.placeholder = RCEmailCapitalString;
+    //_txtFieldPassword.placeholder = RCPasswordCapitalString;
 
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    [_btnLogIn setBackgroundImage:[UIImage imageNamed:@"loginBtnLoginPressed"] forState:UIControlStateHighlighted];
-    [_btnRegister setBackgroundImage:[UIImage imageNamed:@"loginBtnRegisterPressed"] forState:UIControlStateHighlighted];
-    
+    //[_btnLogIn setBackgroundImage:[UIImage imageNamed:@"loginBtnLoginPressed"] forState:UIControlStateHighlighted];
+    //[_btnRegister setBackgroundImage:[UIImage imageNamed:@"loginBtnRegisterPressed"] forState:UIControlStateHighlighted];
+    _txtFieldUsername.leftView = [[UIView alloc] initWithFrame:CGRectMake(0,0,9,10)];
+    _txtFieldUsername.leftViewMode = UITextFieldViewModeAlways;
+    _txtFieldPassword.leftView = [[UIView alloc] initWithFrame:CGRectMake(0,0,9,10)];
+    _txtFieldPassword.leftViewMode = UITextFieldViewModeAlways;
     _keyboardHandler = [[RCKeyboardPushUpHandler alloc] init];
     _keyboardHandler.view = self.view;
     _keyboardHandler.bottomScreenGap = self.view.frame.size.height - _txtFieldPassword.frame.origin.y - _txtFieldPassword.frame.size.height - 30;
@@ -222,7 +225,7 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
     [self.navigationController setNavigationBarHidden:YES animated:animated];
     [super viewWillAppear:animated];
     
-    [[NSNotificationCenter defaultCenter] addObserver:_keyboardHandler
+    /*[[NSNotificationCenter defaultCenter] addObserver:_keyboardHandler
                                              selector:@selector(keyboardWillShow:)
                                                  name:UIKeyboardWillShowNotification
                                                object:nil];
@@ -230,7 +233,7 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
     [[NSNotificationCenter defaultCenter] addObserver:_keyboardHandler
                                              selector:@selector(keyboardWillHide:)
                                                  name:UIKeyboardWillHideNotification
-                                               object:nil];
+                                               object:nil];*/
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -238,13 +241,13 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
     [self.navigationController setNavigationBarHidden:NO animated:animated];
     [super viewWillDisappear:animated];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:_keyboardHandler
+    /*[[NSNotificationCenter defaultCenter] removeObserver:_keyboardHandler
                                                     name:UIKeyboardWillShowNotification
                                                   object:nil];
     
     [[NSNotificationCenter defaultCenter] removeObserver:_keyboardHandler
                                                     name:UIKeyboardWillHideNotification
-                                                  object:nil];
+                                                  object:nil];*/
 }
 
 - (void)switchToFeedView:(RCUser *)user {
