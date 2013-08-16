@@ -108,7 +108,7 @@ void SignalHandler(int sig) {
     //[[UINavigationBar appearance] setTintColor:[UIColor colorWithRed:RCAppThemeColorRed green:RCAppThemeColorGreen blue:RCAppThemeColorBlue alpha:1.0]];
 
     _menuViewController = [[RCMainMenuViewController alloc] initWithContentView:_navigationController];
-    
+     
     [firstViewController setDelegate:_menuViewController];
     _mainViewController = [[RCSlideoutViewController alloc] init];
     _mainViewController.contentController = _navigationController;

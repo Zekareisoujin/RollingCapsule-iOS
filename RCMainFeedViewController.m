@@ -309,7 +309,7 @@
         [_mapView addAnnotation:post];
         i++;
     }
-    if ([RCNotification numberOfNewNotifications] > 0)
+    if ([RCNotification numberOfNewPostNotifications] > 0)
         [_imgViewNewNotificationNotice setHidden:NO];
     else
         [_imgViewNewNotificationNotice setHidden:YES];

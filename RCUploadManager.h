@@ -11,8 +11,6 @@
 #import "RCMediaUploadOperation.h"
 #import "RCUploadTask.h"
 
-#define RCNotificationNameMediaUploaded @"RCNotificationNameMediaUploaded"
-
 @interface RCUploadManager : NSObject
 
 @property (nonatomic, strong) NSOperationQueue* uploadQueue;

@@ -16,6 +16,7 @@
 #import "RCUserProfileViewController.h"
 #import "RCNewPostViewController.h"
 #import "AppDelegate.h"
+#import "RCNotification.h"
 
 @interface RCFriendListViewController ()
 
@@ -139,7 +140,8 @@ CGRect  searchButtonHideFrame;
     _displayedItems = _friends;
     [self btnFriendTouchUpInside:self];
 
-
+    if ([RCNotification numberOfNewFriendRequests] > 0)
+        [_imgViewNotice setHidden:NO];
 }
 
 - (void) handleRefresh:(UIRefreshControl *) refreshControl {
@@ -497,6 +499,8 @@ CGRect  searchButtonHideFrame;
 }
 
 - (IBAction)btnRequestsTouchUpInside:(id)sender {
+    [RCNotification resetNewFriendRequests];
+    [_imgViewNotice setHidden:YES];
     _viewingMode = RCFriendListViewModePendingFriends;
     _displayedItems = _requested_friends;
     [_tableTitleBackground setImage:[UIImage imageNamed:@"friendListBarPending"]];

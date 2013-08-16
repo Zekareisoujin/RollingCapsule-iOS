@@ -26,5 +26,7 @@
 + (NSMutableArray*) notificationsForResource:(NSString*)resourceSpecifier;
 + (NSMutableArray*) getNotifiedPosts;
 + (void) loadMissingNotifiedPostsForList:(NSMutableArray*)posts withCompletion:(void(^)(void)) completion;
-+ (int) numberOfNewNotifications;
++ (int) numberOfNewPostNotifications;
++ (int) numberOfNewFriendRequests;
++ (void) resetNewFriendRequests;
 @end

@@ -23,10 +23,11 @@
 @synthesize urls = _urls;
 @synthesize viewed = _viewed;
 
-static int RCNotficationNumberOfNewNotifications = 0;
+static int RCNotficationNumberOfNewPostNotifications = 0;
 static NSMutableArray* RCNotificationNotificationList = nil;
 static NSMutableDictionary* RCNotificationObjectsWithNotification = nil;
 static NSMutableArray* RCNotificationPostsWithNotification = nil;
+static NSMutableArray* RCNotificatioNewFriendRequests = 0;
 
 - (id) initWithNSDictionary:(NSDictionary *)postData {
     self = [super init];
@@ -48,7 +49,9 @@ static NSMutableArray* RCNotificationPostsWithNotification = nil;
 
 - (void) updateViewedProperty {
     if (!self.viewed) {
-        RCNotficationNumberOfNewNotifications--;
+        BOOL commentedPost = [_content rangeOfString:RCCommentedString].location != NSNotFound;
+        if (commentedPost)
+            RCNotficationNumberOfNewPostNotifications--;
         self.viewed = true;
         NSURL *url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%d", RCServiceURL, RCNotificationsResource, _notificationID]];
         NSURLRequest *request = CreateHttpPutRequest(url,nil);
@@ -64,13 +67,16 @@ static NSMutableArray* RCNotificationPostsWithNotification = nil;
     RCNotificationNotificationList = [[NSMutableArray alloc] init];
     RCNotificationObjectsWithNotification = [[NSMutableDictionary alloc] init];
     RCNotificationPostsWithNotification = [[NSMutableArray alloc] init];
+    RCNotificatioNewFriendRequests = [[NSMutableArray alloc] init];
 }
 
 + (void) clearNotifications{
     [RCNotificationNotificationList removeAllObjects];
     [RCNotificationObjectsWithNotification removeAllObjects];
     [RCNotificationPostsWithNotification removeAllObjects];
-    RCNotficationNumberOfNewNotifications = 0;
+    [RCNotificatioNewFriendRequests removeAllObjects];
+    RCNotficationNumberOfNewPostNotifications = 0;
+    
 }
 
 + (NSMutableArray*) notificationsForResource:(NSString*)resourceSpecifier {
@@ -80,14 +86,12 @@ static NSMutableArray* RCNotificationPostsWithNotification = nil;
 + (RCNotification*) parseNotification:(NSDictionary*) notificationDict {
     RCNotification* notification = [[RCNotification alloc] initWithNSDictionary:notificationDict];
     if ([notification.content isKindOfClass:[NSNull class]])
-        return nil;
-    if (!notification.viewed)
-        RCNotficationNumberOfNewNotifications++;
+        return nil;        
     int daysToAdd = 10;
     NSDate *expiry = [notification.updatedTime dateByAddingTimeInterval:24*60*60*daysToAdd];
     if ([expiry compare:[NSDate date]] == NSOrderedAscending) return notification;
     NSData *htmlData = [notification.content dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:NO];
-    
+    BOOL addFriend = [notification.content rangeOfString:RCFriendString].location != NSNotFound;
     // 2
     TFHpple *parser = [TFHpple hppleWithHTMLData:htmlData];
     
@@ -108,8 +112,13 @@ static NSMutableArray* RCNotificationPostsWithNotification = nil;
                     [RCNotificationPostsWithNotification
                      addObject:[RCPost getPostWithID:postID]];
                 }
-                if (!notification.viewed)
+                if (!notification.viewed) {
                     [notificationListForObject addObject:notification];
+                    RCNotficationNumberOfNewPostNotifications++;
+                }
+            }
+            if (!notification.viewed && addFriend) {
+                [RCNotificatioNewFriendRequests addObject:notification];
             }
         }
     }
@@ -155,8 +164,18 @@ static NSMutableArray* RCNotificationPostsWithNotification = nil;
          }];
     } else completion();
 }
-+ (int) numberOfNewNotifications {
-    return RCNotficationNumberOfNewNotifications;
+
++ (int) numberOfNewPostNotifications {
+    return RCNotficationNumberOfNewPostNotifications;
 }
 
++ (int) numberOfNewFriendRequests {
+    return [RCNotificatioNewFriendRequests count];
+}
++ (void) resetNewFriendRequests {
+    for (RCNotification* notification in RCNotificatioNewFriendRequests) {
+        [notification updateViewedProperty];
+    }
+    [RCNotificatioNewFriendRequests removeAllObjects];
+}
 @end

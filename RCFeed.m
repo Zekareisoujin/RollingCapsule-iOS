@@ -81,6 +81,10 @@ static RCFeed* RCFeedFollowFeed = nil;
     for (NSDictionary *notificationJson in notificationListJson) {
         [RCNotification parseNotification:notificationJson];
     }
+    if ([RCNotification numberOfNewFriendRequests] > 0) {
+        NSNotification *notification = [NSNotification notificationWithName:RCNotificationNameNewFriendRequest object:self];
+        [[NSNotificationCenter defaultCenter] postNotification:notification];
+    }
 }
 
 - (void) appendData:(NSData*) data willAddToFront:(BOOL) toFront {
