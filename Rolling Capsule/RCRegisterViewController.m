@@ -71,7 +71,10 @@ BOOL        _willMoveKeyboardUp;
             RMPhoneFormat *fmt = [[RMPhoneFormat alloc] init];
             countryCode = [fmt defaultCallingCode];
         }
-        NSString *phoneNumber = [NSString stringWithFormat:@"%@%@",countryCode,[_txtFieldPhoneNumber text] ];
+        NSString *phoneNumber = [_txtFieldPhoneNumber text];
+        if ([phoneNumber hasPrefix:@"0"])
+            phoneNumber = [phoneNumber substringFromIndex:1];
+        phoneNumber = [NSString stringWithFormat:@"%@%@",countryCode,phoneNumber ];
         if ([phoneNumber hasPrefix:@"+"])
             phoneNumber = [phoneNumber substringFromIndex:1];
         addArgumentToQueryString(dataSt, @"phone_number", phoneNumber);

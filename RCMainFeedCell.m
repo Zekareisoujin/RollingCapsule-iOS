@@ -57,7 +57,7 @@
     [self prepareForReuse];
 }
 
-- (void) prepareForReuse {
+- (void) prepareCellAppearance {
     [_dimMask removeFromSuperview];
         self.imageView.layer.borderColor = [UIColor colorWithRed:RCAppThemeColorRed green:RCAppThemeColorGreen blue:RCAppThemeColorBlue alpha:1.0].CGColor;
     self.imageView.layer.borderWidth = 2.0;
@@ -81,6 +81,7 @@
 */
 
 - (void)initCellAppearanceForPost:(RCPost *) post {
+    [self prepareCellAppearance];
     _currentPostID = post.postID;
     [self.layer setShadowPath:[[UIBezierPath
                                 bezierPathWithRect:self.bounds] CGPath]];
@@ -94,7 +95,8 @@
     if (associatedNotifications != nil && [associatedNotifications count] > 0) {
         //TODO add animation effect for post with new comments
         [self.lblNotification setHidden:NO];
-    } else [self.lblNotification setHidden:YES];
+    } else
+        [self.lblNotification setHidden:YES];
 }
 
 - (void) updateUIWithPost:(RCPost*)post {

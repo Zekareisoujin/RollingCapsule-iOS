@@ -618,7 +618,7 @@ CGRect  searchButtonHideFrame;
         newPostController = [[RCNewPostViewController alloc] initWithUser:_user withNibName:@"RCNewPostViewController4" bundle:nil];
     else
         newPostController = [[RCNewPostViewController alloc] initWithUser:_user withNibName:@"RCNewPostViewController" bundle:nil];
-    [self presentViewController:newPostController animated:YES completion:nil];
+    [self.navigationController pushViewController:newPostController animated:YES];
 }
 
 

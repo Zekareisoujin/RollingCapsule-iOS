@@ -132,6 +132,10 @@ static RCFeed* RCFeedFollowFeed = nil;
         return;
     } else {
         NSLog(@"feed-data: error parsing json data received%@",responseData);
+        if ([responseData isEqualToString:@"Unauthorized"]) {
+            NSNotification *notification = [NSNotification notificationWithName:RCNotificationNameReceivedUnauthorizedFromBackend object:self];
+            [[NSNotificationCenter defaultCenter] postNotification:notification];
+        }
         _errorMessage = responseData;
         _errorType = RCFeedBadServerResult;
     }

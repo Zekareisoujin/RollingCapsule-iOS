@@ -12,6 +12,7 @@
 #import "RCUserProfileViewController.h"
 #import "RCFriendListViewController.h"
 #import "RCSettingViewController.h"
+#import "RCTutorialViewController.h"
 #import "RCUtilities.h"
 #import "RCConstants.h"
 #import "RCNotification.h"
@@ -329,10 +330,15 @@
 
 - (IBAction)btnActionMainFeedNav:(id)sender {
     RCMainFeedViewController *mainFeedViewController = [[RCMainFeedViewController alloc] init];
-    //_navigationController.delegate = mainFeedViewController;
     [mainFeedViewController setCurrentUser:[RCUser currentUser]];
     [self navigateToViewControllerFromMenu:mainFeedViewController];
 }
+
+- (IBAction) btnActionTutorialNav:(id)sender {
+    RCTutorialViewController *viewController = [[RCTutorialViewController alloc] init];
+    [self navigateToViewControllerFromMenu:viewController];
+}
+
 - (IBAction)btnActionOutboxNav:(id)sender {
     RCOutboxViewController*outboxViewController = [[RCOutboxViewController alloc] init];
     [self navigateToViewControllerFromMenu:outboxViewController];
