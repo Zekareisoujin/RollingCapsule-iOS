@@ -76,7 +76,7 @@
     [self initializeConcierge];
     
     //reload menu when there is new friend request
-    [[NSNotificationCenter defaultCenter] addObserver:_menuTable selector:@selector(reloadData) name:RCNotificationNameNewFriendRequest object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUIForNewFriendRequest) name:RCNotificationNameNewFriendRequest object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -395,9 +395,26 @@
     UIButton *menuButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [menuButton setFrame:CGRectMake(0,0,menuButtonImage.size.width, menuButtonImage.size.height)];
     [menuButton setBackgroundImage:menuButtonImage forState:UIControlStateNormal];
+    if ([RCNotification numberOfNewFriendRequests] > 0) {
+        double size = 20.0;
+        UIImageView* imgView = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,size,size)];
+        [imgView setImage:[UIImage imageNamed:@"notice.png"]];
+        [menuButton addSubview:imgView];
+        imgView.frame = CGRectMake(menuButton.frame.size.width-size,menuButton.frame.size.height-size,size,size);
+    }
     [menuButton addTarget:self action:@selector(showSelfAsSideMenu) forControlEvents:UIControlEventTouchUpInside];
     UIBarButtonItem *ret = [[UIBarButtonItem alloc] initWithCustomView:menuButton];
     return ret;
+}
+
+- (void) updateUIForNewFriendRequest {
+    [self setNavigationBarMenuBttonForCurrentViewController];
+    [_menuTable reloadData];
+}
+
+- (void)setNavigationBarMenuBttonForCurrentViewController {
+    UIViewController* currentViewController = [[self.navigationController viewControllers] lastObject];
+    [self setNavigationBarMenuBttonForViewController:currentViewController];
 }
 
 - (void)setNavigationBarMenuBttonForViewController:(UIViewController *) viewController {
