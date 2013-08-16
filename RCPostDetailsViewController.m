@@ -225,7 +225,7 @@ static BOOL RCPostDetailsViewControllerShowPostID = NO;
     [self.viewCoverStrip addSubview:sview];
     
     //initialize comments box
-    UIImage *image = [[UIImage imageNamed:@"viewPostCommentFrame.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(70,5,30,5)];
+    UIImage *image = [[UIImage imageNamed:@"viewPostCommentFrame.png"] resizableImageWithCapInsets:UIEdgeInsetsMake(100,15,30,15)];
     [_imgViewCommentFrame setImage:image];
     
     [self getPostImageFromInternet];
@@ -296,7 +296,7 @@ static BOOL RCPostDetailsViewControllerShowPostID = NO;
         if ([rec state] == UIGestureRecognizerStateBegan || [rec state] == UIGestureRecognizerStateChanged) {
             CGPoint cur = [rec locationInView:self.view];
             //CGPoint translation = [rec translationInView:self.view];
-            if (cur.y <= _originalCommentBoxPosition) {
+            if (cur.y <= _originalCommentBoxPosition && cur.y >= _btnComment.frame.size.height * 2) {
                 _didMoveCommentsBox = YES;
                 CGFloat movedBy = cur.y - [_btnComment center].y;
                 _commentsBoxMovedBy -= movedBy;
