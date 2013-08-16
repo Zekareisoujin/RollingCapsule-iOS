@@ -105,6 +105,7 @@ static NSString* const RCMenuItemMainFeed = @"Main Feeds";
 static NSString* const RCMenuItemProfile = @"Profile";
 static NSString* const RCMenuItemFriend = @"Friends";
 static NSString* const RCMenuItemOutbox = @"Outbox";
+static NSString* const RCMenuItemTutorial = @"Tutorial";
 static NSString* const RCMenuItemConcierge = @"Concierge";
 static NSString* const RCMenuItemSettings = @"Settings";
 static NSString* const RCMenuItemConciergeGame = @"Games";

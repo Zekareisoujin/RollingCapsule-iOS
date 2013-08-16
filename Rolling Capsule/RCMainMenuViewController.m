@@ -158,6 +158,7 @@
     [_menuTree setObject:[UIImage imageNamed:@"menuIconProfile"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemProfile];
     [_menuTree setObject:[UIImage imageNamed:@"menuIconFriends"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemFriend];
     [_menuTree setObject:[UIImage imageNamed:@"menuIconOutbox"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemOutbox];
+    [_menuTree setObject:[UIImage imageNamed:@"menuIconTutorial"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemTutorial];
     [_menuTree setObject:[UIImage imageNamed:@"menuIconConcierge"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemConcierge];
     [_menuTree setObject:[UIImage imageNamed:@"menuIconSettings"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemSettings];
     [_menuTree setObject:[UIImage imageNamed:@"menuIconLogout"] forKeyPath:RCMenuKeyIcon2 forTreeItem:RCMenuItemSettingsLogOut];
@@ -173,6 +174,7 @@
     [_menuTree setObject:NSStringFromSelector(@selector(btnActionUserProfileNav:)) forKeyPath:RCMenuKeySelector forTreeItem:RCMenuItemProfile];
     [_menuTree setObject:NSStringFromSelector(@selector(btnActionFriendViewNav:)) forKeyPath:RCMenuKeySelector forTreeItem:RCMenuItemFriend];
     [_menuTree setObject:NSStringFromSelector(@selector(btnActionOutboxNav:)) forKeyPath:RCMenuKeySelector forTreeItem:RCMenuItemOutbox];
+    [_menuTree setObject:NSStringFromSelector(@selector(btnActionTutorialNav:)) forKeyPath:RCMenuKeySelector forTreeItem:RCMenuItemTutorial];
     [_menuTree setObject:NSStringFromSelector(@selector(btnActionFacebookSetting:)) forKeyPath:RCMenuKeySelector forTreeItem:RCMenuItemSettingsFacebook];
     [_menuTree setObject:NSStringFromSelector(@selector(btnActionLogOut:)) forKeyPath:RCMenuKeySelector forTreeItem:RCMenuItemSettingsLogOut];
     
@@ -337,6 +339,11 @@
     RCOutboxViewController*outboxViewController = [[RCOutboxViewController alloc] init];
     [self navigateToViewControllerFromMenu:outboxViewController];
 }
+
+- (IBAction)btnActionTutorialNav:(id)sender {
+    // to be implemented
+}
+
 - (IBAction)btnActionUserProfileNav:(id)sender {
     RCUserProfileViewController *userProfileViewController = [[RCUserProfileViewController alloc] initWithUser:[RCUser currentUser] viewingUser:[RCUser currentUser]];
     [self navigateToViewControllerFromMenu:userProfileViewController];
