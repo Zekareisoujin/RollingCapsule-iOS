@@ -1511,24 +1511,7 @@
 					<object class="IBObjectRecord">
 						<int key="objectID">219</int>
 						<reference key="object" ref="311581591"/>
-						<array class="NSMutableArray" key="children">
-							<object class="IBNSLayoutConstraint" id="958612182">
-								<reference key="firstItem" ref="311581591"/>
-								<int key="firstAttribute">7</int>
-								<int key="relation">0</int>
-								<nil key="secondItem"/>
-								<int key="secondAttribute">0</int>
-								<float key="multiplier">1</float>
-								<object class="IBLayoutConstant" key="constant">
-									<double key="value">40</double>
-								</object>
-								<float key="priority">1000</float>
-								<reference key="containingView" ref="311581591"/>
-								<int key="scoringType">3</int>
-								<float key="scoringTypeFloat">9</float>
-								<int key="contentType">1</int>
-							</object>
-						</array>
+						<array class="NSMutableArray" key="children"/>
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
@@ -2048,11 +2031,6 @@
 						<reference key="parent" ref="191373211"/>
 					</object>
 					<object class="IBObjectRecord">
-						<int key="objectID">1135</int>
-						<reference key="object" ref="958612182"/>
-						<reference key="parent" ref="311581591"/>
-					</object>
-					<object class="IBObjectRecord">
 						<int key="objectID">1136</int>
 						<reference key="object" ref="124588609"/>
 						<reference key="parent" ref="191373211"/>
@@ -2209,7 +2187,6 @@
 				<string key="1132.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="1133.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="1134.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<string key="1135.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="1136.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="1138.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="1139.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -2249,9 +2226,6 @@
 				</array>
 				<boolean value="NO" key="216.IBViewMetadataTranslatesAutoresizingMaskIntoConstraints"/>
 				<string key="219.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
-				<array key="219.IBViewMetadataConstraints">
-					<reference ref="958612182"/>
-				</array>
 				<boolean value="NO" key="219.IBViewMetadataTranslatesAutoresizingMaskIntoConstraints"/>
 				<string key="234.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="266.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -2345,17 +2319,17 @@
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="friendListBarFriends.png">{539, 57}</string>
-			<string key="friendListFollow.png">{78, 78}</string>
-			<string key="friendListFriend.png">{78, 78}</string>
-			<string key="friendListPending.png">{78, 78}</string>
-			<string key="friendListSearchBarBg.png">{575, 93}</string>
-			<string key="friendListSearchBarCancel.png">{65, 64}</string>
-			<string key="friendListSearchBarToggle.png">{65, 64}</string>
-			<string key="friendListTableBackground.png">{570, 803}</string>
-			<string key="loading2.gif">{150, 150}</string>
-			<string key="mainBackground.png">{640, 1136}</string>
-			<string key="mainTopBanner.png">{640, 82}</string>
+			<string key="friendListBarFriends.png">{16, 16}</string>
+			<string key="friendListFollow.png">{16, 16}</string>
+			<string key="friendListFriend.png">{16, 16}</string>
+			<string key="friendListPending.png">{16, 16}</string>
+			<string key="friendListSearchBarBg.png">{16, 16}</string>
+			<string key="friendListSearchBarCancel.png">{16, 16}</string>
+			<string key="friendListSearchBarToggle.png">{16, 16}</string>
+			<string key="friendListTableBackground.png">{16, 16}</string>
+			<string key="loading2.gif">{16, 16}</string>
+			<string key="mainBackground.png">{16, 16}</string>
+			<string key="mainTopBanner.png">{16, 16}</string>
 		</dictionary>
 		<bool key="IBDocument.UseAutolayout">YES</bool>
 		<string key="IBCocoaTouchPluginVersion">2083</string>

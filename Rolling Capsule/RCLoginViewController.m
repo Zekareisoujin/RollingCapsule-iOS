@@ -76,6 +76,7 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
         _email = [_txtFieldUsername text];
         _password = [_txtFieldPassword text];
         //[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+        
         NSMutableString *post = initQueryString(@"session[email]", _email);
         addArgumentToQueryString(post, @"session[password]", _password);
         NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
@@ -110,6 +111,37 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
             }
             [self setUIBusy:NO];
         }];
+        
+//        if([[_txtFieldUsername text] isEqualToString:@""] || [[_txtFieldPassword text] isEqualToString:@""] ) {
+//            showAlertDialog(RCErrorMessageUsernameAndPasswordMissing, @"Error");
+//            [self setUIBusy:NO];
+//        } else {
+//            //[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+//            NSString *post =[[NSString alloc] initWithFormat:@"session[email]=%@&session[password]=%@&mobile=1",[_txtFieldUsername text],[_txtFieldPassword text]];
+//            NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+//            NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCSessionsResource]];
+//            NSURLRequest *request = CreateHttpPostRequest(url, postData);
+//            
+//            [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+//                                   completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+//             {
+//                 //[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+//                 NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+//                 
+//                 SBJsonParser *jsonParser = [SBJsonParser new];
+//                 NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
+//                 //NSLog(@"%@",jsonData);
+//                 
+//                 //Temporary:
+//                 if (jsonData != NULL) {
+//                     RCUser *user = [[RCUser alloc] initWithNSDictionary:(NSDictionary*)[jsonData objectForKey:@"user"]];
+//                     [delegate userDidLogIn:user];
+//                 }else {
+//                     showAlertDialog(([NSString stringWithFormat:RCErrorMessagePleaseTryAgain]), @"Error");
+//                 }
+//                 [self setUIBusy:NO];
+//             }];
+//        }
         
     }
     @catch (NSException * e) {

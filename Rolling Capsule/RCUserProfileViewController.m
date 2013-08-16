@@ -144,6 +144,7 @@
     [_btnViewFriends setContentEdgeInsets:UIEdgeInsetsMake(0, 35, 0, 0)];
     [_btnViewFriends setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
     
+    // Difference function for own profile & other profile
     if (_viewingUser.userID != _profileUser.userID) {
         [_btnEditProfile setHidden:YES];
         [_btnEditProfile setEnabled:NO];
@@ -170,13 +171,28 @@
         _pickedNewAvatarImage = NO;
         _editingProfile = NO;
     }
+    [_btnEditProfileCancel setHidden:YES];
     
     [self showMoreFeedButton:NO animate:NO];
     
+    // Set up nib for collection view cell
     NSString* cellIdentifier = [RCProfileViewCell cellIdentifier];
     [self.collectionView registerClass:[RCProfileViewCell class] forCellWithReuseIdentifier:cellIdentifier];
     UINib *nib = [UINib nibWithNibName:cellIdentifier bundle: nil];
     [self.collectionView registerNib:nib forCellWithReuseIdentifier:cellIdentifier];
+    
+    // Set up edit notification bar
+    CGRect frame = _editNotificationBar.frame;
+    frame.origin.x += frame.size.width;
+    
+    // Fk it, dodging auto layout again
+    UIImageView *newImage = [[UIImageView alloc] init];
+    [newImage setImage:_editNotificationBar.image];
+    [self.view addSubview:newImage];
+    [_editNotificationBar setHidden:YES];
+    [_editNotificationBar removeFromSuperview];
+    _editNotificationBar = newImage;
+    [_editNotificationBar setFrame:frame];
     
     // Set up reference points:
     // Should load this from somewhere next time
@@ -762,6 +778,7 @@
     //RCPost *post = [[RCPost alloc] initWithNSDictionary:[_postList objectAtIndex:indexPath.row]];
     RCPost *post = [_postList objectAtIndex:indexPath.row];
     [cell initCellAppearanceForPost:post];
+    [cell setShowBorder:_editingProfile];
     
     // Pulling next page if necessary:
     if (indexPath.row == (currentMaxPostNumber - 1)) {
@@ -799,17 +816,30 @@
     RCProfileViewCell *cell = (RCProfileViewCell*)[collectionView cellForItemAtIndexPath:indexPath];
     RCPost *post = (RCPost*)[_postList objectAtIndex:indexPath.row];
     
-    if (_selectedCell == cell) {
-        if (_selectedCell != nil) {
+    if (!_editingProfile) {
+        if (_selectedCell == cell) {
+            if (_selectedCell != nil) {
+                [_selectedCell setHighlightShadow:NO];
+                [self hidePostPreview];
+            }
+            _selectedCell = nil;
+        }else {
             [_selectedCell setHighlightShadow:NO];
-            [self hidePostPreview];
+            _selectedCell = cell;
+            [_selectedCell setHighlightShadow:YES];
+            [self showPostPreview:post withImageFromCell:cell];
         }
-        _selectedCell = nil;
     }else {
-        [_selectedCell setHighlightShadow:NO];
-        _selectedCell = cell;
-        [_selectedCell setHighlightShadow:YES];
-        [self showPostPreview:post withImageFromCell:cell];
+        RCUser *owner = [RCUser getUserOwnerOfPost:post];
+        RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_viewingUser editable:YES];
+        
+        postDetailsViewController.deleteFunction = ^{
+            [_postList removeObjectAtIndex:indexPath.row];
+            [_collectionView reloadData];
+            [self hidePostPreview];
+        };
+        
+        [self.navigationController pushViewController:postDetailsViewController animated:YES];
     }
 }
 
@@ -956,13 +986,16 @@
         _editingProfile = NO;
         [_btnEditProfile setTitle:@"Edit" forState:UIControlStateNormal];
         _btnAvatarImg.enabled = NO;
+        [_btnEditProfileCancel setHidden:YES];
         [self doneEditProfile];
         [_lblAvatarEdit removeFromSuperview];
+        
     } else {
         _editingProfile = YES;
         [_btnEditProfile setTitle:@"Apply" forState:UIControlStateNormal];
         [_btnAvatarImg setBackgroundImage:_userAvatarImage forState:UIControlStateNormal];
         _btnAvatarImg.enabled = YES;
+        [_btnEditProfileCancel setHidden:NO];
         CGRect lblFrame = _btnAvatarImg.frame;
         int incr = 8;
         lblFrame.origin.x += incr;
@@ -984,7 +1017,27 @@
         _txtFieldEditName.textAlignment = NSTextAlignmentRight;
         _txtFieldEditName.delegate = self;
         [self.view addSubview:_txtFieldEditName];
+        
+        [_selectedCell setHighlightShadow:NO];
+        _selectedCell = nil;
+        [self hidePostPreview];
+
     }
+    
+    for (RCProfileViewCell *cell in _collectionView.visibleCells){
+        [cell setShowBorder:_editingProfile];
+    }
+    [UIView animateWithDuration:0.3 animations:^{
+        CGRect frame = _editNotificationBar.frame;
+        frame.origin.x += frame.size.width * (_editingProfile?-1:1);
+        [_editNotificationBar setFrame:frame];
+    }];
+}
+
+- (IBAction)btnEditProfileCancelTouchUpInside:(id)sender {
+    _pickedNewAvatarImage = NO;
+    _txtFieldEditName.text = _lblName.text;
+    [self btnEditProfileTouchUpInside:nil];
 }
 
 - (void) doneEditProfile {
@@ -1054,7 +1107,7 @@
                         [notification updateViewedProperty];
                     }
             }
-            RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_viewingUser];
+            RCPostDetailsViewController *postDetailsViewController = [[RCPostDetailsViewController alloc] initWithPost:post withOwner:owner withLoggedInUser:_viewingUser editable:NO];
             
             /*if (post.landmarkID == -1)
                 postDetailsViewController.landmark = nil;

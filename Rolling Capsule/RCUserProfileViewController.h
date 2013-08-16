@@ -15,7 +15,9 @@
 @interface RCUserProfileViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, AmazonServiceRequestDelegate, UICollectionViewDelegate, UICollectionViewDataSource, UITextFieldDelegate>
 
 @property (weak, nonatomic) IBOutlet UIButton *btnEditProfile;
+@property (weak, nonatomic) IBOutlet UIButton *btnEditProfileCancel;
 - (IBAction)btnEditProfileTouchUpInside:(id)sender;
+- (IBAction)btnEditProfileCancelTouchUpInside:(id)sender;
 @property (weak, nonatomic) IBOutlet UIButton *btnAvatarImg;
 @property (weak, nonatomic) IBOutlet UILabel *lblName;
 @property (weak, nonatomic) IBOutlet UIButton *btnFriendAction;
@@ -31,6 +33,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *previewLabelDate;
 @property (weak, nonatomic) IBOutlet UILabel *previewLabelDescription;
 @property (weak, nonatomic) IBOutlet UIImageView *previewWorldMap;
+@property (weak, nonatomic) IBOutlet UIImageView *editNotificationBar;
 
 @property (nonatomic, strong) RCUser *profileUser;
 @property (nonatomic, strong) RCUser *viewingUser;

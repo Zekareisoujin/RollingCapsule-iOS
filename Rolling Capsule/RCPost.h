@@ -43,4 +43,5 @@
 //- (void) getThumbnailImageAsync: (int)viewingUserID completion:(void (^)(UIImage*)) completionHandle;
 - (void) registerUIUpdateAction:(NSObject*)target action:(SEL)sel;
 - (MKMapItem*)mapItem;
+- (void)updatePostTopic:(NSString*)topic completionHandler:(void(^)(NSString*))completionHandle;
 @end
