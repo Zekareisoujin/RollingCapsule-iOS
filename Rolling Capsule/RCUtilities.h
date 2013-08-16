@@ -83,11 +83,12 @@ static void postNotification(NSString *msg)
     AppDelegate *appDelegate = (AppDelegate*) [[UIApplication sharedApplication] delegate];
     UINavigationController *navigationController = appDelegate.navigationController;
     [navigationController.view addSubview:lblAlert];
-    lblAlert.frame = CGRectMake(0,42,navigationController.view.frame.size.width,0);
+    lblAlert.frame = CGRectMake(0,42,navigationController.view.frame.size.width,20);
+    lblAlert.alpha = 0.0;
     [UIView animateWithDuration:0.5 animations:^{
-        CGRect frame2 = lblAlert.frame;
-        frame2.size.height += 20;
-        lblAlert.frame = frame2;
+        //CGRect frame2 = lblAlert.frame;
+        //frame2.size.height += 20;
+        lblAlert.alpha = 1.0;// = frame2;
     }];
     [NSTimer scheduledTimerWithTimeInterval:2.0 block:^(NSTimeInterval time) {
             [UIView animateWithDuration:0.5 animations:^{
