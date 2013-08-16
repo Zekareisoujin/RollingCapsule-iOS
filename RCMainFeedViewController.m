@@ -222,6 +222,9 @@
         [_autoRefresh invalidate];
 
     [self btnCenterMapTouchUpInside:nil];
+    dispatch_async(dispatch_get_main_queue(),^{
+        [_lblNoPost setHidden:YES];
+    });
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:RCInfoStringDateFormat];
     NSString *lastUpdated = [NSString stringWithFormat:RCInfoStringLastUpdatedOnFormat, [formatter  stringFromDate:[NSDate date] ] ];
@@ -235,7 +238,7 @@
         [_posts addObjectsFromArray:commentedPosts];
         currentMaxDisplayedPostNumber = [_posts count];
         NSLog(@"notified post [self reloadData");
-        [self reloadData];
+        [self reloadData:NO];
         if ([_reachability currentReachabilityStatus] == NotReachable) {
             [self showNoConnectionWarningMessage];
             return;
@@ -255,7 +258,7 @@
     _posts = feed.postList;
     currentMaxDisplayedPostNumber = currentMaxPostNumber = [_posts count];
     NSLog(@"loading feed current view mode is %d",_currentViewMode);
-    [self reloadData];
+    [self reloadData:NO];
     //CAREFUL sync (concurrent crash) issue may happen here
     if ([_reachability currentReachabilityStatus] == NotReachable) {
         [self showNoConnectionWarningMessage];
@@ -270,27 +273,9 @@
             } else {
                 currentMaxDisplayedPostNumber = currentMaxPostNumber = [feed.postList count];
                 _posts = feed.postList;
-                
-                [_lblNoPost setHidden:([_posts count] > 0 || ([_reachability currentReachabilityStatus] == NotReachable))];
-                switch (_currentViewMode) {
-                    case RCMainFeedViewModePublic:
-                        [_lblNoPost setText:RCMainFeedNoPostPublic];
-                        break;
-                    case RCMainFeedViewModeFriends:
-                        [_lblNoPost setText:RCMainFeedNoPostFriends];
-                        break;
-                    case RCMainFeedViewModeFollow:
-                        [_lblNoPost setText:RCMainFeedNoPostFollows];
-                        break;
-                    case RCMainFeedViewModeCommented:
-                        [_lblNoPost setText:RCMainFeedNoPostCommented];
-                        break;
-                    default:
-                        break;
-                }
-                
+                                
                 NSLog(@"reload feed after successful refresh");
-                [self reloadData];
+                [self reloadData:YES];
                 [self toggleButtonRefresh:NO];
                 [self updateUserUIElements:[RCUser currentUser]];
             }
@@ -298,7 +283,7 @@
     }];
 }
 
-- (void) reloadData {
+- (void) reloadData: (BOOL)liveFeedRefresh {
     NSLog(@"in [self reloadData]");
     [_chosenPosts removeAllObjects];
     [_mapView removeAnnotations:_mapView.annotations];
@@ -314,6 +299,9 @@
     else
         [_imgViewNewNotificationNotice setHidden:YES];
     NSLog(@"before reloading collection view reloadData");
+    
+    if (liveFeedRefresh)
+        [self checkAndSetNoPostLabel];
     [_collectionView reloadData];
 
 }
@@ -422,6 +410,7 @@
 }
 // 3
 - (UICollectionViewCell *)collectionView:(UICollectionView *)cv cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"%d", [_posts count]);
     NSString* cellIdentifier = [RCMainFeedCell cellIdentifier];
     RCMainFeedCell *cell = [cv dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
     RCPost *post;
@@ -797,6 +786,34 @@
 - (void) hideCapsuleCounter {
     [_viewCapsuleCount setHidden:YES];
     [_btnShowHiddenCapsulesMessage setHidden:YES];
+}
+
+- (void) checkAndSetNoPostLabel {
+    //NSLog(@"post count: %d", [_posts count]);
+    BOOL hideLabel = ([_posts count] > 0 || ([_reachability currentReachabilityStatus] == NotReachable));
+    //call from upload media notification is not on main thread
+    dispatch_async(dispatch_get_main_queue(),^{
+//        [_lblNoPost setHidden:([_posts count] > 0 || ([_reachability currentReachabilityStatus] == NotReachable))];
+        [_lblNoPost setHidden:hideLabel];
+    });
+    
+    switch (_currentViewMode) {
+        case RCMainFeedViewModePublic:
+            [_lblNoPost setText:RCMainFeedNoPostPublic];
+            break;
+        case RCMainFeedViewModeFriends:
+            [_lblNoPost setText:RCMainFeedNoPostFriends];
+            break;
+        case RCMainFeedViewModeFollow:
+            [_lblNoPost setText:RCMainFeedNoPostFollows];
+            break;
+        case RCMainFeedViewModeCommented:
+            [_lblNoPost setText:RCMainFeedNoPostCommented];
+            break;
+        default:
+            break;
+    }
+
 }
 
 @end
