@@ -22,6 +22,7 @@
 @property (nonatomic, strong) NSString* email;
 @property (nonatomic, strong) NSString* password;
 @property (nonatomic, assign) int userID;
+@property (nonatomic, assign) BOOL isFirstTimeLogin;
 @end
 
 @implementation RCLoginViewController
@@ -31,6 +32,7 @@
 @synthesize email = _email;
 @synthesize password = _password;
 @synthesize userID = _userID;
+@synthesize isFirstTimeLogin = _isFirstTimeLogin;
 
 static int RCActivationAlertOkButtonIndex = 0;
 static int RCActivationAlertResendSMSButtonIndex = 1;
@@ -43,8 +45,7 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
-    //[_btnLogIn setBackgroundImage:[UIImage imageNamed:@"loginBtnLoginPressed"] forState:UIControlStateHighlighted];
-    //[_btnRegister setBackgroundImage:[UIImage imageNamed:@"loginBtnRegisterPressed"] forState:UIControlStateHighlighted];
+    _isFirstTimeLogin = NO;
     _txtFieldUsername.leftView = [[UIView alloc] initWithFrame:CGRectMake(0,0,9,10)];
     _txtFieldUsername.leftViewMode = UITextFieldViewModeAlways;
     _txtFieldPassword.leftView = [[UIView alloc] initWithFrame:CGRectMake(0,0,9,10)];
@@ -103,6 +104,7 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
             if (jsonData != NULL) {
                 if ([[jsonData objectForKey:RCUnactivatedWarningKey] isEqualToString:RCUnactivatedAccountString]) {
                     _userID = [[jsonData objectForKey:@"user_id"] intValue];
+                    _isFirstTimeLogin = YES;
                     UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Account activation" message:@"Please enter the activation code sent to you via SMS" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:@"Resend SMS", nil];
                     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
                     alert.delegate = self;
@@ -110,7 +112,8 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
                     [alert show];
                 } else {
                     RCUser *user = [[RCUser alloc] initWithNSDictionary:(NSDictionary*)[jsonData objectForKey:@"user"]];
-                    [delegate userDidLogIn:user];
+                    [delegate userDidLogIn:user firstTimeLogin:_isFirstTimeLogin];
+                    _isFirstTimeLogin = NO;
                 }
             }else {
                 showAlertDialog(([NSString stringWithFormat:@"%@. %@ ",responseData, RCErrorMessagePleaseTryAgain]), @"Error");

@@ -12,5 +12,6 @@
 
 @interface RCTutorialViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
+- (IBAction)btnStartMemcapTouchUpInside:(id)sender;
 
 @end

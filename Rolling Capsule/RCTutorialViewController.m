@@ -61,8 +61,6 @@
         return cell;
     } else {
         [cell.imageView setImage:[UIImage imageNamed:@"loginBackground.png"]];
-        AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-        [appDelegate.menuViewController btnActionMainFeedNav:nil];
         return cell;
     }
     
@@ -98,6 +96,12 @@
         UICollectionView *tableView = (UICollectionView*) scrollView;
         NSIndexPath *pathForCenterCell = [tableView indexPathForItemAtPoint:CGPointMake(CGRectGetMidX(tableView.bounds), CGRectGetMidY(tableView.bounds))];
         [tableView scrollToItemAtIndexPath:pathForCenterCell atScrollPosition:UICollectionViewScrollPositionCenteredHorizontally animated:YES];
+        if (pathForCenterCell.row == NUMBER_OF_TUTORIAL_PAGE) {
+            [tableView setHidden:YES];
+            /*AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+            [self.navigationController setNavigationBarHidden:NO];
+            [appDelegate.menuViewController btnActionMainFeedNav:nil];*/
+        }
     }
 }
 
@@ -107,4 +111,11 @@
     // Dispose of any resources that can be recreated.
 }
 
+- (IBAction)btnStartMemcapTouchUpInside:(id)sender {
+    [self.navigationController setNavigationBarHidden:NO animated:NO];
+    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    [appDelegate enableSideMenu];
+    [appDelegate.menuViewController btnActionMainFeedNav:nil];
+    
+}
 @end

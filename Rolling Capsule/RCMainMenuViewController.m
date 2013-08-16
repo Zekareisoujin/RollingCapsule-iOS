@@ -159,6 +159,7 @@
     [_menuTree setObject:[UIImage imageNamed:@"menuIconProfile"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemProfile];
     [_menuTree setObject:[UIImage imageNamed:@"menuIconFriends"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemFriend];
     [_menuTree setObject:[UIImage imageNamed:@"menuIconOutbox"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemOutbox];
+    [_menuTree setObject:[UIImage imageNamed:@"menuIconTutorial"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemTutorial];
     [_menuTree setObject:[UIImage imageNamed:@"menuIconConcierge"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemConcierge];
     [_menuTree setObject:[UIImage imageNamed:@"menuIconSettings"] forKeyPath:RCMenuKeyIcon forTreeItem:RCMenuItemSettings];
     [_menuTree setObject:[UIImage imageNamed:@"menuIconLogout"] forKeyPath:RCMenuKeyIcon2 forTreeItem:RCMenuItemSettingsLogOut];
@@ -174,6 +175,7 @@
     [_menuTree setObject:NSStringFromSelector(@selector(btnActionUserProfileNav:)) forKeyPath:RCMenuKeySelector forTreeItem:RCMenuItemProfile];
     [_menuTree setObject:NSStringFromSelector(@selector(btnActionFriendViewNav:)) forKeyPath:RCMenuKeySelector forTreeItem:RCMenuItemFriend];
     [_menuTree setObject:NSStringFromSelector(@selector(btnActionOutboxNav:)) forKeyPath:RCMenuKeySelector forTreeItem:RCMenuItemOutbox];
+    [_menuTree setObject:NSStringFromSelector(@selector(btnActionTutorialNav:)) forKeyPath:RCMenuKeySelector forTreeItem:RCMenuItemTutorial];
     [_menuTree setObject:NSStringFromSelector(@selector(btnActionFacebookSetting:)) forKeyPath:RCMenuKeySelector forTreeItem:RCMenuItemSettingsFacebook];
     [_menuTree setObject:NSStringFromSelector(@selector(btnActionLogOut:)) forKeyPath:RCMenuKeySelector forTreeItem:RCMenuItemSettingsLogOut];
     
@@ -336,13 +338,16 @@
 
 - (IBAction) btnActionTutorialNav:(id)sender {
     RCTutorialViewController *viewController = [[RCTutorialViewController alloc] init];
-    [self navigateToViewControllerFromMenu:viewController];
+    [_navigationController pushViewController:viewController animated:YES];
+    [self slideThenHide];
+    [_navigationController setNavigationBarHidden:YES];
 }
 
 - (IBAction)btnActionOutboxNav:(id)sender {
     RCOutboxViewController*outboxViewController = [[RCOutboxViewController alloc] init];
     [self navigateToViewControllerFromMenu:outboxViewController];
 }
+
 - (IBAction)btnActionUserProfileNav:(id)sender {
     RCUserProfileViewController *userProfileViewController = [[RCUserProfileViewController alloc] initWithUser:[RCUser currentUser] viewingUser:[RCUser currentUser]];
     [self navigateToViewControllerFromMenu:userProfileViewController];
@@ -381,12 +386,17 @@
     [self refreshUserAvatar];
 }
 
-- (void)userDidLogIn:(RCUser *)user {
+- (void)userDidLogIn:(RCUser *)user firstTimeLogin:(BOOL)isFirstTimeLogin {
     [RCUser setCurrentUser:user];
-    AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    [appDelegate enableSideMenu];
+    if (isFirstTimeLogin){
+        [self btnActionTutorialNav:self];
+    } else {
+        AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+        [appDelegate enableSideMenu];
+        [self btnActionMainFeedNav:self];
+    }
 
-    [self btnActionMainFeedNav:self];
+    
 }
 
 - (UIBarButtonItem*) menuBarButton {

@@ -12,7 +12,7 @@
 
 @protocol RCLoginViewControllerDelegate
 @optional
-- (void)userDidLogIn:(RCUser *)user;
+- (void)userDidLogIn:(RCUser *)user firstTimeLogin:(BOOL)isFirstTimeLogin;
 
 @end
 
