@@ -25,6 +25,7 @@
 
 @property (strong, nonatomic) RCKeyboardPushUpHandler *keyboardHandler;
 @property (nonatomic, assign) id<RCLoginViewControllerDelegate> delegate;
+- (IBAction)btnAboutUsTouchUpInside:(id)sender;
 
 - (IBAction)btnActionLogIn:(id)sender;
 - (IBAction)btnActionRegister:(id)sender;

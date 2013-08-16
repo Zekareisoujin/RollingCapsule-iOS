@@ -11,6 +11,7 @@
 #import "RCUtilities.h"
 #import "RCRegisterViewController.h"
 #import "RMPhoneFormat.h"
+#import "RCContentViewController.h"
 
 @implementation RCRegisterViewController
 
@@ -24,29 +25,36 @@ BOOL        _willMoveKeyboardUp;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    _txtFieldPhoneNumber.delegate = self;
-    _txtFieldPassword.delegate = self;
+    //_txtFieldPhoneNumber.delegate = self;
+    //_txtFieldPassword.delegate = self;
 	_willMoveKeyboardUp = FALSE;
     _keyboardVisible = FALSE;
     [_txtFieldName setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
     [_txtFieldEmail setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
     [_txtFieldPassword setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
     [_txtFieldPhoneNumber setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
+    [_txtFieldConfirmPassword setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
+    [_txtFieldCountryCode setValue:[UIColor darkGrayColor] forKeyPath:@"_placeholderLabel.textColor"];
     NSString *text = [_lblTermsOfUse.text copy];
     _lblTermsOfUse.text = text;
     _lblTermsOfUse.delegate = self;
     
     RMPhoneFormat *fmt = [[RMPhoneFormat alloc] init];
-    self.txtFieldPhoneNumber.text = [NSString stringWithFormat:@"+%@",[fmt defaultCallingCode]];
+    self.txtFieldCountryCode.text = [NSString stringWithFormat:@"+%@",[fmt defaultCallingCode]];
     
     NSRange termsRange = [_lblTermsOfUse.text rangeOfString:@"Memcap terms"];
     [_lblTermsOfUse addLinkToURL:[NSURL URLWithString:RCTermsOfUseURL] withRange:termsRange];
     [self animateViewAppearance];
     _keyboardHandler = [[RCKeyboardPushUpHandler alloc] init];
+    _keyboardHandler.enabled = YES;
+    _keyboardHandler.view = self.view;
 }
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
-    [[UIApplication sharedApplication] openURL:url];
+    RCContentViewController* webviewController= [[RCContentViewController alloc] init];
+    
+    [self.parentViewController.navigationController pushViewController:webviewController animated:YES];
+    [webviewController loadURL:url];
 }
 #pragma mark - web request
 
@@ -54,47 +62,50 @@ BOOL        _willMoveKeyboardUp;
 {
     //Asynchronous Request
     @try {
-        
-        if([[_txtFieldName text] isEqualToString:@""] || [[_txtFieldPassword text] isEqualToString:@""] 
-           || [[_txtFieldEmail text] isEqualToString:@""] || [[_txtFieldPhoneNumber text] isEqualToString:@""] ) {
-            showAlertDialog(RCErrorMessageInformationMissing, @"Error");
-        } else {
-            NSMutableString *dataSt = initQueryString(@"user[email]", [_txtFieldEmail text]);
-            addArgumentToQueryString(dataSt, @"user[password]", [_txtFieldPassword text]);
-            addArgumentToQueryString(dataSt, @"user[name]", [_txtFieldName text]);
-            addArgumentToQueryString(dataSt, @"user[password_confirmation]", [_txtFieldPassword text]);
-            NSString *phoneNumber = [_txtFieldPhoneNumber text];
-            if ([phoneNumber hasPrefix:@"+"])
-                phoneNumber = [phoneNumber substringFromIndex:1];
-            addArgumentToQueryString(dataSt, @"phone_number", phoneNumber);
-            NSData *postData = [dataSt dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-            NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCUsersResource]];
-            NSURLRequest *request = CreateHttpPostRequest(url, postData);
-            
-            [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
-                                   completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
-            {
-                NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-                
-                SBJsonParser *jsonParser = [SBJsonParser new];
-                NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
-                NSLog(@"%@",jsonData);
-                
-                //Temporary:
-                if (jsonData != NULL) {
-                    NSDictionary *userData = (NSDictionary *) [jsonData objectForKey: @"user"];
-                    NSString *name = (NSString *) [userData objectForKey:@"name"];
-                    showAlertDialog(([NSString stringWithFormat:@"Welcome %@! We have sent you an activation code via SMS to the phone number you provided. You can now login and activate your account using the aforementioned code.",name]), @"Welcome");
-                    [self btnCloseTouchUpInside:nil];
-                }else {
-                    showAlertDialog(([NSString stringWithFormat:@"%@. %@",responseData, RCErrorMessagePleaseTryAgain]), @"Error");
-                }
-
-            }];
-            
+        NSMutableString *dataSt = initQueryString(@"user[email]", [_txtFieldEmail text]);
+        addArgumentToQueryString(dataSt, @"user[password]", [_txtFieldPassword text]);
+        addArgumentToQueryString(dataSt, @"user[name]", [_txtFieldName text]);
+        addArgumentToQueryString(dataSt, @"user[password_confirmation]", [_txtFieldPassword text]);
+        NSString* countryCode = [[_txtFieldCountryCode text] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        if ([countryCode isEqualToString:@""]) {
+            RMPhoneFormat *fmt = [[RMPhoneFormat alloc] init];
+            countryCode = [fmt defaultCallingCode];
         }
+        NSString *phoneNumber = [NSString stringWithFormat:@"%@%@",countryCode,[_txtFieldPhoneNumber text] ];
+        if ([phoneNumber hasPrefix:@"+"])
+            phoneNumber = [phoneNumber substringFromIndex:1];
+        addArgumentToQueryString(dataSt, @"phone_number", phoneNumber);
+        NSData *postData = [dataSt dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+        NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCUsersResource]];
+        NSURLRequest *request = CreateHttpPostRequest(url, postData);
+        [RCConnectionManager startConnection];
+        [_btnRegister setEnabled:NO];
+        [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
+                               completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+        {
+            [RCConnectionManager endConnection];
+            [_btnRegister setEnabled:YES];
+            NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+            
+            SBJsonParser *jsonParser = [SBJsonParser new];
+            NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
+            NSLog(@"%@",jsonData);
+            
+            //Temporary:
+            if (jsonData != NULL) {
+                NSDictionary *userData = (NSDictionary *) [jsonData objectForKey: @"user"];
+                NSString *name = (NSString *) [userData objectForKey:@"name"];
+                showAlertDialog(([NSString stringWithFormat:@"Welcome %@! We have sent you an activation code via SMS to the phone number you provided. You can now login and activate your account using the aforementioned code.",name]), @"Welcome");
+                [self btnCloseTouchUpInside:nil];
+            }else {
+                showAlertDialog(([NSString stringWithFormat:@"%@. %@",responseData, RCErrorMessagePleaseTryAgain]), @"Error");
+            }
+
+        }];
     }
     @catch (NSException * e) {
+        [RCConnectionManager endConnection];
+        [_btnRegister setEnabled:YES];
         NSLog(@"Exception: %@", e);
         showAlertDialog(RCAlertMessageRegistrationFailed, @"Error");
     }
@@ -107,11 +118,23 @@ BOOL        _willMoveKeyboardUp;
     [_txtFieldPassword resignFirstResponder];
     [_txtFieldPhoneNumber resignFirstResponder];
     [_txtFieldEmail resignFirstResponder];
+    [_txtFieldCountryCode resignFirstResponder];
+    [_txtFieldConfirmPassword resignFirstResponder];
     
 }
 
 - (IBAction)registerTouchUpInside:(id)sender {
-    [self asynchRegisterRequest];
+    if([[_txtFieldName text] isEqualToString:@""] || [[_txtFieldPassword text] isEqualToString:@""]
+       || [[_txtFieldEmail text] isEqualToString:@""] || [[_txtFieldPhoneNumber text] isEqualToString:@""] ) {
+        showAlertDialog(RCErrorMessageInformationMissing, @"Error");
+    } else {
+        NSString* password = [_txtFieldPassword text];
+        NSString* confirmPassword = [_txtFieldConfirmPassword text];
+        if (![password isEqualToString:confirmPassword]) {
+            showAlertDialog(@"Password and confirm password does not match", @"Error");
+        } else
+            [self asynchRegisterRequest];
+    }
 }
 
 #pragma mark - code to move views up/down appropriately when keyboard is going to cover text field
@@ -163,12 +186,8 @@ BOOL        _willMoveKeyboardUp;
     
 }
 -(BOOL)textFieldShouldBeginEditing:(UITextField *)sender {
-    if ([sender isEqual:_txtFieldPhoneNumber] )
-    {
-        _keyboardHandler.enabled = YES;
-        _keyboardHandler.view = self.view;
-        _keyboardHandler.bottomScreenGap = self.view.frame.size.height - (_txtFieldPhoneNumber.frame.origin.y + _txtFieldPhoneNumber.frame.size.height);
-    } else _keyboardHandler.enabled = NO;
+        
+    _keyboardHandler.bottomScreenGap = self.view.frame.size.height - (sender.frame.origin.y + sender.frame.size.height);
     return YES;
 }
 -(void)textFieldDidBeginEditing:(UITextField *)sender

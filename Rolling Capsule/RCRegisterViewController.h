@@ -17,6 +17,8 @@
 - (IBAction)btnCloseTouchUpInside:(id)sender;
 @property (weak, nonatomic) IBOutlet TTTAttributedLabel *lblTermsOfUse;
 @property (weak, nonatomic) IBOutlet UITextField *txtFieldName;
+@property (weak, nonatomic) IBOutlet UITextField *txtFieldConfirmPassword;
+@property (weak, nonatomic) IBOutlet UITextField *txtFieldCountryCode;
 @property (weak, nonatomic) IBOutlet UIButton *btnRegister;
 @property (nonatomic, strong) RCKeyboardPushUpHandler* keyboardHandler;
 - (IBAction)registerTouchUpInside:(id)sender;

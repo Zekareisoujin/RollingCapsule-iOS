@@ -12,6 +12,7 @@
 #import "SBJson.h"
 #import "RCRegisterViewController.h"
 #import "RCMainFeedViewController.h"
+#import "RCAboutUsViewController.h"
 #import "RCUser.h"
 #import "RCUtilities.h"
 #import "RMPhoneFormat.h"
@@ -57,6 +58,11 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (IBAction)btnAboutUsTouchUpInside:(id)sender {
+    RCAboutUsViewController *viewController = [[RCAboutUsViewController alloc] init];
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 - (IBAction)btnActionLogIn:(id)sender {

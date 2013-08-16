@@ -88,6 +88,11 @@
 		64549D88175F264600BA8164 /* RCPostDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64549D86175F264600BA8164 /* RCPostDetailsViewController.m */; };
 		64549D89175F264600BA8164 /* RCPostDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64549D87175F264600BA8164 /* RCPostDetailsViewController.xib */; };
 		6459A0F117759F72003DC896 /* RCNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 6459A0F017759F72003DC896 /* RCNotification.m */; };
+		6460752E17BDAF9F00F54A82 /* buttonDelete.png in Resources */ = {isa = PBXBuildFile; fileRef = 6460752D17BDAF9F00F54A82 /* buttonDelete.png */; };
+		6460753017BDB5F700F54A82 /* registerBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 6460752F17BDB5F700F54A82 /* registerBackground.png */; };
+		6460753317BDC98A00F54A82 /* RCContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6460753217BDC98A00F54A82 /* RCContentViewController.m */; };
+		6460753717BDCE0200F54A82 /* RCAboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6460753517BDCE0200F54A82 /* RCAboutUsViewController.m */; };
+		6460753817BDCE0200F54A82 /* RCAboutUsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6460753617BDCE0200F54A82 /* RCAboutUsViewController.xib */; };
 		6460E86B178AE3EA0065D6BA /* appIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 6460E869178AE3EA0065D6BA /* appIcon.png */; };
 		6460E86C178AE3EA0065D6BA /* appIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6460E86A178AE3EA0065D6BA /* appIcon@2x.png */; };
 		6460E878178AE4070065D6BA /* profileViewPostPreview.png in Resources */ = {isa = PBXBuildFile; fileRef = 6460E86D178AE4070065D6BA /* profileViewPostPreview.png */; };
@@ -428,6 +433,13 @@
 		64549D87175F264600BA8164 /* RCPostDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RCPostDetailsViewController.xib; path = ../RCPostDetailsViewController.xib; sourceTree = "<group>"; };
 		6459A0EF17759F72003DC896 /* RCNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCNotification.h; sourceTree = "<group>"; };
 		6459A0F017759F72003DC896 /* RCNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNotification.m; sourceTree = "<group>"; };
+		6460752D17BDAF9F00F54A82 /* buttonDelete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttonDelete.png; sourceTree = "<group>"; };
+		6460752F17BDB5F700F54A82 /* registerBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = registerBackground.png; sourceTree = "<group>"; };
+		6460753117BDC98900F54A82 /* RCContentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCContentViewController.h; sourceTree = "<group>"; };
+		6460753217BDC98A00F54A82 /* RCContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCContentViewController.m; sourceTree = "<group>"; };
+		6460753417BDCE0200F54A82 /* RCAboutUsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAboutUsViewController.h; sourceTree = "<group>"; };
+		6460753517BDCE0200F54A82 /* RCAboutUsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAboutUsViewController.m; sourceTree = "<group>"; };
+		6460753617BDCE0200F54A82 /* RCAboutUsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCAboutUsViewController.xib; sourceTree = "<group>"; };
 		6460E869178AE3EA0065D6BA /* appIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = appIcon.png; path = ../appIcon.png; sourceTree = "<group>"; };
 		6460E86A178AE3EA0065D6BA /* appIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "appIcon@2x.png"; path = "../appIcon@2x.png"; sourceTree = "<group>"; };
 		6460E86D178AE4070065D6BA /* profileViewPostPreview.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = profileViewPostPreview.png; sourceTree = "<group>"; };
@@ -813,6 +825,7 @@
 		643EACE9175BBE0D002761D9 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				6460752D17BDAF9F00F54A82 /* buttonDelete.png */,
 				6461C9CA17BD1CB0009DD299 /* loginTextFieldsFrame.png */,
 				BFA561DC17BB851D00665126 /* facebookNoAvatar.png */,
 				BFA561DA17BB811200665126 /* menuIconFacebook.png */,
@@ -938,6 +951,7 @@
 				644556C0179712AD00DAFE26 /* postPersonalPrivacyButton-2.png */,
 				64119A0D17834E9700BF0B05 /* postPersonalPrivacyButton-highlighted.png */,
 				64119A0717833A8A00BF0B05 /* postPersonalPrivacyButton.png */,
+				6460752F17BDB5F700F54A82 /* registerBackground.png */,
 				641199FA1780B57600BF0B05 /* postPhotoLibrarySourceButton-normal.png */,
 				644556BA179709EB00DAFE26 /* postPhotoLibrarySourceButton.png */,
 				644556C1179712AD00DAFE26 /* postPostButton-2.png */,
@@ -1176,6 +1190,8 @@
 				BFD6530C179EE78E00D6A13D /* UIImage+animatedGIF.m */,
 				64EEBFC0178DC10400D2C968 /* UIViewController+RCCustomBackButtonViewController.h */,
 				64EEBFC1178DC10400D2C968 /* UIViewController+RCCustomBackButtonViewController.m */,
+				6460753117BDC98900F54A82 /* RCContentViewController.h */,
+				6460753217BDC98A00F54A82 /* RCContentViewController.m */,
 			);
 			name = UIHelper;
 			sourceTree = "<group>";
@@ -1271,6 +1287,9 @@
 				6491DCEF1755E092006FBCD8 /* RCUserProfileViewController.h */,
 				6491DCF01755E096006FBCD8 /* RCUserProfileViewController.m */,
 				6491DCF11755E096006FBCD8 /* RCUserProfileViewController.xib */,
+				6460753417BDCE0200F54A82 /* RCAboutUsViewController.h */,
+				6460753517BDCE0200F54A82 /* RCAboutUsViewController.m */,
+				6460753617BDCE0200F54A82 /* RCAboutUsViewController.xib */,
 			);
 			name = ViewControllers;
 			sourceTree = "<group>";
@@ -1554,6 +1573,9 @@
 				BF153ADC17BCE07300C65FDE /* profileEditNotification.png in Resources */,
 				6461C9C817BCBE33009DD299 /* PhoneFormats.dat in Resources */,
 				6461C9CB17BD1CB0009DD299 /* loginTextFieldsFrame.png in Resources */,
+				6460752E17BDAF9F00F54A82 /* buttonDelete.png in Resources */,
+				6460753017BDB5F700F54A82 /* registerBackground.png in Resources */,
+				6460753817BDCE0200F54A82 /* RCAboutUsViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1661,6 +1683,8 @@
 				BFB8085D17B25266004EB38E /* RCFacebookSettingsViewController.m in Sources */,
 				6461C9B917B99B0A009DD299 /* RCPostReport.m in Sources */,
 				6461C9C617BCBC2D009DD299 /* RMPhoneFormat.m in Sources */,
+				6460753317BDC98A00F54A82 /* RCContentViewController.m in Sources */,
+				6460753717BDCE0200F54A82 /* RCAboutUsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

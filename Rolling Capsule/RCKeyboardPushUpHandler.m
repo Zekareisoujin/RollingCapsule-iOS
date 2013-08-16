@@ -39,8 +39,10 @@
         NSDictionary* userInfo = [notification userInfo];
         CGRect keyboardFrame = [[userInfo objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
         double moveAmount =  (keyboardFrame.size.height - _bottomScreenGap) - _movedUpBy;
-        [self setViewMovedUp:YES offset:moveAmount];
-        _movedUpBy += moveAmount;
+        if (moveAmount > 0) {
+            [self setViewMovedUp:YES offset:moveAmount];
+            _movedUpBy += moveAmount;
+        }
     }
     
 }
