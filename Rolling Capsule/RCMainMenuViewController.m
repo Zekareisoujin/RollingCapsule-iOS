@@ -216,12 +216,14 @@
     NSString *label = [item objectForKey:RCMenuKeyDisplayedName];
     if (label == nil)
         label = [item objectForKey:RCMenuKeyKeyPath];
-    if ([label hasPrefix:@"Friend"]) {
-        if ([RCNotification numberOfNewFriendRequests] > 0)
-            label = [NSString stringWithFormat:@"%@(%d)",label,[RCNotification numberOfNewFriendRequests]];
-    }
     if ([_menuTree levelForRowAtIndexPath:indexPath] < 1) {
         RCMenuTableCell *cell = [RCMenuTableCell createMenuTableCell:_menuTable];
+        if ([label hasPrefix:@"Friend"]) {
+            if ([RCNotification numberOfNewFriendRequests] > 0) {
+                label = [NSString stringWithFormat:@"%@(%d)",label,[RCNotification numberOfNewFriendRequests]];
+                [cell.imgViewNotice setHidden:NO];
+            }
+        }
         [cell.imgCellIcon setImage:icon];
         [cell.lblCellTitle setText:label];
         [cell setCellStateNormal:NO];

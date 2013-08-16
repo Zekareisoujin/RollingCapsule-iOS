@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imgCellBackground;
 @property (weak, nonatomic) IBOutlet UIImageView *imgCellDropdownIcon;
 @property (weak, nonatomic) IBOutlet UILabel *lblCellTitle;
+@property (weak, nonatomic) IBOutlet UIImageView *imgViewNotice;
 
 + (NSString*) cellIdentifier;
 + (CGFloat) cellHeight;
