@@ -763,7 +763,7 @@
 - (void) showMoreFeedButton: (BOOL)show animate:(BOOL)animate {
     float duration = (animate?0.5:0.0);
     
-    if (show && willShowMoreFeeds) {
+    if (show) {
         [_btnMoreFeed setHidden:NO];
         [UIView animateWithDuration:duration animations:^{
             [_btnMoreFeed.layer setOpacity:1.0];
