@@ -38,8 +38,10 @@ static RCUploadManager*  RCStaticUploadManager = nil;
 + (void) addUploadMediaOperation:(RCMediaUploadOperation*) operation {
     if (RCStaticUploadManager == nil)
     {
-        if (uploadManager_sema != nil)
+        if (uploadManager_sema != nil) {
             dispatch_semaphore_wait(uploadManager_sema, DISPATCH_TIME_FOREVER);
+            dispatch_semaphore_signal(uploadManager_sema);
+        }
         else
             return;
     }
@@ -49,8 +51,10 @@ static RCUploadManager*  RCStaticUploadManager = nil;
 + (void) addUploadOperation:(RCMediaUploadOperation*) operation withPost:(RCPost*) post {
     if (RCStaticUploadManager == nil)
     {
-        if (uploadManager_sema != nil)
+        if (uploadManager_sema != nil) {
             dispatch_semaphore_wait(uploadManager_sema, DISPATCH_TIME_FOREVER);
+            dispatch_semaphore_signal(uploadManager_sema);
+        }
         else
             return;
     }
@@ -63,8 +67,10 @@ static RCUploadManager*  RCStaticUploadManager = nil;
 +(RCUploadManager*) defaultUploadManager {
     if (RCStaticUploadManager == nil)
     {
-        if (uploadManager_sema != nil)
+        if (uploadManager_sema != nil) {
             dispatch_semaphore_wait(uploadManager_sema, DISPATCH_TIME_FOREVER);
+            dispatch_semaphore_signal(uploadManager_sema);
+        }
         else
             return nil;
     }
@@ -74,8 +80,10 @@ static RCUploadManager*  RCStaticUploadManager = nil;
 + (void) suspendUpload {
     if (RCStaticUploadManager == nil)
     {
-        if (uploadManager_sema != nil)
+        if (uploadManager_sema != nil) {
             dispatch_semaphore_wait(uploadManager_sema, DISPATCH_TIME_FOREVER);
+            dispatch_semaphore_signal(uploadManager_sema);
+        }
         else
             return;
     }
@@ -85,17 +93,24 @@ static RCUploadManager*  RCStaticUploadManager = nil;
 
 
 + (void) resumeUpload {
-    if (RCStaticUploadManager == nil)
-        dispatch_semaphore_wait(uploadManager_sema, DISPATCH_TIME_FOREVER);
+    if (RCStaticUploadManager == nil) {
+        if (uploadManager_sema != nil) {
+            dispatch_semaphore_wait(uploadManager_sema, DISPATCH_TIME_FOREVER);
+            dispatch_semaphore_signal(uploadManager_sema);
+        }
+        else
+            return;
+    }
     [RCStaticUploadManager.uploadQueue setSuspended:NO];
 }
 
 + (void) cleanupUploadData {
     if (RCStaticUploadManager == nil)
     {
-        if (uploadManager_sema != nil)
+        if (uploadManager_sema != nil) {
             dispatch_semaphore_wait(uploadManager_sema, DISPATCH_TIME_FOREVER);
-        else
+            dispatch_semaphore_signal(uploadManager_sema);
+        } else
             return;
     }
     [RCStaticUploadManager cleanupMemory];
@@ -103,9 +118,10 @@ static RCUploadManager*  RCStaticUploadManager = nil;
 + (NSMutableArray*) uploadList {
     if (RCStaticUploadManager == nil)
     {
-        if (uploadManager_sema != nil)
+        if (uploadManager_sema != nil) {
             dispatch_semaphore_wait(uploadManager_sema, DISPATCH_TIME_FOREVER);
-        else
+            dispatch_semaphore_signal(uploadManager_sema);
+        } else
             return nil;
     }
     return RCStaticUploadManager.uploadList;
