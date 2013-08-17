@@ -65,7 +65,6 @@
                 ALAssetRepresentation *rep = [asset defaultRepresentation];
                 Byte *buffer = (Byte*)malloc(rep.size);
                 NSUInteger buffered = [rep getBytes:buffer fromOffset:0.0 length:rep.size error:nil];
-                _uploadData = [NSData dataWithBytesNoCopy:buffer length:buffered freeWhenDone:YES];
                 if (self.thumbnailImage == nil && ![_mediaType hasSuffix:@"mov"]) {
                     // Retrieve the image orientation from the ALAsset
                     UIImageOrientation orientation = UIImageOrientationUp;
@@ -78,13 +77,16 @@
                     image = imageWithImage(image, CGSizeMake(RCUploadImageSizeWidth,RCUploadImageSizeHeight));
                     self.thumbnailImage = image;
                 }
+                _uploadData = [NSData dataWithBytesNoCopy:buffer length:buffered freeWhenDone:YES];
                 dispatch_semaphore_signal(sema);
             } failureBlock:^(NSError *err){
                 [self cancel];
                 dispatch_semaphore_signal(sema);
             }];
             NSLog(@"wait till finish gen data");
-            dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
+            dispatch_semaphore_wait(sema, dispatch_time(DISPATCH_TIME_NOW, 300 * NSEC_PER_SEC));
+            if (_uploadData == nil)
+                [self cancel];//DISPATCH_TIME_FOREVER);
             //wait till we finished getting asset from file url
             /*while (!self.isCancelled && !finishedProcessingLibrary) {
                 ;//sleep(100);
