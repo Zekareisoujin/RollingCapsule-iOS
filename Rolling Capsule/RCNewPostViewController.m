@@ -229,7 +229,6 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
 }
 
 - (IBAction) postNew:(id) sender {
-    _postButton.enabled = NO;
     if (_isTimedRelease && _isFacebookPost) {
         showAlertDialog(@"The post cannot be both time capsule and facebook release yet!", @"Error");
         return;
@@ -244,7 +243,7 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
         [self showAlertMessage:@"Please choose a privacy option!" withTitle:@"Incomplete post!"];
         return;
     }
-    
+    _postButton.enabled = NO;
     _post = [[RCPost alloc] init];
     AppDelegate *appDelegate = (AppDelegate *) [[UIApplication sharedApplication] delegate];
     _post.latitude = appDelegate.currentLocation.coordinate.latitude;
