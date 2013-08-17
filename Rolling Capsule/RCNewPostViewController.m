@@ -229,6 +229,7 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
 }
 
 - (IBAction) postNew:(id) sender {
+    _postButton.enabled = NO;
     if (_isTimedRelease && _isFacebookPost) {
         showAlertDialog(@"The post cannot be both time capsule and facebook release yet!", @"Error");
         return;
@@ -261,7 +262,7 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
 
     [RCOperationsManager addUploadOperation:_mediaUploadOp withPost:_post];
     _mediaUploadOp = nil;
-    _postButton.enabled = NO;
+    
     if (RCNewPostViewControllerAutomaticClose)
 //        [self dismissViewControllerAnimated:YES completion:^{
 //            NSLog(@"successfully dismissed new post view controller");

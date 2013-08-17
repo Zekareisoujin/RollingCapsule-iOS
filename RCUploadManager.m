@@ -47,6 +47,7 @@
 
 - (void) readUploadTasksFromCoreData {
     NSArray *results = [RCUploadManager getListOfUploadTasksFromCoreData];
+    NSLog(@"current user id = %d %@ ",[RCUser currentUser].userID, [RCUser currentUser]);
     for (RCUploadTask *task in results) {
         NSLog(@"%d  == %d ? ",[task.userID intValue],[RCUser currentUser].userID);
         if ([task.userID intValue] == [RCUser currentUser].userID) {
