@@ -384,7 +384,7 @@
         frame.size.height = 0;
         _lblWarningNoConnection.frame = frame;
     } completion:^(BOOL finished){
-        [_lblWarningNoConnection removeFromSuperview];
+        [_lblWarningNoConnection setHidden:YES];
         _btnRefresh.enabled = YES;
     }];
 }
