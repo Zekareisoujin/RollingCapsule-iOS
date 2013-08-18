@@ -16,7 +16,7 @@
 #define RCNotificationNameNewFriendRequest @"RCNotificationNameNewFriendRequest"
 #define RCNotificationNameReceivedUnauthorizedFromBackend @"RCNotificationNameReceivedUnauthorizedFromBackend"
 
-static NSString* const RCServiceURL = @"http://localhost:5000";//@"https://rocaps.herokuapp.com";//@"http://localhost:5000";
+static NSString* const RCServiceURL = @"https://rocaps.herokuapp.com";//@"http://localhost:5000";
 static NSString* const RCTermsOfUseURL = @"https://rocaps.herokuapp.com/terms_of_use";
 static NSString* const RCUnactivatedAccountString = @"Unactivated account";
 static NSString* const RCUnactivatedWarningKey = @"unactivated_warning";
