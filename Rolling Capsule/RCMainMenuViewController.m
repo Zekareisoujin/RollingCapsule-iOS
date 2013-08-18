@@ -33,6 +33,7 @@
 //    NSArray *menuItemIcon;
     int     activeMenuIndex;
     BOOL    conciergeInitialized;
+    BOOL    loggedIn;
 //    BOOL    showLogOut;
 //    int     plusRows;
 }
@@ -77,7 +78,15 @@
     [self initializeConcierge];
     
     //reload menu when there is new friend request
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pleaseLoginAgain) name:RCNotificationNameReceivedUnauthorizedFromBackend object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateUIForNewFriendRequest) name:RCNotificationNameNewFriendRequest object:nil];
+}
+
+- (void) pleaseLoginAgain {
+    if (loggedIn) {
+        showAlertDialog(@"Your session has expired, please log in again!", @"Log in");
+    }
+    [self btnActionLogOut:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -331,6 +340,7 @@
 #pragma mark - Menu actions
 
 - (IBAction)btnActionMainFeedNav:(id)sender {
+    loggedIn = YES;
     RCMainFeedViewController *mainFeedViewController = [[RCMainFeedViewController alloc] init];
     [mainFeedViewController setCurrentUser:[RCUser currentUser]];
     [self navigateToViewControllerFromMenu:mainFeedViewController];
@@ -458,6 +468,7 @@
 
 - (IBAction)btnActionLogOut:(id)sender {
     [self asynchLogOutRequest];
+    loggedIn = NO;
     [RCUser clearCurrentUser];
     [_navigationController popToRootViewControllerAnimated:YES];
     AppDelegate *appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];

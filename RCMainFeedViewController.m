@@ -367,9 +367,10 @@
         _lblWarningNoConnection.textAlignment = NSTextAlignmentCenter;
         _lblWarningNoConnection.textColor = [ UIColor whiteColor];
         [_lblWarningNoConnection setBackgroundColor:[UIColor colorWithRed:200.0/255.0 green:50.0/255.0 blue:50.0/255.0 alpha:0.9]];
+        [self.view addSubview:_lblWarningNoConnection];
     }
     
-    [self.view addSubview:_lblWarningNoConnection];
+    [_lblWarningNoConnection setHidden:NO];
     _lblWarningNoConnection.frame = CGRectMake(0,42,self.view.frame.size.width,0);
     [UIView animateWithDuration:0.5 animations:^{
         CGRect frame2 = _lblWarningNoConnection.frame;

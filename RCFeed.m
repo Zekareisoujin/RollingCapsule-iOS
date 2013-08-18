@@ -89,13 +89,6 @@ static RCFeed* RCFeedFollowFeed = nil;
 
 - (void) appendData:(NSData*) data willAddToFront:(BOOL) toFront {
     NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-    if ([responseData isEqualToString:@"Unauthorized"]) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
-            [appDelegate.menuViewController btnActionLogOut:nil];
-        });
-        return;
-    }
     SBJsonParser *jsonParser = [SBJsonParser new];
     NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
 #if DEBUG==1
@@ -132,10 +125,6 @@ static RCFeed* RCFeedFollowFeed = nil;
         return;
     } else {
         NSLog(@"feed-data: error parsing json data received%@",responseData);
-        if ([responseData isEqualToString:@"Unauthorized"]) {
-            NSNotification *notification = [NSNotification notificationWithName:RCNotificationNameReceivedUnauthorizedFromBackend object:self];
-            [[NSNotificationCenter defaultCenter] postNotification:notification];
-        }
         _errorMessage = responseData;
         _errorType = RCFeedBadServerResult;
     }
@@ -172,6 +161,11 @@ static RCFeed* RCFeedFollowFeed = nil;
              if (fetchMode == RCFeedFetchModeReset){
                  [_postList removeAllObjects];
                  [postSet removeAllObjects];
+             }
+             NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+             if ([responseData isEqualToString:@"Unauthorized"]) {
+                 NSNotification *notification = [NSNotification notificationWithName:RCNotificationNameReceivedUnauthorizedFromBackend object:self];
+                 [[NSNotificationCenter defaultCenter] postNotification:notification];
              }
              if (error == nil)
                  [self appendData:data willAddToFront:willAddToFront];
