@@ -38,6 +38,8 @@
     flow.minimumInteritemSpacing = 0.0;
     flow.sectionInset = UIEdgeInsetsMake(0.0, 0.0, 0.0, 0.0);
     [self.navigationController setNavigationBarHidden:YES animated:NO];
+    AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+    [appDelegate disableSideMenu];
 }
 
 #pragma mark - UICollectionView Datasource
