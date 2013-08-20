@@ -80,7 +80,7 @@
         //TODO open main news feed page
         dispatch_async(dispatch_get_main_queue(), ^{
             if (_successfulPost) {
-                postNotification(@"Media posted successfully!");
+                postNotification(NSLocalizedString(@"Media posted successfully!", nil));
             }
         });
         

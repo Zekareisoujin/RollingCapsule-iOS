@@ -39,9 +39,6 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
 
 - (void)viewDidLoad
 {
-    //_txtFieldUsername.placeholder = RCEmailCapitalString;
-    //_txtFieldPassword.placeholder = RCPasswordCapitalString;
-
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
     
@@ -69,7 +66,7 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
 - (IBAction)btnActionLogIn:(id)sender {
     [self setUIBusy:YES];
     if([[_txtFieldUsername text] isEqualToString:@""] || [[_txtFieldPassword text] isEqualToString:@""] ) {
-        showAlertDialog(RCErrorMessageUsernameAndPasswordMissing, NSLocalizedString(@"Error",nil));
+        showAlertDialog(NSLocalizedString(RCErrorMessageUsernameAndPasswordMissing, nil),  NSLocalizedString(@"Error",nil));
         [self setUIBusy:NO];
     } else {
         [self asynchLogInRequest];
@@ -116,7 +113,7 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
                     _isFirstTimeLogin = NO;
                 }
             }else {
-                showAlertDialog(([NSString stringWithFormat:@"%@. %@ ",responseData, RCErrorMessagePleaseTryAgain]), NSLocalizedString(@"Error",nil));
+                showAlertDialog(([NSString stringWithFormat:@"%@. %@ ",responseData, NSLocalizedString(RCErrorMessagePleaseTryAgain, nil)]), NSLocalizedString(@"Error",nil));
             }
             [self setUIBusy:NO];
         }];
@@ -124,7 +121,7 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        showAlertDialog(RCAlertMessageLoginFailed, NSLocalizedString(@"Error",nil));
+        showAlertDialog(NSLocalizedString(RCAlertMessageLoginFailed, nil), NSLocalizedString(@"Error",nil));
     }
 }
 
@@ -141,12 +138,12 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
          NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse*)response;
          NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
          if (error != nil || httpResponse.statusCode !=  RCHttpOkStatusCode || ![responseData isEqualToString:@"ok"]) {
-             showAlertDialog(RCErrorMessagePleaseTryAgain, NSLocalizedString(@"Error",nil));
+             showAlertDialog(NSLocalizedString(RCErrorMessagePleaseTryAgain, nil) , NSLocalizedString(@"Error",nil));
          }
      }];
     }@catch (NSException* e) {
         NSLog(@"Exception: %@", e);
-        showAlertDialog(RCAlertMessageLoginFailed, NSLocalizedString(@"Error",nil));
+        showAlertDialog(NSLocalizedString(RCAlertMessageLoginFailed, nil), NSLocalizedString(@"Error",nil));
     }
 }
 

@@ -239,8 +239,7 @@ static BOOL RCPostDetailsViewControllerShowPostID = NO;
             if (errorMsg == nil) {
                 if (!isFollowing)
                     [_btnFollow setEnabled:YES];
-            }else
-                postNotification(errorMsg);
+            }
         }];
     }
     
@@ -636,14 +635,15 @@ static BOOL RCPostDetailsViewControllerShowPostID = NO;
                  _currentCommentID = [[commentJson objectForKey:@"id"] intValue];
                 [self asynchGetCommentsRequest];
              }else {
-                 postNotification([NSString stringWithFormat:@"Please try again! %@", responseData]);
+                 NSLog(@"unable to post comment received: %@", responseData);
+                 postNotification(NSLocalizedString(@"Unable to post comment, please try again later!", nil));
              }
          }];
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-        postNotification(@"Post Failed.");
+        postNotification(NSLocalizedString(@"Unable to post comment, please try again later!", nil));
     }
 }
 
@@ -678,7 +678,7 @@ static BOOL RCPostDetailsViewControllerShowPostID = NO;
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        postNotification(@"Failure getting friends from web service");
+        postNotification(NSLocalizedString(@"Failure getting friends from web service", nil));
     }
 }
 
@@ -697,12 +697,12 @@ static BOOL RCPostDetailsViewControllerShowPostID = NO;
              NSLog(@"Post deletion status string: %@", responseData);
              
              if ([responseData isEqualToString:@"ok"]){
-                 postNotification(@"Post deleted successfully!");
+                 postNotification(NSLocalizedString(@"Post deleted successfully!", nil));
                  [self.navigationController popViewControllerAnimated:YES];
                  if (_deleteFunction != nil)
                      _deleteFunction();
              }else if ([responseData isEqualToString:@"error"]){
-                 postNotification(@"Please try again!");
+                 postNotification(NSLocalizedString(@"Please try again!", nil));
              }
              
               /*SBJsonParser *jsonParser = [SBJsonParser new];
@@ -713,7 +713,7 @@ static BOOL RCPostDetailsViewControllerShowPostID = NO;
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        postNotification(@"Failure deleting post.");
+        postNotification(NSLocalizedString(@"Failure deleting post.", nil));
     }
 
 }
@@ -879,7 +879,7 @@ static BOOL RCPostDetailsViewControllerShowPostID = NO;
         if (errorMsg == nil) {
             [_btnFollow setEnabled:NO];
         }else
-            postNotification(errorMsg);
+            postNotification(NSLocalizedString(@"Failure following user, please try again later", nil));
     }];
 }
 
@@ -993,7 +993,7 @@ static BOOL RCPostDetailsViewControllerShowPostID = NO;
                 NSString *imageName = [NSString stringWithFormat:@"topicCategory%@.png", topic];
                 [button setBackgroundImage:[UIImage imageNamed:imageName] forState:UIControlStateNormal];
             }else
-                postNotification(errorMsg);
+                postNotification(NSLocalizedString(@"Failure updating post, please try again later!", nil));
         }];
         
     } else {
@@ -1002,7 +1002,7 @@ static BOOL RCPostDetailsViewControllerShowPostID = NO;
                 _post.topic = _currentTopic = nil;
                 [button setBackgroundImage:[UIImage imageNamed:@"buttonTopic.png"] forState:UIControlStateNormal];
             }else
-                postNotification(errorMsg);
+                postNotification(NSLocalizedString(@"Failure updating post, please try again later!", nil));
         }];
     }
     [_viewTopic removeFromSuperview];

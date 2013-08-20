@@ -59,7 +59,7 @@ static RCUploadManager*  RCStaticUploadManager = nil;
             return;
     }
     [RCStaticUploadManager addUploadTaskWithMediaOperation:operation forPost:post];
-    postNotification(@"Uploading media");
+    postNotification(NSLocalizedString(@"Uploading media", nil));
 }
 
 

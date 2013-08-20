@@ -800,16 +800,16 @@
     
     switch (_currentViewMode) {
         case RCMainFeedViewModePublic:
-            [_lblNoPost setText:RCMainFeedNoPostPublic];
+            [_lblNoPost setText:NSLocalizedString(RCMainFeedNoPostPublic, nil)];
             break;
         case RCMainFeedViewModeFriends:
-            [_lblNoPost setText:RCMainFeedNoPostFriends];
+            [_lblNoPost setText:NSLocalizedString(RCMainFeedNoPostFriends, nil)];
             break;
         case RCMainFeedViewModeFollow:
-            [_lblNoPost setText:RCMainFeedNoPostFollows];
+            [_lblNoPost setText:NSLocalizedString(RCMainFeedNoPostFollows, nil)];
             break;
         case RCMainFeedViewModeCommented:
-            [_lblNoPost setText:RCMainFeedNoPostCommented];
+            [_lblNoPost setText:NSLocalizedString(RCMainFeedNoPostCommented, nil)];
             break;
         default:
             break;

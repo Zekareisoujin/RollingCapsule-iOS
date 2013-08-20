@@ -232,10 +232,10 @@
         RCMenuTableCell *cell = [RCMenuTableCell createMenuTableCell:_menuTable];
         if ([label hasPrefix:@"Friend"]) {
             if ([RCNotification numberOfNewFriendRequests] > 0) {
-                label = [NSString stringWithFormat:@"%@(%d)",label,[RCNotification numberOfNewFriendRequests]];
+                label = [NSString stringWithFormat:@"%@(%d)",NSLocalizedString(label, nil),[RCNotification numberOfNewFriendRequests]];
                 [cell.imgViewNotice setHidden:NO];
             }
-        }
+        } else label = NSLocalizedString(label, nil);
         [cell.imgCellIcon setImage:icon];
         [cell.lblCellTitle setText:label];
         [cell setCellStateNormal:NO];
@@ -504,7 +504,7 @@
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        postNotification(@"Log Out Failed.");
+        postNotification(NSLocalizedString(@"Log Out Failed.", nil));
     }
 }
 

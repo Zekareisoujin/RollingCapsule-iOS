@@ -101,7 +101,8 @@ BOOL        _willMoveKeyboardUp;
                 showAlertDialog(([NSString stringWithFormat:NSLocalizedString(@"Welcome %@! We have sent you an activation code via SMS to the phone number you provided. You can now login and activate your account using the aforementioned code.",nil),name]), NSLocalizedString(@"Welcome",nil));
                 [self btnCloseTouchUpInside:nil];
             }else {
-                showAlertDialog(([NSString stringWithFormat:@"%@. %@",responseData, RCErrorMessagePleaseTryAgain]), NSLocalizedString(@"Error",nil));
+                NSLog(@"failure registering received: %@", responseData);
+                showAlertDialog(([NSString stringWithFormat:@"%@. %@",responseData, NSLocalizedString(RCErrorMessagePleaseTryAgain, nil)]), NSLocalizedString(@"Error",nil));
             }
 
         }];
@@ -110,7 +111,7 @@ BOOL        _willMoveKeyboardUp;
         [RCConnectionManager endConnection];
         [_btnRegister setEnabled:YES];
         NSLog(@"Exception: %@", e);
-        showAlertDialog(RCAlertMessageRegistrationFailed, NSLocalizedString(@"Error",nil));
+        showAlertDialog(NSLocalizedString(RCAlertMessageRegistrationFailed, nil), NSLocalizedString(@"Error",nil));
     }
 }
 
@@ -129,7 +130,7 @@ BOOL        _willMoveKeyboardUp;
 - (IBAction)registerTouchUpInside:(id)sender {
     if([[_txtFieldName text] isEqualToString:@""] || [[_txtFieldPassword text] isEqualToString:@""]
        || [[_txtFieldEmail text] isEqualToString:@""] || [[_txtFieldPhoneNumber text] isEqualToString:@""] ) {
-        showAlertDialog(RCErrorMessageInformationMissing, NSLocalizedString(@"Error",nil));
+        showAlertDialog(NSLocalizedString(RCErrorMessageInformationMissing, nil), NSLocalizedString(@"Error",nil));
     } else {
         NSString* password = [_txtFieldPassword text];
         NSString* confirmPassword = [_txtFieldConfirmPassword text];

@@ -229,7 +229,7 @@
                 _friendStatus = RCFriendStatusNull;
             [self setFriendActionButton];
         }else
-            postNotification(errorMsg);
+            postNotification(NSLocalizedString(RCErrorMessageFailedToGetUsersRelation, nil));
     }];
     
     [_viewingUser getUserFollowRelationAsync:_profileUser completionHandler:^(BOOL isFollowing, int followID, NSString* errorMsg) {
@@ -241,7 +241,7 @@
             else
                 [_btnFollow setTitle:@"Unfollow" forState:UIControlStateNormal];
         }else
-            postNotification(errorMsg);
+            postNotification(NSLocalizedString(RCErrorMessageFailedToGetUsersRelation, nil));
     }];
 }
 
@@ -282,7 +282,7 @@
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        postNotification(RCErrorMessageFailedToGetUsersRelation);
+        postNotification(NSLocalizedString(RCErrorMessageFailedToGetUsersRelation, nil));
     }
 }
 
@@ -321,7 +321,7 @@
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        postNotification(RCErrorMessageFailedToGetUsersRelation);
+        postNotification(NSLocalizedString(RCErrorMessageFailedToGetUsersRelation, nil));
     }
 }
 
@@ -574,27 +574,27 @@
 
 - (void)setFriendActionButton {
     if ([_friendStatus isEqualToString:RCFriendStatusNull]) {
-        [_btnFriendAction setTitle:RCFriendStatusActionRequestFriend forState:UIControlStateNormal];
+        [_btnFriendAction setTitle:NSLocalizedString(RCFriendStatusActionRequestFriend, nil) forState:UIControlStateNormal];
         _btnFriendAction.enabled = YES;
         if (_btnDeclineRequest != nil)
             [_btnDeclineRequest removeFromSuperview];
     }else if ([_friendStatus isEqualToString:RCFriendStatusAccepted]) {
-        [_btnFriendAction setTitle:RCFriendStatusActionUnfriend forState:UIControlStateNormal];
+        [_btnFriendAction setTitle:NSLocalizedString(RCFriendStatusActionUnfriend, nil) forState:UIControlStateNormal];
         _btnFriendAction.enabled = YES;
         if (_btnDeclineRequest != nil)
             [_btnDeclineRequest removeFromSuperview];
     } else if ([_friendStatus isEqualToString:RCFriendStatusPending]) {
-        [_btnFriendAction setTitle:RCFriendStatusActionRequestSent forState:UIControlStateNormal];
+        [_btnFriendAction setTitle:NSLocalizedString(RCFriendStatusActionRequestSent, nil) forState:UIControlStateNormal];
         _btnFriendAction.enabled = NO;
         if (_btnDeclineRequest != nil)
             [_btnDeclineRequest removeFromSuperview];
     } else if ([_friendStatus isEqualToString:RCFriendStatusRequested]) {
-        [_btnFriendAction setTitle:RCFriendStatusActionRequestAccept forState:UIControlStateNormal];
+        [_btnFriendAction setTitle:NSLocalizedString(RCFriendStatusActionRequestAccept, nil) forState:UIControlStateNormal];
         CGRect baseFrame = _btnFriendAction.frame;
         if (_btnDeclineRequest != nil)
             _btnDeclineRequest = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         _btnDeclineRequest.frame = CGRectMake(baseFrame.origin.x, baseFrame.origin.y + baseFrame.size.height + 10, baseFrame.size.width, baseFrame.size.height);
-        [_btnDeclineRequest setTitle:RCDeclineRequest forState:UIControlStateNormal];
+        [_btnDeclineRequest setTitle:NSLocalizedString(RCDeclineRequest, nil) forState:UIControlStateNormal];
         [_btnDeclineRequest addTarget:self action:@selector(asynchDeleteFriendshipRequest) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview:_btnDeclineRequest];
         _btnFriendAction.enabled = YES;
@@ -862,7 +862,7 @@
     [_previewLabelDescription setText:post.subject];
     
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"dd.MM.yyyy"];
+    [formatter setDateFormat:NSLocalizedString(@"dd.MM.yyyy", nil)];
     [_previewLabelDate setText:[formatter stringFromDate:post.createdTime]];
     //Left location
     
@@ -984,7 +984,7 @@
 - (IBAction)btnEditProfileTouchUpInside:(id)sender {
     if (_editingProfile) {
         _editingProfile = NO;
-        [_btnEditProfile setTitle:@"Edit" forState:UIControlStateNormal];
+        [_btnEditProfile setTitle:NSLocalizedString(@"Edit", nil) forState:UIControlStateNormal];
         _btnAvatarImg.enabled = NO;
         [_btnEditProfileCancel setHidden:YES];
         [self doneEditProfile];
@@ -992,7 +992,7 @@
         
     } else {
         _editingProfile = YES;
-        [_btnEditProfile setTitle:@"Apply" forState:UIControlStateNormal];
+        [_btnEditProfile setTitle:NSLocalizedString(@"Apply", nil) forState:UIControlStateNormal];
         [_btnAvatarImg setBackgroundImage:_userAvatarImage forState:UIControlStateNormal];
         _btnAvatarImg.enabled = YES;
         [_btnEditProfileCancel setHidden:NO];
@@ -1005,7 +1005,7 @@
         _lblAvatarEdit = [[UILabel alloc] initWithFrame:lblFrame];
         [_lblAvatarEdit setBackgroundColor:[UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.2]];
         [self.view addSubview:_lblAvatarEdit];
-        [_lblAvatarEdit setText:@"Edit"];
+        [_lblAvatarEdit setText:NSLocalizedString(@"Edit", nil)];
         _lblAvatarEdit.textAlignment = NSTextAlignmentCenter;
         [_lblAvatarEdit setTextColor:[UIColor whiteColor]];
         CGRect frame = _lblName.frame;

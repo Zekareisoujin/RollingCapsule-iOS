@@ -232,30 +232,6 @@ CGRect  searchButtonHideFrame;
     [self.navigationController pushViewController:detailViewController animated:YES];
 }
 
-//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-//{
-//    NSString *sectionName;
-//    switch (section)
-//    {
-//        default:
-//            switch (_viewingMode) {
-//                case RCFriendListViewModeFriends:
-//                    sectionName = @"Friends";
-//                    break;
-//                case RCFriendListViewModePendingFriends:
-//                    sectionName = @"Pending Requests";
-//                    break;
-//                case RCFriendListViewModeFollowees:
-//                    sectionName = @"People you follow";
-//                    break;
-//                default:
-//                    break;
-//            }
-//            break;
-//    }
-//    return sectionName;
-//}
-
 #pragma mark - web request
 - (void)asynchGetFriendsRequest {
     //Asynchronous Request
@@ -287,7 +263,8 @@ CGRect  searchButtonHideFrame;
                         [_tblViewFriendList reloadData];
                     
                 }else {
-                    postNotification([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetFriends, responseData]);
+                    NSLog(@"failure getting friends received: %@", responseData);
+                    postNotification(NSLocalizedString(RCErrorMessageFailedToGetFriends,nil));
                     
                 }
                 [_refreshControl endRefreshing];
@@ -295,7 +272,7 @@ CGRect  searchButtonHideFrame;
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        postNotification(RCErrorMessageFailedToGetFriends);
+        postNotification(NSLocalizedString(RCErrorMessageFailedToGetFriends,nil));
     }
 }
 
@@ -332,7 +309,8 @@ CGRect  searchButtonHideFrame;
                     [_tblViewFriendList reloadData];
                  
              }else {
-                 postNotification([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetFriends, responseData]);
+                 NSLog(@"failure getting requested friends received: %@", responseData);
+                 postNotification(NSLocalizedString(RCErrorMessageFailedToGetUsers,nil));
                  
              }
              [_refreshControl endRefreshing];
@@ -340,7 +318,7 @@ CGRect  searchButtonHideFrame;
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        postNotification(RCErrorMessageFailedToGetFriends);
+        postNotification(NSLocalizedString(RCErrorMessageFailedToGetUsers, nil));
     }
 }
 
@@ -373,7 +351,8 @@ CGRect  searchButtonHideFrame;
                      [_tblViewFriendList reloadData];
                  
              }else {
-                 postNotification([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetFriends, responseData]);
+                 NSLog(@"failure getting followees received: %@", responseData);
+                 postNotification(NSLocalizedString(RCErrorMessageFailedToGetUsers,nil));
                  
              }
              [_refreshControl endRefreshing];
@@ -381,7 +360,7 @@ CGRect  searchButtonHideFrame;
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        postNotification(RCErrorMessageFailedToGetFriends);
+        postNotification(NSLocalizedString(RCErrorMessageFailedToGetUsers, nil));
     }
 }
 
@@ -422,7 +401,8 @@ CGRect  searchButtonHideFrame;
                      if (_viewingMode == RCFriendListViewModePendingFriends)
                          [_tblViewFriendList reloadData];
                  }else {
-                     postNotification([NSString stringWithFormat:@"%@ %@",RCErrorMessageFailedToGetUsers, responseData]);
+                     NSLog(@"failure get users received: %@", responseData);
+                     postNotification(NSLocalizedString(RCErrorMessageFailedToGetUsers,nil));
                  }
              }
          }];

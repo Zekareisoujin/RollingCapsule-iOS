@@ -112,7 +112,7 @@ static NSMutableDictionary* RCUserUserCollection = nil;
                   RCUser *newUser = [RCUser getUserWithNSDictionary:jsonData];
                  completionHandle(newUser);
              }else {
-                 postNotification(@"Failed to retrieve user info");
+                 postNotification(NSLocalizedString(@"Failed to retrieve user info", nil));
              }
              
          }];
@@ -174,7 +174,6 @@ static NSMutableDictionary* RCUserUserCollection = nil;
                 
                 if(error != nil) {
                     NSLog(@"Error: %@", error);
-                    postNotification(error);
                     completionHandle(nil);
                 }else {
                     //[[RCResourceCache centralCache] putResourceInCache:[[NSString alloc] initWithFormat:@"%@/%d/avatar", RCUsersResource, _userID] forKey:avatar];
@@ -188,7 +187,6 @@ static NSMutableDictionary* RCUserUserCollection = nil;
         }@catch (NSException *e) {
             [RCConnectionManager endConnection];
             NSLog(@"Exception: %@", e);
-            postNotification(error);
             completionHandle(nil);
         }
     
@@ -254,7 +252,7 @@ static NSMutableDictionary* RCUserUserCollection = nil;
         if (![responseData isEqualToString:@"ok"]) {
             NSLog(@"Server error updating user %@",responseData);
         }
-    } else postNotification(@"Could not connect to server to upload user info, please try again");
+    } else postNotification(NSLocalizedString(@"Could not connect to server to upload user info, please try again", nil));
 }
 
 + (void) followUserAsCurrentUserAsync:(RCUser*) otherUser completionHandler:(void (^)(int, NSString*))completionHandle {
