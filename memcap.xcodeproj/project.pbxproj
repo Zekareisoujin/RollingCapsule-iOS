@@ -124,7 +124,6 @@
 		6461C9CB17BD1CB0009DD299 /* loginTextFieldsFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 6461C9CA17BD1CB0009DD299 /* loginTextFieldsFrame.png */; };
 		646C809B17A5C67A00054C1A /* RCFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = 646C809A17A5C67A00054C1A /* RCFeed.m */; };
 		646C809D17A64A6F00054C1A /* outboxGreyLeacher.png in Resources */ = {isa = PBXBuildFile; fileRef = 646C809C17A64A6F00054C1A /* outboxGreyLeacher.png */; };
-		646FBFC317C30EC2001C22FD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 646FBFC217C30EC2001C22FD /* Localizable.strings */; };
 		646FBFC417C311DF001C22FD /* RCFacebookSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 646FBFC617C311DF001C22FD /* RCFacebookSettingsViewController.xib */; };
 		646FBFC817C31348001C22FD /* RCFriendListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 646FBFCA17C31348001C22FD /* RCFriendListViewController.xib */; };
 		646FBFCC17C313D6001C22FD /* RCLoadingLocationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 646FBFCE17C313D6001C22FD /* RCLoadingLocationViewController.xib */; };
@@ -142,6 +141,7 @@
 		647265BB17A04D37002E654A /* RCUploadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 647265BA17A04D37002E654A /* RCUploadManager.m */; };
 		647265BF17A04D84002E654A /* NSTimer+BlocksKits.m in Sources */ = {isa = PBXBuildFile; fileRef = 647265BE17A04D84002E654A /* NSTimer+BlocksKits.m */; };
 		647265C117A05FF9002E654A /* friendListSearchBarToggle.png in Resources */ = {isa = PBXBuildFile; fileRef = 647265C017A05FF9002E654A /* friendListSearchBarToggle.png */; };
+		647380E817C348BE000D835A /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 647380EA17C348BE000D835A /* Localizable.strings */; };
 		6476626C17A954ED000D9E36 /* notice.png in Resources */ = {isa = PBXBuildFile; fileRef = 6476626B17A954ED000D9E36 /* notice.png */; };
 		647E2FCF1791F2E600AA6B9A /* default_avatar.png in Resources */ = {isa = PBXBuildFile; fileRef = 647E2FCE1791F2E600AA6B9A /* default_avatar.png */; };
 		647E2FD117929BFC00AA6B9A /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 647E2FD017929BFC00AA6B9A /* AVFoundation.framework */; };
@@ -496,29 +496,28 @@
 		646FBFBF17C30BC8001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hant"; path = "zh-Hant.lproj/RCLoginViewController.xib"; sourceTree = "<group>"; };
 		646FBFC017C30BC8001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		646FBFC117C30BC8001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
-		646FBFC217C30EC2001C22FD /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
-		646FBFC517C311DF001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file; name = "zh-Hant"; path = "zh-Hant.lproj/RCFacebookSettingsViewController.xib"; sourceTree = "<group>"; };
-		646FBFC717C311E8001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/RCFacebookSettingsViewController.xib; sourceTree = "<group>"; };
-		646FBFC917C31348001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file; name = "zh-Hant"; path = "zh-Hant.lproj/RCFriendListViewController.xib"; sourceTree = "<group>"; };
-		646FBFCB17C31357001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/RCFriendListViewController.xib; sourceTree = "<group>"; };
-		646FBFCD17C313D6001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/RCLoadingLocationViewController.xib; sourceTree = "<group>"; };
-		646FBFCF17C313E2001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file; name = "zh-Hant"; path = "zh-Hant.lproj/RCLoadingLocationViewController.xib"; sourceTree = "<group>"; };
-		646FBFD117C31525001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/RCLoginViewController4.xib; sourceTree = "<group>"; };
-		646FBFD317C3152D001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file; name = "zh-Hant"; path = "zh-Hant.lproj/RCLoginViewController4.xib"; sourceTree = "<group>"; };
-		646FBFD517C318A7001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file; name = "zh-Hant"; path = "zh-Hant.lproj/RCNewPostViewController.xib"; sourceTree = "<group>"; };
-		646FBFD717C318AF001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/RCNewPostViewController.xib; sourceTree = "<group>"; };
-		646FBFD917C318B6001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/RCNewPostViewController4.xib; sourceTree = "<group>"; };
-		646FBFDB17C318BE001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file; name = "zh-Hant"; path = "zh-Hant.lproj/RCNewPostViewController4.xib"; sourceTree = "<group>"; };
-		646FBFDD17C318CC001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file; name = "zh-Hant"; path = "zh-Hant.lproj/RCOutboxViewController.xib"; sourceTree = "<group>"; };
-		646FBFDF17C318D9001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/RCOutboxViewController.xib; sourceTree = "<group>"; };
-		646FBFE117C318FF001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/RCPostDetailsViewController.xib; sourceTree = "<group>"; };
-		646FBFE317C3191D001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file; name = "zh-Hant"; path = "zh-Hant.lproj/RCPostDetailsViewController.xib"; sourceTree = "<group>"; };
-		646FBFE517C3192B001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/RCRegisterViewController.xib; sourceTree = "<group>"; };
-		646FBFE717C31934001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file; name = "zh-Hant"; path = "zh-Hant.lproj/RCRegisterViewController.xib"; sourceTree = "<group>"; };
-		646FBFE917C31A36001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/RCUserProfileViewController.xib; sourceTree = "<group>"; };
-		646FBFEB17C31A43001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file; name = "zh-Hant"; path = "zh-Hant.lproj/RCUserProfileViewController.xib"; sourceTree = "<group>"; };
-		646FBFED17C31AF9001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file; name = "zh-Hant"; path = "zh-Hant.lproj/RCAboutUsViewController.xib"; sourceTree = "<group>"; };
-		646FBFEF17C31B02001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/RCAboutUsViewController.xib; sourceTree = "<group>"; };
+		646FBFC517C311DF001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hant"; path = "zh-Hant.lproj/RCFacebookSettingsViewController.xib"; sourceTree = "<group>"; };
+		646FBFC717C311E8001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/RCFacebookSettingsViewController.xib; sourceTree = "<group>"; };
+		646FBFC917C31348001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hant"; path = "zh-Hant.lproj/RCFriendListViewController.xib"; sourceTree = "<group>"; };
+		646FBFCB17C31357001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/RCFriendListViewController.xib; sourceTree = "<group>"; };
+		646FBFCD17C313D6001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/RCLoadingLocationViewController.xib; sourceTree = "<group>"; };
+		646FBFCF17C313E2001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hant"; path = "zh-Hant.lproj/RCLoadingLocationViewController.xib"; sourceTree = "<group>"; };
+		646FBFD117C31525001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/RCLoginViewController4.xib; sourceTree = "<group>"; };
+		646FBFD317C3152D001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hant"; path = "zh-Hant.lproj/RCLoginViewController4.xib"; sourceTree = "<group>"; };
+		646FBFD517C318A7001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hant"; path = "zh-Hant.lproj/RCNewPostViewController.xib"; sourceTree = "<group>"; };
+		646FBFD717C318AF001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/RCNewPostViewController.xib; sourceTree = "<group>"; };
+		646FBFD917C318B6001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/RCNewPostViewController4.xib; sourceTree = "<group>"; };
+		646FBFDB17C318BE001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hant"; path = "zh-Hant.lproj/RCNewPostViewController4.xib"; sourceTree = "<group>"; };
+		646FBFDD17C318CC001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hant"; path = "zh-Hant.lproj/RCOutboxViewController.xib"; sourceTree = "<group>"; };
+		646FBFDF17C318D9001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/RCOutboxViewController.xib; sourceTree = "<group>"; };
+		646FBFE117C318FF001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/RCPostDetailsViewController.xib; sourceTree = "<group>"; };
+		646FBFE317C3191D001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hant"; path = "zh-Hant.lproj/RCPostDetailsViewController.xib"; sourceTree = "<group>"; };
+		646FBFE517C3192B001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/RCRegisterViewController.xib; sourceTree = "<group>"; };
+		646FBFE717C31934001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hant"; path = "zh-Hant.lproj/RCRegisterViewController.xib"; sourceTree = "<group>"; };
+		646FBFE917C31A36001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/RCUserProfileViewController.xib; sourceTree = "<group>"; };
+		646FBFEB17C31A43001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hant"; path = "zh-Hant.lproj/RCUserProfileViewController.xib"; sourceTree = "<group>"; };
+		646FBFED17C31AF9001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hant"; path = "zh-Hant.lproj/RCAboutUsViewController.xib"; sourceTree = "<group>"; };
+		646FBFEF17C31B02001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/RCAboutUsViewController.xib; sourceTree = "<group>"; };
 		647265B017A04CDF002E654A /* RCAsyncPhotoDownloadOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAsyncPhotoDownloadOperation.h; sourceTree = "<group>"; };
 		647265B117A04CDF002E654A /* RCAsyncPhotoDownloadOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAsyncPhotoDownloadOperation.m; sourceTree = "<group>"; };
 		647265B217A04CDF002E654A /* RCMediaUploadOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMediaUploadOperation.h; sourceTree = "<group>"; };
@@ -531,6 +530,8 @@
 		647265BD17A04D84002E654A /* NSTimer+BlocksKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTimer+BlocksKit.h"; sourceTree = "<group>"; };
 		647265BE17A04D84002E654A /* NSTimer+BlocksKits.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTimer+BlocksKits.m"; sourceTree = "<group>"; };
 		647265C017A05FF9002E654A /* friendListSearchBarToggle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = friendListSearchBarToggle.png; sourceTree = "<group>"; };
+		647380E917C348BE000D835A /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		647380EB17C348C2000D835A /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		6476626B17A954ED000D9E36 /* notice.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notice.png; sourceTree = "<group>"; };
 		647E2FCE1791F2E600AA6B9A /* default_avatar.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = default_avatar.png; path = ../default_avatar.png; sourceTree = "<group>"; };
 		647E2FD017929BFC00AA6B9A /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -864,7 +865,7 @@
 				646C809A17A5C67A00054C1A /* RCFeed.m */,
 				6461C9B717B99B0A009DD299 /* RCPostReport.h */,
 				6461C9B817B99B0A009DD299 /* RCPostReport.m */,
-				646FBFC217C30EC2001C22FD /* Localizable.strings */,
+				647380EA17C348BE000D835A /* Localizable.strings */,
 			);
 			name = Models;
 			path = ..;
@@ -1655,7 +1656,7 @@
 				6460755417BE75F000F54A82 /* tutorialI4Mainpage5.jpg in Resources */,
 				6460755517BE75F000F54A82 /* tutorialI4Mainpage6.jpg in Resources */,
 				6460755717BE7D4200F54A82 /* menuIconTutorial.png in Resources */,
-				646FBFC317C30EC2001C22FD /* Localizable.strings in Resources */,
+				647380E817C348BE000D835A /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1892,6 +1893,15 @@
 				646FBFEF17C31B02001C22FD /* en */,
 			);
 			name = RCAboutUsViewController.xib;
+			sourceTree = "<group>";
+		};
+		647380EA17C348BE000D835A /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				647380E917C348BE000D835A /* en */,
+				647380EB17C348C2000D835A /* zh-Hant */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 		BFCA7824174DFD3F00666CBA /* InfoPlist.strings */ = {
