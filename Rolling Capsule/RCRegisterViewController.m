@@ -98,10 +98,10 @@ BOOL        _willMoveKeyboardUp;
             if (jsonData != NULL) {
                 NSDictionary *userData = (NSDictionary *) [jsonData objectForKey: @"user"];
                 NSString *name = (NSString *) [userData objectForKey:@"name"];
-                showAlertDialog(([NSString stringWithFormat:@"Welcome %@! We have sent you an activation code via SMS to the phone number you provided. You can now login and activate your account using the aforementioned code.",name]), @"Welcome");
+                showAlertDialog(([NSString stringWithFormat:NSLocalizedString(@"Welcome %@! We have sent you an activation code via SMS to the phone number you provided. You can now login and activate your account using the aforementioned code.",nil),name]), NSLocalizedString(@"Welcome",nil));
                 [self btnCloseTouchUpInside:nil];
             }else {
-                showAlertDialog(([NSString stringWithFormat:@"%@. %@",responseData, RCErrorMessagePleaseTryAgain]), @"Error");
+                showAlertDialog(([NSString stringWithFormat:@"%@. %@",responseData, RCErrorMessagePleaseTryAgain]), NSLocalizedString(@"Error",nil));
             }
 
         }];
@@ -110,7 +110,7 @@ BOOL        _willMoveKeyboardUp;
         [RCConnectionManager endConnection];
         [_btnRegister setEnabled:YES];
         NSLog(@"Exception: %@", e);
-        showAlertDialog(RCAlertMessageRegistrationFailed, @"Error");
+        showAlertDialog(RCAlertMessageRegistrationFailed, NSLocalizedString(@"Error",nil));
     }
 }
 
@@ -129,12 +129,12 @@ BOOL        _willMoveKeyboardUp;
 - (IBAction)registerTouchUpInside:(id)sender {
     if([[_txtFieldName text] isEqualToString:@""] || [[_txtFieldPassword text] isEqualToString:@""]
        || [[_txtFieldEmail text] isEqualToString:@""] || [[_txtFieldPhoneNumber text] isEqualToString:@""] ) {
-        showAlertDialog(RCErrorMessageInformationMissing, @"Error");
+        showAlertDialog(RCErrorMessageInformationMissing, NSLocalizedString(@"Error",nil));
     } else {
         NSString* password = [_txtFieldPassword text];
         NSString* confirmPassword = [_txtFieldConfirmPassword text];
         if (![password isEqualToString:confirmPassword]) {
-            showAlertDialog(@"Password and confirm password does not match", @"Error");
+            showAlertDialog(NSLocalizedString(@"Password and confirm password does not match",nil), NSLocalizedString(@"Error",nil));
         } else
             [self asynchRegisterRequest];
     }

@@ -547,7 +547,7 @@
                 _friendStatus = RCFriendStatusPending;
                 _friendshipID = friendshipID;
                 [self setFriendActionButton];
-                postNotification([NSString stringWithFormat:@"You have sent a friend request to %@", _profileUser.name]);
+                postNotification([NSString stringWithFormat:NSLocalizedString(@"You have sent a friend request to %@",nil) , _profileUser.name]);
             }else
                 postNotification(errorMsg);
         }];
@@ -556,7 +556,7 @@
             if (errorMsg == nil) {
                 _friendStatus = RCFriendStatusNull;
                 [self setFriendActionButton];
-                postNotification([NSString stringWithFormat:@"You have removed %@ from your friend list", _profileUser.name]);
+                postNotification([NSString stringWithFormat:NSLocalizedString(@"You have removed %@ from your friend list",nil) , _profileUser.name]);
             }else
                 postNotification(errorMsg);
         }];
@@ -565,7 +565,7 @@
             if (errorMsg == nil) {
                 _friendStatus = RCFriendStatusAccepted;
                 [self setFriendActionButton];
-                postNotification([NSString stringWithFormat:@"%@ is now your friend", _profileUser.name]);
+                postNotification([NSString stringWithFormat:NSLocalizedString(@"%@ is now your friend", nil) , _profileUser.name]);
             }else
                 postNotification(errorMsg);
         }];
@@ -614,8 +614,8 @@
             if (errorMsg == nil) {
                 _isFollowing = YES;
                 _followID = followID;
-                [_btnFollow setTitle:@"Unfollow" forState:UIControlStateNormal];
-                postNotification([NSString stringWithFormat:@"You are now following %@", _profileUser.name]);
+                [_btnFollow setTitle:NSLocalizedString(@"Unfollow", nil) forState:UIControlStateNormal];
+                postNotification([NSString stringWithFormat:NSLocalizedString(@"You are now following %@", nil),  _profileUser.name]);
             }else
                 postNotification(errorMsg);
         }];
@@ -623,8 +623,8 @@
         [RCUser removeFollowRelationAsync:_followID completionHandler:^(NSString* errorMsg){
             if (errorMsg == nil) {
                 _isFollowing = NO;
-                [_btnFollow setTitle:@"Follow" forState:UIControlStateNormal];
-                postNotification([NSString stringWithFormat:@"You do not follow %@ anymore", _profileUser.name]);
+                [_btnFollow setTitle:NSLocalizedString(@"Follow",nil) forState:UIControlStateNormal];
+                postNotification([NSString stringWithFormat:NSLocalizedString(@"You do not follow %@ anymore", nil) , _profileUser.name]);
             }else
                 postNotification(errorMsg);
         }];

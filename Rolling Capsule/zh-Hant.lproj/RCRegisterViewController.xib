@@ -44,6 +44,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrameSize">{320, 548}</string>
 						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="210099063"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -58,6 +59,7 @@
 						<int key="NSvFlags">274</int>
 						<string key="NSFrame">{{23, 35}, {275, 392}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="966298074"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -72,6 +74,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{27, 81}, {266, 30}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="139875719"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<object class="NSColor" key="IBUIBackgroundColor" id="732392022">
@@ -112,6 +115,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{27, 131}, {266, 30}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1061886842"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="732392022"/>
@@ -137,6 +141,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{27, 182}, {266, 30}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="260969624"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="732392022"/>
@@ -163,6 +168,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{111, 286}, {182, 30}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="842892608"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="732392022"/>
@@ -188,6 +194,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{27, 286}, {81, 30}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="1028117062"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="732392022"/>
@@ -213,6 +220,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{27, 233}, {266, 30}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="291343978"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<reference key="IBUIBackgroundColor" ref="732392022"/>
@@ -239,7 +247,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{98, 435}, {124, 23}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
-						<reference key="NSNextKeyView"/>
+						<reference key="NSWindow"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
@@ -277,6 +285,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{264, 26}, {36, 34}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="331315937"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -301,6 +310,7 @@
 						<int key="NSvFlags">292</int>
 						<string key="NSFrame">{{35, 336}, {250, 64}}</string>
 						<reference key="NSSuperview" ref="191373211"/>
+						<reference key="NSWindow"/>
 						<reference key="NSNextKeyView" ref="187098682"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
@@ -333,6 +343,7 @@
 				</array>
 				<string key="NSFrame">{{0, 20}, {320, 548}}</string>
 				<reference key="NSSuperview"/>
+				<reference key="NSWindow"/>
 				<reference key="NSNextKeyView" ref="989531294"/>
 				<object class="NSColor" key="IBUIBackgroundColor">
 					<int key="NSColorSpace">3</int>
@@ -1696,16 +1707,120 @@
 			<nil key="sourceID"/>
 			<int key="maxID">752</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes"/>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<object class="IBPartialClassDescription">
+					<string key="className">NSLayoutConstraint</string>
+					<string key="superclassName">NSObject</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/NSLayoutConstraint.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">RCLightboxViewController</string>
+					<string key="superclassName">UIViewController</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/RCLightboxViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">RCRegisterViewController</string>
+					<string key="superclassName">RCLightboxViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="btnCloseTouchUpInside:">id</string>
+						<string key="registerTouchUpInside:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="btnCloseTouchUpInside:">
+							<string key="name">btnCloseTouchUpInside:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="registerTouchUpInside:">
+							<string key="name">registerTouchUpInside:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="btnRegister">UIButton</string>
+						<string key="lblTermsOfUse">TTTAttributedLabel</string>
+						<string key="txtFieldConfirmPassword">UITextField</string>
+						<string key="txtFieldCountryCode">UITextField</string>
+						<string key="txtFieldEmail">UITextField</string>
+						<string key="txtFieldName">UITextField</string>
+						<string key="txtFieldPassword">UITextField</string>
+						<string key="txtFieldPhoneNumber">UITextField</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="btnRegister">
+							<string key="name">btnRegister</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="lblTermsOfUse">
+							<string key="name">lblTermsOfUse</string>
+							<string key="candidateClassName">TTTAttributedLabel</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="txtFieldConfirmPassword">
+							<string key="name">txtFieldConfirmPassword</string>
+							<string key="candidateClassName">UITextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="txtFieldCountryCode">
+							<string key="name">txtFieldCountryCode</string>
+							<string key="candidateClassName">UITextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="txtFieldEmail">
+							<string key="name">txtFieldEmail</string>
+							<string key="candidateClassName">UITextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="txtFieldName">
+							<string key="name">txtFieldName</string>
+							<string key="candidateClassName">UITextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="txtFieldPassword">
+							<string key="name">txtFieldPassword</string>
+							<string key="candidateClassName">UITextField</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="txtFieldPhoneNumber">
+							<string key="name">txtFieldPhoneNumber</string>
+							<string key="candidateClassName">UITextField</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/RCRegisterViewController.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">TTTAttributedLabel</string>
+					<string key="superclassName">UILabel</string>
+					<object class="NSMutableDictionary" key="outlets">
+						<string key="NS.key.0">delegate</string>
+						<string key="NS.object.0">id</string>
+					</object>
+					<object class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<string key="NS.key.0">delegate</string>
+						<object class="IBToOneOutletInfo" key="NS.object.0">
+							<string key="name">delegate</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</object>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/TTTAttributedLabel.h</string>
+					</object>
+				</object>
+			</array>
+		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaTouchFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
-			<string key="buttonDelete.png">{16, 16}</string>
-			<string key="registerBackground.png">{16, 16}</string>
-			<string key="registerMainFrame.png">{16, 16}</string>
-			<string key="registerRegisterButton.png">{16, 16}</string>
+			<string key="buttonDelete.png">{62, 62}</string>
+			<string key="registerBackground.png">{637, 1136}</string>
+			<string key="registerMainFrame.png">{554, 879}</string>
+			<string key="registerRegisterButton.png">{257, 46}</string>
 		</dictionary>
 		<bool key="IBDocument.UseAutolayout">YES</bool>
 		<string key="IBCocoaTouchPluginVersion">2083</string>

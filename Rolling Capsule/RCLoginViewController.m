@@ -69,7 +69,7 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
 - (IBAction)btnActionLogIn:(id)sender {
     [self setUIBusy:YES];
     if([[_txtFieldUsername text] isEqualToString:@""] || [[_txtFieldPassword text] isEqualToString:@""] ) {
-        showAlertDialog(RCErrorMessageUsernameAndPasswordMissing, @"Error");
+        showAlertDialog(RCErrorMessageUsernameAndPasswordMissing, NSLocalizedString(@"Error",nil));
         [self setUIBusy:NO];
     } else {
         [self asynchLogInRequest];
@@ -105,7 +105,7 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
                 if ([[jsonData objectForKey:RCUnactivatedWarningKey] isEqualToString:RCUnactivatedAccountString]) {
                     _userID = [[jsonData objectForKey:@"user_id"] intValue];
                     _isFirstTimeLogin = YES;
-                    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Account activation" message:@"Please enter the activation code sent to you via SMS" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:@"Resend SMS", nil];
+                    UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Account activation",nil) message:NSLocalizedString(@"Please enter the activation code sent to you via SMS",nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Ok",nil) otherButtonTitles:NSLocalizedString(@"Resend SMS",nil), nil];
                     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
                     alert.delegate = self;
                     [[alert textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeDecimalPad];
@@ -116,46 +116,15 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
                     _isFirstTimeLogin = NO;
                 }
             }else {
-                showAlertDialog(([NSString stringWithFormat:@"%@. %@ ",responseData, RCErrorMessagePleaseTryAgain]), @"Error");
+                showAlertDialog(([NSString stringWithFormat:@"%@. %@ ",responseData, RCErrorMessagePleaseTryAgain]), NSLocalizedString(@"Error",nil));
             }
             [self setUIBusy:NO];
         }];
         
-//        if([[_txtFieldUsername text] isEqualToString:@""] || [[_txtFieldPassword text] isEqualToString:@""] ) {
-//            showAlertDialog(RCErrorMessageUsernameAndPasswordMissing, @"Error");
-//            [self setUIBusy:NO];
-//        } else {
-//            //[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-//            NSString *post =[[NSString alloc] initWithFormat:@"session[email]=%@&session[password]=%@&mobile=1",[_txtFieldUsername text],[_txtFieldPassword text]];
-//            NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
-//            NSURL *url=[NSURL URLWithString:[[NSString alloc] initWithFormat:@"%@%@", RCServiceURL, RCSessionsResource]];
-//            NSURLRequest *request = CreateHttpPostRequest(url, postData);
-//            
-//            [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
-//                                   completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
-//             {
-//                 //[[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-//                 NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-//                 
-//                 SBJsonParser *jsonParser = [SBJsonParser new];
-//                 NSDictionary *jsonData = (NSDictionary *) [jsonParser objectWithString:responseData error:nil];
-//                 //NSLog(@"%@",jsonData);
-//                 
-//                 //Temporary:
-//                 if (jsonData != NULL) {
-//                     RCUser *user = [[RCUser alloc] initWithNSDictionary:(NSDictionary*)[jsonData objectForKey:@"user"]];
-//                     [delegate userDidLogIn:user];
-//                 }else {
-//                     showAlertDialog(([NSString stringWithFormat:RCErrorMessagePleaseTryAgain]), @"Error");
-//                 }
-//                 [self setUIBusy:NO];
-//             }];
-//        }
-        
     }
     @catch (NSException * e) {
         NSLog(@"Exception: %@", e);
-        showAlertDialog(RCAlertMessageLoginFailed, @"Error");
+        showAlertDialog(RCAlertMessageLoginFailed, NSLocalizedString(@"Error",nil));
     }
 }
 
@@ -172,18 +141,18 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
          NSHTTPURLResponse *httpResponse = (NSHTTPURLResponse*)response;
          NSString *responseData = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
          if (error != nil || httpResponse.statusCode !=  RCHttpOkStatusCode || ![responseData isEqualToString:@"ok"]) {
-             showAlertDialog(RCErrorMessagePleaseTryAgain, @"Error");
+             showAlertDialog(RCErrorMessagePleaseTryAgain, NSLocalizedString(@"Error",nil));
          }
      }];
     }@catch (NSException* e) {
         NSLog(@"Exception: %@", e);
-        showAlertDialog(RCAlertMessageLoginFailed, @"Error");
+        showAlertDialog(RCAlertMessageLoginFailed, NSLocalizedString(@"Error",nil));
     }
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     NSLog(@"press button index in alert view: %d", buttonIndex);
-    if ([alertView.title isEqualToString:@"Phone number"]) {
+    if ([alertView.title isEqualToString:NSLocalizedString(@"Phone number",nil)]) {
         NSString *phoneNumber = [[alertView textFieldAtIndex:0] text];
         if ([phoneNumber length] > 1) {
             if ([phoneNumber hasPrefix:@"+"])
@@ -213,7 +182,7 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
                      if ([errorJson objectForKey:RCErrorMessageKey] != nil) {
                          showAlertDialog([errorJson objectForKey:RCErrorMessageKey], @"Error");
                      } else {
-                         showAlertDialog(@"Error", @"We encountered a problem activating your account. Please try again.");
+                         showAlertDialog(NSLocalizedString(@"Error",nil), NSLocalizedString(@"We encountered a problem activating your account. Please try again.",nil));
                      }
                      [self setUIBusy:NO];
                  }
@@ -221,7 +190,7 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
              }];
         } else if (buttonIndex == RCActivationAlertResendSMSButtonIndex) {
             RMPhoneFormat *fmt = [[RMPhoneFormat alloc] init];
-            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:@"Phone number" message:@"Please enter your phone number" delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+            UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Phone number",nil) message:NSLocalizedString(@"Please enter your phone number",nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Ok",nil) otherButtonTitles:nil];
             alert.alertViewStyle = UIAlertViewStylePlainTextInput;
             alert.delegate = self;
             [alert textFieldAtIndex:0].text = [NSString stringWithFormat:@"+%@",[fmt defaultCallingCode]];

@@ -468,7 +468,7 @@ static BOOL RCPostDetailsViewControllerShowPostID = NO;
 }
 #pragma mark - delete post
 - (IBAction)deletePost:(id)sender {
-    showConfirmationDialog(@"Are you sure you want to delete this post?", @"Confirmation", self);
+    showConfirmationDialog(NSLocalizedString(@"Are you sure you want to delete this post?",nil), NSLocalizedString(@"Confirmation",nil), self);
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {

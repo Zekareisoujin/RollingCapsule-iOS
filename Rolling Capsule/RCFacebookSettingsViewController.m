@@ -62,18 +62,18 @@
                 [_imgUserDisplayPicture setHidden:NO];
                 [_imgUserDisplayPicture setProfileID:[user objectForKey:@"id"]];
                 [_btnShouldLogInOption setEnabled:YES];
-                [_btnLogIn setTitle:@"Log Out" forState:UIControlStateNormal];
+                [_btnLogIn setTitle:NSLocalizedString(@"Log Out",nil) forState:UIControlStateNormal];
                 [_btnLogIn setEnabled:YES];
             }
         }];
     } else {
         // Session is closed
-        [_lblHeadline setText:@"You are not logged in."];
+        [_lblHeadline setText:NSLocalizedString(@"You are not logged in.",nil)];
         [_imgUserDisplayPicture setHidden:YES];
         [_btnShouldLogInOption setEnabled:NO];
         [_btnShouldLogInOption setOn:NO animated:YES];
         [RCFacebookHelper setShouldLogIn:NO];
-        [_btnLogIn setTitle:@"Log In" forState:UIControlStateNormal];
+        [_btnLogIn setTitle:NSLocalizedString(@"Log In",nil) forState:UIControlStateNormal];
         [_btnLogIn setEnabled:YES];
     }
 }

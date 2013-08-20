@@ -363,7 +363,7 @@
     _btnRefresh.enabled = NO;
         if (_lblWarningNoConnection == nil) {
         _lblWarningNoConnection = [[UILabel alloc] init];
-        _lblWarningNoConnection.text = @"No Internet Connection";
+        _lblWarningNoConnection.text = NSLocalizedString(@"No Internet Connection",nil);
         _lblWarningNoConnection.textAlignment = NSTextAlignmentCenter;
         _lblWarningNoConnection.textColor = [ UIColor whiteColor];
         [_lblWarningNoConnection setBackgroundColor:[UIColor colorWithRed:200.0/255.0 green:50.0/255.0 blue:50.0/255.0 alpha:0.9]];
@@ -508,10 +508,10 @@
     if ([annotation isKindOfClass:[MKUserLocation class]]) {
         if ([_lblCapsuleCount.text length] > 0 && !_lblCapsuleCount.hidden && !_viewCapsuleCount.hidden) {
             NSString* countText = _lblCapsuleCount.text;
-            countText = [countText isEqualToString:@"0"] ? @"No" : countText;
-            [(MKUserLocation*)annotation setTitle: [NSString stringWithFormat:@"%@ hidden capsule(s)", countText]];
+            countText = [countText isEqualToString:@"0"] ? NSLocalizedString(@"No",nil) : countText;
+            [(MKUserLocation*)annotation setTitle: [NSString stringWithFormat:NSLocalizedString(@"%@ hidden capsule(s)",nil), countText]];
         } else
-            [(MKUserLocation*)annotation setTitle:@"Current location"];
+            [(MKUserLocation*)annotation setTitle:NSLocalizedString(@"Current location",nil)];
         return nil;
     }
     

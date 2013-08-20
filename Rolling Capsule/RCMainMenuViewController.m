@@ -84,7 +84,7 @@
 
 - (void) pleaseLoginAgain {
     if (loggedIn) {
-        showAlertDialog(@"Your session has expired, please log in again!", @"Log in");
+        showAlertDialog(NSLocalizedString(@"Your session has expired, please log in again!",nil), NSLocalizedString(@"Log In",nil));
     }
     [self btnActionLogOut:nil];
 }

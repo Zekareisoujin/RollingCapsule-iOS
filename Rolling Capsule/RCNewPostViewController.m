@@ -230,17 +230,17 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
 
 - (IBAction) postNew:(id) sender {
     if (_isTimedRelease && _isFacebookPost) {
-        showAlertDialog(@"The post cannot be both time capsule and facebook release yet!", @"Error");
+        showAlertDialog(NSLocalizedString(@"The post cannot be both time capsule and facebook release yet!",nil), NSLocalizedString(@"Error",nil));
         return;
     }
     
     _isPosting = YES;
     if (_uploadData == nil) {
-        [self showAlertMessage:@"Please choose an image or video!" withTitle:@"Incomplete post!"];
+        [self showAlertMessage:NSLocalizedString(@"Please choose an image or video!", nil) withTitle:NSLocalizedString(@"Incomplete post!",nil)];
         return;
     }
     if (_privacyOption == nil) {
-        [self showAlertMessage:@"Please choose a privacy option!" withTitle:@"Incomplete post!"];
+        [self showAlertMessage:NSLocalizedString(@"Please choose a privacy option!", nil) withTitle:NSLocalizedString(@"Incomplete post!",nil)];
         return;
     }
     _postButton.enabled = NO;
@@ -293,12 +293,12 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
              if (error)
              {
                  //showing an alert for failure
-                 postNotification(@"Failed to post to Facebook");
+                 postNotification(NSLocalizedString(@"Failed to post to Facebook",nil));
              }
              else
              {
                  //showing an alert for success
-                 postNotification(@"Successfully posted to Facebook");
+                 postNotification(NSLocalizedString(@"Successfully posted to Facebook",nil));
              }
          }];
         
@@ -342,7 +342,7 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
     UIAlertView *alertView = [[UIAlertView alloc]  initWithTitle:title
                                                          message:message
                                                         delegate:nil
-                                               cancelButtonTitle:@"OK"
+                                               cancelButtonTitle:NSLocalizedString(@"OK", nil)
                                                otherButtonTitles:nil];
     [alertView show];
 }
@@ -553,26 +553,6 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
     
     
     NSLog(@"screen size: %d",[[UIScreen mainScreen] bounds].size.height );
-    /*if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height && _viewFirstLoad) {
-        _viewFirstLoad = NO;
-        [_closeButton setHidden:YES];
-        [_closeButton setEnabled:NO];
-        CGRect closeFrame = _closeButton.frame;
-        closeFrame.origin.y += 20;
-        UIButton *newCloseButton = [[UIButton alloc] initWithFrame:closeFrame];
-        [newCloseButton setImage:[UIImage imageNamed:@"closeButton.png"] forState:UIControlStateNormal];
-        [newCloseButton addTarget:self action:@selector(closeBtnTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
-        [self.view addSubview:newCloseButton];
-        CGRect frame = self.view.frame;
-        //move view up so that the whole post frame fits in iphone 4 screen
-        //here we basically move the y coordinate back by exactly the amount
-        //with which the post frame is away from screen top edge
-        //leaving some gap in between
-        frame.origin.y = -_imageViewPostFrame.frame.origin.y + 2;
-        frame.size.height +=  _imageViewPostFrame.frame.origin.y - 2;
-        self.view.frame = frame;
-        
-    }*/
     [super viewWillAppear:animated];
 }
 
@@ -612,7 +592,7 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
         [_txtViewPostContent resignFirstResponder];
         [self presentViewController:_imagePicker animated:YES completion:nil];
     } else {
-        showAlertDialog(@"Camera not available", @"Error");
+        showAlertDialog(NSLocalizedString(@"Camera not available",nil), NSLocalizedString(@"Error",nil));
     }
 }
 
@@ -630,7 +610,7 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
         [_txtViewPostContent resignFirstResponder];
         [self presentViewController:_imagePicker animated:YES completion:nil];
     } else {
-        showAlertDialog(@"Photo library not available", @"Error");
+        showAlertDialog(NSLocalizedString(@"Photo library not available",nil), NSLocalizedString(@"Error", nil) );
     }
 
 }
@@ -646,7 +626,7 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
         [_txtViewPostContent resignFirstResponder];
         [self presentViewController:_imagePicker animated:YES completion:nil];
     } else {
-        showAlertDialog(@"Camera not available", @"Error");
+        showAlertDialog(NSLocalizedString(@"Camera not available",nil), NSLocalizedString(@"Error",nil));
     }
 }
 
@@ -699,7 +679,7 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
             }];
         } else {
             // Session is closed
-            showConfirmationDialog(@"You are not logged in to Facebook yet. Do you want to go to settings?", @"Facebook", self);
+            showConfirmationDialog(NSLocalizedString(@"You are not logged in to Facebook yet. Do you want to go to settings?", nil), NSLocalizedString(@"Facebook",nil) , self);
         }
     }
 }
@@ -780,7 +760,7 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
     }else {
         _isTimedRelease = NO;
         [_timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsuleInactive.png"] forState:UIControlStateNormal];
-        showAlertDialog(@"You have deactivated capsulre release mode for this post", @"Notice");
+        showAlertDialog(NSLocalizedString(@"You have deactivated capsule release mode for this post",nil), NSLocalizedString(@"Notice",nil));
     }
 }
 
@@ -814,68 +794,6 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
                          _isShowingPrivacyOption = YES;
                          [self setPostPrivacyOption:_publicPrivacyButton];
                      }];
-    /*int buttonSize = 41;
-    int distance = 13;
-    if ([[UIScreen mainScreen] bounds].size.height < RCIphone5Height) {
-        buttonSize = 35;
-        distance += 41-35;
-    }
-
-    CGRect frame1 = CGRectMake(_imgViewControlFrame.frame.origin.x + 20,_btnVideoSource.frame.origin.y-3,buttonSize,buttonSize);
-    CGRect frame2 = frame1, frame3 = frame1;
-    frame2.origin.x = frame1.origin.x+buttonSize+distance;
-    frame3.origin.x = frame2.origin.x+buttonSize+distance;
-    _publicPrivacyButton = [[UIButton alloc] initWithFrame:frame1];
-    [_publicPrivacyButton setImage:[UIImage imageNamed:@"postPublicPrivacyButton-2.png"] forState:UIControlStateNormal];
-    _friendPrivacyButton = [[UIButton alloc] initWithFrame:frame2];
-    [_friendPrivacyButton setImage:[UIImage imageNamed:@"postFriendPrivacyButton-2.png"] forState:UIControlStateNormal];
-    _personalPrivacyButton = [[UIButton alloc] initWithFrame:frame3];
-    [_personalPrivacyButton setImage:[UIImage imageNamed:@"postPersonalPrivacyButton-2.png"] forState:UIControlStateNormal];
-    
-    UIImage *separatorImage = [UIImage imageNamed:@"postVerticalSeparator.png"];
-    UIImageView* separator = [[UIImageView alloc] initWithFrame:CGRectMake(0,0,separatorImage.size.width/2.0,separatorImage.size.height/2.0)];
-    [separator setImage:separatorImage];
-    separator.frame = CGRectMake(frame3.origin.x + 54, frame3.origin.y,separatorImage.size.width/2.0,separatorImage.size.height/2.0);
-    
-    
-    CGRect frame4 = _btnVideoSource.frame;
-    frame4.size.width = buttonSize;
-    frame4.size.height = buttonSize;
-    frame4.origin.x = _imgViewControlFrame.frame.origin.x + _imgViewControlFrame.frame.size.width - 10 - buttonSize;
-    _postButton = [[UIButton alloc] initWithFrame:frame4];
-    [_postButton setImage:[UIImage imageNamed:@"postPostButton-2.png"] forState:UIControlStateNormal];
-    CGRect frame5 = frame4;
-    frame5.origin.x = separator.frame.origin.x + separator.frame.size.width;
-    timeCapsule = [[UIButton alloc] initWithFrame:frame5];
-        
-    
-    _postButton.alpha = 0.0;
-    _publicPrivacyButton.alpha = 0.0;
-    _personalPrivacyButton.alpha = 0.0;
-    _friendPrivacyButton.alpha = 0.0;
-    
-    [self.imgViewControlFrame addSubview:_postButton];
-    [self.imgViewControlFrame addSubview:timeCapsule];
-    [self.imgViewControlFrame addSubview:separator];
-    [self.imgViewControlFrame addSubview:_publicPrivacyButton];
-    [self.imgViewControlFrame addSubview:_friendPrivacyButton];
-    [self.imgViewControlFrame addSubview:_personalPrivacyButton];
-    
-    
-    
-    
-    [UIView animateWithDuration:0.3
-						  delay:0
-						options:UIViewAnimationOptionCurveEaseInOut
-					 animations:^{
-                         _postButton.alpha = 1.0;
-                         _publicPrivacyButton.alpha = 1.0;
-                         _personalPrivacyButton.alpha = 1.0;
-                         _friendPrivacyButton.alpha = 1.0;
-					 }
-                     completion:^(BOOL finished) {
-                         [self setPostPrivacyOption:_publicPrivacyButton];
-					 }];*/
 }
 
 #pragma mark - tap gesture handler
@@ -894,32 +812,6 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
 }
 
 #pragma mark - UITextView delegate
-- (BOOL)textViewShouldBeginEditing:(UITextView *)textView {
-    /*if ([textView isEqual:_txtViewPostContent]) {
-        // register for keyboard notifications
-        [[NSNotificationCenter defaultCenter] addObserver:_keyboardPushHandler
-                                                 selector:@selector(keyboardWillShow:)
-                                                     name:UIKeyboardWillShowNotification
-                                                   object:nil];
-        
-        [[NSNotificationCenter defaultCenter] addObserver:_keyboardPushHandler
-                                                 selector:@selector(keyboardWillHide:)
-                                                     name:UIKeyboardWillHideNotification
-                                                   object:nil];
-    }*/
-    return YES;
-}
-- (void)textViewDidEndEditing:(UITextView *)textView {
-    if ([textView isEqual:_txtViewPostContent]) {
-       /* [[NSNotificationCenter defaultCenter] removeObserver:_keyboardPushHandler
-                                                        name:UIKeyboardWillShowNotification
-                                                      object:nil];
-        
-        [[NSNotificationCenter defaultCenter] removeObserver:_keyboardPushHandler
-                                                        name:UIKeyboardWillHideNotification
-                                                      object:nil];*/
-    }
-}
 
 - (void)textViewDidBeginEditing:(UITextView *)textView {
     _isTapToCloseKeyboard = YES;
@@ -1135,9 +1027,9 @@ handler:(void (^)(AVAssetExportSession*))handler
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"HH:mm, dd/MM/yyyy"];
         
-        showAlertDialog([NSString stringWithFormat:@"You have scheduled your post to be released at %@", [dateFormatter stringFromDate:pickedDateTime]], @"Notice");
+        showAlertDialog([NSString stringWithFormat:NSLocalizedString(@"You have scheduled your post to be released at %@", nil), [dateFormatter stringFromDate:pickedDateTime]], NSLocalizedString(@"Notice",nil));
     }else {
-        showAlertDialog(@"The release date has already passed", @"Notice");
+        showAlertDialog(NSLocalizedString(@"The release date has already passed", nil) , NSLocalizedString(@"Notice",nil));
     }
 }
 @end

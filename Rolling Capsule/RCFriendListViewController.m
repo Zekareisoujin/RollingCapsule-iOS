@@ -486,11 +486,11 @@ CGRect  searchButtonHideFrame;
     _displayedItems = _friends;
     [_tableTitleBackground setImage:[UIImage imageNamed:@"friendListBarFriends"]];
     if (_user == _loggedinUser) {
-        [_searchBar setPlaceholder:@"Search among your friends"];
-        [_tableTitleLabel setText:@"Friends"];
+        [_searchBar setPlaceholder:NSLocalizedString(@"Search among your friends",nil)];
+        [_tableTitleLabel setText:NSLocalizedString(@"Friends",nil)];
     }else {
-        [_searchBar setPlaceholder:[NSString stringWithFormat:@"Search among %@'s friends", _user.name]];
-        [_tableTitleLabel setText:[NSString stringWithFormat:@"%@'s friends", _user.name]];
+        [_searchBar setPlaceholder:[NSString stringWithFormat:NSLocalizedString(@"Search among %@'s friends",nil), _user.name]];
+        [_tableTitleLabel setText:[NSString stringWithFormat:NSLocalizedString(@"%@'s friends",nil), _user.name]];
     }
     
     currentDisplayedItems = _displayedItems;
@@ -504,8 +504,8 @@ CGRect  searchButtonHideFrame;
     _viewingMode = RCFriendListViewModePendingFriends;
     _displayedItems = _requested_friends;
     [_tableTitleBackground setImage:[UIImage imageNamed:@"friendListBarPending"]];
-    [_searchBar setPlaceholder:@"Search for new friends"];
-    [_tableTitleLabel setText:@"Find friends"];
+    [_searchBar setPlaceholder:NSLocalizedString(@"Search for new friends",nil)];
+    [_tableTitleLabel setText:NSLocalizedString(@"Find friends",nil)];
     
     currentDisplayedItems = _displayedItems;
     [self clearSearchBar];
@@ -517,11 +517,11 @@ CGRect  searchButtonHideFrame;
     _displayedItems = _followees;
     [_tableTitleBackground setImage:[UIImage imageNamed:@"friendListBarFollows"]];
     if (_user == _loggedinUser) {
-        [_searchBar setPlaceholder:@"Search for people you follow"];
-        [_tableTitleLabel setText:@"People you follow"];
+        [_searchBar setPlaceholder:NSLocalizedString(@"Search for people you follow",nil)];
+        [_tableTitleLabel setText:NSLocalizedString(@"People you follow",nil)];
     }else {
-        [_searchBar setPlaceholder:[NSString stringWithFormat:@"Search for people %@ follows", _user.name]];
-        [_tableTitleLabel setText:[NSString stringWithFormat:@"People %@ follows", _user.name]];
+        [_searchBar setPlaceholder:[NSString stringWithFormat:NSLocalizedString(@"Search for people %@ follows",nil), _user.name]];
+        [_tableTitleLabel setText:[NSString stringWithFormat:NSLocalizedString(@"People %@ follows",nil), _user.name]];
     }
     
     currentDisplayedItems = _displayedItems;

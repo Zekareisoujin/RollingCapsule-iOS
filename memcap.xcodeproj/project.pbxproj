@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		64008046179EB84200C6B2B2 /* TTTAttributedLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 64008045179EB84200C6B2B2 /* TTTAttributedLabel.m */; };
 		64008048179EBA0F00C6B2B2 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64008047179EBA0F00C6B2B2 /* CoreText.framework */; };
-		6401017D1797DC79002A6E2E /* RCNewPostViewController4.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6401017C1797DC79002A6E2E /* RCNewPostViewController4.xib */; };
 		640103491798041A002A6E2E /* buttonPost@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 640103471798041A002A6E2E /* buttonPost@2x.png */; };
 		6401034D17981D10002A6E2E /* postButtonTimeCapsule-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 6401034B17981D10002A6E2E /* postButtonTimeCapsule-highlighted.png */; };
 		6401034E17981D10002A6E2E /* postButtonTimeCapsule.png in Resources */ = {isa = PBXBuildFile; fileRef = 6401034C17981D10002A6E2E /* postButtonTimeCapsule.png */; };
@@ -18,7 +17,6 @@
 		64010355179825DE002A6E2E /* postDatePickerFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 64010354179825DD002A6E2E /* postDatePickerFrame.png */; };
 		64011D3017781DA400816D93 /* RCTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = 64011D2F17781DA400816D93 /* RCTextField.m */; };
 		64014916177966F5009B69DF /* RCMainFeedCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64014915177966F5009B69DF /* RCMainFeedCell.xib */; };
-		6407BBD61753B719000F29C5 /* RCFriendListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6407BBD51753B719000F29C5 /* RCFriendListViewController.xib */; };
 		6407BBD917545579000F29C5 /* RCUser.m in Sources */ = {isa = PBXBuildFile; fileRef = 6407BBD817545579000F29C5 /* RCUser.m */; };
 		6407BBDC17545A87000F29C5 /* RCFriendListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6407BBDB17545A87000F29C5 /* RCFriendListViewController.m */; };
 		6407BBDE1754D5EB000F29C5 /* RCUserTableCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6407BBDD1754D5EB000F29C5 /* RCUserTableCell.xib */; };
@@ -72,7 +70,6 @@
 		643C0802179B0B0E002BD751 /* RCPhotoDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 643C0801179B0B0E002BD751 /* RCPhotoDownloadOperation.m */; };
 		643EACE8175BACC0002761D9 /* back_button.png in Resources */ = {isa = PBXBuildFile; fileRef = 643EACE7175BACC0002761D9 /* back_button.png */; };
 		643EACED175BBE51002761D9 /* RCNewPostViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 643EACEB175BBE51002761D9 /* RCNewPostViewController.m */; };
-		643EACEE175BBE51002761D9 /* RCNewPostViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 643EACEC175BBE51002761D9 /* RCNewPostViewController.xib */; };
 		643EACF0175C1B5C002761D9 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 643EACEF175C1B5C002761D9 /* CoreLocation.framework */; };
 		644556B61796FB3900DAFE26 /* postMainFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 644556B51796FB3900DAFE26 /* postMainFrame.png */; };
 		644556B81796FDC300DAFE26 /* postControlFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 644556B71796FDC300DAFE26 /* postControlFrame.png */; };
@@ -86,13 +83,11 @@
 		644556C8179713AC00DAFE26 /* postVerticalSeparator.png in Resources */ = {isa = PBXBuildFile; fileRef = 644556C7179713AC00DAFE26 /* postVerticalSeparator.png */; };
 		644FC83017A45AE1004B8D8F /* menuButtonNormal2.png in Resources */ = {isa = PBXBuildFile; fileRef = 644FC82F17A45AE1004B8D8F /* menuButtonNormal2.png */; };
 		64549D88175F264600BA8164 /* RCPostDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64549D86175F264600BA8164 /* RCPostDetailsViewController.m */; };
-		64549D89175F264600BA8164 /* RCPostDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64549D87175F264600BA8164 /* RCPostDetailsViewController.xib */; };
 		6459A0F117759F72003DC896 /* RCNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 6459A0F017759F72003DC896 /* RCNotification.m */; };
 		6460752E17BDAF9F00F54A82 /* buttonDelete.png in Resources */ = {isa = PBXBuildFile; fileRef = 6460752D17BDAF9F00F54A82 /* buttonDelete.png */; };
 		6460753017BDB5F700F54A82 /* registerBackground.png in Resources */ = {isa = PBXBuildFile; fileRef = 6460752F17BDB5F700F54A82 /* registerBackground.png */; };
 		6460753317BDC98A00F54A82 /* RCContentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6460753217BDC98A00F54A82 /* RCContentViewController.m */; };
 		6460753717BDCE0200F54A82 /* RCAboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6460753517BDCE0200F54A82 /* RCAboutUsViewController.m */; };
-		6460753817BDCE0200F54A82 /* RCAboutUsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6460753617BDCE0200F54A82 /* RCAboutUsViewController.xib */; };
 		6460753C17BE6B7600F54A82 /* RCTutorialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6460753A17BE6B7300F54A82 /* RCTutorialViewController.m */; };
 		6460753D17BE6B7600F54A82 /* RCTutorialViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6460753B17BE6B7500F54A82 /* RCTutorialViewController.xib */; };
 		6460754417BE732200F54A82 /* tutorialI5Mainpage1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 6460753E17BE732000F54A82 /* tutorialI5Mainpage1.jpg */; };
@@ -129,6 +124,18 @@
 		6461C9CB17BD1CB0009DD299 /* loginTextFieldsFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 6461C9CA17BD1CB0009DD299 /* loginTextFieldsFrame.png */; };
 		646C809B17A5C67A00054C1A /* RCFeed.m in Sources */ = {isa = PBXBuildFile; fileRef = 646C809A17A5C67A00054C1A /* RCFeed.m */; };
 		646C809D17A64A6F00054C1A /* outboxGreyLeacher.png in Resources */ = {isa = PBXBuildFile; fileRef = 646C809C17A64A6F00054C1A /* outboxGreyLeacher.png */; };
+		646FBFC317C30EC2001C22FD /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 646FBFC217C30EC2001C22FD /* Localizable.strings */; };
+		646FBFC417C311DF001C22FD /* RCFacebookSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 646FBFC617C311DF001C22FD /* RCFacebookSettingsViewController.xib */; };
+		646FBFC817C31348001C22FD /* RCFriendListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 646FBFCA17C31348001C22FD /* RCFriendListViewController.xib */; };
+		646FBFCC17C313D6001C22FD /* RCLoadingLocationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 646FBFCE17C313D6001C22FD /* RCLoadingLocationViewController.xib */; };
+		646FBFD017C31525001C22FD /* RCLoginViewController4.xib in Resources */ = {isa = PBXBuildFile; fileRef = 646FBFD217C31525001C22FD /* RCLoginViewController4.xib */; };
+		646FBFD417C318A7001C22FD /* RCNewPostViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 646FBFD617C318A7001C22FD /* RCNewPostViewController.xib */; };
+		646FBFD817C318B6001C22FD /* RCNewPostViewController4.xib in Resources */ = {isa = PBXBuildFile; fileRef = 646FBFDA17C318B6001C22FD /* RCNewPostViewController4.xib */; };
+		646FBFDC17C318CC001C22FD /* RCOutboxViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 646FBFDE17C318CC001C22FD /* RCOutboxViewController.xib */; };
+		646FBFE017C318FF001C22FD /* RCPostDetailsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 646FBFE217C318FF001C22FD /* RCPostDetailsViewController.xib */; };
+		646FBFE417C3192B001C22FD /* RCRegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 646FBFE617C3192B001C22FD /* RCRegisterViewController.xib */; };
+		646FBFE817C31A36001C22FD /* RCUserProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 646FBFEA17C31A36001C22FD /* RCUserProfileViewController.xib */; };
+		646FBFEC17C31AF9001C22FD /* RCAboutUsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 646FBFEE17C31AF9001C22FD /* RCAboutUsViewController.xib */; };
 		647265B617A04CDF002E654A /* RCAsyncPhotoDownloadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 647265B117A04CDF002E654A /* RCAsyncPhotoDownloadOperation.m */; };
 		647265B717A04CDF002E654A /* RCMediaUploadOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 647265B317A04CDF002E654A /* RCMediaUploadOperation.m */; };
 		647265B817A04CDF002E654A /* RCNewPostOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 647265B517A04CDF002E654A /* RCNewPostOperation.m */; };
@@ -144,7 +151,6 @@
 		6491DCED1755CF8D006FBCD8 /* RCFindFriendsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6491DCEB1755CF8D006FBCD8 /* RCFindFriendsViewController.m */; };
 		6491DCEE1755CF8D006FBCD8 /* RCFindFriendsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6491DCEC1755CF8D006FBCD8 /* RCFindFriendsViewController.xib */; };
 		6491DCF21755E096006FBCD8 /* RCUserProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6491DCF01755E096006FBCD8 /* RCUserProfileViewController.m */; };
-		6491DCF31755E096006FBCD8 /* RCUserProfileViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6491DCF11755E096006FBCD8 /* RCUserProfileViewController.xib */; };
 		649315D717ABA7A700DF30CE /* mainViewOptionCommented.png in Resources */ = {isa = PBXBuildFile; fileRef = 649315D617ABA7A700DF30CE /* mainViewOptionCommented.png */; };
 		649A869D175B0CC30016674F /* RCAmazonS3Helper.m in Sources */ = {isa = PBXBuildFile; fileRef = 649A869C175B0CC30016674F /* RCAmazonS3Helper.m */; };
 		649B4240179C3AC90019B1A7 /* buttonTopic.png in Resources */ = {isa = PBXBuildFile; fileRef = 649B4238179C3AC80019B1A7 /* buttonTopic.png */; };
@@ -153,11 +159,9 @@
 		649B4246179C3AC90019B1A7 /* topicCategorySchool.png in Resources */ = {isa = PBXBuildFile; fileRef = 649B423E179C3AC90019B1A7 /* topicCategorySchool.png */; };
 		649B4247179C3AC90019B1A7 /* topicCategoryShop.png in Resources */ = {isa = PBXBuildFile; fileRef = 649B423F179C3AC90019B1A7 /* topicCategoryShop.png */; };
 		649B424B179C51040019B1A7 /* RCLoadingLocationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 649B4249179C51030019B1A7 /* RCLoadingLocationViewController.m */; };
-		649B424C179C51040019B1A7 /* RCLoadingLocationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 649B424A179C51030019B1A7 /* RCLoadingLocationViewController.xib */; };
 		649B4250179D3BE90019B1A7 /* postFriendPrivacyButton-2-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 649B424D179D3BE90019B1A7 /* postFriendPrivacyButton-2-highlighted.png */; };
 		649B4251179D3BE90019B1A7 /* postPersonalPrivacyButton-2-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 649B424E179D3BE90019B1A7 /* postPersonalPrivacyButton-2-highlighted.png */; };
 		649B4252179D3BE90019B1A7 /* postPublicPrivacyButton-2-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = 649B424F179D3BE90019B1A7 /* postPublicPrivacyButton-2-highlighted.png */; };
-		64A917081751E554007D629D /* RCRegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64A917071751E554007D629D /* RCRegisterViewController.xib */; };
 		64A9170B1751F6C9007D629D /* RCRegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64A9170A1751F6C9007D629D /* RCRegisterViewController.m */; };
 		64B81CA217954FC800B5A825 /* viewPostImageFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 64B81CA117954FC800B5A825 /* viewPostImageFrame.png */; };
 		64B81CA61795551E00B5A825 /* viewPostCommentButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 64B81CA31795551E00B5A825 /* viewPostCommentButton.png */; };
@@ -184,7 +188,6 @@
 		64D6EC1317A13A1F00663AE3 /* friendListSearchBarBg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 64D6EC1217A13A1F00663AE3 /* friendListSearchBarBg@2x.png */; };
 		64D6EC1517A1AAD500663AE3 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64D6EC1417A1AAD500663AE3 /* AssetsLibrary.framework */; };
 		64D6EC1917A1CE1900663AE3 /* RCOutboxViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64D6EC1717A1CE1900663AE3 /* RCOutboxViewController.m */; };
-		64D6EC1A17A1CE1900663AE3 /* RCOutboxViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64D6EC1817A1CE1900663AE3 /* RCOutboxViewController.xib */; };
 		64D6EC1D17A2536B00663AE3 /* RCUserData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 64D6EC1B17A2536A00663AE3 /* RCUserData.xcdatamodeld */; };
 		64D6EC2217A256F000663AE3 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64D6EC2117A256EF00663AE3 /* CoreData.framework */; };
 		64D6EC2517A2A59600663AE3 /* RCUploadTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 64D6EC2417A2A59600663AE3 /* RCUploadTask.m */; };
@@ -245,7 +248,6 @@
 		BF05D89E17995D0F00398929 /* postButtonTimeCapsuleInactive.png in Resources */ = {isa = PBXBuildFile; fileRef = BF05D89C17995D0F00398929 /* postButtonTimeCapsuleInactive.png */; };
 		BF0B108B179C635C00E9ECBD /* fadingBar2Sided.png in Resources */ = {isa = PBXBuildFile; fileRef = BF0B108A179C635C00E9ECBD /* fadingBar2Sided.png */; };
 		BF0B17EA17984468004AEEC5 /* menuIconLogout.png in Resources */ = {isa = PBXBuildFile; fileRef = BF0B17E917984468004AEEC5 /* menuIconLogout.png */; };
-		BF0B2E531794123600A1B8E0 /* RCLoginViewController4.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF0B2E521794123600A1B8E0 /* RCLoginViewController4.xib */; };
 		BF0B2E571794329800A1B8E0 /* RCAddLandmarkController.m in Sources */ = {isa = PBXBuildFile; fileRef = BF0B2E551794329800A1B8E0 /* RCAddLandmarkController.m */; };
 		BF0B2E581794329800A1B8E0 /* RCAddLandmarkController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BF0B2E561794329800A1B8E0 /* RCAddLandmarkController.xib */; };
 		BF153ADC17BCE07300C65FDE /* profileEditNotification.png in Resources */ = {isa = PBXBuildFile; fileRef = BF153ADB17BCE07300C65FDE /* profileEditNotification.png */; };
@@ -289,7 +291,6 @@
 		BFB8085717B0F9D9004EB38E /* RCFacebookHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB8085617B0F9D9004EB38E /* RCFacebookHelper.m */; };
 		BFB8085917B1004C004EB38E /* facebookIconDisabled.png in Resources */ = {isa = PBXBuildFile; fileRef = BFB8085817B1004C004EB38E /* facebookIconDisabled.png */; };
 		BFB8085D17B25266004EB38E /* RCFacebookSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = BFB8085B17B25264004EB38E /* RCFacebookSettingsViewController.m */; };
-		BFB8085E17B25266004EB38E /* RCFacebookSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = BFB8085C17B25265004EB38E /* RCFacebookSettingsViewController.xib */; };
 		BFB8086017B26692004EB38E /* facebook-logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFB8085F17B26692004EB38E /* facebook-logo@2x.png */; };
 		BFB8086217B2669C004EB38E /* silver-button-normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = BFB8086117B2669C004EB38E /* silver-button-normal@2x.png */; };
 		BFB8086417B269DF004EB38E /* FBUserSettingsViewResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = BFB8086317B269DF004EB38E /* FBUserSettingsViewResources.bundle */; };
@@ -353,7 +354,6 @@
 		64008044179EB84200C6B2B2 /* TTTAttributedLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTAttributedLabel.h; sourceTree = "<group>"; };
 		64008045179EB84200C6B2B2 /* TTTAttributedLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTAttributedLabel.m; sourceTree = "<group>"; };
 		64008047179EBA0F00C6B2B2 /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
-		6401017C1797DC79002A6E2E /* RCNewPostViewController4.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCNewPostViewController4.xib; sourceTree = "<group>"; };
 		640103471798041A002A6E2E /* buttonPost@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "buttonPost@2x.png"; path = "../buttonPost@2x.png"; sourceTree = "<group>"; };
 		6401034B17981D10002A6E2E /* postButtonTimeCapsule-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "postButtonTimeCapsule-highlighted.png"; path = "../postButtonTimeCapsule-highlighted.png"; sourceTree = "<group>"; };
 		6401034C17981D10002A6E2E /* postButtonTimeCapsule.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = postButtonTimeCapsule.png; path = ../postButtonTimeCapsule.png; sourceTree = "<group>"; };
@@ -364,7 +364,6 @@
 		64011D2E17781DA400816D93 /* RCTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTextField.h; sourceTree = "<group>"; };
 		64011D2F17781DA400816D93 /* RCTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTextField.m; sourceTree = "<group>"; };
 		64014915177966F5009B69DF /* RCMainFeedCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCMainFeedCell.xib; sourceTree = "<group>"; };
-		6407BBD51753B719000F29C5 /* RCFriendListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RCFriendListViewController.xib; path = ../RCFriendListViewController.xib; sourceTree = "<group>"; };
 		6407BBD717545579000F29C5 /* RCUser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCUser.h; path = "Rolling Capsule/RCUser.h"; sourceTree = "<group>"; };
 		6407BBD817545579000F29C5 /* RCUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCUser.m; path = "Rolling Capsule/RCUser.m"; sourceTree = "<group>"; };
 		6407BBDA17545A87000F29C5 /* RCFriendListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCFriendListViewController.h; sourceTree = "<group>"; };
@@ -430,7 +429,6 @@
 		643EACE7175BACC0002761D9 /* back_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back_button.png; sourceTree = "<group>"; };
 		643EACEA175BBE51002761D9 /* RCNewPostViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCNewPostViewController.h; sourceTree = "<group>"; };
 		643EACEB175BBE51002761D9 /* RCNewPostViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNewPostViewController.m; sourceTree = "<group>"; };
-		643EACEC175BBE51002761D9 /* RCNewPostViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCNewPostViewController.xib; sourceTree = "<group>"; };
 		643EACEF175C1B5C002761D9 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		644556B51796FB3900DAFE26 /* postMainFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = postMainFrame.png; path = ../postMainFrame.png; sourceTree = "<group>"; };
 		644556B71796FDC300DAFE26 /* postControlFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = postControlFrame.png; path = ../postControlFrame.png; sourceTree = "<group>"; };
@@ -445,7 +443,6 @@
 		644FC82F17A45AE1004B8D8F /* menuButtonNormal2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menuButtonNormal2.png; sourceTree = "<group>"; };
 		64549D85175F264600BA8164 /* RCPostDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCPostDetailsViewController.h; path = ../RCPostDetailsViewController.h; sourceTree = "<group>"; };
 		64549D86175F264600BA8164 /* RCPostDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCPostDetailsViewController.m; path = ../RCPostDetailsViewController.m; sourceTree = "<group>"; };
-		64549D87175F264600BA8164 /* RCPostDetailsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RCPostDetailsViewController.xib; path = ../RCPostDetailsViewController.xib; sourceTree = "<group>"; };
 		6459A0EF17759F72003DC896 /* RCNotification.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCNotification.h; sourceTree = "<group>"; };
 		6459A0F017759F72003DC896 /* RCNotification.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNotification.m; sourceTree = "<group>"; };
 		6460752D17BDAF9F00F54A82 /* buttonDelete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = buttonDelete.png; sourceTree = "<group>"; };
@@ -454,7 +451,6 @@
 		6460753217BDC98A00F54A82 /* RCContentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCContentViewController.m; sourceTree = "<group>"; };
 		6460753417BDCE0200F54A82 /* RCAboutUsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAboutUsViewController.h; sourceTree = "<group>"; };
 		6460753517BDCE0200F54A82 /* RCAboutUsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAboutUsViewController.m; sourceTree = "<group>"; };
-		6460753617BDCE0200F54A82 /* RCAboutUsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCAboutUsViewController.xib; sourceTree = "<group>"; };
 		6460753917BE6B7200F54A82 /* RCTutorialViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTutorialViewController.h; sourceTree = "<group>"; };
 		6460753A17BE6B7300F54A82 /* RCTutorialViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTutorialViewController.m; sourceTree = "<group>"; };
 		6460753B17BE6B7500F54A82 /* RCTutorialViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCTutorialViewController.xib; sourceTree = "<group>"; };
@@ -497,6 +493,32 @@
 		646C809917A5C67A00054C1A /* RCFeed.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCFeed.h; sourceTree = "<group>"; };
 		646C809A17A5C67A00054C1A /* RCFeed.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCFeed.m; sourceTree = "<group>"; };
 		646C809C17A64A6F00054C1A /* outboxGreyLeacher.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = outboxGreyLeacher.png; path = ../outboxGreyLeacher.png; sourceTree = "<group>"; };
+		646FBFBF17C30BC8001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "zh-Hant"; path = "zh-Hant.lproj/RCLoginViewController.xib"; sourceTree = "<group>"; };
+		646FBFC017C30BC8001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		646FBFC117C30BC8001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		646FBFC217C30EC2001C22FD /* Localizable.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		646FBFC517C311DF001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file; name = "zh-Hant"; path = "zh-Hant.lproj/RCFacebookSettingsViewController.xib"; sourceTree = "<group>"; };
+		646FBFC717C311E8001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/RCFacebookSettingsViewController.xib; sourceTree = "<group>"; };
+		646FBFC917C31348001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file; name = "zh-Hant"; path = "zh-Hant.lproj/RCFriendListViewController.xib"; sourceTree = "<group>"; };
+		646FBFCB17C31357001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/RCFriendListViewController.xib; sourceTree = "<group>"; };
+		646FBFCD17C313D6001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/RCLoadingLocationViewController.xib; sourceTree = "<group>"; };
+		646FBFCF17C313E2001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file; name = "zh-Hant"; path = "zh-Hant.lproj/RCLoadingLocationViewController.xib"; sourceTree = "<group>"; };
+		646FBFD117C31525001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/RCLoginViewController4.xib; sourceTree = "<group>"; };
+		646FBFD317C3152D001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file; name = "zh-Hant"; path = "zh-Hant.lproj/RCLoginViewController4.xib"; sourceTree = "<group>"; };
+		646FBFD517C318A7001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file; name = "zh-Hant"; path = "zh-Hant.lproj/RCNewPostViewController.xib"; sourceTree = "<group>"; };
+		646FBFD717C318AF001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/RCNewPostViewController.xib; sourceTree = "<group>"; };
+		646FBFD917C318B6001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/RCNewPostViewController4.xib; sourceTree = "<group>"; };
+		646FBFDB17C318BE001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file; name = "zh-Hant"; path = "zh-Hant.lproj/RCNewPostViewController4.xib"; sourceTree = "<group>"; };
+		646FBFDD17C318CC001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file; name = "zh-Hant"; path = "zh-Hant.lproj/RCOutboxViewController.xib"; sourceTree = "<group>"; };
+		646FBFDF17C318D9001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/RCOutboxViewController.xib; sourceTree = "<group>"; };
+		646FBFE117C318FF001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/RCPostDetailsViewController.xib; sourceTree = "<group>"; };
+		646FBFE317C3191D001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file; name = "zh-Hant"; path = "zh-Hant.lproj/RCPostDetailsViewController.xib"; sourceTree = "<group>"; };
+		646FBFE517C3192B001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/RCRegisterViewController.xib; sourceTree = "<group>"; };
+		646FBFE717C31934001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file; name = "zh-Hant"; path = "zh-Hant.lproj/RCRegisterViewController.xib"; sourceTree = "<group>"; };
+		646FBFE917C31A36001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/RCUserProfileViewController.xib; sourceTree = "<group>"; };
+		646FBFEB17C31A43001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file; name = "zh-Hant"; path = "zh-Hant.lproj/RCUserProfileViewController.xib"; sourceTree = "<group>"; };
+		646FBFED17C31AF9001C22FD /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = file; name = "zh-Hant"; path = "zh-Hant.lproj/RCAboutUsViewController.xib"; sourceTree = "<group>"; };
+		646FBFEF17C31B02001C22FD /* en */ = {isa = PBXFileReference; lastKnownFileType = file; name = en; path = en.lproj/RCAboutUsViewController.xib; sourceTree = "<group>"; };
 		647265B017A04CDF002E654A /* RCAsyncPhotoDownloadOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAsyncPhotoDownloadOperation.h; sourceTree = "<group>"; };
 		647265B117A04CDF002E654A /* RCAsyncPhotoDownloadOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAsyncPhotoDownloadOperation.m; sourceTree = "<group>"; };
 		647265B217A04CDF002E654A /* RCMediaUploadOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMediaUploadOperation.h; sourceTree = "<group>"; };
@@ -522,7 +544,6 @@
 		6491DCEC1755CF8D006FBCD8 /* RCFindFriendsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCFindFriendsViewController.xib; sourceTree = "<group>"; };
 		6491DCEF1755E092006FBCD8 /* RCUserProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCUserProfileViewController.h; sourceTree = "<group>"; };
 		6491DCF01755E096006FBCD8 /* RCUserProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCUserProfileViewController.m; sourceTree = "<group>"; };
-		6491DCF11755E096006FBCD8 /* RCUserProfileViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCUserProfileViewController.xib; sourceTree = "<group>"; };
 		649315D617ABA7A700DF30CE /* mainViewOptionCommented.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = mainViewOptionCommented.png; path = ../mainViewOptionCommented.png; sourceTree = "<group>"; };
 		649A869B175B0CC30016674F /* RCAmazonS3Helper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCAmazonS3Helper.h; path = "Rolling Capsule/RCAmazonS3Helper.h"; sourceTree = "<group>"; };
 		649A869C175B0CC30016674F /* RCAmazonS3Helper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCAmazonS3Helper.m; path = "Rolling Capsule/RCAmazonS3Helper.m"; sourceTree = "<group>"; };
@@ -533,11 +554,9 @@
 		649B423F179C3AC90019B1A7 /* topicCategoryShop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = topicCategoryShop.png; path = ../topicCategoryShop.png; sourceTree = "<group>"; };
 		649B4248179C51030019B1A7 /* RCLoadingLocationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCLoadingLocationViewController.h; path = ../RCLoadingLocationViewController.h; sourceTree = "<group>"; };
 		649B4249179C51030019B1A7 /* RCLoadingLocationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCLoadingLocationViewController.m; path = ../RCLoadingLocationViewController.m; sourceTree = "<group>"; };
-		649B424A179C51030019B1A7 /* RCLoadingLocationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RCLoadingLocationViewController.xib; path = ../RCLoadingLocationViewController.xib; sourceTree = "<group>"; };
 		649B424D179D3BE90019B1A7 /* postFriendPrivacyButton-2-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "postFriendPrivacyButton-2-highlighted.png"; path = "../postFriendPrivacyButton-2-highlighted.png"; sourceTree = "<group>"; };
 		649B424E179D3BE90019B1A7 /* postPersonalPrivacyButton-2-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "postPersonalPrivacyButton-2-highlighted.png"; path = "../postPersonalPrivacyButton-2-highlighted.png"; sourceTree = "<group>"; };
 		649B424F179D3BE90019B1A7 /* postPublicPrivacyButton-2-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "postPublicPrivacyButton-2-highlighted.png"; path = "../postPublicPrivacyButton-2-highlighted.png"; sourceTree = "<group>"; };
-		64A917071751E554007D629D /* RCRegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCRegisterViewController.xib; sourceTree = "<group>"; };
 		64A917091751F6C9007D629D /* RCRegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCRegisterViewController.h; sourceTree = "<group>"; };
 		64A9170A1751F6C9007D629D /* RCRegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCRegisterViewController.m; sourceTree = "<group>"; };
 		64B81CA117954FC800B5A825 /* viewPostImageFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = viewPostImageFrame.png; path = ../viewPostImageFrame.png; sourceTree = "<group>"; };
@@ -571,7 +590,6 @@
 		64D6EC1417A1AAD500663AE3 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		64D6EC1617A1CE1900663AE3 /* RCOutboxViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCOutboxViewController.h; sourceTree = SOURCE_ROOT; };
 		64D6EC1717A1CE1900663AE3 /* RCOutboxViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCOutboxViewController.m; sourceTree = SOURCE_ROOT; };
-		64D6EC1817A1CE1900663AE3 /* RCOutboxViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCOutboxViewController.xib; sourceTree = SOURCE_ROOT; };
 		64D6EC1C17A2536B00663AE3 /* RCUserData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = RCUserData.xcdatamodel; sourceTree = "<group>"; };
 		64D6EC2117A256EF00663AE3 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		64D6EC2317A2A59500663AE3 /* RCUploadTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCUploadTask.h; sourceTree = "<group>"; };
@@ -636,7 +654,6 @@
 		BF05D89C17995D0F00398929 /* postButtonTimeCapsuleInactive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = postButtonTimeCapsuleInactive.png; sourceTree = "<group>"; };
 		BF0B108A179C635C00E9ECBD /* fadingBar2Sided.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = fadingBar2Sided.png; sourceTree = "<group>"; };
 		BF0B17E917984468004AEEC5 /* menuIconLogout.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menuIconLogout.png; sourceTree = "<group>"; };
-		BF0B2E521794123600A1B8E0 /* RCLoginViewController4.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCLoginViewController4.xib; sourceTree = "<group>"; };
 		BF0B2E541794329700A1B8E0 /* RCAddLandmarkController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAddLandmarkController.h; sourceTree = "<group>"; };
 		BF0B2E551794329800A1B8E0 /* RCAddLandmarkController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAddLandmarkController.m; sourceTree = "<group>"; };
 		BF0B2E561794329800A1B8E0 /* RCAddLandmarkController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCAddLandmarkController.xib; sourceTree = "<group>"; };
@@ -691,7 +708,6 @@
 		BFB8085817B1004C004EB38E /* facebookIconDisabled.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = facebookIconDisabled.png; sourceTree = "<group>"; };
 		BFB8085A17B25264004EB38E /* RCFacebookSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCFacebookSettingsViewController.h; sourceTree = "<group>"; };
 		BFB8085B17B25264004EB38E /* RCFacebookSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCFacebookSettingsViewController.m; sourceTree = "<group>"; };
-		BFB8085C17B25265004EB38E /* RCFacebookSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RCFacebookSettingsViewController.xib; sourceTree = "<group>"; };
 		BFB8085F17B26692004EB38E /* facebook-logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "facebook-logo@2x.png"; path = "FBUserSettingsViewResources.bundle/images/facebook-logo@2x.png"; sourceTree = "<group>"; };
 		BFB8086117B2669C004EB38E /* silver-button-normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "silver-button-normal@2x.png"; path = "FBUserSettingsViewResources.bundle/images/silver-button-normal@2x.png"; sourceTree = "<group>"; };
 		BFB8086317B269DF004EB38E /* FBUserSettingsViewResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = FBUserSettingsViewResources.bundle; sourceTree = "<group>"; };
@@ -848,6 +864,7 @@
 				646C809A17A5C67A00054C1A /* RCFeed.m */,
 				6461C9B717B99B0A009DD299 /* RCPostReport.h */,
 				6461C9B817B99B0A009DD299 /* RCPostReport.m */,
+				646FBFC217C30EC2001C22FD /* Localizable.strings */,
 			);
 			name = Models;
 			path = ..;
@@ -1292,20 +1309,20 @@
 				64B81CB01795CCA500B5A825 /* RCCommentPostingViewController.xib */,
 				BFB8085A17B25264004EB38E /* RCFacebookSettingsViewController.h */,
 				BFB8085B17B25264004EB38E /* RCFacebookSettingsViewController.m */,
-				BFB8085C17B25265004EB38E /* RCFacebookSettingsViewController.xib */,
+				646FBFC617C311DF001C22FD /* RCFacebookSettingsViewController.xib */,
 				6491DCEA1755CF8D006FBCD8 /* RCFindFriendsViewController.h */,
 				6491DCEB1755CF8D006FBCD8 /* RCFindFriendsViewController.m */,
 				6491DCEC1755CF8D006FBCD8 /* RCFindFriendsViewController.xib */,
 				6407BBDA17545A87000F29C5 /* RCFriendListViewController.h */,
 				6407BBDB17545A87000F29C5 /* RCFriendListViewController.m */,
-				6407BBD51753B719000F29C5 /* RCFriendListViewController.xib */,
+				646FBFCA17C31348001C22FD /* RCFriendListViewController.xib */,
 				649B4248179C51030019B1A7 /* RCLoadingLocationViewController.h */,
 				649B4249179C51030019B1A7 /* RCLoadingLocationViewController.m */,
-				649B424A179C51030019B1A7 /* RCLoadingLocationViewController.xib */,
+				646FBFCE17C313D6001C22FD /* RCLoadingLocationViewController.xib */,
 				BFCA7833174DFD3F00666CBA /* RCLoginViewController.h */,
 				BFCA7834174DFD3F00666CBA /* RCLoginViewController.m */,
 				BFCA7836174DFD3F00666CBA /* RCLoginViewController.xib */,
-				BF0B2E521794123600A1B8E0 /* RCLoginViewController4.xib */,
+				646FBFD217C31525001C22FD /* RCLoginViewController4.xib */,
 				BF68E7001756090200E5C1F4 /* RCMainFeedViewController.h */,
 				BF68E7011756090200E5C1F4 /* RCMainFeedViewController.m */,
 				BF68E7021756090200E5C1F4 /* RCMainFeedViewController.xib */,
@@ -1314,26 +1331,26 @@
 				6490A90B1757C07100E5048F /* RCMainMenuViewController.xib */,
 				643EACEA175BBE51002761D9 /* RCNewPostViewController.h */,
 				643EACEB175BBE51002761D9 /* RCNewPostViewController.m */,
-				643EACEC175BBE51002761D9 /* RCNewPostViewController.xib */,
-				6401017C1797DC79002A6E2E /* RCNewPostViewController4.xib */,
+				646FBFD617C318A7001C22FD /* RCNewPostViewController.xib */,
+				646FBFDA17C318B6001C22FD /* RCNewPostViewController4.xib */,
 				64D6EC1617A1CE1900663AE3 /* RCOutboxViewController.h */,
 				64D6EC1717A1CE1900663AE3 /* RCOutboxViewController.m */,
-				64D6EC1817A1CE1900663AE3 /* RCOutboxViewController.xib */,
+				646FBFDE17C318CC001C22FD /* RCOutboxViewController.xib */,
 				64549D85175F264600BA8164 /* RCPostDetailsViewController.h */,
 				64549D86175F264600BA8164 /* RCPostDetailsViewController.m */,
-				64549D87175F264600BA8164 /* RCPostDetailsViewController.xib */,
+				646FBFE217C318FF001C22FD /* RCPostDetailsViewController.xib */,
 				64A917091751F6C9007D629D /* RCRegisterViewController.h */,
 				64A9170A1751F6C9007D629D /* RCRegisterViewController.m */,
-				64A917071751E554007D629D /* RCRegisterViewController.xib */,
+				646FBFE617C3192B001C22FD /* RCRegisterViewController.xib */,
 				BF8DDD571797068000803CE1 /* RCSettingViewController.h */,
 				BF8DDD581797068000803CE1 /* RCSettingViewController.m */,
 				BF8DDD591797068100803CE1 /* RCSettingViewController.xib */,
 				6491DCEF1755E092006FBCD8 /* RCUserProfileViewController.h */,
 				6491DCF01755E096006FBCD8 /* RCUserProfileViewController.m */,
-				6491DCF11755E096006FBCD8 /* RCUserProfileViewController.xib */,
+				646FBFEA17C31A36001C22FD /* RCUserProfileViewController.xib */,
 				6460753417BDCE0200F54A82 /* RCAboutUsViewController.h */,
 				6460753517BDCE0200F54A82 /* RCAboutUsViewController.m */,
-				6460753617BDCE0200F54A82 /* RCAboutUsViewController.xib */,
+				646FBFEE17C31AF9001C22FD /* RCAboutUsViewController.xib */,
 				6460753917BE6B7200F54A82 /* RCTutorialViewController.h */,
 				6460753A17BE6B7300F54A82 /* RCTutorialViewController.m */,
 				6460753B17BE6B7500F54A82 /* RCTutorialViewController.xib */,
@@ -1395,6 +1412,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				"zh-Hant",
 			);
 			mainGroup = BFCA780F174DFD3F00666CBA;
 			productRefGroup = BFCA7819174DFD3F00666CBA /* Products */;
@@ -1417,17 +1435,17 @@
 				BFCA7830174DFD3F00666CBA /* Default@2x.png in Resources */,
 				BFCA7832174DFD3F00666CBA /* Default-568h@2x.png in Resources */,
 				BFCA7838174DFD3F00666CBA /* RCLoginViewController.xib in Resources */,
-				64A917081751E554007D629D /* RCRegisterViewController.xib in Resources */,
-				6407BBD61753B719000F29C5 /* RCFriendListViewController.xib in Resources */,
+				646FBFE417C3192B001C22FD /* RCRegisterViewController.xib in Resources */,
+				646FBFC817C31348001C22FD /* RCFriendListViewController.xib in Resources */,
 				BF2CD6241754E12D00EF2E85 /* RCPostCommentCell.xib in Resources */,
 				BF68E7041756090200E5C1F4 /* RCMainFeedViewController.xib in Resources */,
 				6407BBDE1754D5EB000F29C5 /* RCUserTableCell.xib in Resources */,
 				6491DCEE1755CF8D006FBCD8 /* RCFindFriendsViewController.xib in Resources */,
-				6491DCF31755E096006FBCD8 /* RCUserProfileViewController.xib in Resources */,
+				646FBFE817C31A36001C22FD /* RCUserProfileViewController.xib in Resources */,
 				6490A90D1757C07100E5048F /* RCMainMenuViewController.xib in Resources */,
 				643EACE8175BACC0002761D9 /* back_button.png in Resources */,
-				643EACEE175BBE51002761D9 /* RCNewPostViewController.xib in Resources */,
-				64549D89175F264600BA8164 /* RCPostDetailsViewController.xib in Resources */,
+				646FBFD417C318A7001C22FD /* RCNewPostViewController.xib in Resources */,
+				646FBFE017C318FF001C22FD /* RCPostDetailsViewController.xib in Resources */,
 				BF46ECB71778476C00F26A05 /* btnStandard-normal@2x.png in Resources */,
 				64014916177966F5009B69DF /* RCMainFeedCell.xib in Resources */,
 				64EA880417796DA000011F3E /* mainBackground.png in Resources */,
@@ -1499,7 +1517,7 @@
 				BFB728F5178F541B00DE01CA /* loading.gif in Resources */,
 				BFB728F7178F5B0C00DE01CA /* loading2.gif in Resources */,
 				647E2FCF1791F2E600AA6B9A /* default_avatar.png in Resources */,
-				BF0B2E531794123600A1B8E0 /* RCLoginViewController4.xib in Resources */,
+				646FBFD017C31525001C22FD /* RCLoginViewController4.xib in Resources */,
 				BF0B2E581794329800A1B8E0 /* RCAddLandmarkController.xib in Resources */,
 				BFE3073117953EE7000C9C58 /* profileWorldMapSpot.png in Resources */,
 				BFE3073317957D05000C9C58 /* mapViewAddLandmark.png in Resources */,
@@ -1533,7 +1551,7 @@
 				BF8DDD551796EDC400803CE1 /* menuIconProfile.png in Resources */,
 				BF8DDD561796EDC400803CE1 /* menuIconSettings.png in Resources */,
 				BF8DDD5B1797068100803CE1 /* RCSettingViewController.xib in Resources */,
-				6401017D1797DC79002A6E2E /* RCNewPostViewController4.xib in Resources */,
+				646FBFD817C318B6001C22FD /* RCNewPostViewController4.xib in Resources */,
 				640103491798041A002A6E2E /* buttonPost@2x.png in Resources */,
 				6401034D17981D10002A6E2E /* postButtonTimeCapsule-highlighted.png in Resources */,
 				6401034E17981D10002A6E2E /* postButtonTimeCapsule.png in Resources */,
@@ -1553,7 +1571,7 @@
 				649B4245179C3AC90019B1A7 /* topicCategoryRestaurant.png in Resources */,
 				649B4246179C3AC90019B1A7 /* topicCategorySchool.png in Resources */,
 				649B4247179C3AC90019B1A7 /* topicCategoryShop.png in Resources */,
-				649B424C179C51040019B1A7 /* RCLoadingLocationViewController.xib in Resources */,
+				646FBFCC17C313D6001C22FD /* RCLoadingLocationViewController.xib in Resources */,
 				BF0B108B179C635C00E9ECBD /* fadingBar2Sided.png in Resources */,
 				649B4250179D3BE90019B1A7 /* postFriendPrivacyButton-2-highlighted.png in Resources */,
 				649B4251179D3BE90019B1A7 /* postPersonalPrivacyButton-2-highlighted.png in Resources */,
@@ -1576,7 +1594,7 @@
 				6416D12617A046A40017065A /* topicCategoryTemple.png in Resources */,
 				647265C117A05FF9002E654A /* friendListSearchBarToggle.png in Resources */,
 				64D6EC1317A13A1F00663AE3 /* friendListSearchBarBg@2x.png in Resources */,
-				64D6EC1A17A1CE1900663AE3 /* RCOutboxViewController.xib in Resources */,
+				646FBFDC17C318CC001C22FD /* RCOutboxViewController.xib in Resources */,
 				BF7FAFB317A2971A0010CD95 /* btnAccept.png in Resources */,
 				BF7FAFB417A2971A0010CD95 /* btnReject.png in Resources */,
 				BF7FAFB617A2F9240010CD95 /* outboxTableBackground.png in Resources */,
@@ -1608,7 +1626,7 @@
 				649315D717ABA7A700DF30CE /* mainViewOptionCommented.png in Resources */,
 				BFB8085217B0F021004EB38E /* facebookIcon.png in Resources */,
 				BFB8085917B1004C004EB38E /* facebookIconDisabled.png in Resources */,
-				BFB8085E17B25266004EB38E /* RCFacebookSettingsViewController.xib in Resources */,
+				646FBFC417C311DF001C22FD /* RCFacebookSettingsViewController.xib in Resources */,
 				BFB8086017B26692004EB38E /* facebook-logo@2x.png in Resources */,
 				BFB8086217B2669C004EB38E /* silver-button-normal@2x.png in Resources */,
 				BFB8086417B269DF004EB38E /* FBUserSettingsViewResources.bundle in Resources */,
@@ -1622,7 +1640,7 @@
 				6461C9CB17BD1CB0009DD299 /* loginTextFieldsFrame.png in Resources */,
 				6460752E17BDAF9F00F54A82 /* buttonDelete.png in Resources */,
 				6460753017BDB5F700F54A82 /* registerBackground.png in Resources */,
-				6460753817BDCE0200F54A82 /* RCAboutUsViewController.xib in Resources */,
+				646FBFEC17C31AF9001C22FD /* RCAboutUsViewController.xib in Resources */,
 				6460753D17BE6B7600F54A82 /* RCTutorialViewController.xib in Resources */,
 				6460754417BE732200F54A82 /* tutorialI5Mainpage1.jpg in Resources */,
 				6460754517BE732200F54A82 /* tutorialI5Mainpage2.jpg in Resources */,
@@ -1637,6 +1655,7 @@
 				6460755417BE75F000F54A82 /* tutorialI4Mainpage5.jpg in Resources */,
 				6460755517BE75F000F54A82 /* tutorialI4Mainpage6.jpg in Resources */,
 				6460755717BE7D4200F54A82 /* menuIconTutorial.png in Resources */,
+				646FBFC317C30EC2001C22FD /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1773,10 +1792,113 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		646FBFC617C311DF001C22FD /* RCFacebookSettingsViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				646FBFC517C311DF001C22FD /* zh-Hant */,
+				646FBFC717C311E8001C22FD /* en */,
+			);
+			name = RCFacebookSettingsViewController.xib;
+			sourceTree = "<group>";
+		};
+		646FBFCA17C31348001C22FD /* RCFriendListViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				646FBFC917C31348001C22FD /* zh-Hant */,
+				646FBFCB17C31357001C22FD /* en */,
+			);
+			name = RCFriendListViewController.xib;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		646FBFCE17C313D6001C22FD /* RCLoadingLocationViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				646FBFCD17C313D6001C22FD /* en */,
+				646FBFCF17C313E2001C22FD /* zh-Hant */,
+			);
+			name = RCLoadingLocationViewController.xib;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		646FBFD217C31525001C22FD /* RCLoginViewController4.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				646FBFD117C31525001C22FD /* en */,
+				646FBFD317C3152D001C22FD /* zh-Hant */,
+			);
+			name = RCLoginViewController4.xib;
+			sourceTree = "<group>";
+		};
+		646FBFD617C318A7001C22FD /* RCNewPostViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				646FBFD517C318A7001C22FD /* zh-Hant */,
+				646FBFD717C318AF001C22FD /* en */,
+			);
+			name = RCNewPostViewController.xib;
+			sourceTree = "<group>";
+		};
+		646FBFDA17C318B6001C22FD /* RCNewPostViewController4.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				646FBFD917C318B6001C22FD /* en */,
+				646FBFDB17C318BE001C22FD /* zh-Hant */,
+			);
+			name = RCNewPostViewController4.xib;
+			sourceTree = "<group>";
+		};
+		646FBFDE17C318CC001C22FD /* RCOutboxViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				646FBFDD17C318CC001C22FD /* zh-Hant */,
+				646FBFDF17C318D9001C22FD /* en */,
+			);
+			name = RCOutboxViewController.xib;
+			sourceTree = SOURCE_ROOT;
+		};
+		646FBFE217C318FF001C22FD /* RCPostDetailsViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				646FBFE117C318FF001C22FD /* en */,
+				646FBFE317C3191D001C22FD /* zh-Hant */,
+			);
+			name = RCPostDetailsViewController.xib;
+			path = ..;
+			sourceTree = "<group>";
+		};
+		646FBFE617C3192B001C22FD /* RCRegisterViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				646FBFE517C3192B001C22FD /* en */,
+				646FBFE717C31934001C22FD /* zh-Hant */,
+			);
+			name = RCRegisterViewController.xib;
+			sourceTree = "<group>";
+		};
+		646FBFEA17C31A36001C22FD /* RCUserProfileViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				646FBFE917C31A36001C22FD /* en */,
+				646FBFEB17C31A43001C22FD /* zh-Hant */,
+			);
+			name = RCUserProfileViewController.xib;
+			sourceTree = "<group>";
+		};
+		646FBFEE17C31AF9001C22FD /* RCAboutUsViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				646FBFED17C31AF9001C22FD /* zh-Hant */,
+				646FBFEF17C31B02001C22FD /* en */,
+			);
+			name = RCAboutUsViewController.xib;
+			sourceTree = "<group>";
+		};
 		BFCA7824174DFD3F00666CBA /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				BFCA7825174DFD3F00666CBA /* en */,
+				646FBFC017C30BC8001C22FD /* zh-Hant */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1785,6 +1907,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				BFCA7837174DFD3F00666CBA /* en */,
+				646FBFBF17C30BC8001C22FD /* zh-Hant */,
 			);
 			name = RCLoginViewController.xib;
 			sourceTree = "<group>";
@@ -1793,6 +1916,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				BFCA7849174DFD3F00666CBA /* en */,
+				646FBFC117C30BC8001C22FD /* zh-Hant */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
