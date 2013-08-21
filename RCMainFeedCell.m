@@ -92,6 +92,11 @@
     } else {
         [_imgViewVideoMarker setHidden:YES];
     }
+    if (post.releaseDate != nil && [post.releaseDate compare:[NSDate date]] == NSOrderedAscending) {
+        [_imgViewOpenedCapsuleFrame setHidden:NO];
+    } else {
+        [_imgViewOpenedCapsuleFrame setHidden:YES];
+    }
     if (post.thumbnailImage != nil)
         [ self.imageView setImage:post.thumbnailImage];
     else
