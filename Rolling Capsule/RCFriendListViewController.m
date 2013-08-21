@@ -17,6 +17,7 @@
 #import "RCNewPostViewController.h"
 #import "AppDelegate.h"
 #import "RCNotification.h"
+#import "RCResourceCache.h"
 
 @interface RCFriendListViewController ()
 
@@ -156,19 +157,36 @@ CGRect  searchButtonHideFrame;
     NSAttributedString *attributedStr = [[NSAttributedString alloc] initWithString:lastUpdated attributes:attrs];
     [_refreshControl setAttributedTitle:attributedStr];
     
+    NSMutableArray *cachedFriends = [[RCResourceCache centralCache] getResourceForKey:[NSString stringWithFormat:@"/users/%d/friends", _user.userID]];
+    if (cachedFriends != nil)
+        _friends = cachedFriends;
+    
+    NSMutableArray *cachedFollowees = [[RCResourceCache centralCache] getResourceForKey:[NSString stringWithFormat:@"/users/%d/followees", _user.userID]];
+    if (cachedFollowees != nil)
+        _followees = cachedFollowees;
+    
+    NSMutableArray *cachedRequestedFriends = [[RCResourceCache centralCache] getResourceForKey:[NSString stringWithFormat:@"/users/%d/requested_friends", _user.userID]];
+    if (cachedRequestedFriends != nil)
+        _requested_friends = cachedRequestedFriends;
+    
     switch (_viewingMode) {
         case RCFriendListViewModeFriends:
+            _displayedItems = _friends;
             [self asynchGetFriendsRequest];
             break;
         case RCFriendListViewModePendingFriends:
+            _displayedItems = _followees;
             [self asynchGetRequestedFriendsRequest];
             break;
         case RCFriendListViewModeFollowees:
+            _displayedItems = _requested_friends;
             [self asynchGetFolloweesRequest];
             break;
         default:
             break;
     }
+    
+    [_tblViewFriendList reloadData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -258,7 +276,7 @@ CGRect  searchButtonHideFrame;
                         RCUser *user = [RCUser getUserWithNSDictionary:userData];
                         [_friends addObject:user];
                     }
-                    
+                    [[RCResourceCache centralCache] putResourceInCache:_friends forKey:[NSString stringWithFormat:@"/users/%d/friends",_user.userID]];
                     if (_viewingMode == RCFriendListViewModeFriends)
                         [_tblViewFriendList reloadData];
                     
@@ -304,7 +322,7 @@ CGRect  searchButtonHideFrame;
                      NSLog(@"ID IS: %d", (int)[userData objectForKey:@"friendship_id"]);
                      [requestLists addObject:[[NSNumber alloc] initWithInt:[[userData objectForKey:@"friendship_id"] intValue]]];
                  }
-                 
+                 [[RCResourceCache centralCache] putResourceInCache:_requested_friends forKey:[NSString stringWithFormat:@"/users/%d/requested_friends",_user.userID]];
                  if (_viewingMode == RCFriendListViewModePendingFriends)
                     [_tblViewFriendList reloadData];
                  
@@ -347,6 +365,7 @@ CGRect  searchButtonHideFrame;
                      RCUser *user = [RCUser getUserWithNSDictionary:userData];
                      [_followees addObject:user];
                  }
+                 [[RCResourceCache centralCache] putResourceInCache:_followees forKey:[NSString stringWithFormat:@"/users/%d/followees",_user.userID]];
                  if (_viewingMode == RCFriendListViewModeFollowees)
                      [_tblViewFriendList reloadData];
                  
@@ -589,7 +608,7 @@ CGRect  searchButtonHideFrame;
     if (_user != _loggedinUser) {
         [_btnRequests setHidden:YES];
     }else
-        [self asynchGetRequestedFriendsRequest];
+        [self handleRefresh:nil];
 }
 
 - (void) switchToNewPostScreen {
