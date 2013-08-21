@@ -87,6 +87,11 @@
                                 bezierPathWithRect:self.bounds] CGPath]];
     if ([post.thumbnailUrl isKindOfClass:[NSNull class]]) return;
     _currentPostID = post.postID;
+    if ([post.fileUrl hasSuffix:@"mov"]) {
+        [_imgViewVideoMarker setHidden:NO];
+    } else {
+        [_imgViewVideoMarker setHidden:YES];
+    }
     if (post.thumbnailImage != nil)
         [ self.imageView setImage:post.thumbnailImage];
     else

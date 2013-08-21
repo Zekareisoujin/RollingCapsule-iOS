@@ -15,6 +15,7 @@
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (strong, nonatomic) UIView *dimMask;
 @property (assign, nonatomic) int cellState;
+@property (weak, nonatomic) IBOutlet UIImageView *imgViewVideoMarker;
 @property (nonatomic, strong) NSString* currentFileUrl;
 + (NSString*) cellIdentifier;
 - (void)initCellAppearanceForPost:(RCPost *) post;

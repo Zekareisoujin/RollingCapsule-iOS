@@ -36,6 +36,10 @@
     _webview = [[UIWebView alloc] initWithFrame:self.view.frame];
     _webview.delegate = self;
     [self.view addSubview:_webview];
+    CGRect frame = _webview.frame;
+    frame.origin.y = 0;
+    frame.size.height = self.view.frame.size.height;
+    _webview.frame = frame;
 	
     _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhiteLarge];
 }
@@ -56,8 +60,9 @@
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     [_webview setBackgroundColor:[UIColor whiteColor]];
     [_activityIndicatorView stopAnimating];
-    [_activityIndicatorView removeFromSuperview];
-    [_maskView removeFromSuperview];
+    [_activityIndicatorView setHidden:YES];
+    [_maskView setHidden:YES];
+    _webview.frame = self.view.frame;
 }
 - (void)didReceiveMemoryWarning
 {
