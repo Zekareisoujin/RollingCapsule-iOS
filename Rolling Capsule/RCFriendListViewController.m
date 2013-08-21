@@ -175,11 +175,11 @@ CGRect  searchButtonHideFrame;
             [self asynchGetFriendsRequest];
             break;
         case RCFriendListViewModePendingFriends:
-            _displayedItems = _followees;
+            _displayedItems = _requested_friends;
             [self asynchGetRequestedFriendsRequest];
             break;
         case RCFriendListViewModeFollowees:
-            _displayedItems = _requested_friends;
+            _displayedItems = _followees;
             [self asynchGetFolloweesRequest];
             break;
         default:
