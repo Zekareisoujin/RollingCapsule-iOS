@@ -62,7 +62,12 @@
         [cell.imageView setImage:[UIImage imageNamed:imageName]];
         return cell;
     } else {
-        [cell.imageView setImage:[UIImage imageNamed:@"loginBackground.png"]];
+        BOOL iphone5 = [[UIScreen mainScreen] bounds].size.height >= RCIphone5Height;
+        int phoneType = iphone5 ? 5 : 4;
+        NSString* imageName = [NSString stringWithFormat:@"tutorialI%dBackground.jpg",phoneType];
+        UIImage *img = [UIImage imageNamed:imageName];
+        [cell.imageView setImage:img];
+        [_imgViewBackground setImage:img];
         return cell;
     }
     

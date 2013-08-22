@@ -84,6 +84,8 @@
 		644B260517C4B6A50009937D /* tutorialI4UsingIt.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 644B260317C4B6A50009937D /* tutorialI4UsingIt.jpg */; };
 		644B260617C4B6A50009937D /* tutorialI5UsingIt.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 644B260417C4B6A50009937D /* tutorialI5UsingIt.jpg */; };
 		644B260A17C522A00009937D /* mainFeedOpenedCapsuleFrame.png in Resources */ = {isa = PBXBuildFile; fileRef = 644B260917C522A00009937D /* mainFeedOpenedCapsuleFrame.png */; };
+		644B260E17C611D40009937D /* tutorialI5Background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 644B260C17C611D40009937D /* tutorialI5Background.jpg */; };
+		644B261017C613890009937D /* tutorialI4Background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 644B260F17C613890009937D /* tutorialI4Background.jpg */; };
 		644FC83017A45AE1004B8D8F /* menuButtonNormal2.png in Resources */ = {isa = PBXBuildFile; fileRef = 644FC82F17A45AE1004B8D8F /* menuButtonNormal2.png */; };
 		64549D88175F264600BA8164 /* RCPostDetailsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 64549D86175F264600BA8164 /* RCPostDetailsViewController.m */; };
 		6459A0F117759F72003DC896 /* RCNotification.m in Sources */ = {isa = PBXBuildFile; fileRef = 6459A0F017759F72003DC896 /* RCNotification.m */; };
@@ -447,6 +449,8 @@
 		644B260317C4B6A50009937D /* tutorialI4UsingIt.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tutorialI4UsingIt.jpg; sourceTree = "<group>"; };
 		644B260417C4B6A50009937D /* tutorialI5UsingIt.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tutorialI5UsingIt.jpg; sourceTree = "<group>"; };
 		644B260917C522A00009937D /* mainFeedOpenedCapsuleFrame.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mainFeedOpenedCapsuleFrame.png; sourceTree = "<group>"; };
+		644B260C17C611D40009937D /* tutorialI5Background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tutorialI5Background.jpg; sourceTree = "<group>"; };
+		644B260F17C613890009937D /* tutorialI4Background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tutorialI4Background.jpg; sourceTree = "<group>"; };
 		644FC82F17A45AE1004B8D8F /* menuButtonNormal2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = menuButtonNormal2.png; sourceTree = "<group>"; };
 		64549D85175F264600BA8164 /* RCPostDetailsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCPostDetailsViewController.h; path = ../RCPostDetailsViewController.h; sourceTree = "<group>"; };
 		64549D86175F264600BA8164 /* RCPostDetailsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCPostDetailsViewController.m; path = ../RCPostDetailsViewController.m; sourceTree = "<group>"; };
@@ -882,30 +886,6 @@
 		643EACE9175BBE0D002761D9 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				644B260317C4B6A50009937D /* tutorialI4UsingIt.jpg */,
-				644B260917C522A00009937D /* mainFeedOpenedCapsuleFrame.png */,
-				644B260417C4B6A50009937D /* tutorialI5UsingIt.jpg */,
-				647380EC17C4B51F000D835A /* buttonTick.png */,
-				6460755617BE7D4200F54A82 /* menuIconTutorial.png */,
-				6460754A17BE75EC00F54A82 /* tutorialI4Mainpage1.jpg */,
-				6460754B17BE75ED00F54A82 /* tutorialI4Mainpage2.jpg */,
-				6460754C17BE75ED00F54A82 /* tutorialI4Mainpage3.jpg */,
-				6460754D17BE75EE00F54A82 /* tutorialI4Mainpage4.jpg */,
-				6460754E17BE75EE00F54A82 /* tutorialI4Mainpage5.jpg */,
-				6460754F17BE75EF00F54A82 /* tutorialI4Mainpage6.jpg */,
-				6460753E17BE732000F54A82 /* tutorialI5Mainpage1.jpg */,
-				6460753F17BE732000F54A82 /* tutorialI5Mainpage2.jpg */,
-				6460754017BE732100F54A82 /* tutorialI5Mainpage3.jpg */,
-				6460754117BE732100F54A82 /* tutorialI5Mainpage4.jpg */,
-				6460754217BE732100F54A82 /* tutorialI5Mainpage5.jpg */,
-				6460754317BE732200F54A82 /* tutorialI5Mainpage6.jpg */,
-				6460752D17BDAF9F00F54A82 /* buttonDelete.png */,
-				6461C9CA17BD1CB0009DD299 /* loginTextFieldsFrame.png */,
-				BFA561DC17BB851D00665126 /* facebookNoAvatar.png */,
-				BFA561DA17BB811200665126 /* menuIconFacebook.png */,
-				6461C9B517B9707E009DD299 /* viewPostReportFrame.png */,
-				6461C9B317B96552009DD299 /* viewPostWhistle.png */,
-				BFB8086317B269DF004EB38E /* FBUserSettingsViewResources.bundle */,
 				6460E869178AE3EA0065D6BA /* appIcon.png */,
 				6460E86A178AE3EA0065D6BA /* appIcon@2x.png */,
 				643EACE7175BACC0002761D9 /* back_button.png */,
@@ -918,10 +898,12 @@
 				BFA561D817BB7E8600665126 /* btnStandard2@2x.png */,
 				64D0298E1796E7E900E4AC7B /* btnTransparent-normal.png */,
 				64D6D80217994B5300AA1161 /* buttonCancel.png */,
+				6460752D17BDAF9F00F54A82 /* buttonDelete.png */,
 				64B81CB71795E21C00B5A825 /* buttonPlay.png */,
 				640103471798041A002A6E2E /* buttonPost@2x.png */,
 				BFD65333179F167B00D6A13D /* buttonRefresh.gif */,
 				64D6D80317994B5400AA1161 /* buttonSubmit.png */,
+				647380EC17C4B51F000D835A /* buttonTick.png */,
 				649B4238179C3AC80019B1A7 /* buttonTopic.png */,
 				64119A12178460A500BF0B05 /* closeButton.png */,
 				6460E888178B2D800065D6BA /* closeButton@2x.png */,
@@ -929,7 +911,9 @@
 				BFB8085F17B26692004EB38E /* facebook-logo@2x.png */,
 				BFB8085117B0F021004EB38E /* facebookIcon.png */,
 				BFB8085817B1004C004EB38E /* facebookIconDisabled.png */,
+				BFA561DC17BB851D00665126 /* facebookNoAvatar.png */,
 				BF0B108A179C635C00E9ECBD /* fadingBar2Sided.png */,
+				BFB8086317B269DF004EB38E /* FBUserSettingsViewResources.bundle */,
 				BF05D89917990BC100398929 /* feedButtonMore.png */,
 				BFE63140179D6AB4004992E1 /* friendListBarFollows.png */,
 				BFE63141179D6AB4004992E1 /* friendListBarFriends.png */,
@@ -962,9 +946,11 @@
 				64E293B917856F43009496FF /* loginBtnRegister.png */,
 				64E293BA17856F43009496FF /* loginBtnRegisterPressed.png */,
 				64E293BD17856F43009496FF /* loginTextfield.png */,
+				6461C9CA17BD1CB0009DD299 /* loginTextFieldsFrame.png */,
 				64D029901796F84C00E4AC7B /* magnifyingGlass@2x.png */,
 				64EA880317796D9F00011F3E /* mainBackground.png */,
 				6416D11017A02C170017065A /* mainCapsuleCount.png */,
+				644B260917C522A00009937D /* mainFeedOpenedCapsuleFrame.png */,
 				64E293CB178587BE009496FF /* mainMapViewBackground.png */,
 				64E293C717857C25009496FF /* mainTopBanner.png */,
 				649315D617ABA7A700DF30CE /* mainViewOptionCommented.png */,
@@ -986,12 +972,14 @@
 				642B0D6C17A459A1004F7B8E /* menuIconConciergeUtility.png */,
 				642B0D6D17A459A1004F7B8E /* menuIconDropdownClose.png */,
 				642B0D6E17A459A1004F7B8E /* menuIconDropdownOpen.png */,
+				BFA561DA17BB811200665126 /* menuIconFacebook.png */,
 				BF8DDD4F1796EDC400803CE1 /* menuIconFriends.png */,
 				BF0B17E917984468004AEEC5 /* menuIconLogout.png */,
 				BF8DDD501796EDC400803CE1 /* menuIconMainFeeds.png */,
 				BF7FAFB917A2FD630010CD95 /* menuIconOutbox.png */,
 				BF8DDD511796EDC400803CE1 /* menuIconProfile.png */,
 				BF8DDD521796EDC400803CE1 /* menuIconSettings.png */,
+				6460755617BE7D4200F54A82 /* menuIconTutorial.png */,
 				64361E33178E9ABB0041B5C2 /* navBarButtonBackground@2x.png */,
 				64EA9B4717887B5A0022FA67 /* navigationBarBackground@2x.png */,
 				6476626B17A954ED000D9E36 /* notice.png */,
@@ -1025,7 +1013,6 @@
 				644556C0179712AD00DAFE26 /* postPersonalPrivacyButton-2.png */,
 				64119A0D17834E9700BF0B05 /* postPersonalPrivacyButton-highlighted.png */,
 				64119A0717833A8A00BF0B05 /* postPersonalPrivacyButton.png */,
-				6460752F17BDB5F700F54A82 /* registerBackground.png */,
 				641199FA1780B57600BF0B05 /* postPhotoLibrarySourceButton-normal.png */,
 				644556BA179709EB00DAFE26 /* postPhotoLibrarySourceButton.png */,
 				644556C1179712AD00DAFE26 /* postPostButton-2.png */,
@@ -1039,11 +1026,12 @@
 				641199FB1780B57600BF0B05 /* postVideoSourceButton-normal.png */,
 				644556BB179709EB00DAFE26 /* postVideoSourceButton.png */,
 				BFA53F501785B4FD007686F1 /* profileAvatarBar.png */,
-				BF153ADB17BCE07300C65FDE /* profileEditNotification.png */,
 				BFCCEFCD178C9B9700D2434C /* profileBtnFriendAction@2x.png */,
+				BF153ADB17BCE07300C65FDE /* profileEditNotification.png */,
 				6460E86D178AE4070065D6BA /* profileViewPostPreview.png */,
 				BFCCEFCF178CA38A00D2434C /* profileWorldMap.png */,
 				BFE3073017953EE7000C9C58 /* profileWorldMapSpot.png */,
+				6460752F17BDB5F700F54A82 /* registerBackground.png */,
 				6460E882178B274A0065D6BA /* registerMainFrame.png */,
 				6460E886178B2D3E0065D6BA /* registerMainFrame@2x.png */,
 				6460E883178B274A0065D6BA /* registerRegisterButton.png */,
@@ -1056,12 +1044,28 @@
 				6416D11917A046A30017065A /* topicCategoryHotel.png */,
 				649B423C179C3AC90019B1A7 /* topicCategoryMall.png */,
 				6416D11A17A046A40017065A /* topicCategoryMovie.png */,
+				644B260F17C613890009937D /* tutorialI4Background.jpg */,
+				644B260C17C611D40009937D /* tutorialI5Background.jpg */,
 				6416D11B17A046A40017065A /* topicCategoryOthers.png */,
 				649B423D179C3AC90019B1A7 /* topicCategoryRestaurant.png */,
 				649B423E179C3AC90019B1A7 /* topicCategorySchool.png */,
 				649B423F179C3AC90019B1A7 /* topicCategoryShop.png */,
 				6416D11D17A046A40017065A /* topicCategoryTemple.png */,
 				6416D11C17A046A40017065A /* topicCategoryTropic Of Cancer.png */,
+				6460754A17BE75EC00F54A82 /* tutorialI4Mainpage1.jpg */,
+				6460754B17BE75ED00F54A82 /* tutorialI4Mainpage2.jpg */,
+				6460754C17BE75ED00F54A82 /* tutorialI4Mainpage3.jpg */,
+				6460754D17BE75EE00F54A82 /* tutorialI4Mainpage4.jpg */,
+				6460754E17BE75EE00F54A82 /* tutorialI4Mainpage5.jpg */,
+				6460754F17BE75EF00F54A82 /* tutorialI4Mainpage6.jpg */,
+				644B260317C4B6A50009937D /* tutorialI4UsingIt.jpg */,
+				6460753E17BE732000F54A82 /* tutorialI5Mainpage1.jpg */,
+				6460753F17BE732000F54A82 /* tutorialI5Mainpage2.jpg */,
+				6460754017BE732100F54A82 /* tutorialI5Mainpage3.jpg */,
+				6460754117BE732100F54A82 /* tutorialI5Mainpage4.jpg */,
+				6460754217BE732100F54A82 /* tutorialI5Mainpage5.jpg */,
+				6460754317BE732200F54A82 /* tutorialI5Mainpage6.jpg */,
+				644B260417C4B6A50009937D /* tutorialI5UsingIt.jpg */,
 				64E293111784A8C8009496FF /* viewPostCommentButton-highlighted.png */,
 				64E2930F1784A84B009496FF /* viewPostCommentButton-normal.png */,
 				64B81CA31795551E00B5A825 /* viewPostCommentButton.png */,
@@ -1076,7 +1080,9 @@
 				64B81CA117954FC800B5A825 /* viewPostImageFrame.png */,
 				64119A1717849DBB00BF0B05 /* viewPostMainFrame.png */,
 				64D6D7FF17991FCD00AA1161 /* viewPostOpenCommentPostingButton.png */,
+				6461C9B517B9707E009DD299 /* viewPostReportFrame.png */,
 				64E293151784ABEE009496FF /* viewPostViewSeedLabel.png */,
+				6461C9B317B96552009DD299 /* viewPostWhistle.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -1673,6 +1679,8 @@
 				644B260517C4B6A50009937D /* tutorialI4UsingIt.jpg in Resources */,
 				644B260617C4B6A50009937D /* tutorialI5UsingIt.jpg in Resources */,
 				644B260A17C522A00009937D /* mainFeedOpenedCapsuleFrame.png in Resources */,
+				644B260E17C611D40009937D /* tutorialI5Background.jpg in Resources */,
+				644B261017C613890009937D /* tutorialI4Background.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

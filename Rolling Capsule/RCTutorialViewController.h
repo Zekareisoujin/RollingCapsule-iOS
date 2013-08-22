@@ -11,6 +11,7 @@
 #define NUMBER_OF_TUTORIAL_PAGE 6
 
 @interface RCTutorialViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
+@property (weak, nonatomic) IBOutlet UIImageView *imgViewBackground;
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 - (IBAction)btnStartMemcapTouchUpInside:(id)sender;
 
