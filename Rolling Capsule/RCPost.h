@@ -31,9 +31,10 @@
 @property (nonatomic, strong) NSString* topic;
 @property (nonatomic, assign) BOOL  isTimeCapsule;
 
-@property (nonatomic,strong) NSString *authorName;
-@property (nonatomic,strong) NSString *authorEmail;
-@property (nonatomic,strong) UIImage *thumbnailImage;
+@property (nonatomic, strong) NSString *authorName;
+@property (nonatomic, strong) NSString *authorEmail;
+@property (nonatomic, strong) UIImage *thumbnailImage;
+@property (nonatomic, strong) RCUser* timeCapsuleReceiver;
 
 + (void) initPostDataModel;
 + (id) getPostWithNSDictionary:(NSDictionary *)postData;

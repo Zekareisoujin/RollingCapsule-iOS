@@ -44,6 +44,7 @@
 @synthesize objUIUpdate = _objUIUpdate;
 @synthesize selUIUPdate = _selUIUPdate;
 @synthesize postedTime = _postedTime;
+@synthesize timeCapsuleReceiver = _timeCapsuleReceiver;
 
 static NSMutableDictionary* RCPostPostCollection = nil;
 

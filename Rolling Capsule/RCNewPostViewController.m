@@ -260,6 +260,7 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
     _post.privacyOption = [_privacyOption copy];
     _post.topic = [_currentTopic copy];
     _post.postedTime = [NSDate date];
+    _post.timeCapsuleReceiver = _timeCapsuleReceiver;
     if (_datePickerView != nil && _isTimedRelease) {
         _post.releaseDate = [_datePickerView date];
     }

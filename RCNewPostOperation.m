@@ -48,6 +48,9 @@
         addArgumentToQueryString(dataSt, @"post[subject]", _post.subject);
         if (_post.topic != nil)
             addArgumentToQueryString(dataSt, @"post[topic]", _post.topic);
+        if (_post.timeCapsuleReceiver != nil) {
+            addArgumentToQueryString(dataSt, @"send_to_user", [NSString stringWithFormat:@"%d",_post.timeCapsuleReceiver.userID]);
+        }
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:@"yyyy-MM-dd HH:mm:ss ZZZ"];
         if (_post.releaseDate != nil) {
