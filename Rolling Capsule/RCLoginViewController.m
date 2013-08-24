@@ -113,7 +113,7 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
                     _isFirstTimeLogin = NO;
                 }
             }else {
-                showAlertDialog(([NSString stringWithFormat:@"%@. %@ ",responseData, NSLocalizedString(RCErrorMessagePleaseTryAgain, nil)]), NSLocalizedString(@"Error",nil));
+                showAlertDialog(responseData, NSLocalizedString(@"Error",nil));
             }
             [self setUIBusy:NO];
         }];
