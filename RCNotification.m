@@ -53,7 +53,7 @@ static NSMutableArray* RCNotificatioNewFriendRequests = 0;
         if (commentedPost)
             RCNotficationNumberOfNewPostNotifications--;
         self.viewed = true;
-        NSURL *url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%d", RCServiceURL, RCNotificationsResource, _notificationID]];
+        NSURL *url=[NSURL URLWithString:[NSString stringWithFormat:@"%@%@/%d?mobile=1", RCServiceURL, RCNotificationsResource, _notificationID]];
         NSURLRequest *request = CreateHttpPutRequest(url,nil);
         
         [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue]
