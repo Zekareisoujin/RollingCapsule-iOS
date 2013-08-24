@@ -19,6 +19,7 @@
 #import "RCNewPostOperation.h"
 #import "RCFacebookHelper.h"
 #import "RCFacebookSettingsViewController.h"
+#import "RCFriendListViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <MediaPlayer/MediaPlayer.h>
@@ -44,6 +45,8 @@
 @property (nonatomic, strong) RCNewPostOperation *postNewOp;
 @property (nonatomic, strong) RCPost *post;
 @property (nonatomic, strong) UIImagePickerController *imagePicker;
+@property (nonatomic, strong) RCFriendListViewController *friendListPickerViewController;
+@property (nonatomic, strong) RCUser* timeCapsuleReceiver;
 @end
 
 @implementation RCNewPostViewController {
@@ -73,6 +76,8 @@
 @synthesize mediaUploadOp = _mediaUploadOp;
 @synthesize postNewOp = _postNewOp;
 @synthesize post = _post;
+@synthesize friendListPickerViewController = _friendListPickerViewController;
+@synthesize timeCapsuleReceiver = _timeCapsuleReceiver;
 
 BOOL _isTapToCloseKeyboard = NO;
 BOOL _landmarkTableVisible = NO;
@@ -693,8 +698,25 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
     }
 }
 
+- (IBAction)openFriendList:(UIButton*) sender {
+    _friendListPickerViewController = [[RCFriendListViewController alloc] initWithUser:_user withLoggedinUser:[RCUser currentUser]];
+    RCFriendListViewController* viewController = _friendListPickerViewController;
+    [self presentViewController:viewController animated:YES completion:nil];
+    [viewController.btnFollowees setHidden:YES];
+    [viewController.btnRequests setHidden:YES];
+    viewController.tblViewFriendList.delegate = self;
+}
+
+#pragma mark - UITableViewDelegate used for picking friends
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    _timeCapsuleReceiver = [_friendListPickerViewController userAtTableIndexPath:indexPath];
+    _datePickerView.txtFieldSendToFriend.text = _timeCapsuleReceiver.name;
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 - (IBAction) openDatePickerView:(UIButton*) sender {
-    
+    static CGFloat moveBackBy = 0;
     if (!_isTimedRelease) {
     
         BOOL open = YES;
@@ -707,9 +729,10 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
             CGRect frame = _datePickerView.frame;
             frame.origin.x = (self.view.frame.size.width - frame.size.width) / 2.0;
             frame.origin.y = [self.view convertPoint:sender.frame.origin fromView:sender].y - frame.size.height - 3;
+            moveBackBy = - frame.origin.y;
             _datePickerView.frame = frame;
             _datePickerView.alpha = 0.0;
-            
+            [_datePickerView.btnAddFriend addTarget:self action:@selector(openFriendList:) forControlEvents:UIControlEventTouchUpInside];
             
         } else {
             if (!_datePickerView.hidden)
@@ -718,7 +741,7 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
                 [_datePickerView setHidden:NO];
         }
         BOOL isIphone4 = [[UIScreen mainScreen] bounds].size.height < RCIphone5Height;
-        CGFloat moveBackBy = 45;
+        //CGFloat moveBackBy = - (_timeCapsule.frame.origin.y - _datePickerView.frame.size.height - 3);
         /*if (isIphone4 && open) {
             UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0,-moveBackBy,self.view.frame.size.width,moveBackBy)];
             [view setBackgroundColor:[UIColor darkGrayColor]];

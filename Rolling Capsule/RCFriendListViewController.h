@@ -49,5 +49,6 @@ typedef enum RCFriendListViewMode RCFriendListViewMode;
 - (IBAction)btnFolloweeTouchUpInside:(id)sender;
 
 - (IBAction)btnUserAvatarTouchUpInside:(id)sender;
+- (RCUser*) userAtTableIndexPath:(NSIndexPath*)indexPath;
 
 @end

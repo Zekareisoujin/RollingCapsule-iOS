@@ -19,7 +19,9 @@
 @property (weak, nonatomic) IBOutlet UITableView *pickerViewMonth;
 @property (weak, nonatomic) IBOutlet UITableView *pickerViewDay;
 @property (weak, nonatomic) IBOutlet UITableView *pickerViewHour;
+@property (weak, nonatomic) IBOutlet UITextField *txtFieldSendToFriend;
 @property (nonatomic, strong) NSArray* months;
+@property (weak, nonatomic) IBOutlet UIButton *btnAddFriend;
 
 @property (nonatomic, assign) int hour;
 @property (nonatomic, assign) int day;

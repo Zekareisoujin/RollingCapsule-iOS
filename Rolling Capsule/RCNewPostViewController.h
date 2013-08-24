@@ -16,7 +16,7 @@
 #import "RCUtilities.h"
 #import "RCDatePickerView.h"
 
-@interface RCNewPostViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, AmazonServiceRequestDelegate, UITextViewDelegate, UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, RCDatePickerDelegate>
+@interface RCNewPostViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate, AmazonServiceRequestDelegate, UITextViewDelegate, UITextFieldDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, RCDatePickerDelegate, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *lblLandmarkName;
 
 @property (weak, nonatomic) IBOutlet UIButton *btnChooseLandmark;

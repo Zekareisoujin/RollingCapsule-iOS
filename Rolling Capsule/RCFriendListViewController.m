@@ -250,6 +250,16 @@ CGRect  searchButtonHideFrame;
     [self.navigationController pushViewController:detailViewController animated:YES];
 }
 
+- (RCUser*) userAtTableIndexPath:(NSIndexPath*)indexPath {
+    RCUser *user;
+    UITableView* tableView = _tblViewFriendList;
+    if (tableView == self.searchDisplayController.searchResultsTableView)
+        user = [_searchResultList objectAtIndex:indexPath.row];
+    else
+        user = [_displayedItems objectAtIndex:indexPath.row];
+    return user;
+}
+
 #pragma mark - web request
 - (void)asynchGetFriendsRequest {
     //Asynchronous Request
