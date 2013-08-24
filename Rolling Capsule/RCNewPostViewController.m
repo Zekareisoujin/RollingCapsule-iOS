@@ -20,6 +20,7 @@
 #import "RCFacebookHelper.h"
 #import "RCFacebookSettingsViewController.h"
 #import "RCFriendListViewController.h"
+#import "RCUserTableCell.h"
 #import <QuartzCore/QuartzCore.h>
 #import <MobileCoreServices/MobileCoreServices.h>
 #import <MediaPlayer/MediaPlayer.h>
@@ -52,6 +53,7 @@
 @implementation RCNewPostViewController {
     NSData *_uploadData;
     NSData *_thumbnailData;
+    BOOL _isTimedRelease;
 }
 
 @synthesize imagePicker = _imagePicker;
@@ -86,7 +88,7 @@ BOOL _firstTimeEditPost = YES;
 BOOL _didFinishUploadingImage = NO;
 BOOL _isMovie = NO;
 BOOL _isPosting = NO;
-BOOL _isTimedRelease = NO;
+
 BOOL _isShowingPrivacyOption = NO;
 BOOL _isFacebookPost = NO;
 static BOOL RCNewPostViewControllerAutomaticClose = YES;
@@ -167,6 +169,7 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
     _viewFirstLoad = YES;
     //reset data type
     _isMovie = NO;
+    _isTimedRelease = NO;
     
     //init landmark button within
     /*UIButton *paddingView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
@@ -705,11 +708,25 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
     [self presentViewController:viewController animated:YES completion:nil];
     [viewController.btnFollowees setHidden:YES];
     [viewController.btnRequests setHidden:YES];
+    [viewController.btnFriends setHidden:YES];
+    UIButton* doneButton = [[UIButton alloc] initWithFrame:viewController.btnFriends.frame];
+    CGRect frame = doneButton.frame;
+    frame.size.width *= 2;
+    doneButton.frame = frame;
+    [doneButton setImage:[UIImage imageNamed:@"backButton"] forState:UIControlStateNormal ] ;
+    [doneButton addTarget:self action:@selector(closeFriendList) forControlEvents:UIControlEventTouchUpInside];
+    [viewController.view addSubview:doneButton];
     viewController.tblViewFriendList.delegate = self;
 }
 
+- (void) closeFriendList {
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
 #pragma mark - UITableViewDelegate used for picking friends
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return [RCUserTableCell cellHeight];
+}
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     _timeCapsuleReceiver = [_friendListPickerViewController userAtTableIndexPath:indexPath];
     _datePickerView.txtFieldSendToFriend.text = _timeCapsuleReceiver.name;
@@ -741,34 +758,24 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
             else
                 [_datePickerView setHidden:NO];
         }
-        BOOL isIphone4 = [[UIScreen mainScreen] bounds].size.height < RCIphone5Height;
-        //CGFloat moveBackBy = - (_timeCapsule.frame.origin.y - _datePickerView.frame.size.height - 3);
-        /*if (isIphone4 && open) {
-            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0,-moveBackBy,self.view.frame.size.width,moveBackBy)];
-            [view setBackgroundColor:[UIColor darkGrayColor]];
-            [self.view addSubview:view];
-            [self.view sendSubviewToBack:view];
-        }*/
         [UIView animateWithDuration:0.5
                       delay:0
                     options:UIViewAnimationOptionCurveEaseInOut
                  animations:^{
-                     if (isIphone4) {
-                         if (!open) {
-                             CGRect frame2 =_datePickerView.frame;
-                             CGRect frame =  self.viewMainFrame.frame;
-                             frame.origin.y -= moveBackBy;
-                             frame2.origin.y -= moveBackBy;
-                             _datePickerView.frame = frame2;
-                             self.viewMainFrame.frame = frame;
-                         } else {
-                             CGRect frame2 =_datePickerView.frame;
-                             CGRect frame =  self.viewMainFrame.frame;
-                             frame.origin.y += moveBackBy;
-                             frame2.origin.y += moveBackBy;
-                             _datePickerView.frame = frame2;
-                             self.viewMainFrame.frame = frame;
-                         }
+                     if (!open) {
+                         CGRect frame2 =_datePickerView.frame;
+                         CGRect frame =  self.viewMainFrame.frame;
+                         frame.origin.y -= moveBackBy;
+                         frame2.origin.y -= moveBackBy;
+                         _datePickerView.frame = frame2;
+                         self.viewMainFrame.frame = frame;
+                     } else {
+                         CGRect frame2 =_datePickerView.frame;
+                         CGRect frame =  self.viewMainFrame.frame;
+                         frame.origin.y += moveBackBy;
+                         frame2.origin.y += moveBackBy;
+                         _datePickerView.frame = frame2;
+                         self.viewMainFrame.frame = frame;
                      }
 
                      if (open)
@@ -784,6 +791,8 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
     }else {
         _isTimedRelease = NO;
         [_timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsuleInactive.png"] forState:UIControlStateNormal];
+        _datePickerView.txtFieldSendToFriend.text = @"";
+        _timeCapsuleReceiver = nil;
         showAlertDialog(NSLocalizedString(@"You have deactivated capsule release mode for this post",nil), NSLocalizedString(@"Notice",nil));
     }
 }

@@ -233,7 +233,7 @@
     willShowMoreFeeds = NO;
     if (_currentViewMode == RCMainFeedViewModeCommented) {
         _posts = [[NSMutableArray alloc] init];
-
+        [_chosenPosts removeAllObjects];
         NSMutableArray* commentedPosts = [RCNotification getNotifiedPosts];
         [_posts addObjectsFromArray:commentedPosts];
         currentMaxDisplayedPostNumber = [_posts count];

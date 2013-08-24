@@ -234,12 +234,10 @@ CGRect  searchButtonHideFrame;
     return cell;
 }
 
+#pragma mark - UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return [RCUserTableCell cellHeight];
 }
-
-#pragma mark - UITableViewDelegate
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     RCUser *user;
     if (tableView == self.searchDisplayController.searchResultsTableView)
