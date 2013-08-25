@@ -47,6 +47,7 @@ RCFriendListViewMode    _viewingMode;
 NSArray                 *controlButtonArray;
 NSMutableArray          *currentDisplayedItems;
 NSDate                  *strangerListLastUpdate;
+NSTimer                 *strangerSearchTimer;
 
 // Search bar animation
 BOOL    showSearchBar;
@@ -583,9 +584,15 @@ CGRect  searchButtonHideFrame;
         _displayedItems = currentDisplayedItems;
         [_btnSearchBarCancel setHidden:YES];
     }else {
-        if (_viewingMode == RCFriendListViewModePendingFriends)
-            [self asynchFindUsersRequest:searchText];
-        else
+        if (_viewingMode == RCFriendListViewModePendingFriends) {
+            if (strangerSearchTimer != nil)
+                [strangerSearchTimer invalidate];
+            strangerSearchTimer = [NSTimer scheduledTimerWithTimeInterval:0.5
+                block:^(NSTimeInterval t){
+                    [self asynchFindUsersRequest:searchText];
+                }repeats:NO];
+            
+        }else
             [self filterContentForSearchText:searchText fromList:currentDisplayedItems withScope:nil];
         _displayedItems = _searchResultList;
         [_btnSearchBarCancel setHidden:NO];
