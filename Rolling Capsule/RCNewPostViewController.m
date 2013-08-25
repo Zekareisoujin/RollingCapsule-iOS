@@ -263,9 +263,9 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
     _post.privacyOption = [_privacyOption copy];
     _post.topic = [_currentTopic copy];
     _post.postedTime = [NSDate date];
-    _post.timeCapsuleReceiver = _timeCapsuleReceiver;
     if (_datePickerView != nil && _isTimedRelease) {
         _post.releaseDate = [_datePickerView date];
+        _post.timeCapsuleReceiver = _timeCapsuleReceiver;
     }
 
     [RCOperationsManager addUploadOperation:_mediaUploadOp withPost:_post];
@@ -731,9 +731,9 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
     return [RCUserTableCell cellHeight];
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self dismissViewControllerAnimated:YES completion:nil];
     _timeCapsuleReceiver = [_friendListPickerViewController userAtTableIndexPath:indexPath];
     _datePickerView.txtFieldSendToFriend.text = _timeCapsuleReceiver.name;
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction) openDatePickerView:(UIButton*) sender {
@@ -798,6 +798,7 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
         [_timeCapsule setImage:[UIImage imageNamed:@"postButtonTimeCapsuleInactive.png"] forState:UIControlStateNormal];
         _datePickerView.txtFieldSendToFriend.text = @"";
         _timeCapsuleReceiver = nil;
+        _btnPrivacyOption.enabled = YES;
         showAlertDialog(NSLocalizedString(@"You have deactivated capsule release mode for this post",nil), NSLocalizedString(@"Notice",nil));
     }
 }
@@ -1066,6 +1067,10 @@ handler:(void (^)(AVAssetExportSession*))handler
         [dateFormatter setDateFormat:@"HH:mm, dd/MM/yyyy"];
         
         showAlertDialog([NSString stringWithFormat:NSLocalizedString(@"You have scheduled your post to be released at %@", nil), [dateFormatter stringFromDate:pickedDateTime]], NSLocalizedString(@"Notice",nil));
+        if (_timeCapsuleReceiver != nil) {
+            [_btnPrivacyOption setBackgroundImage:[UIImage imageNamed:@"postPersonalPrivacyButton-2"] forState:UIControlStateDisabled];
+            _btnPrivacyOption.enabled = NO;
+        }
     }else {
         showAlertDialog(NSLocalizedString(@"The release date has already passed", nil) , NSLocalizedString(@"Notice",nil));
     }
