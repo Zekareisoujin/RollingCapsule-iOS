@@ -642,6 +642,9 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
 - (IBAction)btnPrivacyOptionTouchedUpInside:(id)sender {
     [_btnPrivacyOption setEnabled:NO];
     if (!_isShowingPrivacyOption) {
+        if (_datePickerView != nil && !_datePickerView.hidden)
+            [self openDatePickerView:nil];
+        
         _isShowingPrivacyOption = YES;
         [_imgViewPrivacyOptionFrame setHidden:NO];
         [self backgroundTouchUpInside:self];
@@ -736,7 +739,9 @@ static BOOL RCNewPostViewControllerAutomaticClose = YES;
 - (IBAction) openDatePickerView:(UIButton*) sender {
     static CGFloat moveBackBy = 0;
     if (!_isTimedRelease) {
-    
+        if (_isShowingPrivacyOption)
+            [self btnPrivacyOptionTouchedUpInside:nil];
+        
         BOOL open = YES;
         if (_datePickerView == nil) {
             NSArray *nibContents = [[NSBundle mainBundle] loadNibNamed:@"RCDatePickerView" owner:self options:nil];
