@@ -150,8 +150,17 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
     NSLog(@"press button index in alert view: %d", buttonIndex);
     if ([alertView.title isEqualToString:NSLocalizedString(@"Phone number",nil)]) {
-        NSString *phoneNumber = [[alertView textFieldAtIndex:0] text];
+        NSString *countryCode = [[[alertView textFieldAtIndex:0] text] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        NSString *phoneNumber = [[alertView textFieldAtIndex:1] text];
         if ([phoneNumber length] > 1) {
+            if ([countryCode isEqualToString:@""]) {
+                RMPhoneFormat *fmt = [[RMPhoneFormat alloc] init];
+                countryCode = [fmt defaultCallingCode];
+            }
+            
+            if ([phoneNumber hasPrefix:@"0"])
+                phoneNumber = [phoneNumber substringFromIndex:1];
+            phoneNumber = [NSString stringWithFormat:@"%@%@",countryCode,phoneNumber ];
             if ([phoneNumber hasPrefix:@"+"])
                 phoneNumber = [phoneNumber substringFromIndex:1];
             [self requestResendActivation:phoneNumber];
@@ -188,11 +197,29 @@ static int RCActivationAlertResendSMSButtonIndex = 1;
         } else if (buttonIndex == RCActivationAlertResendSMSButtonIndex) {
             RMPhoneFormat *fmt = [[RMPhoneFormat alloc] init];
             UIAlertView * alert = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Phone number",nil) message:NSLocalizedString(@"Please enter your phone number",nil) delegate:self cancelButtonTitle:NSLocalizedString(@"Ok",nil) otherButtonTitles:nil];
-            alert.alertViewStyle = UIAlertViewStylePlainTextInput;
+            alert.alertViewStyle = UIAlertViewStyleLoginAndPasswordInput;
             alert.delegate = self;
-            [alert textFieldAtIndex:0].text = [NSString stringWithFormat:@"+%@",[fmt defaultCallingCode]];
-            [[alert textFieldAtIndex:0] setKeyboardType:UIKeyboardTypeDecimalPad];
+            UITextField* txtField1 = [alert textFieldAtIndex:0];
+            UITextField* txtField2 = [alert textFieldAtIndex:1];
+            txtField1.placeholder = NSLocalizedString(@"Country code",nil);
+            txtField2.placeholder = NSLocalizedString(@"Phone number",nil);
+            txtField2.secureTextEntry = NO;
+            txtField1.text = [NSString stringWithFormat:@"+%@",[fmt defaultCallingCode]];
+            [txtField1 setKeyboardType:UIKeyboardTypePhonePad];
+            [txtField2 setKeyboardType:UIKeyboardTypePhonePad];
             [alert show];
+            
+        }
+    }
+}
+- (void)didPresentAlertView:(UIAlertView *)alertView {
+    if ([alertView.title isEqualToString:NSLocalizedString(@"Phone number",nil)]) {
+    UITextField* txtField1 = [alertView textFieldAtIndex:0];
+        UITextField* txtField2 = [alertView textFieldAtIndex:1];
+
+        if (txtField1 != nil && txtField2 != nil) {
+            [txtField1 resignFirstResponder];
+            [txtField2 becomeFirstResponder];
         }
     }
 }

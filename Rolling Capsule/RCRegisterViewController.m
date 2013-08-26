@@ -67,11 +67,12 @@ BOOL        _willMoveKeyboardUp;
         addArgumentToQueryString(dataSt, @"user[name]", [_txtFieldName text]);
         addArgumentToQueryString(dataSt, @"user[password_confirmation]", [_txtFieldPassword text]);
         NSString* countryCode = [[_txtFieldCountryCode text] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        NSString *phoneNumber = [_txtFieldPhoneNumber text];
         if ([countryCode isEqualToString:@""]) {
             RMPhoneFormat *fmt = [[RMPhoneFormat alloc] init];
             countryCode = [fmt defaultCallingCode];
         }
-        NSString *phoneNumber = [_txtFieldPhoneNumber text];
+        
         if ([phoneNumber hasPrefix:@"0"])
             phoneNumber = [phoneNumber substringFromIndex:1];
         phoneNumber = [NSString stringWithFormat:@"%@%@",countryCode,phoneNumber ];
